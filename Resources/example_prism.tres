@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="PrismRecipe" format=3 uid="uid://dk65cvm78lh7s"]
+
+[ext_resource type="Script" uid="uid://df7vrqh187nx2" path="res://Scripts/QualiaRequirement.cs" id="1_ti3rh"]
+[ext_resource type="Script" uid="uid://cm64tnf4fly34" path="res://Scripts/PrismRecipe.cs" id="1_yj4b0"]
+
+[sub_resource type="Resource" id="Resource_gbf7p"]
+script = ExtResource("1_ti3rh")
+id = "fire"
+amount = 5
+metadata/_custom_type_script = "uid://df7vrqh187nx2"
+
+[sub_resource type="Resource" id="Resource_aq24b"]
+script = ExtResource("1_ti3rh")
+id = "machine"
+amount = 2
+metadata/_custom_type_script = "uid://df7vrqh187nx2"
+
+[resource]
+script = ExtResource("1_yj4b0")
+requirements = Array[Object]([SubResource("Resource_gbf7p"), SubResource("Resource_aq24b")])
+metadata/_custom_type_script = "uid://cm64tnf4fly34"

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="FamiliarData" format=3 uid="uid://ba8qk667xjgbw"]
+
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/FamiliarData.cs" id="1_jneu4"]
+
+[resource]
+script = ExtResource("1_jneu4")
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"

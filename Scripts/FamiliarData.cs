@@ -1,0 +1,45 @@
+using Godot;
+using System;
+
+[GlobalClass]
+public partial class FamiliarData : Resource
+{
+	[Export] public string id {get; set;} = "";
+	[Export] public string name {get; set;} = "";
+	[Export] public string description {get; set;} = "";
+	
+	[Export] public int baseEnergy {get; set;} = 50;
+	[Export] public int basePAttack {get; set;} = 10;
+	[Export] public int baseMAttack {get; set;} = 10;
+	[Export] public int basePDefense {get; set;} = 10;
+	[Export] public int baseMDefense {get; set;} = 10;
+	[Export] public int baseSpeed {get; set;} = 10;
+	
+	[Export] public Godot.Collections.Array<string> types {get; set;} = new();
+	[Export] public Godot.Collections.Array<string> learnableSkills {get; set;} = new();
+	
+	[Export] public PrismRecipe recipe {get; set;} = new();
+	
+	[Export] public Texture2D portrait {get; set;}
+	
+	public FamiliarData()
+	{
+		id = "";
+		name = "";
+		description = "";
+		
+		baseEnergy = 50;
+		basePAttack = 10;
+		baseMAttack = 10;
+		basePDefense = 10;
+		baseMDefense = 10;
+		baseSpeed = 10;
+		
+		types = new();
+		learnableSkills = new();
+		
+		recipe = new();
+		
+		portrait = null;
+	}
+}
