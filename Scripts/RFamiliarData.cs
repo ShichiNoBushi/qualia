@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 [GlobalClass]
-public partial class FamiliarData : Resource
+public partial class RFamiliarData : Resource
 {
 	[Export] public string id {get; set;} = "";
 	[Export] public string name {get; set;} = "";
@@ -15,14 +15,14 @@ public partial class FamiliarData : Resource
 	[Export] public int baseMDefense {get; set;} = 10;
 	[Export] public int baseSpeed {get; set;} = 10;
 	
-	[Export] public Godot.Collections.Array<string> types {get; set;} = new();
-	[Export] public Godot.Collections.Array<string> learnableSkills {get; set;} = new();
+	[Export] public Godot.Collections.Array<RTypeData> types {get; set;} = new();
+	[Export] public Godot.Collections.Array<RSkillData> learnableSkills {get; set;} = new();
 	
-	[Export] public PrismRecipe recipe {get; set;} = new();
+	[Export] public RPrismRecipe recipe {get; set;} = new();
 	
 	[Export] public Texture2D portrait {get; set;}
 	
-	public FamiliarData()
+	/*public FamiliarData()
 	{
 		id = "";
 		name = "";
@@ -41,5 +41,5 @@ public partial class FamiliarData : Resource
 		recipe = new();
 		
 		portrait = null;
-	}
+	}*/
 }

@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="FamiliarData" format=3 uid="uid://ba8qk667xjgbw"]
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://ba8qk667xjgbw"]
 
-[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/FamiliarData.cs" id="1_jneu4"]
+[ext_resource type="Resource" uid="uid://dk65cvm78lh7s" path="res://Resources/example_prism.tres" id="1_cy2y3"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="1_jneu4"]
 
 [resource]
 script = ExtResource("1_jneu4")
+recipe = ExtResource("1_cy2y3")
 metadata/_custom_type_script = "uid://c6t16g27uf4ia"
