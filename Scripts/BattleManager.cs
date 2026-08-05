@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class BattleManager : Node
 {
@@ -22,9 +23,9 @@ public partial class BattleManager : Node
 	
 	public Godot.Collections.Array<RFamiliarInstance> spawns;
 	
-	public Godot.Collections.Array<string> projectorCommands;
-	public Godot.Collections.Array<string> familiarCommands;
-	public Godot.Collections.Array<string> turnCommands;
+	public Godot.Collections.Array<BattleCommand> projectorCommands;
+	public Godot.Collections.Array<BattleCommand> familiarCommands;
+	public Godot.Collections.Array<BattleCommand> turnCommands;
 	
 	public Godot.Collections.Array<RFamiliarInstance> defeatedFamiliars;
 	
@@ -40,10 +41,18 @@ public partial class BattleManager : Node
 	
 	public void Initialize(Projector player, REncounterData encounter)
 	{
-		if (!encounter.IsValid())
+		if (encounter == null || !encounter.IsValid())
 		{
 			return;
 		}
+		
+		spawns = new();
+		
+		projectorCommands = new();
+		familiarCommands = new();
+		turnCommands = new();
+		
+		defeatedFamiliars = new();
 		
 		isProjectorEncounter = encounter.isProjectorEncounter;
 		
@@ -59,15 +68,86 @@ public partial class BattleManager : Node
 				RFamiliarInstance familiar = fam.CreateInstance();
 				enemy.GiveFamiliar(familiar);
 			}
+			
+			enemySide = new(enemy);
 		}
 		else
 		{
+			enemySide = new(null);
+			
 			foreach (var fam in encounter.familiarList)
 			{
 				RFamiliarInstance familiar = fam.CreateInstance();
-				spawns.Add(familiar);
+				
+				if (familiar != null)
+				{
+					spawns.Add(familiar);
+				}
 			}
 		}
+		
+		state = BattleState.Setup;
+	}
+	
+	public void SetState(BattleState newState)
+	{
+		state = newState;
+	}
+	
+	public void BuildTurnOrder()
+	{
+		turnCommands.Clear();
+		
+		var playerProjCmds = projectorCommands.Where(c => c.sourceSide == playerSide);
+		var enemyProjCmds = projectorCommands.Where(c => c.sourceSide == enemySide);
+		
+		if (GD.Randi() % 2 == 0)
+		{
+			turnCommands.AddRange(playerProjCmds);
+			turnCommands.AddRange(enemyProjCmds);
+		}
+		else
+		{
+			turnCommands.AddRange(enemyProjCmds);
+			turnCommands.AddRange(playerProjCmds);
+		}
+		
+		var sortedFamiliarCmds = familiarCommands.OrderByDescending(cmd =>
+		{
+			int speed = 0;
+			
+			if (cmd.source is FamiliarActor fam)
+			{
+				speed = fam.speed; //change to modified speed
+			}
+			
+			return speed * 100 + (int)GD.Randi() % 20;
+		}).ToList();
+		
+		foreach (var cmd in sortedFamiliarCmds)
+		{
+			turnCommands.Add(cmd);
+		}
+	}
+	
+	public void ResolveTurn()
+	{
+		foreach (var cmd in turnCommands)
+		{
+			if (!cmd.isValid)
+			{
+				continue;
+			}
+			
+			cmd.Retarget(this);
+			
+			if (cmd.isValid)
+			{
+				cmd.Execute(this);
+			}
+		}
+	
+		SetState(BattleState.EndCheck);
 	}
 }
 
@@ -76,13 +156,13 @@ public partial class BattleSide : RefCounted
 	public const int MAX_SLOTS = 4;
 	
 	public Projector projector {get; set;}
-	public object[] familiarSlots {get; set;} = new object[MAX_SLOTS];
+	public FamiliarActor[] familiarSlots {get; set;} = new FamiliarActor[MAX_SLOTS];
 	
 	public BattleSide(Projector p)
 	{
 		projector = p;
 		
-		familiarSlots = new object[MAX_SLOTS];
+		familiarSlots = new FamiliarActor[MAX_SLOTS];
 	}
 	
 	public bool IsSlotEmpty(int index)
@@ -94,7 +174,7 @@ public partial class BattleSide : RefCounted
 	{
 		for (int i = 0; i < MAX_SLOTS; i++)
 		{
-			if (familiarSlots[i] != null)
+			if (familiarSlots[i] == null)
 			{
 				return true;
 			}
@@ -103,7 +183,7 @@ public partial class BattleSide : RefCounted
 		return false;
 	}
 	
-	public int GetSlotIndex(RFamiliarInstance familiar)
+	public int GetSlotIndex(FamiliarActor familiar)
 	{
 		if (familiar == null)
 		{
@@ -121,7 +201,7 @@ public partial class BattleSide : RefCounted
 		return -1;
 	}
 	
-	public bool TrySummon(RFamiliarInstance familiar, int index)
+	public bool TrySummon(FamiliarActor familiar, int index)
 	{
 		if (index < 0 || index >= MAX_SLOTS || familiarSlots[index] != null)
 		{
@@ -129,6 +209,7 @@ public partial class BattleSide : RefCounted
 		}
 		
 		familiarSlots[index] = familiar;
+		familiar.side = this;
 		
 		return true;
 	}
@@ -156,15 +237,15 @@ public partial class BattleSide : RefCounted
 		return count;
 	}
 	
-	public Godot.Collections.Array<RFamiliarInstance> GetFamiliarList()
+	public Godot.Collections.Array<FamiliarActor> GetFamiliarList()
 	{
-		Godot.Collections.Array<RFamiliarInstance> famList = new();
+		Godot.Collections.Array<FamiliarActor> famList = new();
 		
 		foreach (var slot in familiarSlots)
 		{
 			if (slot != null)
 			{
-				famList.Add((RFamiliarInstance)slot);
+				famList.Add(slot);
 			}
 		}
 		
@@ -172,119 +253,52 @@ public partial class BattleSide : RefCounted
 	}
 }
 
-public abstract partial class BattleCommand : RefCounted
+public interface IBattleActor
 {
-	public BattleSide sourceSide {get; set;}
-	public object source {get; set;}
-	public object target {get; set;}
+	string name {get;}
+	int maxEnergy {get;}
+	int currentEnergy {get; set;}
+	int speed {get;}
+	BattleSide side {get; set;}
 	
-	public bool isValid {get; set;} = true;
+	bool isAlive {get;}
 	
-	public abstract void Execute(BattleManager battle);
-	
-	public virtual void Retarget(BattleManager battle)
-	{
-		
-	}
+	void Damage(int amount);
 }
 
-public partial class SummonCommand : BattleCommand
+public partial class FamiliarActor : RefCounted, IBattleActor
 {
-	public RFamiliarInstance familiar {get; set;}
-	public int slot {get; set;} = -1;
+	public RFamiliarInstance familiar {get; private set;}
+	public string name {get; private set;}
 	
-	public override void Execute(BattleManager battle)
-	{
-		if (source is not Projector projector)
-		{
-			return;
-		}
-		
-		if (!sourceSide.HasOpenSlot())
-		{
-			return;
-		}
-		
-		if (slot <= 0 || slot > BattleSide.MAX_SLOTS || !sourceSide.IsSlotEmpty(slot))
-		{
-			for (int i = 0; i < BattleSide.MAX_SLOTS; i++)
-			{
-				if (sourceSide.IsSlotEmpty(i))
-				{
-					slot = i;
-					break;
-				}
-			}
-		}
-		
-		int cost = familiar.energy;
-		
-		if (projector.currentEnergy < cost)
-		{
-			return;
-		}
-		
-		projector.currentEnergy -= cost;
-		
-		if (!sourceSide.TrySummon(familiar, slot))
-		{
-			GD.Print("SummonCommand: Failed to summon");
-		}
-	}
-}
-
-public partial class AttackCommand : BattleCommand
-{
-	public int power {get; set;} = 0;
+	public BattleSide side {get; set;}
 	
-	public override void Execute(BattleManager battle)
+	public int currentEnergy {get; set;} = 1;
+	public int maxEnergy => familiar.energy;
+	
+	public int pAttack => familiar.pAttack;
+	public int mAttack => familiar.mAttack;
+	public int pDefense => familiar.pDefense;
+	public int mDefense => familiar.mDefense;
+	public int speed => familiar.speed;
+	
+	public int pAttackBonus {get; set;} = 0;
+	public int mAttackBonus {get; set;} = 0;
+	public int pDefenseBonus {get; set;} = 0;
+	public int mDefenseBonus {get; set;} = 0;
+	public int speedBonus {get; set;} = 0;
+	
+	public bool isAlive => currentEnergy > 0;
+	
+	public FamiliarActor(RFamiliarInstance fam)
 	{
-		if (target == null)
-		{
-			Retarget(battle);
-			
-			if (target == null)
-			{
-				return;
-			}
-		}
-		
-		//calculate damage
-		//damage target
+		familiar = fam;
+		name = string.IsNullOrEmpty(familiar.nickName) ? familiar.data.name : familiar.nickName;
+		currentEnergy = maxEnergy;
 	}
 	
-	public override void Retarget(BattleManager battle)
+	public void Damage(int amount)
 	{
-		BattleSide enemySide = sourceSide == battle.playerSide ? battle.enemySide : battle.playerSide;
-		
-		if (enemySide.CountActiveFamiliars() > 0)
-		{
-			Godot.Collections.Array<RFamiliarInstance> famList = enemySide.GetFamiliarList();
-			
-			int idx = (int)GD.Randi() % famList.Count;
-			
-			target = famList[idx];
-		}
-		else if (enemySide.projector != null && enemySide.projector.currentEnergy > 0)
-		{
-			target = enemySide.projector;
-		}
-		else
-		{
-			isValid = false;
-		}
-	}
-}
-
-public partial class FocusCommand : BattleCommand
-{
-	public override void Execute(BattleManager battle)
-	{
-		int amount = (int)GD.Randi() % 10 + 1;
-		
-		if (source is Projector projector)
-		{
-			projector.currentEnergy = Mathf.Min(projector.maxEnergy, projector.currentEnergy + amount);
-		}
+		currentEnergy = Mathf.Max(currentEnergy - amount, 0);
 	}
 }
