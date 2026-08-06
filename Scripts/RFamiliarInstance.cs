@@ -21,16 +21,42 @@ public partial class RFamiliarInstance : Resource
 	
 	[Export] public Godot.Collections.Array<RSkillData> skills {get; set;}
 	
-	public void Initialize(RFamiliarData fData)
+	public void Initialize(RFamiliarData fData, int startingLevel = 1)
 	{
 		data = fData;
 		types = fData.types.Duplicate();
+		level = Mathf.Max(startingLevel, 1);
+		experience = 0;
 		
-		energy = fData.baseEnergy;
-		pAttack = fData.basePAttack;
-		mAttack = fData.baseMAttack;
-		pDefense = fData.basePDefense;
-		mDefense = fData.baseMDefense;
-		speed = fData.baseSpeed;
+		RecalculateStats();
+	}
+	
+	public void LevelUp()
+	{
+		level++;
+		RecalculateStats();
+	}
+	
+	public void SetLevel(int newLevel)
+	{
+		level = Mathf.Max(newLevel, 1);
+		RecalculateStats();
+	}
+	
+	public void RecalculateStats()
+	{
+		if (data == null)
+		{
+			return;
+		}
+		
+		int levelsAboveBase = level - 1;
+		
+		energy = data.baseEnergy + (int)(data.levelEnergy * levelsAboveBase);
+		pAttack = data.basePAttack + (int)(data.levelPAttack * levelsAboveBase);
+		mAttack = data.baseMAttack + (int)(data.levelMAttack * levelsAboveBase);
+		pDefense = data.basePDefense + (int)(data.levelPDefense * levelsAboveBase);
+		mDefense = data.baseMDefense + (int)(data.levelMDefense * levelsAboveBase);
+		speed = data.baseSpeed + (int)(data.levelSpeed * levelsAboveBase);
 	}
 }

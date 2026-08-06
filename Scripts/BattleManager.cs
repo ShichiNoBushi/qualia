@@ -118,7 +118,7 @@ public partial class BattleManager : Node
 			
 			if (cmd.source is FamiliarActor fam)
 			{
-				speed = fam.speed; //change to modified speed
+				speed = fam.ModSpeed();
 			}
 			
 			return speed * 100 + (int)GD.Randi() % 20;
@@ -300,5 +300,30 @@ public partial class FamiliarActor : RefCounted, IBattleActor
 	public void Damage(int amount)
 	{
 		currentEnergy = Mathf.Max(currentEnergy - amount, 0);
+	}
+	
+	public int ModPAttack()
+	{
+		return pAttack + pAttackBonus;
+	}
+	
+	public int ModMAttack()
+	{
+		return mAttack + mAttackBonus;
+	}
+	
+	public int ModPDefense()
+	{
+		return pDefense + pDefenseBonus;
+	}
+	
+	public int ModMDefense()
+	{
+		return mDefense + mDefenseBonus;
+	}
+	
+	public int ModSpeed()
+	{
+		return speed + speedBonus;
 	}
 }

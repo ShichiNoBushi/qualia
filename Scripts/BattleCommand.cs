@@ -77,6 +77,9 @@ public partial class AttackCommand : BattleCommand
 {
 	public int power {get; set;} = 0;
 	
+	public bool isMagicAttack {get; set;} = false;
+	public bool isMagicTarget {get; set;} = false;
+	
 	public override void Execute(BattleManager battle)
 	{
 		if (target == null)
@@ -89,8 +92,13 @@ public partial class AttackCommand : BattleCommand
 			}
 		}
 		
-		//calculate damage
-		//damage target
+		int attackStat = GetAttackStat(source);
+		int defenseStat = GetDefenseStat(target);
+		
+		float raw = (float)(attackStat * power) / Mathf.Max(1, defenseStat);
+		int damage = Mathf.Max(1, Mathf.RoundToInt(raw));
+		
+		ApplyDamage(target, damage);
 	}
 	
 	public override void Retarget(BattleManager battle)
@@ -112,6 +120,38 @@ public partial class AttackCommand : BattleCommand
 		else
 		{
 			isValid = false;
+		}
+	}
+	
+	public int GetAttackStat(object source)
+	{
+		if (source is FamiliarActor fam)
+		{
+			return isMagicAttack ? fam.ModMAttack() : fam.ModPAttack();
+		}
+		
+		return 10;
+	}
+	
+	public int GetDefenseStat(object target)
+	{
+		if (target is FamiliarActor fam)
+		{
+			return isMagicTarget ? fam.ModMDefense() : fam.ModPDefense();
+		}
+		
+		return 10;
+	}
+	
+	public void ApplyDamage(object target, int amount)
+	{
+		if (target is IBattleActor actor)
+		{
+			actor.Damage(amount);
+		}
+		else if (target is Projector proj)
+		{
+			proj.Damage(amount);
 		}
 	}
 }

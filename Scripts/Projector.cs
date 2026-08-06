@@ -57,4 +57,9 @@ public partial class Projector : Node
 		ownedFamiliars.Remove(familiar);
 		return familiar;
 	}
+	
+	public void Damage(int amount)
+	{
+		currentEnergy = Mathf.Max(currentEnergy - amount, 0);
+	}
 }

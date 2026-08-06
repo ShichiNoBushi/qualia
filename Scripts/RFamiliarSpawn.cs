@@ -16,9 +16,7 @@ public partial class RFamiliarSpawn : Resource
 		}
 		
 		RFamiliarInstance instance = new();
-		instance.Initialize(familiar);
-		
-		instance.level = level;
+		instance.Initialize(familiar, level);
 		
 		return instance;
 	}
