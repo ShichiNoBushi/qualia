@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://bvro6acuxhp5o"]
+
+[ext_resource type="Script" uid="uid://qevtgcuj5cqb" path="res://Scripts/FamiliarDisplay.cs" id="1_2ntfu"]
+
+[node name="FamiliarDisplay" type="Control" unique_id=1218343456]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 207.0
+offset_bottom = 352.0
+script = ExtResource("1_2ntfu")
+
+[node name="FamiliarPanel" type="Panel" parent="." unique_id=1840743813]
+layout_mode = 0
+offset_right = 207.0
+offset_bottom = 352.0
+
+[node name="PortraitRect" type="TextureRect" parent="." unique_id=699313302]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 183.0
+offset_bottom = 293.0
+
+[node name="NameLabel" type="Label" parent="." unique_id=1820078636]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 296.0
+offset_right = 183.0
+offset_bottom = 319.0
+text = "Familiar Name"
+
+[node name="EnergyProgress" type="ProgressBar" parent="." unique_id=1319746501]
+layout_mode = 0
+offset_left = 183.0
+offset_top = 3.0
+offset_right = 206.0
+offset_bottom = 349.0
+step = 1.0
+show_percentage = false
+
+[node name="EnergyLabel" type="Label" parent="." unique_id=355263010]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 322.0
+offset_right = 183.0
+offset_bottom = 345.0
+text = "0 / 0"
+horizontal_alignment = 1
