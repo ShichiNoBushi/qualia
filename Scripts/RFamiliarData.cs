@@ -28,25 +28,4 @@ public partial class RFamiliarData : Resource
 	[Export] public RPrismRecipe recipe {get; set;} = new();
 	
 	[Export] public Texture2D portrait {get; set;}
-	
-	/*public FamiliarData()
-	{
-		id = "";
-		name = "";
-		description = "";
-		
-		baseEnergy = 50;
-		basePAttack = 10;
-		baseMAttack = 10;
-		basePDefense = 10;
-		baseMDefense = 10;
-		baseSpeed = 10;
-		
-		types = new();
-		learnableSkills = new();
-		
-		recipe = new();
-		
-		portrait = null;
-	}*/
 }

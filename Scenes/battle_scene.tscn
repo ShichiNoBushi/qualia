@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://b6d0mqnw6j8i2"]
+
+[ext_resource type="Script" uid="uid://blhgwusyey2rj" path="res://Scripts/BattleManager.cs" id="1_e5vbs"]
+[ext_resource type="PackedScene" uid="uid://dkeaxitdwb5wf" path="res://Scenes/projector_display_enemy.tscn" id="2_3gnqe"]
+[ext_resource type="PackedScene" uid="uid://bvro6acuxhp5o" path="res://Scenes/familiar_display.tscn" id="3_gt16y"]
+[ext_resource type="PackedScene" uid="uid://dp7p8gcqqqqr6" path="res://Scenes/projector_display_player.tscn" id="4_20f6w"]
+
+[node name="BattleScene" type="Node2D" unique_id=2070022109]
+
+[node name="BattleManager" type="Node" parent="." unique_id=805657199]
+script = ExtResource("1_e5vbs")
+
+[node name="Panel" type="Panel" parent="BattleManager" unique_id=1959391195]
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="BackgroundRect" type="TextureRect" parent="BattleManager" unique_id=1207011977]
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="ProjectorDisplayEnemy" parent="BattleManager" unique_id=1892404387 instance=ExtResource("2_3gnqe")]
+offset_left = 776.0
+offset_top = 8.0
+offset_right = 92.0
+offset_bottom = -469.0
+
+[node name="EFamiliarHBox" type="HBoxContainer" parent="BattleManager" unique_id=1561250209]
+offset_left = 200.0
+offset_top = 184.0
+offset_right = 1040.0
+offset_bottom = 536.0
+
+[node name="FamiliarDisplay0" parent="BattleManager/EFamiliarHBox" unique_id=1218343456 instance=ExtResource("3_gt16y")]
+layout_mode = 2
+
+[node name="FamiliarDisplay1" parent="BattleManager/EFamiliarHBox" unique_id=165885616 instance=ExtResource("3_gt16y")]
+layout_mode = 2
+
+[node name="FamiliarDisplay2" parent="BattleManager/EFamiliarHBox" unique_id=1170077242 instance=ExtResource("3_gt16y")]
+layout_mode = 2
+
+[node name="FamiliarDisplay3" parent="BattleManager/EFamiliarHBox" unique_id=970557197 instance=ExtResource("3_gt16y")]
+layout_mode = 2
+
+[node name="PFamiliarHBox" type="HBoxContainer" parent="BattleManager" unique_id=729688223]
+offset_left = 200.0
+offset_top = 540.0
+offset_right = 1040.0
+offset_bottom = 892.0
+
+[node name="FamiliarDisplay0" parent="BattleManager/PFamiliarHBox" unique_id=1032684180 instance=ExtResource("3_gt16y")]
+layout_mode = 2
+
+[node name="FamiliarDisplay1" parent="BattleManager/PFamiliarHBox" unique_id=2087038597 instance=ExtResource("3_gt16y")]
+layout_mode = 2
+
+[node name="FamiliarDisplay2" parent="BattleManager/PFamiliarHBox" unique_id=1780453779 instance=ExtResource("3_gt16y")]
+layout_mode = 2
+
+[node name="FamiliarDisplay3" parent="BattleManager/PFamiliarHBox" unique_id=1476944265 instance=ExtResource("3_gt16y")]
+layout_mode = 2
+
+[node name="ProjectorDisplayPlayer" parent="BattleManager" unique_id=888852153 instance=ExtResource("4_20f6w")]
+offset_left = 0.0
+offset_top = 904.0
+offset_right = -684.0
+offset_bottom = 422.0
+
+[node name="BattleLogLabel" type="RichTextLabel" parent="BattleManager" unique_id=440061593]
+offset_left = 1256.0
+offset_top = 8.0
+offset_right = 1912.0
+offset_bottom = 576.0
+bbcode_enabled = true

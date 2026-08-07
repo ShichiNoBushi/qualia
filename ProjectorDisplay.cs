@@ -1,15 +1,14 @@
 using Godot;
 using System;
 
-public partial class FamiliarDisplay : Control
+public partial class ProjectorDisplay : Control
 {
 	public TextureRect portraitRect;
 	public Label nameLabel;
 	public ProgressBar energyProgress;
 	public Label energyLabel;
 	
-	public FamiliarActor familiar {get; private set;}
-	public int slotIndex {get; private set;}
+	public Projector projector;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -26,21 +25,18 @@ public partial class FamiliarDisplay : Control
 	{
 	}
 	
-	public void AssignFamiliar(FamiliarActor fam)
+	public void AssignProjector(Projector proj)
 	{
-		familiar = fam;
+		projector = proj;
 		
 		UpdateDisplay();
 	}
 	
-	public void SetSlot(int slot)
-	{
-		slotIndex = slot;
-	}
-	
 	public void Clear()
 	{
-		familiar = null;
+		projector = null;
+		
+		UpdateDisplay();
 	}
 	
 	public void SetVisibleEnergy(bool toggle)
@@ -50,7 +46,7 @@ public partial class FamiliarDisplay : Control
 	
 	public void UpdateDisplay()
 	{
-		if (familiar == null || familiar.familiar == null)
+		if (projector == null)
 		{
 			Visible = false;
 			portraitRect.Texture = null;
@@ -63,15 +59,15 @@ public partial class FamiliarDisplay : Control
 		
 		Visible = true;
 		
-		RFamiliarData data = familiar.familiar.data;
+		RProjectorData data = projector.data;
 		
 		portraitRect.Texture = data != null && data.portrait != null ? data.portrait : null;
 		
-		nameLabel.Text = string.IsNullOrEmpty(familiar.name) ? "(no name)" : familiar.name;
+		nameLabel.Text = string.IsNullOrEmpty(projector.name) ? "(no name)" : projector.name;
 		
-		energyProgress.MaxValue = Mathf.Max(familiar.maxEnergy, 1);
-		energyProgress.Value = Mathf.Clamp(familiar.currentEnergy, 0, familiar.maxEnergy);
+		energyProgress.MaxValue = Mathf.Max(projector.maxEnergy, 1);
+		energyProgress.Value = Mathf.Clamp(projector.currentEnergy, 0, projector.maxEnergy);
 		
-		energyLabel.Text = $"{familiar.currentEnergy} / {familiar.maxEnergy}";
+		energyLabel.Text = $"{projector.currentEnergy} / {projector.maxEnergy}";
 	}
 }

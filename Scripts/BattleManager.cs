@@ -4,6 +4,16 @@ using System.Linq;
 
 public partial class BattleManager : Node
 {
+	public TextureRect backgroundRect;
+	
+	public ProjectorDisplay projectorDisplayE;
+	public ProjectorDisplay projectorDisplayP;
+	
+	public FamiliarDisplay[] famDisplaysE;
+	public FamiliarDisplay[] famDisplaysP;
+	
+	public RichTextLabel battleLogLabel;
+	
 	public bool isProjectorEncounter;
 	
 	public BattleState state;
@@ -32,6 +42,25 @@ public partial class BattleManager : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		backgroundRect = GetNode<TextureRect>("BackgroundRect");
+		
+		projectorDisplayE = GetNode<ProjectorDisplay>("ProjectorDisplayEnemy");
+		projectorDisplayP = GetNode<ProjectorDisplay>("ProjectorDisplayPlayer");
+		
+		famDisplaysE = new FamiliarDisplay[4];
+		famDisplaysP = new FamiliarDisplay[4];
+		
+		famDisplaysE[0] = GetNode<FamiliarDisplay>("EFamiliarHBox/FamiliarDisplay0");
+		famDisplaysE[1] = GetNode<FamiliarDisplay>("EFamiliarHBox/FamiliarDisplay1");
+		famDisplaysE[2] = GetNode<FamiliarDisplay>("EFamiliarHBox/FamiliarDisplay2");
+		famDisplaysE[3] = GetNode<FamiliarDisplay>("EFamiliarHBox/FamiliarDisplay3");
+		
+		famDisplaysP[0] = GetNode<FamiliarDisplay>("PFamiliarHBox/FamiliarDisplay0");
+		famDisplaysP[1] = GetNode<FamiliarDisplay>("PFamiliarHBox/FamiliarDisplay1");
+		famDisplaysP[2] = GetNode<FamiliarDisplay>("PFamiliarHBox/FamiliarDisplay2");
+		famDisplaysP[3] = GetNode<FamiliarDisplay>("PFamiliarHBox/FamiliarDisplay3");
+		
+		battleLogLabel = GetNode<RichTextLabel>("BattleLogLabel");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -148,6 +177,21 @@ public partial class BattleManager : Node
 		}
 	
 		SetState(BattleState.EndCheck);
+	}
+	
+	public void AppendBattleText(string text, bool doubleSpace = true)
+	{
+		if (battleLogLabel.GetLineCount() > 0)
+		{
+			battleLogLabel.Newline();
+			
+			if (doubleSpace)
+			{
+				battleLogLabel.Newline();
+			}
+		}
+		
+		battleLogLabel.AppendText(text);
 	}
 }
 

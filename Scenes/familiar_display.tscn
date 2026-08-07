@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://qevtgcuj5cqb" path="res://Scripts/FamiliarDisplay.cs" id="1_2ntfu"]
 
 [node name="FamiliarDisplay" type="Control" unique_id=1218343456]
+custom_minimum_size = Vector2(207, 352)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 207.0

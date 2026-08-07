@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://dkeaxitdwb5wf"]
+
+[ext_resource type="Script" uid="uid://bqkxa18hinrsh" path="res://ProjectorDisplay.cs" id="1_xdq3u"]
+
+[node name="ProjectorDisplayEnemy" type="Control" unique_id=1892404387]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_right = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xdq3u")
+
+[node name="Panel" type="Panel" parent="." unique_id=1095530867]
+layout_mode = 0
+offset_right = 468.0
+offset_bottom = 168.0
+
+[node name="NameLabel" type="Label" parent="." unique_id=1539762591]
+layout_mode = 0
+offset_right = 166.0
+offset_bottom = 23.0
+
+[node name="EnergyLabel" type="Label" parent="." unique_id=1894082908]
+layout_mode = 0
+offset_top = 143.0
+offset_right = 166.0
+offset_bottom = 166.0
+text = "0 / 0"
+horizontal_alignment = 1
+
+[node name="EnergyProgress" type="ProgressBar" parent="." unique_id=1759553144]
+layout_mode = 0
+offset_left = 166.0
+offset_right = 186.0
+offset_bottom = 168.0
+step = 1.0
+fill_mode = 3
+show_percentage = false
+
+[node name="PortraitRect" type="TextureRect" parent="." unique_id=1428395898]
+layout_mode = 0
+offset_left = 186.0
+offset_right = 468.0
+offset_bottom = 168.0

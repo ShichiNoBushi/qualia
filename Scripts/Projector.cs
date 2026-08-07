@@ -5,6 +5,8 @@ public partial class Projector : Node
 {
 	public RProjectorData data {get; set;}
 	
+	public string name {get; set;}
+	
 	public int level {get; set;}
 	public int experience {get; set;}
 	
@@ -26,6 +28,8 @@ public partial class Projector : Node
 	public void Initialize(RProjectorData pData)
 	{
 		data = pData;
+		
+		name = data.name;
 		
 		level = 1;
 		experience = 0;

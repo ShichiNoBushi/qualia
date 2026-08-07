@@ -26,11 +26,13 @@ public partial class SummonCommand : BattleCommand
 	{
 		if (source is not Projector projector)
 		{
+			battle.AppendBattleText("Projector does not exist");
 			return;
 		}
 		
 		if (!sourceSide.HasOpenSlot())
 		{
+			battle.AppendBattleText("No slots available");
 			return;
 		}
 		
@@ -49,6 +51,7 @@ public partial class SummonCommand : BattleCommand
 			
 			if (slot == -1)
 			{
+				battle.AppendBattleText("No slots available");
 				return;
 			}
 		}
@@ -57,17 +60,30 @@ public partial class SummonCommand : BattleCommand
 		
 		if (projector.currentEnergy < cost)
 		{
+			string fName = string.IsNullOrEmpty(familiar.nickName) ? (string.IsNullOrEmpty(familiar.data.name) ? "(no name)" : familiar.data.name) : familiar.nickName;
+			string text = $"Not enough energy to summon {fName}";
+			battle.AppendBattleText(text);
 			return;
 		}
 		
 		FamiliarActor actor = new(familiar);
 		
+		string pName = string.IsNullOrEmpty(projector.name) ? "(no name)" : projector.name;
+		string aName = string.IsNullOrEmpty(actor.name) ? "(no name)" : actor.name;
+		
 		if (sourceSide.TrySummon(actor, slot))
 		{
 			projector.currentEnergy -= cost;
+			
+			FamiliarDisplay[] displays = sourceSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
+			displays[slot].AssignFamiliar(actor);
+			
+			string text = $"[b]{pName}[/b] summons [b]{aName}[/b]";
+			battle.AppendBattleText(text);
 		}
 		else
 		{
+			battle.AppendBattleText("Failed to summon");
 			GD.Print("SummonCommand: Failed to summon");
 		}
 	}
@@ -88,6 +104,7 @@ public partial class AttackCommand : BattleCommand
 			
 			if (target == null)
 			{
+				battle.AppendBattleText("No target available");
 				return;
 			}
 		}
@@ -99,6 +116,62 @@ public partial class AttackCommand : BattleCommand
 		int damage = Mathf.Max(1, Mathf.RoundToInt(raw));
 		
 		ApplyDamage(target, damage);
+		
+		string fName = "(no name)";
+		
+		if (source is FamiliarActor fam)
+		{
+			fName = string.IsNullOrEmpty(fam.name) ? "(no name)" : fam.name;
+		}
+		
+		string tName = "(no name)";
+		
+		if (target is FamiliarActor tFam)
+		{
+			tName = string.IsNullOrEmpty(tFam.name) ? "(no name)" : tFam.name;
+		}
+		else if (target is Projector tProj)
+		{
+			tName = string.IsNullOrEmpty(tProj.name) ? "(no name)" : tProj.name;
+		}
+		
+		string text = $"[b]{fName}[/b] deals {damage} damage to [b]{tName}[/b]";
+		battle.AppendBattleText(text);
+		
+		if (target is FamiliarActor fam2)
+		{
+			BattleSide enemySide = fam2.side;
+			FamiliarDisplay[] displays = source == battle.playerSide ? battle.famDisplaysE : battle.famDisplaysP;
+			
+			int slot = enemySide.GetSlotIndex(fam2);
+			
+			displays[slot].UpdateDisplay();
+			
+			if (!fam2.isAlive)
+			{
+				if (slot != -1)
+				{
+					enemySide.ClearSlot(slot);
+					
+					FamiliarDisplay[] famDisplays = enemySide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
+					famDisplays[slot].Clear();
+					
+					text = $"[b]{fam2.name}[/b] was eliminated";
+					battle.AppendBattleText(text, false);
+				}
+			}
+		}
+		else if (target is Projector proj)
+		{
+			ProjectorDisplay display = sourceSide == battle.playerSide ? battle.projectorDisplayE : battle.projectorDisplayP;
+			display.UpdateDisplay();
+			
+			if (proj.currentEnergy <= 0)
+			{
+				text = $"[b]{proj.name}'s[/b] Energy was reduced to 0";
+				battle.AppendBattleText(text, false);
+			}
+		}
 	}
 	
 	public override void Retarget(BattleManager battle)
@@ -160,7 +233,7 @@ public partial class FocusCommand : BattleCommand
 {
 	public override void Execute(BattleManager battle)
 	{
-		int amount = (int)GD.Randi() % 10 + 1;
+		int amount = (int)GD.Randi() % 9 + 1;
 		
 		if (source is Projector projector)
 		{
