@@ -75,7 +75,7 @@ public partial class SummonCommand : BattleCommand
 		{
 			projector.currentEnergy -= cost;
 			
-			FamiliarDisplay[] displays = sourceSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
+			FamiliarDisplay[] displays = battle.GetFamiliarDisplays(sourceSide);
 			displays[slot].AssignFamiliar(actor);
 			
 			string text = $"[b]{pName}[/b] summons [b]{aName}[/b]";
@@ -141,7 +141,7 @@ public partial class AttackCommand : BattleCommand
 		if (target is FamiliarActor fam2)
 		{
 			BattleSide enemySide = fam2.side;
-			FamiliarDisplay[] displays = source == battle.playerSide ? battle.famDisplaysE : battle.famDisplaysP;
+			FamiliarDisplay[] displays = battle.GetFamiliarDisplays(enemySide);
 			
 			int slot = enemySide.GetSlotIndex(fam2);
 			

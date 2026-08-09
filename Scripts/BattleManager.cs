@@ -28,6 +28,14 @@ public partial class BattleManager : Node
 		Cleanup
 	}
 	
+	public enum VictoryResult
+	{
+		None,
+		PlayerWin,
+		PlayerLose,
+		Draw
+	}
+	
 	public BattleSide playerSide;
 	public BattleSide enemySide;
 	
@@ -132,13 +140,27 @@ public partial class BattleManager : Node
 		
 		if (GD.Randi() % 2 == 0)
 		{
-			turnCommands.AddRange(playerProjCmds);
-			turnCommands.AddRange(enemyProjCmds);
+			foreach (var cmd in playerProjCmds)
+			{
+				turnCommands.Add(cmd);
+			}
+			
+			foreach (var cmd in playerProjCmds)
+			{
+				turnCommands.Add(cmd);
+			}
 		}
 		else
 		{
-			turnCommands.AddRange(enemyProjCmds);
-			turnCommands.AddRange(playerProjCmds);
+			foreach (var cmd in enemyProjCmds)
+			{
+				turnCommands.Add(cmd);
+			}
+			
+			foreach (var cmd in playerProjCmds)
+			{
+				turnCommands.Add(cmd);
+			}
 		}
 		
 		var sortedFamiliarCmds = familiarCommands.OrderByDescending(cmd =>
@@ -177,6 +199,65 @@ public partial class BattleManager : Node
 		}
 	
 		SetState(BattleState.EndCheck);
+	}
+	
+	public VictoryResult CheckVictory()
+	{
+		bool playerDefeat = playerSide.projector != null && playerSide.projector.currentEnergy <= 0 && playerSide.CountActiveFamiliars() == 0;
+		bool enemyDefeat = false;
+		
+		if (isProjectorEncounter)
+		{
+			enemyDefeat = enemySide.projector != null && enemySide.projector.currentEnergy <= 0 && enemySide.CountActiveFamiliars() == 0;
+		}
+		else
+		{
+			enemyDefeat = enemySide.CountActiveFamiliars() == 0 && (spawns == null || spawns.Count == 0);
+		}
+		
+		if (enemyDefeat && !playerDefeat)
+		{
+			AppendBattleText($"[b]{playerSide.projector.name}[/b] wins!!");
+			return VictoryResult.PlayerWin;
+		}
+		else if (playerDefeat && !enemyDefeat)
+		{
+			AppendBattleText($"[b]{playerSide.projector.name}[/b] loses.");
+			return VictoryResult.PlayerLose;
+		}
+		else if (playerDefeat && enemyDefeat)
+		{
+			AppendBattleText($"Both sides defeated.");
+			return VictoryResult.Draw;
+		}
+		
+		return VictoryResult.None;
+	}
+	
+	public void EndCheck()
+	{
+		VictoryResult result = CheckVictory();
+		
+		switch (result)
+		{
+			case VictoryResult.PlayerWin:
+				SetState(BattleState.Cleanup);
+				//victory results
+				break;
+			case VictoryResult.PlayerLose:
+			case VictoryResult.Draw:
+				SetState(BattleState.Cleanup);
+				//game over results
+				break;
+			case VictoryResult.None:
+				SetState(BattleState.CommandSelect);
+				break;
+		}
+	}
+	
+	public FamiliarDisplay[] GetFamiliarDisplays(BattleSide side)
+	{
+		return side == playerSide ? famDisplaysP : famDisplaysE;
 	}
 	
 	public void AppendBattleText(string text, bool doubleSpace = true)
