@@ -145,7 +145,7 @@ public partial class BattleManager : Node
 				turnCommands.Add(cmd);
 			}
 			
-			foreach (var cmd in playerProjCmds)
+			foreach (var cmd in enemyProjCmds)
 			{
 				turnCommands.Add(cmd);
 			}
@@ -198,7 +198,7 @@ public partial class BattleManager : Node
 			}
 		}
 	
-		SetState(BattleState.EndCheck);
+		SetState(BattleState.SpawnCheck);
 	}
 	
 	public VictoryResult CheckVictory()
@@ -232,6 +232,65 @@ public partial class BattleManager : Node
 		}
 		
 		return VictoryResult.None;
+	}
+	
+	public void SpawnCheck()
+	{
+		if (isProjectorEncounter)
+		{
+			SetState(BattleState.EndCheck);
+			return;
+		}
+		
+		for (int i = 0; i < BattleSide.MAX_SLOTS; i++)
+		{
+			if (enemySide.familiarSlots[i] is SpawnActor spark)
+			{
+				FamiliarActor actor = enemySide.SpawnFamiliar(spark);
+				
+				if (actor != null)
+				{
+					AppendBattleText($"A [b]{actor.name}[/b] manifests.");
+				}
+				else
+				{
+					AppendBattleText("Spark fails to manifest.");
+				}
+			}
+		}
+		
+		if (spawns.Count > 0 && enemySide.HasOpenSlot())
+		{
+			int slot = -1;
+			
+			for (int i = 0; i < BattleSide.MAX_SLOTS; i++)
+			{
+				if (enemySide.IsSlotEmpty(i))
+				{
+					slot = i;
+					break;
+				}
+			}
+			
+			if (slot >= 0)
+			{
+				RFamiliarInstance fam = spawns[0];
+				
+				SpawnActor spark = new(fam);
+				
+				if (enemySide.TrySpawn(spark, slot))
+				{
+					spawns.RemoveAt(0);
+					famDisplaysE[slot].AssignSpawn(spark);
+				}
+				else if (spark == null)
+				{
+					spawns.RemoveAt(0);
+				}
+			}
+		}
+		
+		SetState(BattleState.EndCheck);
 	}
 	
 	public void EndCheck()
@@ -274,6 +333,65 @@ public partial class BattleManager : Node
 		
 		battleLogLabel.AppendText(text);
 	}
+	
+	public void RefreshAllDisplays()
+	{
+		if (playerSide?.projector == null)
+		{
+			projectorDisplayP.Clear();
+		}
+		
+		projectorDisplayP.UpdateDisplay();
+		
+		if (enemySide?.projector == null)
+		{
+			projectorDisplayE.Clear();
+		}
+		
+		projectorDisplayE.UpdateDisplay();
+		
+		for (int i = 0; i < BattleSide.MAX_SLOTS; i++)
+		{
+			IBattleActor actor = playerSide.familiarSlots[i];
+			FamiliarDisplay display = famDisplaysP[i];
+			
+			if (actor is FamiliarActor f)
+			{
+				display.AssignFamiliar(f);
+			}
+			else if (actor is SpawnActor s)
+			{
+				display.AssignSpawn(s);
+			}
+			else
+			{
+				display.Clear();
+			}
+			
+			display.UpdateDisplay();
+		}
+		
+		for (int i = 0; i < BattleSide.MAX_SLOTS; i++)
+		{
+			IBattleActor actor = enemySide.familiarSlots[i];
+			FamiliarDisplay display = famDisplaysE[i];
+			
+			if (actor is FamiliarActor f)
+			{
+				display.AssignFamiliar(f);
+			}
+			else if (actor is SpawnActor s)
+			{
+				display.AssignSpawn(s);
+			}
+			else
+			{
+				display.Clear();
+			}
+			
+			display.UpdateDisplay();
+		}
+	}
 }
 
 public partial class BattleSide : RefCounted
@@ -281,13 +399,13 @@ public partial class BattleSide : RefCounted
 	public const int MAX_SLOTS = 4;
 	
 	public Projector projector {get; set;}
-	public FamiliarActor[] familiarSlots {get; set;} = new FamiliarActor[MAX_SLOTS];
+	public IBattleActor[] familiarSlots {get; set;} = new IBattleActor[MAX_SLOTS];
 	
 	public BattleSide(Projector p)
 	{
 		projector = p;
 		
-		familiarSlots = new FamiliarActor[MAX_SLOTS];
+		familiarSlots = new IBattleActor[MAX_SLOTS];
 	}
 	
 	public bool IsSlotEmpty(int index)
@@ -308,16 +426,16 @@ public partial class BattleSide : RefCounted
 		return false;
 	}
 	
-	public int GetSlotIndex(FamiliarActor familiar)
+	public int GetSlotIndex(IBattleActor actor)
 	{
-		if (familiar == null)
+		if (actor == null)
 		{
 			return -1;
 		}
 		
 		for (int i = 0; i < MAX_SLOTS; i ++)
 		{
-			if (familiarSlots[i] == familiar)
+			if (familiarSlots[i] == actor)
 			{
 				return i;
 			}
@@ -328,15 +446,50 @@ public partial class BattleSide : RefCounted
 	
 	public bool TrySummon(FamiliarActor familiar, int index)
 	{
-		if (index < 0 || index >= MAX_SLOTS || familiarSlots[index] != null)
+		if (familiar == null || index < 0 || index >= MAX_SLOTS || familiarSlots[index] != null)
 		{
 			return false;
 		}
 		
 		familiarSlots[index] = familiar;
 		familiar.side = this;
+		familiar.slot = index;
 		
 		return true;
+	}
+	
+	public bool TrySpawn(SpawnActor spark, int index)
+	{
+		if (spark == null || index < 0 || index >= MAX_SLOTS || familiarSlots[index] != null)
+		{
+			return false;
+		}
+		
+		familiarSlots[index] = spark;
+		spark.side = this;
+		spark.slot = index;
+		
+		return true;
+	}
+	
+	public FamiliarActor SpawnFamiliar(SpawnActor spark)
+	{
+		if (spark == null || spark.side != this || spark.slot < 0 || spark.slot >= MAX_SLOTS)
+		{
+			return null;
+		}
+		
+		int slot = spark.slot;
+		ClearSlot(slot);
+		
+		FamiliarActor newActor = new(spark.familiar);
+		
+		if (TrySummon(newActor, slot))
+		{
+			return newActor;
+		}
+		
+		return null;
 	}
 	
 	public void ClearSlot(int index)
@@ -353,7 +506,7 @@ public partial class BattleSide : RefCounted
 		
 		foreach (var slot in familiarSlots)
 		{
-			if (slot != null)
+			if (slot is FamiliarActor fam && fam.isAlive)
 			{
 				count++;
 			}
@@ -368,9 +521,9 @@ public partial class BattleSide : RefCounted
 		
 		foreach (var slot in familiarSlots)
 		{
-			if (slot != null)
+			if (slot != null && slot is FamiliarActor fam)
 			{
-				famList.Add(slot);
+				famList.Add(fam);
 			}
 		}
 		
@@ -385,6 +538,7 @@ public interface IBattleActor
 	int currentEnergy {get; set;}
 	int speed {get;}
 	BattleSide side {get; set;}
+	int slot {get; set;}
 	
 	bool isAlive {get;}
 	
@@ -397,6 +551,7 @@ public partial class FamiliarActor : RefCounted, IBattleActor
 	public string name {get; private set;}
 	
 	public BattleSide side {get; set;}
+	public int slot {get; set;} = -1;
 	
 	public int currentEnergy {get; set;} = 1;
 	public int maxEnergy => familiar.energy;
@@ -450,5 +605,30 @@ public partial class FamiliarActor : RefCounted, IBattleActor
 	public int ModSpeed()
 	{
 		return speed + speedBonus;
+	}
+}
+
+public partial class SpawnActor : RefCounted, IBattleActor
+{
+	public RFamiliarInstance familiar {get; private set;}
+	public string name {get; private set;}
+	
+	public BattleSide side {get; set;}
+	public int slot {get; set;} = 0;
+	
+	public int maxEnergy {get; set;} = 1;
+	public int currentEnergy {get; set;} = 0;
+	public int speed {get; set;} = 0;
+	public bool isAlive {get; set;} = false;
+	
+	public SpawnActor(RFamiliarInstance fam)
+	{
+		familiar = fam;
+		name = "Manifesting Familiar";
+	}
+	
+	public void Damage(int amount)
+	{
+		
 	}
 }

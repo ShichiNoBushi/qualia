@@ -8,7 +8,8 @@ public partial class FamiliarDisplay : Control
 	public ProgressBar energyProgress;
 	public Label energyLabel;
 	
-	public FamiliarActor familiar {get; private set;}
+	public bool isFamiliar {get; private set;} = false;
+	public IBattleActor actor {get; private set;}
 	public int slotIndex {get; private set;}
 	
 	// Called when the node enters the scene tree for the first time.
@@ -28,7 +29,16 @@ public partial class FamiliarDisplay : Control
 	
 	public void AssignFamiliar(FamiliarActor fam)
 	{
-		familiar = fam;
+		actor = fam;
+		isFamiliar = true;
+		
+		UpdateDisplay();
+	}
+	
+	public void AssignSpawn(SpawnActor spark)
+	{
+		actor = spark;
+		isFamiliar = false;
 		
 		UpdateDisplay();
 	}
@@ -40,7 +50,7 @@ public partial class FamiliarDisplay : Control
 	
 	public void Clear()
 	{
-		familiar = null;
+		actor = null;
 	}
 	
 	public void SetVisibleEnergy(bool toggle)
@@ -50,7 +60,7 @@ public partial class FamiliarDisplay : Control
 	
 	public void UpdateDisplay()
 	{
-		if (familiar == null || familiar.familiar == null)
+		if (actor == null)
 		{
 			Visible = false;
 			portraitRect.Texture = null;
@@ -61,17 +71,55 @@ public partial class FamiliarDisplay : Control
 			return;
 		}
 		
-		Visible = true;
+		if (isFamiliar && actor is FamiliarActor familiar)
+		{
+			if (familiar.familiar == null)
+			{
+				Visible = false;
+				portraitRect.Texture = null;
+				nameLabel.Text = "";
+				energyProgress.MaxValue = 1;
+				energyProgress.Value = 0;
+				energyLabel.Text = "";
+				return;
+			}
+			
+			Visible = true;
 		
-		RFamiliarData data = familiar.familiar.data;
-		
-		portraitRect.Texture = data != null && data.portrait != null ? data.portrait : null;
-		
-		nameLabel.Text = string.IsNullOrEmpty(familiar.name) ? "(no name)" : familiar.name;
-		
-		energyProgress.MaxValue = Mathf.Max(familiar.maxEnergy, 1);
-		energyProgress.Value = Mathf.Clamp(familiar.currentEnergy, 0, familiar.maxEnergy);
-		
-		energyLabel.Text = $"{familiar.currentEnergy} / {familiar.maxEnergy}";
+			RFamiliarData data = familiar.familiar.data;
+			
+			portraitRect.Texture = data != null && data.portrait != null ? data.portrait : null;
+			
+			nameLabel.Text = string.IsNullOrEmpty(familiar.name) ? "(no name)" : familiar.name;
+			
+			energyProgress.MaxValue = Mathf.Max(familiar.maxEnergy, 1);
+			energyProgress.Value = Mathf.Clamp(familiar.currentEnergy, 0, familiar.maxEnergy);
+			
+			energyLabel.Text = $"{familiar.currentEnergy} / {familiar.maxEnergy}";
+		}
+		else if (!isFamiliar && actor is SpawnActor spark)
+		{
+			if (spark.familiar == null)
+			{
+				Visible = false;
+				portraitRect.Texture = null;
+				nameLabel.Text = "";
+				energyProgress.MaxValue = 1;
+				energyProgress.Value = 0;
+				energyLabel.Text = "";
+				return;
+			}
+			
+			Visible = true;
+			
+			portraitRect.Texture = null; //set to default spark portrait
+			
+			nameLabel.Text = "Manifesting...";
+			
+			energyProgress.MaxValue = 1;
+			energyProgress.Value = 0;
+			
+			energyLabel.Text = "";
+		}
 	}
 }
