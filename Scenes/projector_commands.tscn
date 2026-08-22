@@ -1,14 +1,16 @@
 [gd_scene format=3 uid="uid://dscfpwphefhyk"]
 
+[ext_resource type="Script" uid="uid://dt4pbr3sl0j14" path="res://Scripts/ProjectorCommands.cs" id="1_bf3x2"]
+
 [node name="ProjectorCommands" type="Control" unique_id=1266136363]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -862.0
-offset_bottom = -415.0
+anchor_right = 0.252
+anchor_bottom = 0.36
+offset_right = -0.3040161
+offset_bottom = -0.28001404
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_bf3x2")
 
 [node name="Panel" type="Panel" parent="." unique_id=1332691627]
 layout_mode = 0

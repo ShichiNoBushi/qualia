@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dkeaxitdwb5wf"]
 
-[ext_resource type="Script" uid="uid://bqkxa18hinrsh" path="res://ProjectorDisplay.cs" id="1_xdq3u"]
+[ext_resource type="Script" uid="uid://bqkxa18hinrsh" path="res://Scripts/ProjectorDisplay.cs" id="1_xdq3u"]
 
 [node name="ProjectorDisplayEnemy" type="Control" unique_id=1892404387]
 layout_mode = 3

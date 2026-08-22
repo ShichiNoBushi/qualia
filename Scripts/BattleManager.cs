@@ -47,6 +47,9 @@ public partial class BattleManager : Node
 	
 	public Godot.Collections.Array<RFamiliarInstance> defeatedFamiliars;
 	
+	public ProjectorCommands projCommandPanel;
+	public FamiliarCommands[] famCommandPanels = new FamiliarCommands[4];
+	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -69,6 +72,19 @@ public partial class BattleManager : Node
 		famDisplaysP[3] = GetNode<FamiliarDisplay>("PFamiliarHBox/FamiliarDisplay3");
 		
 		battleLogLabel = GetNode<RichTextLabel>("BattleLogLabel");
+		
+		projCommandPanel = GetNode<ProjectorCommands>("ProjectorCommands");
+		famCommandPanels[0] = GetNode<FamiliarCommands>("FamiliarCommands0");
+		famCommandPanels[1] = GetNode<FamiliarCommands>("FamiliarCommands1");
+		famCommandPanels[2] = GetNode<FamiliarCommands>("FamiliarCommands2");
+		famCommandPanels[3] = GetNode<FamiliarCommands>("FamiliarCommands3");
+		
+		projCommandPanel.battle = this;
+		
+		foreach (var panel in famCommandPanels)
+		{
+			panel.battle = this;
+		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -124,6 +140,17 @@ public partial class BattleManager : Node
 		}
 		
 		state = BattleState.Setup;
+	}
+	
+	public void RefreshCommandPanels()
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			FamiliarActor actor = playerSide?.familiarSlots[i] as FamiliarActor;
+			bool alive = actor != null && actor.isAlive;
+			famCommandPanels[i].Visible = alive;
+			famCommandPanels[i].Bind(alive ? actor : null);
+		}
 	}
 	
 	public void SetState(BattleState newState)
@@ -312,6 +339,13 @@ public partial class BattleManager : Node
 				break;
 			case VictoryResult.None:
 				SetState(BattleState.CommandSelect);
+				projCommandPanel.EnableCommands();
+				
+				foreach (var panel in famCommandPanels)
+				{
+					panel.EnableCommands();
+				}
+				
 				break;
 		}
 	}

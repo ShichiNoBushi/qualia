@@ -1,14 +1,16 @@
 [gd_scene format=3 uid="uid://hs0di4oaqh6c"]
 
+[ext_resource type="Script" uid="uid://1ja1s7i66umm" path="res://Scripts/FamiliarCommands.cs" id="1_v0cyc"]
+
 [node name="FamiliarCommands" type="Control" unique_id=1266136363]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -862.0
-offset_bottom = -415.0
+anchor_right = 0.252
+anchor_bottom = 0.36
+offset_right = -0.3040161
+offset_bottom = -0.28001404
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_v0cyc")
 
 [node name="Panel" type="Panel" parent="." unique_id=1332691627]
 layout_mode = 0
@@ -28,14 +30,14 @@ text = "Familiar"
 custom_minimum_size = Vector2(290, 200)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CommandsVBox/ScrollContainer" unique_id=676361098]
+[node name="SubCommandsVBox" type="VBoxContainer" parent="CommandsVBox/ScrollContainer" unique_id=676361098]
 custom_minimum_size = Vector2(290, 0)
 layout_mode = 2
 
-[node name="AttackButton" type="Button" parent="CommandsVBox/ScrollContainer/VBoxContainer" unique_id=1614263953]
+[node name="AttackButton" type="Button" parent="CommandsVBox/ScrollContainer/SubCommandsVBox" unique_id=1614263953]
 layout_mode = 2
 text = "Attack"
 
-[node name="DefendButton" type="Button" parent="CommandsVBox/ScrollContainer/VBoxContainer" unique_id=595446805]
+[node name="DefendButton" type="Button" parent="CommandsVBox/ScrollContainer/SubCommandsVBox" unique_id=595446805]
 layout_mode = 2
 text = "Defend"
