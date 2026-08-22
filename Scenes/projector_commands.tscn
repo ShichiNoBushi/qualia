@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://dscfpwphefhyk"]
+
+[node name="ProjectorCommands" type="Control" unique_id=1266136363]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -862.0
+offset_bottom = -415.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=1332691627]
+layout_mode = 0
+offset_right = 290.0
+offset_bottom = 233.0
+
+[node name="CommandsVBox" type="VBoxContainer" parent="." unique_id=1348813776]
+layout_mode = 0
+offset_right = 290.0
+offset_bottom = 206.0
+
+[node name="ProjectorLabel" type="Label" parent="CommandsVBox" unique_id=149693197]
+layout_mode = 2
+text = "Projector"
+
+[node name="SummonButton" type="Button" parent="CommandsVBox" unique_id=1186526978]
+layout_mode = 2
+text = "Summon"
+
+[node name="DismissButton" type="Button" parent="CommandsVBox" unique_id=1265578024]
+layout_mode = 2
+text = "Dismiss"
+
+[node name="SpellButton" type="Button" parent="CommandsVBox" unique_id=1620276806]
+layout_mode = 2
+text = "Spell"
+
+[node name="FocusButton" type="Button" parent="CommandsVBox" unique_id=208348578]
+layout_mode = 2
+text = "Focus"
+
+[node name="ItemButton" type="Button" parent="CommandsVBox" unique_id=547715494]
+layout_mode = 2
+text = "Item"
+
+[node name="EscapeButton" type="Button" parent="CommandsVBox" unique_id=1758899013]
+layout_mode = 2
+text = "Escape"

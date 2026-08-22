@@ -38,7 +38,7 @@ public partial class SummonCommand : BattleCommand
 		
 		if (slot < 0 || slot >= BattleSide.MAX_SLOTS || !sourceSide.IsSlotEmpty(slot))
 		{
-			slot = -1;
+			/*slot = -1;
 			
 			for (int i = 0; i < BattleSide.MAX_SLOTS; i++)
 			{
@@ -47,7 +47,9 @@ public partial class SummonCommand : BattleCommand
 					slot = i;
 					break;
 				}
-			}
+			}*/
+			
+			slot = sourceSide.GetPreferredOpenSlot();
 			
 			if (slot == -1)
 			{

@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://dkeaxitdwb5wf" path="res://Scenes/projector_display_enemy.tscn" id="2_3gnqe"]
 [ext_resource type="PackedScene" uid="uid://bvro6acuxhp5o" path="res://Scenes/familiar_display.tscn" id="3_gt16y"]
 [ext_resource type="PackedScene" uid="uid://dp7p8gcqqqqr6" path="res://Scenes/projector_display_player.tscn" id="4_20f6w"]
+[ext_resource type="PackedScene" uid="uid://dscfpwphefhyk" path="res://Scenes/projector_commands.tscn" id="5_gt16y"]
+[ext_resource type="PackedScene" uid="uid://hs0di4oaqh6c" path="res://Scenes/familiar_commands.tscn" id="6_20f6w"]
 
 [node name="BattleScene" type="Node2D" unique_id=2070022109]
 
@@ -72,3 +74,33 @@ offset_top = 8.0
 offset_right = 1912.0
 offset_bottom = 576.0
 bbcode_enabled = true
+
+[node name="ProjectorCommands" parent="BattleManager" unique_id=1266136363 instance=ExtResource("5_gt16y")]
+offset_left = 1042.0
+offset_top = 719.0
+offset_right = 180.0
+offset_bottom = 304.0
+
+[node name="FamiliarCommands1" parent="BattleManager" unique_id=2026761448 instance=ExtResource("6_20f6w")]
+offset_left = 1334.0
+offset_top = 586.0
+offset_right = 472.0
+offset_bottom = 171.0
+
+[node name="FamiliarCommands2" parent="BattleManager" unique_id=53158086 instance=ExtResource("6_20f6w")]
+offset_left = 1628.0
+offset_top = 586.0
+offset_right = 766.0
+offset_bottom = 171.0
+
+[node name="FamiliarCommands3" parent="BattleManager" unique_id=1445952443 instance=ExtResource("6_20f6w")]
+offset_left = 1334.0
+offset_top = 821.0
+offset_right = 472.0
+offset_bottom = 411.0
+
+[node name="FamiliarCommands4" parent="BattleManager" unique_id=154433813 instance=ExtResource("6_20f6w")]
+offset_left = 1628.0
+offset_top = 821.0
+offset_right = 766.0
+offset_bottom = 411.0

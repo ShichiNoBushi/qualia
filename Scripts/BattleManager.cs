@@ -261,7 +261,7 @@ public partial class BattleManager : Node
 		
 		if (spawns.Count > 0 && enemySide.HasOpenSlot())
 		{
-			int slot = -1;
+			/*int slot = -1;
 			
 			for (int i = 0; i < BattleSide.MAX_SLOTS; i++)
 			{
@@ -270,7 +270,9 @@ public partial class BattleManager : Node
 					slot = i;
 					break;
 				}
-			}
+			}*/
+			
+			int slot = enemySide.GetPreferredOpenSlot();
 			
 			if (slot >= 0)
 			{
@@ -398,6 +400,8 @@ public partial class BattleSide : RefCounted
 {
 	public const int MAX_SLOTS = 4;
 	
+	public static readonly int[] slotPriority = {1, 2, 0, 3};
+	
 	public Projector projector {get; set;}
 	public IBattleActor[] familiarSlots {get; set;} = new IBattleActor[MAX_SLOTS];
 	
@@ -424,6 +428,19 @@ public partial class BattleSide : RefCounted
 		}
 		
 		return false;
+	}
+	
+	public int GetPreferredOpenSlot()
+	{
+		foreach (int idx in slotPriority)
+		{
+			if (IsSlotEmpty(idx))
+			{
+				return idx;
+			}
+		}
+		
+		return -1;
 	}
 	
 	public int GetSlotIndex(IBattleActor actor)
