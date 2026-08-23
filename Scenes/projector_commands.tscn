@@ -4,10 +4,10 @@
 
 [node name="ProjectorCommands" type="Control" unique_id=1266136363]
 layout_mode = 3
-anchor_right = 0.252
-anchor_bottom = 0.36
-offset_right = -0.3040161
-offset_bottom = -0.28001404
+anchor_right = 0.15100001
+anchor_bottom = 0.216
+offset_right = 0.07998657
+offset_bottom = -0.27999878
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bf3x2")
@@ -49,3 +49,12 @@ text = "Item"
 [node name="EscapeButton" type="Button" parent="CommandsVBox" unique_id=1758899013]
 layout_mode = 2
 text = "Escape"
+
+[node name="UndoButton" type="Button" parent="." unique_id=128947439]
+visible = false
+layout_mode = 0
+offset_left = 24.0
+offset_top = 105.0
+offset_right = 266.0
+offset_bottom = 136.0
+text = "Undo"

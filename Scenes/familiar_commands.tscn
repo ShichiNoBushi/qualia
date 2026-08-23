@@ -4,10 +4,10 @@
 
 [node name="FamiliarCommands" type="Control" unique_id=1266136363]
 layout_mode = 3
-anchor_right = 0.252
-anchor_bottom = 0.36
-offset_right = -0.3040161
-offset_bottom = -0.28001404
+anchor_right = 0.15100001
+anchor_bottom = 0.21800001
+offset_right = 0.07998657
+offset_bottom = -0.4400177
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_v0cyc")
@@ -41,3 +41,12 @@ text = "Attack"
 [node name="DefendButton" type="Button" parent="CommandsVBox/ScrollContainer/SubCommandsVBox" unique_id=595446805]
 layout_mode = 2
 text = "Defend"
+
+[node name="UndoButton" type="Button" parent="." unique_id=1648907607]
+visible = false
+layout_mode = 0
+offset_left = 24.0
+offset_top = 105.0
+offset_right = 266.0
+offset_bottom = 136.0
+text = "Undo"

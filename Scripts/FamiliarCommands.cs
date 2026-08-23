@@ -8,6 +8,7 @@ public partial class FamiliarCommands : Control
 	public Button attackButton;
 	public Button defendButton;
 	public List<Button> skillButtons = new();
+	public Button undoButton;
 	
 	public FamiliarActor familiar;
 	public BattleManager battle;
@@ -20,9 +21,11 @@ public partial class FamiliarCommands : Control
 		
 		attackButton = GetNode<Button>("CommandsVBox/ScrollContainer/SubCommandsVBox/AttackButton");
 		defendButton = GetNode<Button>("CommandsVBox/ScrollContainer/SubCommandsVBox/DefendButton");
+		undoButton = GetNode<Button>("UndoButton");
 		
 		attackButton.Pressed += OnAttackPressed;
 		defendButton.Pressed += OnDefendPressed;
+		undoButton.Pressed += OnUndoPressed;
 		
 		//Disable buttons currently without function.
 		defendButton.Disabled = true;
@@ -86,6 +89,18 @@ public partial class FamiliarCommands : Control
 		
 		
 		DisableCommands();
+	}
+	
+	public void OnUndoPressed()
+	{
+		if (activeCommand != null)
+		{
+			battle.familiarCommands.Remove(activeCommand);
+		}
+		activeCommand = null;
+		
+		EnableCommands();
+		undoButton.Visible = false;
 	}
 	
 	public void DisableCommands()

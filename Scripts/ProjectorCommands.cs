@@ -9,6 +9,7 @@ public partial class ProjectorCommands : Control
 	public Button focusButton;
 	public Button itemButton;
 	public Button escapeButton;
+	public Button undoButton;
 	
 	public BattleManager battle;
 	public BattleCommand activeCommand;
@@ -22,6 +23,7 @@ public partial class ProjectorCommands : Control
 		focusButton = GetNode<Button>("CommandsVBox/FocusButton");
 		itemButton = GetNode<Button>("CommandsVBox/ItemButton");
 		escapeButton = GetNode<Button>("CommandsVBox/EscapeButton");
+		undoButton = GetNode<Button>("UndoButton");
 		
 		summonButton.Pressed += OnSummonPressed;
 		dismissButton.Pressed += OnDismissPressed;
@@ -29,6 +31,7 @@ public partial class ProjectorCommands : Control
 		focusButton.Pressed += OnFocusPressed;
 		itemButton.Pressed += OnItemPressed;
 		escapeButton.Pressed += OnEscapePressed;
+		undoButton.Pressed += OnUndoPressed;
 		
 		//Disable buttons currently without function
 		summonButton.Disabled = true;
@@ -48,6 +51,7 @@ public partial class ProjectorCommands : Control
 		
 		
 		DisableCommands();
+		undoButton.Visible = true;
 	}
 	
 	public void OnDismissPressed()
@@ -55,6 +59,7 @@ public partial class ProjectorCommands : Control
 		
 		
 		DisableCommands();
+		undoButton.Visible = true;
 	}
 	
 	public void OnSpellPressed()
@@ -62,23 +67,32 @@ public partial class ProjectorCommands : Control
 		
 		
 		DisableCommands();
+		undoButton.Visible = true;
 	}
 	
 	public void OnFocusPressed()
 	{
+		battle.AppendBattleText("Focus button pressed.");
+		GD.Print("Focus button pressed.");
+		
 		if (battle?.playerSide?.projector == null)
 		{
+			GD.Print("No projector.");
 			return;
 		}
 		
-		FocusCommand cmd = new();
+		FocusCommand cmd = new()
+		{
+			sourceSide = battle.playerSide,
+			source = battle.playerSide.projector
+		};
 		activeCommand = cmd;
-		cmd.sourceSide = battle.playerSide;
-		cmd.source = battle.playerSide.projector;
 		
 		battle.projectorCommands.Add(cmd);
+		battle.AppendBattleText("Player: Focus Command added.");
 		
 		DisableCommands();
+		undoButton.Visible = true;
 	}
 	
 	public void OnItemPressed()
@@ -86,6 +100,7 @@ public partial class ProjectorCommands : Control
 		
 		
 		DisableCommands();
+		undoButton.Visible = true;
 	}
 	
 	public void OnEscapePressed()
@@ -93,6 +108,20 @@ public partial class ProjectorCommands : Control
 		
 		
 		DisableCommands();
+		undoButton.Visible = true;
+	}
+	
+	public void OnUndoPressed()
+	{
+		if (activeCommand != null)
+		{
+			battle.projectorCommands.Remove(activeCommand);
+			battle.AppendBattleText("Player: command undone.");
+		}
+		activeCommand = null;
+		
+		EnableCommands();
+		undoButton.Visible = false;
 	}
 	
 	public void DisableCommands()

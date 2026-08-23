@@ -13,6 +13,7 @@ public partial class BattleManager : Node
 	public FamiliarDisplay[] famDisplaysP;
 	
 	public RichTextLabel battleLogLabel;
+	public Button nextButton;
 	
 	public bool isProjectorEncounter;
 	
@@ -72,6 +73,9 @@ public partial class BattleManager : Node
 		famDisplaysP[3] = GetNode<FamiliarDisplay>("PFamiliarHBox/FamiliarDisplay3");
 		
 		battleLogLabel = GetNode<RichTextLabel>("BattleLogLabel");
+		nextButton = GetNode<Button>("NextButton");
+		
+		nextButton.Pressed += OnNextPressed;
 		
 		projCommandPanel = GetNode<ProjectorCommands>("ProjectorCommands");
 		famCommandPanels[0] = GetNode<FamiliarCommands>("FamiliarCommands0");
@@ -85,11 +89,41 @@ public partial class BattleManager : Node
 		{
 			panel.battle = this;
 		}
+		
+		StartTest();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+	}
+	
+	public void StartTest()
+	{
+		GD.Print("BattleManager - Starting test...");
+		
+		RProjectorData pData = GD.Load<RProjectorData>("res://Resources/test_projector.tres");
+		
+		if (pData == null)
+		{
+			GD.Print("BattleManager - Failed to start: invalid projector data");
+			return;
+		}
+		
+		Projector player = new();
+		player.Initialize(pData);
+		
+		REncounterData eData = GD.Load<REncounterData>("res://Resources/test_encounter.tres");
+		
+		if (eData == null)
+		{
+			GD.Print("BattleManager - Failed to start: invalid encounter data");
+			return;
+		}
+		
+		Initialize(player, eData);
+		RefreshAllDisplays();
+		BeginCommandSelect();
 	}
 	
 	public void Initialize(Projector player, REncounterData encounter)
@@ -142,6 +176,12 @@ public partial class BattleManager : Node
 		state = BattleState.Setup;
 	}
 	
+	public void OnNextPressed()
+	{
+		AppendBattleText("Next button pressed.");
+		GD.Print("Next button pressed.");
+	}
+	
 	public void RefreshCommandPanels()
 	{
 		for (int i = 0; i < 4; i++)
@@ -156,6 +196,31 @@ public partial class BattleManager : Node
 	public void SetState(BattleState newState)
 	{
 		state = newState;
+	}
+	
+	public void BeginCommandSelect()
+	{
+		SetState(BattleState.CommandSelect);
+		
+		projectorCommands.Clear();
+		familiarCommands.Clear();
+		turnCommands.Clear();
+		
+		RefreshCommandPanels();
+		
+		projCommandPanel.EnableCommands();
+		projCommandPanel.undoButton.Visible = false;
+		
+		foreach (var panel in famCommandPanels)
+		{
+			panel.EnableCommands();
+			panel.undoButton.Visible = false;
+		}
+		
+		for (int i = 0; i < 4; i++)
+		{
+			famCommandPanels[i].Visible = !playerSide.IsSlotEmpty(i);
+		}
 	}
 	
 	public void BuildTurnOrder()
@@ -372,8 +437,11 @@ public partial class BattleManager : Node
 	
 	public void RefreshAllDisplays()
 	{
+		GD.Print("BattleManager - Refreshing displays...");
+		
 		if (playerSide?.projector == null)
 		{
+			GD.Print("BattleManager - null player projector");
 			projectorDisplayP.Clear();
 		}
 		
@@ -381,6 +449,7 @@ public partial class BattleManager : Node
 		
 		if (enemySide?.projector == null)
 		{
+			GD.Print("BattleManager - null enemy projector");
 			projectorDisplayE.Clear();
 		}
 		

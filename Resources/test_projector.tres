@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="RProjectorData" format=3 uid="uid://duy7tdm6w1eyk"]
+
+[ext_resource type="Script" uid="uid://gfgke8c4gxem" path="res://Scripts/RProjectorData.cs" id="1_q507u"]
+
+[resource]
+script = ExtResource("1_q507u")
+id = "test"
+name = "Test"
+metadata/_custom_type_script = "uid://gfgke8c4gxem"

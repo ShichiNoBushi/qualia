@@ -72,35 +72,42 @@ offset_bottom = 422.0
 offset_left = 1256.0
 offset_top = 8.0
 offset_right = 1912.0
-offset_bottom = 576.0
+offset_bottom = 564.0
 bbcode_enabled = true
 
+[node name="NextButton" type="Button" parent="BattleManager" unique_id=1635563629]
+offset_left = 1786.0
+offset_top = 570.0
+offset_right = 1915.0
+offset_bottom = 601.0
+text = "Next"
+
 [node name="ProjectorCommands" parent="BattleManager" unique_id=1266136363 instance=ExtResource("5_gt16y")]
-offset_left = 1042.0
-offset_top = 719.0
-offset_right = 180.0
-offset_bottom = 304.0
+offset_left = 1041.0
+offset_top = 739.0
+offset_right = 750.696
+offset_bottom = 505.71997
 
-[node name="FamiliarCommands1" parent="BattleManager" unique_id=2026761448 instance=ExtResource("6_20f6w")]
-offset_left = 1334.0
-offset_top = 586.0
-offset_right = 472.0
-offset_bottom = 171.0
+[node name="FamiliarCommands0" parent="BattleManager" unique_id=2026761448 instance=ExtResource("6_20f6w")]
+offset_left = 1333.0
+offset_top = 606.0
+offset_right = 1042.696
+offset_bottom = 372.71997
 
-[node name="FamiliarCommands2" parent="BattleManager" unique_id=53158086 instance=ExtResource("6_20f6w")]
-offset_left = 1628.0
-offset_top = 586.0
-offset_right = 766.0
-offset_bottom = 171.0
+[node name="FamiliarCommands1" parent="BattleManager" unique_id=53158086 instance=ExtResource("6_20f6w")]
+offset_left = 1627.0
+offset_top = 606.0
+offset_right = 1336.696
+offset_bottom = 372.71997
 
-[node name="FamiliarCommands3" parent="BattleManager" unique_id=1445952443 instance=ExtResource("6_20f6w")]
-offset_left = 1334.0
-offset_top = 821.0
-offset_right = 472.0
-offset_bottom = 411.0
+[node name="FamiliarCommands2" parent="BattleManager" unique_id=1445952443 instance=ExtResource("6_20f6w")]
+offset_left = 1333.0
+offset_top = 843.5
+offset_right = 1042.696
+offset_bottom = 610.22
 
-[node name="FamiliarCommands4" parent="BattleManager" unique_id=154433813 instance=ExtResource("6_20f6w")]
-offset_left = 1628.0
-offset_top = 821.0
-offset_right = 766.0
-offset_bottom = 411.0
+[node name="FamiliarCommands3" parent="BattleManager" unique_id=154433813 instance=ExtResource("6_20f6w")]
+offset_left = 1627.0
+offset_top = 843.5
+offset_right = 1336.696
+offset_bottom = 610.22
