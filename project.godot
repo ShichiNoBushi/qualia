@@ -15,10 +15,6 @@ run/main_scene="uid://b6d0mqnw6j8i2"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
-[autoload]
-
-BattleScene="*uid://b6d0mqnw6j8i2"
-
 [display]
 
 window/size/viewport_width=1920

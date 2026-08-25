@@ -54,6 +54,8 @@ public partial class BattleManager : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		GD.Print($"BattleManager: _Ready on {Name}, path={GetPath()}, id={GetInstanceId()}");
+		
 		backgroundRect = GetNode<TextureRect>("BackgroundRect");
 		
 		projectorDisplayE = GetNode<ProjectorDisplay>("ProjectorDisplayEnemy");
@@ -439,7 +441,11 @@ public partial class BattleManager : Node
 	{
 		GD.Print("BattleManager - Refreshing displays...");
 		
-		if (playerSide?.projector == null)
+		if (playerSide?.projector != null)
+		{
+			projectorDisplayP.AssignProjector(playerSide.projector);
+		}
+		else
 		{
 			GD.Print("BattleManager - null player projector");
 			projectorDisplayP.Clear();
@@ -447,7 +453,11 @@ public partial class BattleManager : Node
 		
 		projectorDisplayP.UpdateDisplay();
 		
-		if (enemySide?.projector == null)
+		if (enemySide?.projector != null)
+		{
+			projectorDisplayE.AssignProjector(enemySide.projector);
+		}
+		else
 		{
 			GD.Print("BattleManager - null enemy projector");
 			projectorDisplayE.Clear();
@@ -456,6 +466,14 @@ public partial class BattleManager : Node
 		projectorDisplayE.UpdateDisplay();
 		
 		for (int i = 0; i < BattleSide.MAX_SLOTS; i++)
+		{
+			BindSlotDisplay(famDisplaysP[i], playerSide.familiarSlots[i]);
+			famDisplaysP[i].UpdateDisplay();
+			BindSlotDisplay(famDisplaysE[i], enemySide.familiarSlots[i]);
+			famDisplaysE[i].UpdateDisplay();
+		}
+		
+		/*for (int i = 0; i < BattleSide.MAX_SLOTS; i++)
 		{
 			IBattleActor actor = playerSide.familiarSlots[i];
 			FamiliarDisplay display = famDisplaysP[i];
@@ -495,6 +513,22 @@ public partial class BattleManager : Node
 			}
 			
 			display.UpdateDisplay();
+		}*/
+	}
+	
+	private void BindSlotDisplay(FamiliarDisplay display, IBattleActor actor)
+	{
+		if (actor is FamiliarActor f)
+		{
+			display.AssignFamiliar(f);
+		}
+		else if (actor is SpawnActor s)
+		{
+			display.AssignSpawn(s);
+		}
+		else
+		{
+			display.Clear();
 		}
 	}
 }
