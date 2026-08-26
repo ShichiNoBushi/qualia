@@ -190,7 +190,7 @@ public partial class BattleManager : Node
 		{
 			FamiliarActor actor = playerSide?.familiarSlots[i] as FamiliarActor;
 			bool alive = actor != null && actor.isAlive;
-			famCommandPanels[i].Visible = alive;
+			famCommandPanels[i].SetElementsVisible(alive);
 			famCommandPanels[i].Bind(alive ? actor : null);
 		}
 	}
@@ -221,7 +221,7 @@ public partial class BattleManager : Node
 		
 		for (int i = 0; i < 4; i++)
 		{
-			famCommandPanels[i].Visible = !playerSide.IsSlotEmpty(i);
+			famCommandPanels[i].SetElementsVisible(!playerSide.IsSlotEmpty(i));
 		}
 	}
 	
@@ -451,6 +451,7 @@ public partial class BattleManager : Node
 			projectorDisplayP.Clear();
 		}
 		
+		projectorDisplayP.SetVisibleEnergy(true);
 		projectorDisplayP.UpdateDisplay();
 		
 		if (enemySide?.projector != null)

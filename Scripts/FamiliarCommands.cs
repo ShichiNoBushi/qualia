@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public partial class FamiliarCommands : Control
 {
+	public Label familiarLabel;
 	public VBoxContainer subCommandsVBox;
 	public Button attackButton;
 	public Button defendButton;
@@ -17,6 +18,8 @@ public partial class FamiliarCommands : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		familiarLabel = GetNode<Label>("CommandsVBox/FamiliarLabel");
+		
 		subCommandsVBox = GetNode<VBoxContainer>("CommandsVBox/ScrollContainer/SubCommandsVBox");
 		
 		attackButton = GetNode<Button>("CommandsVBox/ScrollContainer/SubCommandsVBox/AttackButton");
@@ -44,11 +47,13 @@ public partial class FamiliarCommands : Control
 		
 		if (actor == null || actor.familiar?.skills == null)
 		{
-			Visible = false;
+			familiarLabel.Text = "";
+			SetElementsVisible(false);
 			return;
 		}
 		
-		Visible = true;
+		familiarLabel.Text = string.IsNullOrEmpty(actor.name) ? "(no name)" : actor.name;
+		SetElementsVisible(true);
 		
 		foreach (var skill in actor.familiar.skills)
 		{
@@ -123,5 +128,11 @@ public partial class FamiliarCommands : Control
 		{
 			//btn.Disabled = false;
 		}
+	}
+	
+	public void SetElementsVisible(bool visible)
+	{
+		familiarLabel.Visible = visible;
+		subCommandsVBox.Visible = visible;
 	}
 }

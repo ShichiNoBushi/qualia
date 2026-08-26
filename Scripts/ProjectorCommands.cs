@@ -3,6 +3,7 @@ using System;
 
 public partial class ProjectorCommands : Control
 {
+	public Label projectorLabel;
 	public Button summonButton;
 	public Button dismissButton;
 	public Button spellButton;
@@ -17,6 +18,7 @@ public partial class ProjectorCommands : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		projectorLabel = GetNode<Label>("CommandsVBox/ProjectorLabel");
 		summonButton = GetNode<Button>("CommandsVBox/SummonButton");
 		dismissButton = GetNode<Button>("CommandsVBox/DismissButton");
 		spellButton = GetNode<Button>("CommandsVBox/SpellButton");

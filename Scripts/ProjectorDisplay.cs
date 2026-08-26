@@ -7,8 +7,10 @@ public partial class ProjectorDisplay : Control
 	public Label nameLabel;
 	public ProgressBar energyProgress;
 	public Label energyLabel;
+	public ColorRect highlightRect;
 	
 	public Projector projector;
+	public bool energyVisible;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -17,7 +19,8 @@ public partial class ProjectorDisplay : Control
 		nameLabel = GetNode<Label>("NameLabel");
 		energyProgress = GetNode<ProgressBar>("EnergyProgress");
 		energyLabel = GetNode<Label>("EnergyLabel");
-		energyLabel.Visible = false;
+		highlightRect = GetNode<ColorRect>("HighlightRect");
+		energyVisible = false;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -41,14 +44,14 @@ public partial class ProjectorDisplay : Control
 	
 	public void SetVisibleEnergy(bool toggle)
 	{
-		energyLabel.Visible = toggle;
+		energyVisible = toggle;
 	}
 	
 	public void UpdateDisplay()
 	{
 		if (projector == null)
 		{
-			Visible = false;
+			SetElementsVisible(false);
 			portraitRect.Texture = null;
 			nameLabel.Text = "";
 			energyProgress.MaxValue = 1;
@@ -57,7 +60,7 @@ public partial class ProjectorDisplay : Control
 			return;
 		}
 		
-		Visible = true;
+		SetElementsVisible(true);
 		
 		RProjectorData data = projector.data;
 		
@@ -69,5 +72,18 @@ public partial class ProjectorDisplay : Control
 		energyProgress.Value = Mathf.Clamp(projector.currentEnergy, 0, projector.maxEnergy);
 		
 		energyLabel.Text = $"{projector.currentEnergy} / {projector.maxEnergy}";
+	}
+	
+	public void SetElementsVisible(bool visible)
+	{
+		portraitRect.Visible = visible;
+		nameLabel.Visible = visible;
+		energyProgress.Visible = visible && energyVisible;
+		energyLabel.Visible = visible && energyVisible;
+	}
+	
+	public void Highlight(bool toggle)
+	{
+		highlightRect.Visible = toggle;
 	}
 }

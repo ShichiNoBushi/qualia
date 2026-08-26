@@ -7,8 +7,11 @@ public partial class FamiliarDisplay : Control
 	public Label nameLabel;
 	public ProgressBar energyProgress;
 	public Label energyLabel;
+	public ColorRect highlightAllyRect;
+	public ColorRect highlightEnemyRect;
 	
 	public bool isFamiliar {get; private set;} = false;
+	public bool energyVisible {get; private set;} = true;
 	public IBattleActor actor {get; private set;}
 	public int slotIndex {get; private set;}
 	
@@ -19,6 +22,8 @@ public partial class FamiliarDisplay : Control
 		nameLabel = GetNode<Label>("NameLabel");
 		energyProgress = GetNode<ProgressBar>("EnergyProgress");
 		energyLabel = GetNode<Label>("EnergyLabel");
+		highlightAllyRect = GetNode<ColorRect>("HighlightAllyRect");
+		highlightEnemyRect = GetNode<ColorRect>("HighlightEnemyRect");
 		energyLabel.Visible = false;
 	}
 
@@ -55,14 +60,14 @@ public partial class FamiliarDisplay : Control
 	
 	public void SetVisibleEnergy(bool toggle)
 	{
-		energyLabel.Visible = toggle;
+		energyVisible = toggle;
 	}
 	
 	public void UpdateDisplay()
 	{
 		if (actor == null)
 		{
-			Visible = false;
+			SetElementsVisible(false);
 			portraitRect.Texture = null;
 			nameLabel.Text = "";
 			energyProgress.MaxValue = 1;
@@ -75,7 +80,7 @@ public partial class FamiliarDisplay : Control
 		{
 			if (familiar.familiar == null)
 			{
-				Visible = false;
+				SetElementsVisible(false);
 				portraitRect.Texture = null;
 				nameLabel.Text = "";
 				energyProgress.MaxValue = 1;
@@ -84,7 +89,7 @@ public partial class FamiliarDisplay : Control
 				return;
 			}
 			
-			Visible = true;
+			SetElementsVisible(true);
 		
 			RFamiliarData data = familiar.familiar.data;
 			
@@ -101,7 +106,7 @@ public partial class FamiliarDisplay : Control
 		{
 			if (spark.familiar == null)
 			{
-				Visible = false;
+				SetElementsVisible(false);
 				portraitRect.Texture = null;
 				nameLabel.Text = "";
 				energyProgress.MaxValue = 1;
@@ -110,7 +115,7 @@ public partial class FamiliarDisplay : Control
 				return;
 			}
 			
-			Visible = true;
+			SetElementsVisible(true);
 			
 			portraitRect.Texture = null; //set to default spark portrait
 			
@@ -121,5 +126,31 @@ public partial class FamiliarDisplay : Control
 			
 			energyLabel.Text = "";
 		}
+	}
+	
+	public void SetElementsVisible(bool visible)
+	{
+		portraitRect.Visible = visible;
+		nameLabel.Visible = visible;
+		energyProgress.Visible = visible && energyVisible;
+		energyLabel.Visible = visible && energyVisible;
+	}
+	
+	public void HighlightAlly(bool toggle)
+	{
+		highlightAllyRect.Visible = toggle;
+		highlightEnemyRect.Visible = false;
+	}
+	
+	public void HighlightEnemy(bool toggle)
+	{
+		highlightEnemyRect.Visible = toggle;
+		highlightAllyRect.Visible = false;
+	}
+	
+	public void ClearHighlights()
+	{
+		highlightAllyRect.Visible = false;
+		highlightEnemyRect.Visible = false;
 	}
 }
