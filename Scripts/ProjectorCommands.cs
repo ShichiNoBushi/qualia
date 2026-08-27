@@ -36,7 +36,6 @@ public partial class ProjectorCommands : Control
 		undoButton.Pressed += OnUndoPressed;
 		
 		//Disable buttons currently without function
-		summonButton.Disabled = true;
 		dismissButton.Disabled = true;
 		spellButton.Disabled = true;
 		itemButton.Disabled = true;
@@ -50,7 +49,12 @@ public partial class ProjectorCommands : Control
 	
 	public void OnSummonPressed()
 	{
-		
+		battle.SetCommandState(BattleManager.CommandState.SelectSlot);
+		battle.HighlightAllySlots();
+		battle.pendingCommand = new SummonCommand {
+			sourceSide = battle.playerSide,
+			source = battle.playerSide.projector
+		};
 		
 		DisableCommands();
 		undoButton.Visible = true;
@@ -88,13 +92,11 @@ public partial class ProjectorCommands : Control
 			sourceSide = battle.playerSide,
 			source = battle.playerSide.projector
 		};
-		activeCommand = cmd;
 		
 		battle.projectorCommands.Add(cmd);
 		battle.AppendBattleText("Player: Focus Command added.");
 		
-		DisableCommands();
-		undoButton.Visible = true;
+		SetActiveCommand(cmd);
 	}
 	
 	public void OnItemPressed()
@@ -144,5 +146,12 @@ public partial class ProjectorCommands : Control
 		focusButton.Disabled = false;
 		//itemButton.Disabled = false;
 		//escapeButton.Disabled = false;
+	}
+	
+	public void SetActiveCommand(BattleCommand command)
+	{
+		DisableCommands();
+		activeCommand = command;
+		undoButton.Visible = true;
 	}
 }

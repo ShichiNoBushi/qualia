@@ -17,7 +17,11 @@ public partial class BattleManager : Node
 	
 	public bool isProjectorEncounter;
 	
-	public BattleState state;
+	public BattleState batState;
+	public CommandState comState;
+	
+	public BattleCommand pendingCommand;
+	public FamiliarActor pendingSource;
 	
 	public enum BattleState
 	{
@@ -27,6 +31,14 @@ public partial class BattleManager : Node
 		SpawnCheck,
 		EndCheck,
 		Cleanup
+	}
+	
+	public enum CommandState
+	{
+		None,
+		SelectSlot,
+		SelectAlly,
+		SelectEnemy
 	}
 	
 	public enum VictoryResult
@@ -175,7 +187,8 @@ public partial class BattleManager : Node
 			}
 		}
 		
-		state = BattleState.Setup;
+		SetBattleState(BattleState.Setup);
+		SetCommandState(CommandState.None);
 	}
 	
 	public void OnNextPressed()
@@ -195,14 +208,19 @@ public partial class BattleManager : Node
 		}
 	}
 	
-	public void SetState(BattleState newState)
+	public void SetBattleState(BattleState newState)
 	{
-		state = newState;
+		batState = newState;
+	}
+	
+	public void SetCommandState(CommandState newState)
+	{
+		comState = newState;
 	}
 	
 	public void BeginCommandSelect()
 	{
-		SetState(BattleState.CommandSelect);
+		SetBattleState(BattleState.CommandSelect);
 		
 		projectorCommands.Clear();
 		familiarCommands.Clear();
@@ -222,6 +240,85 @@ public partial class BattleManager : Node
 		for (int i = 0; i < 4; i++)
 		{
 			famCommandPanels[i].SetElementsVisible(!playerSide.IsSlotEmpty(i));
+		}
+	}
+	
+	public void TryFinishSummon(FamiliarDisplay display)
+	{
+		int slot = IndexOfDisplay(display, famDisplaysP);
+		
+		if (slot < 0 || !playerSide.IsSlotEmpty(slot))
+		{
+			return;
+		}
+		
+		if (pendingCommand is SummonCommand summon)
+		{
+			summon.slot = slot;
+			projectorCommands.Add(summon);
+			projCommandPanel.SetActiveCommand(summon);
+		}
+		
+		ClearTargetMode();
+	}
+	
+	public void ClearTargetMode()
+	{
+		comState = CommandState.None;
+		pendingCommand = null;
+		pendingSource = null;
+		ClearHighlights();
+	}
+	
+	public void HighlightAllySlots()
+	{
+		foreach (var panel in famDisplaysP)
+		{
+			int slot = panel.slotIndex;
+			if (playerSide.IsSlotEmpty(slot))
+			{
+				panel.HighlightAlly(true);
+			}
+		}
+	}
+	
+	public void HighlightAllies()
+	{
+		foreach (var panel in famDisplaysP)
+		{
+			int slot = panel.slotIndex;
+			if (!playerSide.IsSlotEmpty(slot))
+			{
+				panel.HighlightAlly(true);
+			}
+		}
+	}
+	
+	public void HighlightEnemies()
+	{
+		foreach (var panel in famDisplaysE)
+		{
+			int slot = panel.slotIndex;
+			if (!enemySide.IsSlotEmpty(slot))
+			{
+				panel.HighlightEnemy(true);
+			}
+		}
+	}
+	
+	public void ClearHighlights()
+	{
+		projectorDisplayE.Highlight(false);
+		projectorDisplayP.Highlight(false);
+		
+		foreach (var panel in famDisplaysE)
+		{
+			panel.ClearHighlights();
+		}
+		
+		foreach (var panel in famDisplaysP)
+		{
+			panel.ClearHighlights();
 		}
 	}
 	
@@ -292,7 +389,7 @@ public partial class BattleManager : Node
 			}
 		}
 	
-		SetState(BattleState.SpawnCheck);
+		SetBattleState(BattleState.SpawnCheck);
 	}
 	
 	public VictoryResult CheckVictory()
@@ -332,7 +429,7 @@ public partial class BattleManager : Node
 	{
 		if (isProjectorEncounter)
 		{
-			SetState(BattleState.EndCheck);
+			SetBattleState(BattleState.EndCheck);
 			return;
 		}
 		
@@ -386,7 +483,7 @@ public partial class BattleManager : Node
 			}
 		}
 		
-		SetState(BattleState.EndCheck);
+		SetBattleState(BattleState.EndCheck);
 	}
 	
 	public void EndCheck()
@@ -396,16 +493,16 @@ public partial class BattleManager : Node
 		switch (result)
 		{
 			case VictoryResult.PlayerWin:
-				SetState(BattleState.Cleanup);
+				SetBattleState(BattleState.Cleanup);
 				//victory results
 				break;
 			case VictoryResult.PlayerLose:
 			case VictoryResult.Draw:
-				SetState(BattleState.Cleanup);
+				SetBattleState(BattleState.Cleanup);
 				//game over results
 				break;
 			case VictoryResult.None:
-				SetState(BattleState.CommandSelect);
+				SetBattleState(BattleState.CommandSelect);
 				projCommandPanel.EnableCommands();
 				
 				foreach (var panel in famCommandPanels)
@@ -420,6 +517,19 @@ public partial class BattleManager : Node
 	public FamiliarDisplay[] GetFamiliarDisplays(BattleSide side)
 	{
 		return side == playerSide ? famDisplaysP : famDisplaysE;
+	}
+	
+	public int IndexOfDisplay(FamiliarDisplay display, FamiliarDisplay[] panels)
+	{
+		for (int i = 0; i < panels.Length; i++)
+		{
+			if (display == panels[i])
+			{
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 	
 	public void AppendBattleText(string text, bool doubleSpace = true)
