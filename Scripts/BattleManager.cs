@@ -15,6 +15,11 @@ public partial class BattleManager : Node
 	public RichTextLabel battleLogLabel;
 	public Button nextButton;
 	
+	public ProjectorCommands projCommandPanel;
+	public FamiliarCommands[] famCommandPanels = new FamiliarCommands[4];
+	
+	public SelectionPanel selectionPanel;
+	
 	public bool isProjectorEncounter;
 	
 	public BattleState batState;
@@ -60,9 +65,6 @@ public partial class BattleManager : Node
 	
 	public Godot.Collections.Array<RFamiliarInstance> defeatedFamiliars;
 	
-	public ProjectorCommands projCommandPanel;
-	public FamiliarCommands[] famCommandPanels = new FamiliarCommands[4];
-	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -96,6 +98,8 @@ public partial class BattleManager : Node
 		famCommandPanels[1] = GetNode<FamiliarCommands>("FamiliarCommands1");
 		famCommandPanels[2] = GetNode<FamiliarCommands>("FamiliarCommands2");
 		famCommandPanels[3] = GetNode<FamiliarCommands>("FamiliarCommands3");
+		
+		selectionPanel = GetNode<SelectionPanel>("SelectionPanel");
 		
 		projCommandPanel.battle = this;
 		

@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://cbgknl8tpufwd"]
+
+[ext_resource type="Script" uid="uid://coodlc7tcpex0" path="res://Scenes/SelectionPanel.cs" id="1_pg0fj"]
+
+[node name="SelectionPanel" type="Control" unique_id=280050535]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pg0fj")
+
+[node name="Panel" type="Panel" parent="." unique_id=533662739]
+layout_mode = 0
+offset_right = 700.0
+offset_bottom = 390.0
+
+[node name="TitleLabel" type="Label" parent="." unique_id=374778680]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 23.0
+text = "Title"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=2033708962]
+visible = false
+layout_mode = 0
+offset_top = 23.0
+offset_right = 700.0
+offset_bottom = 351.0
+
+[node name="ItemVBox" type="VBoxContainer" parent="ScrollContainer" unique_id=191838376]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+
+[node name="CancelButton" type="Button" parent="." unique_id=1016392342]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 351.0
+offset_right = 286.0
+offset_bottom = 382.0
+text = "Cancel"
+
+[node name="ConfirmButton" type="Button" parent="." unique_id=278076677]
+layout_mode = 0
+offset_left = 413.0
+offset_top = 351.0
+offset_right = 556.0
+offset_bottom = 382.0
+text = "Confirm"

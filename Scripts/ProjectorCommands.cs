@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class ProjectorCommands : Control
 {
@@ -50,6 +51,32 @@ public partial class ProjectorCommands : Control
 	public void OnSummonPressed()
 	{
 		battle.SetCommandState(BattleManager.CommandState.SelectSlot);
+		
+		Projector projector = battle.playerSide.projector;
+		Godot.Collections.Array<RFamiliarInstance> alreadyOut = new();
+		
+		foreach (var actor in battle.playerSide.GetFamiliarList())
+		{
+			if (actor.familiar != null)
+			{
+				alreadyOut.Add(actor.familiar);
+			}
+		}
+		
+		List<(object, string, bool)> entries = new();
+		
+		foreach (var inst in projector.ownedFamiliars)
+		{
+			bool alreadySummoned = alreadyOut.Contains(inst);
+			string label = string.IsNullOrEmpty(inst.nickName) ? inst.data.name : inst.nickName;
+			label += $"  (E {inst.energy})";
+			
+			entries.Add((inst, label, !alreadySummoned && projector.currentEnergy >= inst.energy));
+		}
+		
+		battle.selectionPanel.OnItemChosen = OnFamiliarPicked;
+		battle.selectionPanel.Open("Summon", entries);
+		
 		battle.HighlightAllySlots();
 		battle.pendingCommand = new SummonCommand {
 			sourceSide = battle.playerSide,
@@ -126,6 +153,20 @@ public partial class ProjectorCommands : Control
 		
 		EnableCommands();
 		undoButton.Visible = false;
+	}
+	
+	public void OnFamiliarPicked(object data)
+	{
+		if (data is not RFamiliarInstance inst)
+		{
+			return;
+		}
+		
+		battle.pendingCommand = new SummonCommand {
+			sourceSide = battle.playerSide,
+			source = battle.playerSide.projector,
+			familiar = inst
+		};
 	}
 	
 	public void DisableCommands()

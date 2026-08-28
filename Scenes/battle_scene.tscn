@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dp7p8gcqqqqr6" path="res://Scenes/projector_display_player.tscn" id="4_20f6w"]
 [ext_resource type="PackedScene" uid="uid://dscfpwphefhyk" path="res://Scenes/projector_commands.tscn" id="5_gt16y"]
 [ext_resource type="PackedScene" uid="uid://hs0di4oaqh6c" path="res://Scenes/familiar_commands.tscn" id="6_20f6w"]
+[ext_resource type="PackedScene" uid="uid://cbgknl8tpufwd" path="res://Scenes/selection_panel.tscn" id="7_20f6w"]
 
 [node name="BattleScene" type="Node2D" unique_id=2070022109]
 
@@ -65,8 +66,8 @@ layout_mode = 2
 [node name="ProjectorDisplayPlayer" parent="BattleManager" unique_id=888852153 instance=ExtResource("4_20f6w")]
 offset_left = 0.0
 offset_top = 904.0
-offset_right = -684.0
-offset_bottom = 422.0
+offset_right = -1447.0
+offset_bottom = -2.0
 
 [node name="BattleLogLabel" type="RichTextLabel" parent="BattleManager" unique_id=440061593]
 offset_left = 1256.0
@@ -111,3 +112,10 @@ offset_left = 1627.0
 offset_top = 843.5
 offset_right = 1336.696
 offset_bottom = 610.22
+
+[node name="SelectionPanel" parent="BattleManager" unique_id=280050535 instance=ExtResource("7_20f6w")]
+visible = false
+offset_left = 1156.0
+offset_top = 653.0
+offset_right = -60.0
+offset_bottom = -35.0
