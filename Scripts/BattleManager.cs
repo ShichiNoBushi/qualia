@@ -18,6 +18,9 @@ public partial class BattleManager : Node
 	public ProjectorCommands projCommandPanel;
 	public FamiliarCommands[] famCommandPanels = new FamiliarCommands[4];
 	
+	public bool projCommandDisabled;
+	public bool[] famCommandDisabled = new bool[4];
+	
 	public SelectionPanel selectionPanel;
 	
 	public bool isProjectorEncounter;
@@ -41,9 +44,15 @@ public partial class BattleManager : Node
 	public enum CommandState
 	{
 		None,
-		SelectSlot,
-		SelectAlly,
-		SelectEnemy
+		SelectSummon,
+		SelectDismiss,
+		SelectAllySpell,
+		SelectAllySkill,
+		SelectAllyItem,
+		SelectEnemyAttack,
+		SelectEnemySpell,
+		SelectEnemySkill,
+		SelectEnemyItem
 	}
 	
 	public enum VictoryResult
@@ -88,6 +97,17 @@ public partial class BattleManager : Node
 		famDisplaysP[2] = GetNode<FamiliarDisplay>("PFamiliarHBox/FamiliarDisplay2");
 		famDisplaysP[3] = GetNode<FamiliarDisplay>("PFamiliarHBox/FamiliarDisplay3");
 		
+		for (int i = 0; i < 4; i++)
+		{
+			famDisplaysE[i].slotIndex = i;
+			famDisplaysE[i].isPlayerSide = false;
+			famDisplaysE[i].battle = this;
+			
+			famDisplaysP[i].slotIndex = i;
+			famDisplaysP[i].isPlayerSide = true;
+			famDisplaysP[i].battle = this;
+		}
+		
 		battleLogLabel = GetNode<RichTextLabel>("BattleLogLabel");
 		nextButton = GetNode<Button>("NextButton");
 		
@@ -99,6 +119,19 @@ public partial class BattleManager : Node
 		famCommandPanels[2] = GetNode<FamiliarCommands>("FamiliarCommands2");
 		famCommandPanels[3] = GetNode<FamiliarCommands>("FamiliarCommands3");
 		
+		projCommandPanel.battle = this;
+		
+		for (int i = 0; i < 4; i++)
+		{
+			famCommandPanels[i].battle = this;
+		}
+		
+		projCommandDisabled = false;
+		for (int i = 0; i < 4; i++)
+		{
+			famCommandDisabled[i] = false;
+		}
+		
 		selectionPanel = GetNode<SelectionPanel>("SelectionPanel");
 		
 		projCommandPanel.battle = this;
@@ -107,6 +140,8 @@ public partial class BattleManager : Node
 		{
 			panel.battle = this;
 		}
+		
+		selectionPanel.battle = this;
 		
 		StartTest();
 	}
@@ -121,6 +156,10 @@ public partial class BattleManager : Node
 		GD.Print("BattleManager - Starting test...");
 		
 		RProjectorData pData = GD.Load<RProjectorData>("res://Resources/test_projector.tres");
+		RFamiliarInstance gnomeInst = GD.Load<RFamiliarInstance>("res://Resources/familiar_instance/ex_gnome.tres");
+		RFamiliarInstance salamanderInst = GD.Load<RFamiliarInstance>("res://Resources/familiar_instance/ex_salamander.tres");
+		RFamiliarInstance sylphInst = GD.Load<RFamiliarInstance>("res://Resources/familiar_instance/ex_sylph.tres");
+		RFamiliarInstance undineInst = GD.Load<RFamiliarInstance>("res://Resources/familiar_instance/ex_undine.tres");
 		
 		if (pData == null)
 		{
@@ -130,6 +169,11 @@ public partial class BattleManager : Node
 		
 		Projector player = new();
 		player.Initialize(pData);
+		
+		player.GiveFamiliar(gnomeInst);
+		player.GiveFamiliar(salamanderInst);
+		player.GiveFamiliar(sylphInst);
+		player.GiveFamiliar(undineInst);
 		
 		REncounterData eData = GD.Load<REncounterData>("res://Resources/test_encounter.tres");
 		
@@ -201,14 +245,42 @@ public partial class BattleManager : Node
 		GD.Print("Next button pressed.");
 	}
 	
+	public void FamiliarSlotClicked(FamiliarDisplay display)
+	{
+		GD.Print($"BattleManager: battle state {batState}, command state {comState}");
+		
+		if (batState != BattleState.CommandSelect)
+		{
+			return;
+		}
+		
+		switch (comState)
+		{
+			case CommandState.SelectSummon:
+				TryFinishSummon(display);
+				break;
+			//CommandState.SelectDismiss
+			//CommandState.SelectAllySpell
+			//CommandState.SelectAllySkill
+			//CommandState.SelectAllyItem
+			//CommandState.SelectEnemyAttack
+			//CommandState.SelectEnemySpell
+			//CommandState.SelectEnemySkill
+			//CommandState.SelectEnemyItem
+		}
+	}
+	
 	public void RefreshCommandPanels()
 	{
+		projCommandDisabled = false;
+		
 		for (int i = 0; i < 4; i++)
 		{
 			FamiliarActor actor = playerSide?.familiarSlots[i] as FamiliarActor;
 			bool alive = actor != null && actor.isAlive;
 			famCommandPanels[i].SetElementsVisible(alive);
 			famCommandPanels[i].Bind(alive ? actor : null);
+			famCommandDisabled[i] = !alive;
 		}
 	}
 	
@@ -235,9 +307,13 @@ public partial class BattleManager : Node
 		projCommandPanel.EnableCommands();
 		projCommandPanel.undoButton.Visible = false;
 		
-		foreach (var panel in famCommandPanels)
+		for (int i = 0; i < 4; i++)
 		{
-			panel.EnableCommands();
+			FamiliarCommands panel = famCommandPanels[i];
+			if (!famCommandDisabled[i])
+			{
+				panel.EnableCommands();
+			}
 			panel.undoButton.Visible = false;
 		}
 		
@@ -264,10 +340,15 @@ public partial class BattleManager : Node
 		}
 		
 		ClearTargetMode();
+		projCommandPanel.DisableCommands();
+		projCommandDisabled = true;
+		projCommandPanel.undoButton.Visible = true;
 	}
 	
 	public void ClearTargetMode()
 	{
+		GD.Print("BattleManager: clearing targets");
+		
 		comState = CommandState.None;
 		pendingCommand = null;
 		pendingSource = null;
@@ -312,6 +393,8 @@ public partial class BattleManager : Node
 	
 	public void ClearHighlights()
 	{
+		GD.Print("BattleManager: clearing highlights");
+		
 		projectorDisplayE.Highlight(false);
 		projectorDisplayP.Highlight(false);
 		

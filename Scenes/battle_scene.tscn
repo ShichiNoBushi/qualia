@@ -24,8 +24,8 @@ offset_bottom = 1080.0
 [node name="ProjectorDisplayEnemy" parent="BattleManager" unique_id=1892404387 instance=ExtResource("2_3gnqe")]
 offset_left = 776.0
 offset_top = 8.0
-offset_right = 92.0
-offset_bottom = -469.0
+offset_right = -676.0
+offset_bottom = -904.0
 
 [node name="EFamiliarHBox" type="HBoxContainer" parent="BattleManager" unique_id=1561250209]
 offset_left = 200.0
@@ -64,10 +64,8 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="ProjectorDisplayPlayer" parent="BattleManager" unique_id=888852153 instance=ExtResource("4_20f6w")]
-offset_left = 0.0
 offset_top = 904.0
-offset_right = -1447.0
-offset_bottom = -2.0
+offset_bottom = -8.0
 
 [node name="BattleLogLabel" type="RichTextLabel" parent="BattleManager" unique_id=440061593]
 offset_left = 1256.0
@@ -84,34 +82,49 @@ offset_bottom = 601.0
 text = "Next"
 
 [node name="ProjectorCommands" parent="BattleManager" unique_id=1266136363 instance=ExtResource("5_gt16y")]
-offset_left = 1041.0
-offset_top = 739.0
-offset_right = 750.696
-offset_bottom = 505.71997
+anchors_preset = 0
+offset_left = 1040.808
+offset_top = 731.44
+offset_right = 1330.808
+offset_bottom = 966.44
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="FamiliarCommands0" parent="BattleManager" unique_id=2026761448 instance=ExtResource("6_20f6w")]
-offset_left = 1333.0
-offset_top = 606.0
-offset_right = 1042.696
-offset_bottom = 372.71997
+anchors_preset = 0
+offset_left = 1332.0
+offset_top = 605.78
+offset_right = 1622.0
+offset_bottom = 840.78
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="FamiliarCommands1" parent="BattleManager" unique_id=53158086 instance=ExtResource("6_20f6w")]
-offset_left = 1627.0
-offset_top = 606.0
-offset_right = 1336.696
-offset_bottom = 372.71997
+anchors_preset = 0
+offset_left = 1626.8081
+offset_top = 605.78
+offset_right = 1916.8081
+offset_bottom = 840.78
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="FamiliarCommands2" parent="BattleManager" unique_id=1445952443 instance=ExtResource("6_20f6w")]
-offset_left = 1333.0
-offset_top = 843.5
-offset_right = 1042.696
-offset_bottom = 610.22
+anchors_preset = 0
+offset_left = 1332.8081
+offset_top = 843.28
+offset_right = 1622.8081
+offset_bottom = 1078.28
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="FamiliarCommands3" parent="BattleManager" unique_id=154433813 instance=ExtResource("6_20f6w")]
-offset_left = 1627.0
-offset_top = 843.5
-offset_right = 1336.696
-offset_bottom = 610.22
+anchors_preset = 0
+offset_left = 1626.8081
+offset_top = 843.28
+offset_right = 1916.8081
+offset_bottom = 1078.28
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="SelectionPanel" parent="BattleManager" unique_id=280050535 instance=ExtResource("7_20f6w")]
 visible = false

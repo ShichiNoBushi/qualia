@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://dybdk0uy6wxs2"]
+
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_vgmwi"]
+
+[resource]
+script = ExtResource("1_vgmwi")
+id = "water"
+name = "Water"
+metadata/_custom_type_script = "uid://3uin7wh74kon"

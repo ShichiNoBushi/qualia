@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RFamiliarInstance" format=3 uid="uid://d23rhgawtookx"]
+
+[ext_resource type="Script" uid="uid://482mjwvdetpu" path="res://Scripts/RFamiliarInstance.cs" id="1_6hevt"]
+[ext_resource type="Resource" uid="uid://cph17bvgufjx3" path="res://Resources/familiar_data/ex_sylph.tres" id="1_frex3"]
+[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/type_data/air.tres" id="3_ulphc"]
+
+[resource]
+script = ExtResource("1_6hevt")
+data = ExtResource("1_frex3")
+types = Array[Object]([ExtResource("3_ulphc")])
+skills = null
+metadata/_custom_type_script = "uid://482mjwvdetpu"

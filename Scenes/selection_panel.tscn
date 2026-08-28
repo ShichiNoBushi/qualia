@@ -23,7 +23,6 @@ offset_bottom = 23.0
 text = "Title"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=2033708962]
-visible = false
 layout_mode = 0
 offset_top = 23.0
 offset_right = 700.0

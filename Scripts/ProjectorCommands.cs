@@ -13,8 +13,8 @@ public partial class ProjectorCommands : Control
 	public Button escapeButton;
 	public Button undoButton;
 	
-	public BattleManager battle;
-	public BattleCommand activeCommand;
+	public BattleManager battle {get; set;}
+	public BattleCommand activeCommand {get; set;}
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -50,9 +50,16 @@ public partial class ProjectorCommands : Control
 	
 	public void OnSummonPressed()
 	{
-		battle.SetCommandState(BattleManager.CommandState.SelectSlot);
+		battle.SetCommandState(BattleManager.CommandState.SelectSummon);
 		
 		Projector projector = battle.playerSide.projector;
+		
+		if (projector == null)
+		{
+			battle.AppendBattleText("ProjectorCommand: null projector");
+			GD.Print("ProjectorCommand: null projector");
+		}
+		
 		Godot.Collections.Array<RFamiliarInstance> alreadyOut = new();
 		
 		foreach (var actor in battle.playerSide.GetFamiliarList())
@@ -62,6 +69,8 @@ public partial class ProjectorCommands : Control
 				alreadyOut.Add(actor.familiar);
 			}
 		}
+		
+		GD.Print($"ProjectorCommand: {projector.ownedFamiliars.Count} Owned Familiars, {alreadyOut.Count} Familiars Out");
 		
 		List<(object, string, bool)> entries = new();
 		
@@ -74,17 +83,20 @@ public partial class ProjectorCommands : Control
 			entries.Add((inst, label, !alreadySummoned && projector.currentEnergy >= inst.energy));
 		}
 		
+		GD.Print($"ProjectorCommand: {entries.Count} entries in summon list");
+		
 		battle.selectionPanel.OnItemChosen = OnFamiliarPicked;
 		battle.selectionPanel.Open("Summon", entries);
 		
-		battle.HighlightAllySlots();
+		/*battle.HighlightAllySlots();
 		battle.pendingCommand = new SummonCommand {
 			sourceSide = battle.playerSide,
 			source = battle.playerSide.projector
 		};
 		
 		DisableCommands();
-		undoButton.Visible = true;
+		undoButton.Visible = true;*/
+		DisableCommands();
 	}
 	
 	public void OnDismissPressed()
@@ -152,6 +164,7 @@ public partial class ProjectorCommands : Control
 		activeCommand = null;
 		
 		EnableCommands();
+		battle.projCommandDisabled = false;
 		undoButton.Visible = false;
 	}
 	
@@ -167,6 +180,16 @@ public partial class ProjectorCommands : Control
 			source = battle.playerSide.projector,
 			familiar = inst
 		};
+		
+		battle.HighlightAllySlots();
+		battle.pendingCommand = new SummonCommand {
+			sourceSide = battle.playerSide,
+			source = battle.playerSide.projector
+		};
+		
+		//battle.selectionPanel.UnblockCommands();
+		DisableCommands();
+		//undoButton.Visible = true;
 	}
 	
 	public void DisableCommands()
@@ -181,7 +204,7 @@ public partial class ProjectorCommands : Control
 	
 	public void EnableCommands()
 	{
-		//summonButton.Disabled = false;
+		summonButton.Disabled = false;
 		//dismissButton.Disabled = false;
 		//spellButton.Disabled = false;
 		focusButton.Disabled = false;
@@ -192,6 +215,7 @@ public partial class ProjectorCommands : Control
 	public void SetActiveCommand(BattleCommand command)
 	{
 		DisableCommands();
+		battle.projCommandDisabled = true;
 		activeCommand = command;
 		undoButton.Visible = true;
 	}

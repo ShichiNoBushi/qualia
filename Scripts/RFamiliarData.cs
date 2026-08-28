@@ -8,12 +8,12 @@ public partial class RFamiliarData : Resource
 	[Export] public string name {get; set;} = "";
 	[Export] public string description {get; set;} = "";
 	
-	[Export] public int baseEnergy {get; set;} = 50;
-	[Export] public int basePAttack {get; set;} = 10;
-	[Export] public int baseMAttack {get; set;} = 10;
-	[Export] public int basePDefense {get; set;} = 10;
-	[Export] public int baseMDefense {get; set;} = 10;
-	[Export] public int baseSpeed {get; set;} = 10;
+	[Export] public int baseEnergy {get; set;} = 10;
+	[Export] public int basePAttack {get; set;} = 3;
+	[Export] public int baseMAttack {get; set;} = 3;
+	[Export] public int basePDefense {get; set;} = 3;
+	[Export] public int baseMDefense {get; set;} = 3;
+	[Export] public int baseSpeed {get; set;} = 3;
 	
 	[Export] public float levelEnergy {get; set;} = 1f;
 	[Export] public float levelPAttack {get; set;} = 0.5f;

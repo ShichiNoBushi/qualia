@@ -13,7 +13,10 @@ public partial class FamiliarDisplay : Control
 	public bool isFamiliar {get; private set;} = false;
 	public bool energyVisible {get; private set;} = true;
 	public IBattleActor actor {get; private set;}
-	public int slotIndex {get; private set;}
+	
+	public bool isPlayerSide {get; set;}
+	public int slotIndex {get; set;}
+	public BattleManager battle {get; set;}
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -25,11 +28,30 @@ public partial class FamiliarDisplay : Control
 		highlightAllyRect = GetNode<ColorRect>("HighlightAllyRect");
 		highlightEnemyRect = GetNode<ColorRect>("HighlightEnemyRect");
 		energyLabel.Visible = false;
+		
+		highlightAllyRect.GuiInput += OnGuiInput;
+		highlightEnemyRect.GuiInput += OnGuiInput;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+	}
+	
+	public void OnGuiInput(InputEvent e)
+	{
+		if (e is InputEventMouseButton mb && mb.Pressed && mb.ButtonIndex == MouseButton.Left)
+		{
+			GD.Print($"FamiliarDisplay: slot {slotIndex} clicked");
+			try
+			{
+				battle.FamiliarSlotClicked(this);
+			}
+			catch (Exception ex)
+			{
+				GD.PrintErr($"FamiliarDisplay: {ex}");
+			}
+		}
 	}
 	
 	public void AssignFamiliar(FamiliarActor fam)

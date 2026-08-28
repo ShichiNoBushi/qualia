@@ -9,6 +9,8 @@ public partial class SelectionPanel : Control
 	public Button cancelButton;
 	public Button confirmButton;
 	
+	public BattleManager battle;
+	
 	public Action<object> OnItemChosen;
 	
 	// Called when the node enters the scene tree for the first time.
@@ -30,6 +32,8 @@ public partial class SelectionPanel : Control
 	
 	public void Open(string title, IEnumerable<(object data, string label, bool enabled)> entries)
 	{
+		GD.Print($"SelectionPanel: Opened with title \"{title}\" and {((List<(object, string, bool)>)entries).Count} entries");
+		
 		titleLabel.Text = title;
 		ClearRows();
 		
@@ -51,6 +55,7 @@ public partial class SelectionPanel : Control
 		}
 		
 		Visible = true;
+		BlockCommands();
 	}
 	
 	public void HidePanel()
@@ -58,6 +63,7 @@ public partial class SelectionPanel : Control
 		Visible = false;
 		OnItemChosen = null;
 		ClearRows();
+		UnblockCommands();
 	}
 	
 	public void ClearRows()
@@ -65,6 +71,32 @@ public partial class SelectionPanel : Control
 		foreach (var child in itemVBox.GetChildren())
 		{
 			child.QueueFree();
+		}
+	}
+	
+	public void BlockCommands()
+	{
+		battle.projCommandPanel.DisableCommands();
+		
+		for (int i = 0; i < 4; i++)
+		{
+			battle.famCommandPanels[i].DisableCommands();
+		}
+	}
+	
+	public void UnblockCommands()
+	{
+		if (!battle.projCommandDisabled)
+		{
+			battle.projCommandPanel.EnableCommands();
+		}
+		
+		for (int i = 0; i < 4; i++)
+		{
+			if (!battle.famCommandDisabled[i])
+			{
+				battle.famCommandPanels[i].EnableCommands();
+			}
 		}
 	}
 }

@@ -4,10 +4,8 @@
 
 [node name="FamiliarCommands" type="Control" unique_id=1266136363]
 layout_mode = 3
-anchor_right = 0.15100001
-anchor_bottom = 0.21800001
-offset_right = 0.07998657
-offset_bottom = -0.4400177
+offset_right = 290.0
+offset_bottom = 235.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_v0cyc")

@@ -10,14 +10,20 @@ public partial class RFamiliarInstance : Resource
 	[Export] public Godot.Collections.Array<RTypeData> types {get; set;}
 	
 	[Export] public int level {get; set;} = 1;
-	[Export] public int experience {get; set;} = 0;
+	public int experience {get; set;} = 0;
 	
-	[Export] public int energy {get; set;}
-	[Export] public int pAttack {get; set;}
-	[Export] public int mAttack {get; set;}
-	[Export] public int pDefense {get; set;}
-	[Export] public int mDefense {get; set;}
-	[Export] public int speed {get; set;}
+	public int energy {get; private set;}
+	public int pAttack {get; private set;}
+	public int mAttack {get; private set;}
+	public int pDefense {get; private set;}
+	public int mDefense {get; private set;}
+	public int speed {get; private set;}
+	
+	[Export] public int pAttackBonus {get; set;}
+	[Export] public int mAttackBonus {get; set;}
+	[Export] public int pDefenseBonus {get; set;}
+	[Export] public int mDefenseBonus {get; set;}
+	[Export] public int speedBonus {get; set;}
 	
 	[Export] public Godot.Collections.Array<RSkillData> skills {get; set;}
 	
@@ -29,6 +35,14 @@ public partial class RFamiliarInstance : Resource
 		experience = 0;
 		
 		RecalculateStats();
+		
+		foreach (var t in data.types)
+		{
+			if (!types.Contains(t))
+			{
+				types.Add(t);
+			}
+		}
 	}
 	
 	public void LevelUp()
@@ -53,10 +67,10 @@ public partial class RFamiliarInstance : Resource
 		int levelsAboveBase = level - 1;
 		
 		energy = data.baseEnergy + (int)(data.levelEnergy * levelsAboveBase);
-		pAttack = data.basePAttack + (int)(data.levelPAttack * levelsAboveBase);
-		mAttack = data.baseMAttack + (int)(data.levelMAttack * levelsAboveBase);
-		pDefense = data.basePDefense + (int)(data.levelPDefense * levelsAboveBase);
-		mDefense = data.baseMDefense + (int)(data.levelMDefense * levelsAboveBase);
-		speed = data.baseSpeed + (int)(data.levelSpeed * levelsAboveBase);
+		pAttack = data.basePAttack + (int)(data.levelPAttack * levelsAboveBase) + pAttackBonus;
+		mAttack = data.baseMAttack + (int)(data.levelMAttack * levelsAboveBase) + mAttackBonus;
+		pDefense = data.basePDefense + (int)(data.levelPDefense * levelsAboveBase) + pDefenseBonus;
+		mDefense = data.baseMDefense + (int)(data.levelMDefense * levelsAboveBase) + mDefenseBonus;
+		speed = data.baseSpeed + (int)(data.levelSpeed * levelsAboveBase) + speedBonus;
 	}
 }
