@@ -97,6 +97,8 @@ public partial class ProjectorCommands : Control
 		DisableCommands();
 		undoButton.Visible = true;*/
 		DisableCommands();
+		
+		battle.RefreshNextButton();
 	}
 	
 	public void OnDismissPressed()
@@ -133,9 +135,12 @@ public partial class ProjectorCommands : Control
 		};
 		
 		battle.projectorCommands.Add(cmd);
+		battle.projCommandSubmitted = true;
 		battle.AppendBattleText("Player: Focus Command added.");
 		
 		SetActiveCommand(cmd);
+		
+		battle.RefreshNextButton();
 	}
 	
 	public void OnItemPressed()
@@ -164,6 +169,7 @@ public partial class ProjectorCommands : Control
 		activeCommand = null;
 		
 		EnableCommands();
+		battle.projCommandSubmitted = false;
 		battle.projCommandDisabled = false;
 		undoButton.Visible = false;
 	}
@@ -172,6 +178,7 @@ public partial class ProjectorCommands : Control
 	{
 		if (data is not RFamiliarInstance inst)
 		{
+			GD.Print("ProjectorCommands: assigned data is not familiar");
 			return;
 		}
 		
@@ -181,10 +188,20 @@ public partial class ProjectorCommands : Control
 			familiar = inst
 		};
 		
+		try
+		{
+			GD.Print($"ProjectorCommands: familiar {inst.GetPreferredName()} picked");
+		}
+		catch (Exception e)
+		{
+			GD.PrintErr($"ProjectorCommands: failed to identify familiar - {e}");
+		}
+		
 		battle.HighlightAllySlots();
 		battle.pendingCommand = new SummonCommand {
 			sourceSide = battle.playerSide,
-			source = battle.playerSide.projector
+			source = battle.playerSide.projector,
+			familiar = inst
 		};
 		
 		//battle.selectionPanel.UnblockCommands();

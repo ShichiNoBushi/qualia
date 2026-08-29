@@ -27,6 +27,19 @@ public partial class RFamiliarInstance : Resource
 	
 	[Export] public Godot.Collections.Array<RSkillData> skills {get; set;}
 	
+	public void Initialize()
+	{
+		RecalculateStats();
+		
+		foreach (var t in data.types)
+		{
+			if (!types.Contains(t))
+			{
+				types.Add(t);
+			}
+		}
+	}
+	
 	public void Initialize(RFamiliarData fData, int startingLevel = 1)
 	{
 		data = fData;
@@ -72,5 +85,10 @@ public partial class RFamiliarInstance : Resource
 		pDefense = data.basePDefense + (int)(data.levelPDefense * levelsAboveBase) + pDefenseBonus;
 		mDefense = data.baseMDefense + (int)(data.levelMDefense * levelsAboveBase) + mDefenseBonus;
 		speed = data.baseSpeed + (int)(data.levelSpeed * levelsAboveBase) + speedBonus;
+	}
+	
+	public string GetPreferredName()
+	{
+		return string.IsNullOrEmpty(nickName) ? (string.IsNullOrEmpty(data?.name) ? "(No name)" : data.name) : nickName;
 	}
 }

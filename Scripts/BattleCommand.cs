@@ -24,6 +24,9 @@ public partial class SummonCommand : BattleCommand
 	
 	public override void Execute(BattleManager battle)
 	{
+		string fName = string.IsNullOrEmpty(familiar?.nickName) ? (string.IsNullOrEmpty(familiar?.data?.name) ? "No name" : familiar.data.name) : familiar.nickName;
+		battle.AppendBattleText($"Summoning {fName} into slot {slot}.");
+		
 		if (source is not Projector projector)
 		{
 			battle.AppendBattleText("Projector does not exist");
@@ -49,8 +52,6 @@ public partial class SummonCommand : BattleCommand
 				}
 			}*/
 			
-			slot = sourceSide.GetPreferredOpenSlot();
-			
 			if (slot == -1)
 			{
 				battle.AppendBattleText("No slots available");
@@ -60,9 +61,11 @@ public partial class SummonCommand : BattleCommand
 		
 		int cost = familiar.energy;
 		
+		GD.Print($"SummonCommand: {familiar.GetPreferredName()} costs {cost} energy");
+		
 		if (projector.currentEnergy < cost)
 		{
-			string fName = string.IsNullOrEmpty(familiar.nickName) ? (string.IsNullOrEmpty(familiar.data.name) ? "(no name)" : familiar.data.name) : familiar.nickName;
+			//string fName = string.IsNullOrEmpty(familiar.nickName) ? (string.IsNullOrEmpty(familiar.data.name) ? "(no name)" : familiar.data.name) : familiar.nickName;
 			string text = $"Not enough energy to summon {fName}";
 			battle.AppendBattleText(text);
 			return;
@@ -235,7 +238,15 @@ public partial class FocusCommand : BattleCommand
 {
 	public override void Execute(BattleManager battle)
 	{
+		if (source is not Projector proj)
+		{
+			battle.AppendBattleText("Focus command failed: source not projector");
+			return;
+		}
+		
 		int amount = (int)GD.Randi() % 9 + 1;
+		
+		battle.AppendBattleText($"[b]{proj.name}[/b] focuses and recovers [b]{amount}[/b] energy.");
 		
 		if (source is Projector projector)
 		{

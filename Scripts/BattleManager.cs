@@ -31,6 +31,9 @@ public partial class BattleManager : Node
 	public BattleCommand pendingCommand;
 	public FamiliarActor pendingSource;
 	
+	public bool projCommandSubmitted;
+	public int famCommandsSubmitted;
+	
 	public enum BattleState
 	{
 		Setup,
@@ -170,6 +173,11 @@ public partial class BattleManager : Node
 		Projector player = new();
 		player.Initialize(pData);
 		
+		gnomeInst.Initialize();
+		salamanderInst.Initialize();
+		sylphInst.Initialize();
+		undineInst.Initialize();
+		
 		player.GiveFamiliar(gnomeInst);
 		player.GiveFamiliar(salamanderInst);
 		player.GiveFamiliar(sylphInst);
@@ -184,12 +192,13 @@ public partial class BattleManager : Node
 		}
 		
 		Initialize(player, eData);
-		RefreshAllDisplays();
-		BeginCommandSelect();
 	}
 	
 	public void Initialize(Projector player, REncounterData encounter)
 	{
+		SetBattleState(BattleState.Setup);
+		SetCommandState(CommandState.None);
+		
 		if (encounter == null || !encounter.IsValid())
 		{
 			return;
@@ -235,14 +244,46 @@ public partial class BattleManager : Node
 			}
 		}
 		
-		SetBattleState(BattleState.Setup);
-		SetCommandState(CommandState.None);
+		RefreshAllDisplays();
+		BeginCommandSelect();
 	}
 	
 	public void OnNextPressed()
 	{
 		AppendBattleText("Next button pressed.");
 		GD.Print("Next button pressed.");
+		
+		if (comState != CommandState.None)
+		{
+			AppendBattleText("Cancel pending command");
+			selectionPanel.HidePanel();
+			pendingCommand = null;
+			pendingSource = null;
+			SetCommandState(CommandState.None);
+			ClearHighlights();
+			RefreshNextButton();
+		}
+		else
+		{
+			AppendBattleText("Resolving turn", true);
+			try
+			{
+				projCommandSubmitted = false;
+				famCommandsSubmitted = 0;
+				SetBattleState(BattleState.Resolution);
+				SetCommandState(CommandState.None);
+				
+				RefreshNextButton();
+				
+				BuildTurnOrder();
+				ResolveTurn();
+			}
+			catch (Exception e)
+			{
+				GD.PrintErr($"BattleManager: Error resolving turn {e}");
+				AppendBattleText("Error resolving turn");
+			}
+		}
 	}
 	
 	public void FamiliarSlotClicked(FamiliarDisplay display)
@@ -257,7 +298,14 @@ public partial class BattleManager : Node
 		switch (comState)
 		{
 			case CommandState.SelectSummon:
-				TryFinishSummon(display);
+				try
+				{
+					TryFinishSummon(display);
+				}
+				catch (Exception e)
+				{
+					GD.PrintErr($"BattleManager: Summon failed - {e}");
+				}
 				break;
 			//CommandState.SelectDismiss
 			//CommandState.SelectAllySpell
@@ -267,6 +315,22 @@ public partial class BattleManager : Node
 			//CommandState.SelectEnemySpell
 			//CommandState.SelectEnemySkill
 			//CommandState.SelectEnemyItem
+		}
+	}
+	
+	public void RefreshNextButton()
+	{
+		if (batState == BattleState.CommandSelect)
+		{
+			bool canCommit = PlayerCommandsSubmitted();
+			bool canCancel = comState != CommandState.None;
+			nextButton.Text = canCommit ? "Commit" : (canCancel ? "Cancel" : "Next");
+			nextButton.Disabled = !canCommit && !canCancel;
+		}
+		else
+		{
+			nextButton.Text = "Next";
+			nextButton.Disabled = false;
 		}
 	}
 	
@@ -297,6 +361,7 @@ public partial class BattleManager : Node
 	public void BeginCommandSelect()
 	{
 		SetBattleState(BattleState.CommandSelect);
+		SetCommandState(CommandState.None);
 		
 		projectorCommands.Clear();
 		familiarCommands.Clear();
@@ -321,11 +386,15 @@ public partial class BattleManager : Node
 		{
 			famCommandPanels[i].SetElementsVisible(!playerSide.IsSlotEmpty(i));
 		}
+		
+		projCommandSubmitted = false;
+		famCommandsSubmitted = 0;
+		RefreshNextButton();
 	}
 	
 	public void TryFinishSummon(FamiliarDisplay display)
 	{
-		int slot = IndexOfDisplay(display, famDisplaysP);
+		int slot = display.slotIndex;
 		
 		if (slot < 0 || !playerSide.IsSlotEmpty(slot))
 		{
@@ -335,14 +404,40 @@ public partial class BattleManager : Node
 		if (pendingCommand is SummonCommand summon)
 		{
 			summon.slot = slot;
+			
+			string projName = "(No name)";
+			string famName = "(No name)";
+			
+			try
+			{
+				projName = ((Projector)summon.source).name;
+			}
+			catch (Exception e)
+			{
+				GD.PrintErr($"BattleManager: failed to get porjector name - {e}");
+			}
+			
+			try
+			{
+				famName = summon.familiar.GetPreferredName();
+			}
+			catch (Exception e)
+			{
+				GD.PrintErr($"BattleManager: failed to get familiar name - {e}");
+			}
+			
+			GD.Print($"BattleManager: Adding summon command source {projName}, familiar {famName}, slot {slot}");
 			projectorCommands.Add(summon);
 			projCommandPanel.SetActiveCommand(summon);
+			
+			ClearTargetMode();
+			projCommandPanel.DisableCommands();
+			projCommandSubmitted = true;
+			projCommandDisabled = true;
+			projCommandPanel.undoButton.Visible = true;
+			
+			RefreshNextButton();
 		}
-		
-		ClearTargetMode();
-		projCommandPanel.DisableCommands();
-		projCommandDisabled = true;
-		projCommandPanel.undoButton.Visible = true;
 	}
 	
 	public void ClearTargetMode()
@@ -472,11 +567,18 @@ public partial class BattleManager : Node
 			
 			if (cmd.isValid)
 			{
-				cmd.Execute(this);
+				try
+				{
+					cmd.Execute(this);
+				}
+				catch (Exception e)
+				{
+					GD.PrintErr($"BattleManager: failed to execute command - {e}");
+				}
 			}
 		}
 	
-		SetBattleState(BattleState.SpawnCheck);
+		BeginCommandSelect();
 	}
 	
 	public VictoryResult CheckVictory()
@@ -617,6 +719,11 @@ public partial class BattleManager : Node
 		}
 		
 		return -1;
+	}
+	
+	public bool PlayerCommandsSubmitted()
+	{
+		return projCommandSubmitted && famCommandsSubmitted >= playerSide.CountActiveFamiliars();
 	}
 	
 	public void AppendBattleText(string text, bool doubleSpace = true)
