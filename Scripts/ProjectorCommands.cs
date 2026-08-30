@@ -16,6 +16,9 @@ public partial class ProjectorCommands : Control
 	public BattleManager battle {get; set;}
 	public BattleCommand activeCommand {get; set;}
 	
+	public bool disableSummon {get; set;} = false;
+	public bool disableDismiss {get; set;} = false;
+	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -103,10 +106,18 @@ public partial class ProjectorCommands : Control
 	
 	public void OnDismissPressed()
 	{
+		if (battle.playerSide.CountActiveFamiliars() == 0)
+		{
+			return;
+		}
 		
+		battle.SetCommandState(BattleManager.CommandState.SelectDismiss);
+		battle.pendingCommand = null;
+		
+		battle.HighlightAllies();
 		
 		DisableCommands();
-		undoButton.Visible = true;
+		battle.RefreshNextButton();
 	}
 	
 	public void OnSpellPressed()
@@ -209,6 +220,12 @@ public partial class ProjectorCommands : Control
 		//undoButton.Visible = true;
 	}
 	
+	public void CheckValidCommands()
+	{
+		disableSummon = !battle.playerSide.HasOpenSlot();
+		disableDismiss = battle.playerSide.CountActiveFamiliars() == 0;
+	}
+	
 	public void DisableCommands()
 	{
 		summonButton.Disabled = true;
@@ -221,8 +238,8 @@ public partial class ProjectorCommands : Control
 	
 	public void EnableCommands()
 	{
-		summonButton.Disabled = false;
-		//dismissButton.Disabled = false;
+		summonButton.Disabled = disableSummon;
+		dismissButton.Disabled = disableDismiss;
 		//spellButton.Disabled = false;
 		focusButton.Disabled = false;
 		//itemButton.Disabled = false;

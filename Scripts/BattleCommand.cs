@@ -7,6 +7,8 @@ public abstract partial class BattleCommand : RefCounted
 	public object source {get; set;}
 	public object target {get; set;}
 	
+	public float speedFactor {get; set;} = 1f;
+	
 	public bool isValid {get; set;} = true;
 	
 	public abstract void Execute(BattleManager battle);
@@ -79,18 +81,64 @@ public partial class SummonCommand : BattleCommand
 		if (sourceSide.TrySummon(actor, slot))
 		{
 			projector.currentEnergy -= cost;
+			GD.Print($"SummonCommand: {projector.name}'s Energy reduced by {cost} to {projector.currentEnergy}");
 			
 			FamiliarDisplay[] displays = battle.GetFamiliarDisplays(sourceSide);
 			displays[slot].AssignFamiliar(actor);
 			
 			string text = $"[b]{pName}[/b] summons [b]{aName}[/b]";
 			battle.AppendBattleText(text);
+			battle.RefreshAllDisplays();
 		}
 		else
 		{
 			battle.AppendBattleText("Failed to summon");
 			GD.Print("SummonCommand: Failed to summon");
 		}
+	}
+}
+
+public partial class DismissCommand : BattleCommand
+{
+	public override void Execute(BattleManager battle)
+	{
+		if (source is not Projector proj)
+		{
+			return;
+		}
+		
+		if (target is not FamiliarActor actor)
+		{
+			return;
+		}
+		
+		if (actor.side != sourceSide)
+		{
+			return;
+		}
+		
+		int slot = actor.slot;
+		int refund = actor.currentEnergy;
+		
+		proj.currentEnergy = Math.Min(proj.currentEnergy + refund, proj.maxEnergy);
+		
+		actor.side.ClearSlot(slot);
+		
+		battle.InvalidateFamiliarCommands(actor, this);
+		
+		FamiliarDisplay[] displays = battle.GetFamiliarDisplays(actor.side);
+		
+		if (slot >= 0 && slot < displays.Length)
+		{
+			displays[slot].Clear();
+		}
+		
+		string aName = string.IsNullOrEmpty(actor.name) ? "(No name)" : actor.name;
+		string pName = string.IsNullOrEmpty(proj.name) ? "(No name)" : proj.name;
+		
+		battle.AppendBattleText($"[b]{pName}[/b] dismisses [b]{aName}[/b] and recovers [b]{refund}[/b] energy.");
+		
+		battle.RefreshAllDisplays();
 	}
 }
 
@@ -117,10 +165,7 @@ public partial class AttackCommand : BattleCommand
 		int attackStat = GetAttackStat(source);
 		int defenseStat = GetDefenseStat(target);
 		
-		float raw = (float)(attackStat * power) / Mathf.Max(1, defenseStat);
-		int damage = Mathf.Max(1, Mathf.RoundToInt(raw));
-		
-		ApplyDamage(target, damage);
+		float defFactor = 1f;
 		
 		string fName = "(no name)";
 		
@@ -133,12 +178,18 @@ public partial class AttackCommand : BattleCommand
 		
 		if (target is FamiliarActor tFam)
 		{
+			defFactor = tFam.defenseFactor;
 			tName = string.IsNullOrEmpty(tFam.name) ? "(no name)" : tFam.name;
 		}
 		else if (target is Projector tProj)
 		{
 			tName = string.IsNullOrEmpty(tProj.name) ? "(no name)" : tProj.name;
 		}
+		
+		float raw = (float)(attackStat * power) / Mathf.Max(1, defenseStat);
+		int damage = Mathf.Max(1, Mathf.RoundToInt(raw / defFactor));
+		
+		ApplyDamage(target, damage);
 		
 		string text = $"[b]{fName}[/b] deals {damage} damage to [b]{tName}[/b]";
 		battle.AppendBattleText(text);
@@ -177,6 +228,8 @@ public partial class AttackCommand : BattleCommand
 				battle.AppendBattleText(text, false);
 			}
 		}
+		
+		battle.RefreshAllDisplays();
 	}
 	
 	public override void Retarget(BattleManager battle)
@@ -234,6 +287,27 @@ public partial class AttackCommand : BattleCommand
 	}
 }
 
+public partial class DefendCommand : BattleCommand
+{
+	public DefendCommand()
+	{
+		speedFactor = 2f;
+	}
+	
+	public override void Execute(BattleManager battle)
+	{
+		if (source is not FamiliarActor actor)
+		{
+			return;
+		}
+		
+		string name = string.IsNullOrEmpty(actor.familiar?.GetPreferredName()) ? "No Name" : actor.familiar.GetPreferredName();
+		battle.AppendBattleText($"[b]{name}[/b] defends.");
+		
+		actor.defenseFactor = Math.Max(2, actor.defenseFactor);
+	}
+}
+
 public partial class FocusCommand : BattleCommand
 {
 	public override void Execute(BattleManager battle)
@@ -244,7 +318,7 @@ public partial class FocusCommand : BattleCommand
 			return;
 		}
 		
-		int amount = (int)GD.Randi() % 9 + 1;
+		int amount = (int)(GD.Randi() % 10) + 1;
 		
 		battle.AppendBattleText($"[b]{proj.name}[/b] focuses and recovers [b]{amount}[/b] energy.");
 		
@@ -252,5 +326,7 @@ public partial class FocusCommand : BattleCommand
 		{
 			projector.currentEnergy = Mathf.Min(projector.maxEnergy, projector.currentEnergy + amount);
 		}
+		
+		battle.RefreshAllDisplays();
 	}
 }

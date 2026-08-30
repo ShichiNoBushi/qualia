@@ -307,7 +307,9 @@ public partial class BattleManager : Node
 					GD.PrintErr($"BattleManager: Summon failed - {e}");
 				}
 				break;
-			//CommandState.SelectDismiss
+			case CommandState.SelectDismiss:
+				TryFinishDismiss(display);
+				break;
 			//CommandState.SelectAllySpell
 			//CommandState.SelectAllySkill
 			//CommandState.SelectAllyItem
@@ -338,6 +340,8 @@ public partial class BattleManager : Node
 	{
 		projCommandDisabled = false;
 		
+		projCommandPanel.CheckValidCommands();
+		
 		for (int i = 0; i < 4; i++)
 		{
 			FamiliarActor actor = playerSide?.familiarSlots[i] as FamiliarActor;
@@ -367,6 +371,9 @@ public partial class BattleManager : Node
 		familiarCommands.Clear();
 		turnCommands.Clear();
 		
+		ResetSideModifiers(playerSide);
+		ResetSideModifiers(enemySide);
+		
 		RefreshCommandPanels();
 		
 		projCommandPanel.EnableCommands();
@@ -390,6 +397,17 @@ public partial class BattleManager : Node
 		projCommandSubmitted = false;
 		famCommandsSubmitted = 0;
 		RefreshNextButton();
+	}
+	
+	public void ResetSideModifiers(BattleSide side)
+	{
+		foreach (var slot in side.familiarSlots)
+		{
+			if (slot is FamiliarActor fam)
+			{
+				fam.ResetTurnModifiers();
+			}
+		}
 	}
 	
 	public void TryFinishSummon(FamiliarDisplay display)
@@ -430,14 +448,45 @@ public partial class BattleManager : Node
 			projectorCommands.Add(summon);
 			projCommandPanel.SetActiveCommand(summon);
 			
+			SetCommandState(CommandState.None);
 			ClearTargetMode();
 			projCommandPanel.DisableCommands();
 			projCommandSubmitted = true;
 			projCommandDisabled = true;
-			projCommandPanel.undoButton.Visible = true;
+			//projCommandPanel.undoButton.Visible = true;
 			
 			RefreshNextButton();
 		}
+	}
+	
+	public void TryFinishDismiss(FamiliarDisplay display)
+	{
+		int slot = display.slotIndex;
+		
+		if (slot < 0)
+		{
+			return;
+		}
+		
+		if (playerSide.familiarSlots[slot] is not FamiliarActor actor || !actor.isAlive)
+		{
+			return;
+		}
+		
+		DismissCommand cmd = new DismissCommand {
+			sourceSide = playerSide,
+			source = playerSide.projector,
+			target = actor
+		};
+		
+		projectorCommands.Add(cmd);
+		projCommandPanel.SetActiveCommand(cmd);
+		
+		SetCommandState(CommandState.None);
+		ClearTargetMode();
+		projCommandPanel.DisableCommands();
+		projCommandSubmitted = true;
+		projCommandDisabled = true;
 	}
 	
 	public void ClearTargetMode()
@@ -538,19 +587,40 @@ public partial class BattleManager : Node
 		
 		var sortedFamiliarCmds = familiarCommands.OrderByDescending(cmd =>
 		{
-			int speed = 0;
+			float speed = 0f;
 			
 			if (cmd.source is FamiliarActor fam)
 			{
-				speed = fam.ModSpeed();
+				speed = fam.ModSpeed() * cmd.speedFactor;
 			}
 			
-			return speed * 100 + (int)GD.Randi() % 20;
+			return speed * 100f + (int)GD.Randi() % 20;
 		}).ToList();
 		
 		foreach (var cmd in sortedFamiliarCmds)
 		{
 			turnCommands.Add(cmd);
+		}
+	}
+	
+	public void InvalidateFamiliarCommands(FamiliarActor actor, BattleCommand except = null)
+	{
+		foreach (var cmd in turnCommands)
+		{
+			if (cmd == null || ReferenceEquals(cmd, except))
+			{
+				continue;
+			}
+			
+			if (ReferenceEquals(cmd.source, actor))
+			{
+				cmd.isValid = false;
+			}
+			
+			if (ReferenceEquals(cmd.target, actor))
+			{
+				cmd.Retarget(this);
+			}
 		}
 	}
 	
@@ -563,7 +633,7 @@ public partial class BattleManager : Node
 				continue;
 			}
 			
-			cmd.Retarget(this);
+			//cmd.Retarget(this);
 			
 			if (cmd.isValid)
 			{
@@ -1029,16 +1099,23 @@ public partial class FamiliarActor : RefCounted, IBattleActor
 	
 	public bool isAlive => currentEnergy > 0;
 	
+	public float defenseFactor {get; set;} = 1f;
+	
 	public FamiliarActor(RFamiliarInstance fam)
 	{
 		familiar = fam;
-		name = string.IsNullOrEmpty(familiar.nickName) ? familiar.data.name : familiar.nickName;
+		name = familiar.GetPreferredName();
 		currentEnergy = maxEnergy;
 	}
 	
 	public void Damage(int amount)
 	{
 		currentEnergy = Mathf.Max(currentEnergy - amount, 0);
+	}
+	
+	public void ResetTurnModifiers()
+	{
+		defenseFactor = 1f;
 	}
 	
 	public int ModPAttack()

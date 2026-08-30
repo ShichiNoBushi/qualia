@@ -73,6 +73,7 @@ offset_top = 8.0
 offset_right = 1912.0
 offset_bottom = 564.0
 bbcode_enabled = true
+scroll_following = true
 
 [node name="NextButton" type="Button" parent="BattleManager" unique_id=1635563629]
 offset_left = 1786.0

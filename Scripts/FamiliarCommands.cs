@@ -84,9 +84,24 @@ public partial class FamiliarCommands : Control
 	
 	public void OnDefendPressed()
 	{
+		if (familiar == null)
+		{
+			return;
+		}
 		
+		DefendCommand cmd = new()
+		{
+			sourceSide = battle.playerSide,
+			source = familiar
+		};
 		
-		DisableCommands();
+		battle.familiarCommands.Add(cmd);
+		battle.famCommandsSubmitted++;
+		battle.AppendBattleText("Player: Defend Command added.");
+		
+		SetActiveCommand(cmd);
+		
+		battle.RefreshNextButton();
 	}
 	
 	public void OnSkillPressed(RSkillData skill)
@@ -101,6 +116,7 @@ public partial class FamiliarCommands : Control
 		if (activeCommand != null)
 		{
 			battle.familiarCommands.Remove(activeCommand);
+			battle.famCommandsSubmitted = Math.Min(battle.famCommandsSubmitted - 1, 0);
 		}
 		activeCommand = null;
 		
@@ -121,13 +137,21 @@ public partial class FamiliarCommands : Control
 	
 	public void EnableCommands()
 	{
-		attackButton.Disabled = false;
-		//defendButton.Disabled = false;
+		//attackButton.Disabled = false;
+		defendButton.Disabled = false;
 		
 		foreach (var btn in skillButtons)
 		{
 			//btn.Disabled = false;
 		}
+	}
+	
+	public void SetActiveCommand(BattleCommand command)
+	{
+		DisableCommands();
+		battle.projCommandDisabled = true;
+		activeCommand = command;
+		undoButton.Visible = true;
 	}
 	
 	public void SetElementsVisible(bool visible)
