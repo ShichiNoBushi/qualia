@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="REncounterData" format=3 uid="uid://dp3xd3ejwltlm"]
+
+[ext_resource type="Script" uid="uid://dki63xii04tcd" path="res://Scripts/RFamiliarSpawn.cs" id="1_3smgd"]
+[ext_resource type="Resource" uid="uid://b1d1nkynkkoh5" path="res://Resources/familiar_data/ex_gnome.tres" id="2_6c7pb"]
+[ext_resource type="Script" uid="uid://ctnjg4mtw7rfj" path="res://Scripts/REncounterData.cs" id="2_ktln4"]
+[ext_resource type="Resource" uid="uid://dd0ycosprdajc" path="res://Resources/familiar_data/ex_salamander.tres" id="3_dshhv"]
+[ext_resource type="Resource" uid="uid://cph17bvgufjx3" path="res://Resources/familiar_data/ex_sylph.tres" id="4_ey4ac"]
+[ext_resource type="Resource" uid="uid://chkgu8q8pff4y" path="res://Resources/familiar_data/ex_undine.tres" id="5_0lwns"]
+
+[sub_resource type="Resource" id="Resource_srir7"]
+script = ExtResource("1_3smgd")
+familiar = ExtResource("2_6c7pb")
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[sub_resource type="Resource" id="Resource_6c7pb"]
+script = ExtResource("1_3smgd")
+familiar = ExtResource("3_dshhv")
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[sub_resource type="Resource" id="Resource_dshhv"]
+script = ExtResource("1_3smgd")
+familiar = ExtResource("4_ey4ac")
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[sub_resource type="Resource" id="Resource_ey4ac"]
+script = ExtResource("1_3smgd")
+familiar = ExtResource("5_0lwns")
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[resource]
+script = ExtResource("2_ktln4")
+id = "test_encounter"
+name = "Test Encounter"
+familiarList = Array[ExtResource("1_3smgd")]([SubResource("Resource_srir7"), SubResource("Resource_6c7pb"), SubResource("Resource_dshhv"), SubResource("Resource_ey4ac")])
+metadata/_custom_type_script = "uid://ctnjg4mtw7rfj"

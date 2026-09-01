@@ -302,7 +302,14 @@ public partial class DefendCommand : BattleCommand
 		}
 		
 		string name = string.IsNullOrEmpty(actor.familiar?.GetPreferredName()) ? "No Name" : actor.familiar.GetPreferredName();
-		battle.AppendBattleText($"[b]{name}[/b] defends.");
+		string enemyPrefix = "";
+		
+		if (sourceSide == battle.enemySide)
+		{
+			enemyPrefix = "Enemy ";
+		}
+		
+		battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b] defends.");
 		
 		actor.defenseFactor = Math.Max(2, actor.defenseFactor);
 	}

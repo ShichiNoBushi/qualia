@@ -183,7 +183,7 @@ public partial class BattleManager : Node
 		player.GiveFamiliar(sylphInst);
 		player.GiveFamiliar(undineInst);
 		
-		REncounterData eData = GD.Load<REncounterData>("res://Resources/test_encounter.tres");
+		REncounterData eData = GD.Load<REncounterData>("res://Resources/encounters/test_encounter.tres");
 		
 		if (eData == null)
 		{
@@ -242,6 +242,8 @@ public partial class BattleManager : Node
 					spawns.Add(familiar);
 				}
 			}
+			
+			SpawnSpark();
 		}
 		
 		RefreshAllDisplays();
@@ -275,6 +277,7 @@ public partial class BattleManager : Node
 				
 				RefreshNextButton();
 				
+				AssignComCommands();
 				BuildTurnOrder();
 				ResolveTurn();
 			}
@@ -553,6 +556,14 @@ public partial class BattleManager : Node
 		}
 	}
 	
+	public void AssignComCommands()
+	{
+		foreach (var fam in enemySide.GetFamiliarList())
+		{
+			familiarCommands.Add(fam.GenerateCommand());
+		}
+	}
+	
 	public void BuildTurnOrder()
 	{
 		turnCommands.Clear();
@@ -647,8 +658,37 @@ public partial class BattleManager : Node
 				}
 			}
 		}
+		
+		SetBattleState(BattleState.SpawnCheck);
+		SpawnCheck();
+	}
 	
-		BeginCommandSelect();
+	public void SpawnSpark()
+	{
+		if (isProjectorEncounter || spawns.Count == 0)
+		{
+			return;
+		}
+		
+		int slot = enemySide.GetPreferredOpenSlot();
+		
+		if (slot >= 0)
+		{
+			RFamiliarInstance fam = spawns[0];
+			
+			SpawnActor spark = new(fam);
+			
+			if (enemySide.TrySpawn(spark, slot))
+			{
+				spawns.RemoveAt(0);
+				famDisplaysE[slot].AssignSpawn(spark);
+				AppendBattleText("A familiar starts to manifest...");
+			}
+			else if (spark == null)
+			{
+				spawns.RemoveAt(0);
+			}
+		}
 	}
 	
 	public VictoryResult CheckVictory()
@@ -688,7 +728,9 @@ public partial class BattleManager : Node
 	{
 		if (isProjectorEncounter)
 		{
-			SetBattleState(BattleState.EndCheck);
+			//SetBattleState(BattleState.EndCheck);
+			//EndCheck();
+			BeginCommandSelect();
 			return;
 		}
 		
@@ -711,38 +753,15 @@ public partial class BattleManager : Node
 		
 		if (spawns.Count > 0 && enemySide.HasOpenSlot())
 		{
-			/*int slot = -1;
-			
-			for (int i = 0; i < BattleSide.MAX_SLOTS; i++)
-			{
-				if (enemySide.IsSlotEmpty(i))
-				{
-					slot = i;
-					break;
-				}
-			}*/
-			
-			int slot = enemySide.GetPreferredOpenSlot();
-			
-			if (slot >= 0)
-			{
-				RFamiliarInstance fam = spawns[0];
-				
-				SpawnActor spark = new(fam);
-				
-				if (enemySide.TrySpawn(spark, slot))
-				{
-					spawns.RemoveAt(0);
-					famDisplaysE[slot].AssignSpawn(spark);
-				}
-				else if (spark == null)
-				{
-					spawns.RemoveAt(0);
-				}
-			}
+			SpawnSpark();
 		}
 		
-		SetBattleState(BattleState.EndCheck);
+		RefreshAllDisplays();
+		
+		//SetBattleState(BattleState.EndCheck);
+		//EndCheck();
+		
+		BeginCommandSelect();
 	}
 	
 	public void EndCheck()
@@ -1141,6 +1160,16 @@ public partial class FamiliarActor : RefCounted, IBattleActor
 	public int ModSpeed()
 	{
 		return speed + speedBonus;
+	}
+	
+	public BattleCommand GenerateCommand()
+	{
+		DefendCommand cmd = new DefendCommand {
+			source = this,
+			sourceSide = side
+		};
+		
+		return cmd;
 	}
 }
 
