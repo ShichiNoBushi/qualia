@@ -61,6 +61,7 @@ public partial class ProjectorCommands : Control
 		{
 			battle.AppendBattleText("ProjectorCommand: null projector");
 			GD.Print("ProjectorCommand: null projector");
+			return;
 		}
 		
 		Godot.Collections.Array<RFamiliarInstance> alreadyOut = new();
@@ -99,7 +100,7 @@ public partial class ProjectorCommands : Control
 		
 		DisableCommands();
 		undoButton.Visible = true;*/
-		DisableCommands();
+		battle.BlockCommands();
 		
 		battle.RefreshNextButton();
 	}
@@ -116,7 +117,7 @@ public partial class ProjectorCommands : Control
 		
 		battle.HighlightAllies();
 		
-		DisableCommands();
+		battle.BlockCommands();
 		battle.RefreshNextButton();
 	}
 	
@@ -183,6 +184,8 @@ public partial class ProjectorCommands : Control
 		battle.projCommandSubmitted = false;
 		battle.projCommandDisabled = false;
 		undoButton.Visible = false;
+		
+		battle.RefreshNextButton();
 	}
 	
 	public void OnFamiliarPicked(object data)

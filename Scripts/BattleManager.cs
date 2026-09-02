@@ -262,6 +262,8 @@ public partial class BattleManager : Node
 			pendingCommand = null;
 			pendingSource = null;
 			SetCommandState(CommandState.None);
+			
+			UnblockCommands();
 			ClearHighlights();
 			RefreshNextButton();
 		}
@@ -316,7 +318,9 @@ public partial class BattleManager : Node
 			//CommandState.SelectAllySpell
 			//CommandState.SelectAllySkill
 			//CommandState.SelectAllyItem
-			//CommandState.SelectEnemyAttack
+			case CommandState.SelectEnemyAttack:
+				TryFinishAttack(display);
+				break;
 			//CommandState.SelectEnemySpell
 			//CommandState.SelectEnemySkill
 			//CommandState.SelectEnemyItem
@@ -351,6 +355,7 @@ public partial class BattleManager : Node
 			bool alive = actor != null && actor.isAlive;
 			famCommandPanels[i].SetElementsVisible(alive);
 			famCommandPanels[i].Bind(alive ? actor : null);
+			famCommandPanels[i].CheckValidCommands();
 			famCommandDisabled[i] = !alive;
 		}
 	}
@@ -451,7 +456,6 @@ public partial class BattleManager : Node
 			projectorCommands.Add(summon);
 			projCommandPanel.SetActiveCommand(summon);
 			
-			SetCommandState(CommandState.None);
 			ClearTargetMode();
 			projCommandPanel.DisableCommands();
 			projCommandSubmitted = true;
@@ -485,21 +489,71 @@ public partial class BattleManager : Node
 		projectorCommands.Add(cmd);
 		projCommandPanel.SetActiveCommand(cmd);
 		
-		SetCommandState(CommandState.None);
 		ClearTargetMode();
 		projCommandPanel.DisableCommands();
 		projCommandSubmitted = true;
 		projCommandDisabled = true;
+		
+		RefreshNextButton();
+	}
+	
+	public void TryFinishAttack(FamiliarDisplay display)
+	{
+		if (pendingSource is not FamiliarActor src || !src.isAlive)
+		{
+			return;
+		}
+		
+		if (display.isPlayerSide)
+		{
+			return;
+		}
+		
+		int slot = display.slotIndex;
+		
+		if (slot < 0 || slot >= BattleSide.MAX_SLOTS)
+		{
+			return;
+		}
+		
+		if (enemySide.familiarSlots[slot] is not FamiliarActor actor || !actor.isAlive)
+		{
+			return;
+		}
+		
+		int sourceSlot = playerSide.GetSlotIndex(pendingSource);
+		
+		if (sourceSlot < 0 || sourceSlot >= BattleSide.MAX_SLOTS)
+		{
+			return;
+		}
+		
+		AttackCommand cmd = new AttackCommand {
+			sourceSide = playerSide,
+			source = pendingSource,
+			target = actor,
+			power = 5
+		};
+		
+		familiarCommands.Add(cmd);
+		famCommandPanels[sourceSlot].SetActiveCommand(cmd);
+		
+		ClearTargetMode();
+		famCommandsSubmitted++;
+		famCommandDisabled[sourceSlot] = true;
+		
+		RefreshNextButton();
 	}
 	
 	public void ClearTargetMode()
 	{
 		GD.Print("BattleManager: clearing targets");
 		
-		comState = CommandState.None;
+		SetCommandState(CommandState.None);
 		pendingCommand = null;
 		pendingSource = null;
 		ClearHighlights();
+		UnblockCommands();
 	}
 	
 	public void HighlightAllySlots()
@@ -531,7 +585,7 @@ public partial class BattleManager : Node
 		foreach (var panel in famDisplaysE)
 		{
 			int slot = panel.slotIndex;
-			if (!enemySide.IsSlotEmpty(slot))
+			if (!enemySide.IsSlotEmpty(slot) && enemySide.familiarSlots[slot].isAlive)
 			{
 				panel.HighlightEnemy(true);
 			}
@@ -553,6 +607,32 @@ public partial class BattleManager : Node
 		foreach (var panel in famDisplaysP)
 		{
 			panel.ClearHighlights();
+		}
+	}
+	
+	public void BlockCommands()
+	{
+		projCommandPanel.DisableCommands();
+		
+		for (int i = 0; i < 4; i++)
+		{
+			famCommandPanels[i].DisableCommands();
+		}
+	}
+	
+	public void UnblockCommands()
+	{
+		if (!projCommandDisabled)
+		{
+			projCommandPanel.EnableCommands();
+		}
+		
+		for (int i = 0; i < 4; i++)
+		{
+			if (!famCommandDisabled[i])
+			{
+				famCommandPanels[i].EnableCommands();
+			}
 		}
 	}
 	

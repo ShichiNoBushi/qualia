@@ -11,9 +11,12 @@ public partial class FamiliarCommands : Control
 	public List<Button> skillButtons = new();
 	public Button undoButton;
 	
-	public FamiliarActor familiar;
-	public BattleManager battle;
-	public BattleCommand activeCommand;
+	public FamiliarActor familiar {get; set;}
+	public BattleManager battle {get; set;}
+	public int slot {get; set;}
+	public BattleCommand activeCommand {get; set;}
+	
+	public bool disableAttack {get; set;} = false;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -29,9 +32,6 @@ public partial class FamiliarCommands : Control
 		attackButton.Pressed += OnAttackPressed;
 		defendButton.Pressed += OnDefendPressed;
 		undoButton.Pressed += OnUndoPressed;
-		
-		//Disable buttons currently without function.
-		defendButton.Disabled = true;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -42,6 +42,7 @@ public partial class FamiliarCommands : Control
 	public void Bind(FamiliarActor actor)
 	{
 		familiar = actor;
+		slot = battle.playerSide.GetSlotIndex(actor);
 		
 		ClearSkillButtons();
 		
@@ -77,9 +78,41 @@ public partial class FamiliarCommands : Control
 	
 	public void OnAttackPressed()
 	{
+		if (battle.enemySide.CountActiveFamiliars() == 0 && !battle.isProjectorEncounter)
+		{
+			return;
+		}
 		
+		bool canAttackFamiliars = battle.enemySide.CountActiveFamiliars() > 0;
+		bool canAttackProjector = battle.isProjectorEncounter && !canAttackFamiliars && battle.enemySide.projector != null && battle.enemySide.projector.currentEnergy > 0;
 		
-		DisableCommands();
+		if (!canAttackFamiliars && !canAttackProjector)
+		{
+			return;
+		}
+		
+		if (familiar == null)
+		{
+			battle.AppendBattleText("FamiliarCommand: familiar null");
+			GD.Print("FamiliarCommand: familiar null");
+			return;
+		}
+		
+		battle.SetCommandState(BattleManager.CommandState.SelectEnemyAttack);
+		battle.pendingCommand = null;
+		battle.pendingSource = familiar;
+		
+		if (canAttackFamiliars)
+		{
+			battle.HighlightEnemies();
+		}
+		else if (canAttackProjector)
+		{
+			battle.projectorDisplayE.Highlight(true);
+		}
+		
+		battle.BlockCommands();
+		battle.RefreshNextButton();
 	}
 	
 	public void OnDefendPressed()
@@ -120,8 +153,19 @@ public partial class FamiliarCommands : Control
 		}
 		activeCommand = null;
 		
+		battle.famCommandDisabled[slot] = false;
 		EnableCommands();
 		undoButton.Visible = false;
+		
+		battle.RefreshNextButton();
+	}
+	
+	public void CheckValidCommands()
+	{
+		bool canAttackFamiliars = battle.enemySide.CountActiveFamiliars() > 0;
+		bool canAttackProjector = battle.isProjectorEncounter && !canAttackFamiliars && battle.enemySide.projector != null && battle.enemySide.projector.currentEnergy > 0;
+		
+		disableAttack = !canAttackFamiliars && !canAttackProjector;
 	}
 	
 	public void DisableCommands()
@@ -137,7 +181,7 @@ public partial class FamiliarCommands : Control
 	
 	public void EnableCommands()
 	{
-		//attackButton.Disabled = false;
+		attackButton.Disabled = disableAttack;
 		defendButton.Disabled = false;
 		
 		foreach (var btn in skillButtons)
@@ -149,7 +193,7 @@ public partial class FamiliarCommands : Control
 	public void SetActiveCommand(BattleCommand command)
 	{
 		DisableCommands();
-		battle.projCommandDisabled = true;
+		battle.famCommandDisabled[slot] = true;
 		activeCommand = command;
 		undoButton.Visible = true;
 	}

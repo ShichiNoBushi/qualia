@@ -37,6 +37,7 @@ offset_top = 3.0
 offset_right = 206.0
 offset_bottom = 349.0
 step = 1.0
+fill_mode = 3
 show_percentage = false
 
 [node name="EnergyLabel" type="Label" parent="." unique_id=355263010]

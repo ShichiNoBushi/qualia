@@ -151,28 +151,31 @@ public partial class AttackCommand : BattleCommand
 	
 	public override void Execute(BattleManager battle)
 	{
-		if (target == null)
+		
+		if (source is not FamiliarActor srcFam || !srcFam.isAlive)
 		{
+			isValid = false;
+			return;
+		}
+		
+		if (!IsUsableTarget(target))
+		{
+			target = null;
 			Retarget(battle);
 			
-			if (target == null)
+			if (!IsUsableTarget(target))
 			{
 				battle.AppendBattleText("No target available");
 				return;
 			}
 		}
 		
-		int attackStat = GetAttackStat(source);
+		int attackStat = GetAttackStat(srcFam);
 		int defenseStat = GetDefenseStat(target);
 		
 		float defFactor = 1f;
 		
-		string fName = "(no name)";
-		
-		if (source is FamiliarActor fam)
-		{
-			fName = string.IsNullOrEmpty(fam.name) ? "(no name)" : fam.name;
-		}
+		string fName = string.IsNullOrEmpty(srcFam.name) ? "(no name)" : srcFam.name;
 		
 		string tName = "(no name)";
 		
@@ -201,7 +204,10 @@ public partial class AttackCommand : BattleCommand
 			
 			int slot = enemySide.GetSlotIndex(fam2);
 			
-			displays[slot].UpdateDisplay();
+			if (slot >= 0 && slot < BattleSide.MAX_SLOTS)
+			{
+				displays[slot].UpdateDisplay();
+			}
 			
 			if (!fam2.isAlive)
 			{
@@ -234,15 +240,24 @@ public partial class AttackCommand : BattleCommand
 	
 	public override void Retarget(BattleManager battle)
 	{
+		GD.Print("AttackCommand: Retargeting attack");
+		
 		BattleSide enemySide = sourceSide == battle.playerSide ? battle.enemySide : battle.playerSide;
 		
 		if (enemySide.CountActiveFamiliars() > 0)
 		{
 			Godot.Collections.Array<FamiliarActor> famList = enemySide.GetFamiliarList();
 			
-			int idx = (int)GD.Randi() % famList.Count;
+			foreach (var fam in famList)
+			{
+				GD.Print($"   {fam.name}");
+			}
+			
+			int idx = (int)(GD.Randi() % famList.Count);
 			
 			target = famList[idx];
+			
+			GD.Print($"AttackCommand: new target {((FamiliarActor)target).name}");
 		}
 		else if (enemySide.projector != null && enemySide.projector.currentEnergy > 0)
 		{
@@ -252,6 +267,20 @@ public partial class AttackCommand : BattleCommand
 		{
 			isValid = false;
 		}
+	}
+	
+	public bool IsUsableTarget(object target)
+	{
+		if (target is FamiliarActor fam)
+		{
+			return fam.isAlive && fam.side != null && fam.side.GetSlotIndex(fam) >= 0;
+		}
+		if (target is Projector proj)
+		{
+			return proj.currentEnergy > 0;
+		}
+		
+		return false;
 	}
 	
 	public int GetAttackStat(object source)
