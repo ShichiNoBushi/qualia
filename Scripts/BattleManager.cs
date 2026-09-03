@@ -638,9 +638,25 @@ public partial class BattleManager : Node
 	
 	public void AssignComCommands()
 	{
+		IEncounterAI ai = new RandomWildAI();
+		
+		if (isProjectorEncounter && enemySide.projector != null)
+		{
+			BattleCommand pCmd = ai.PickProjectorAction(this, enemySide);
+			if (pCmd != null)
+			{
+				projectorCommands.Add(pCmd);
+			}
+		}
+		
 		foreach (var fam in enemySide.GetFamiliarList())
 		{
-			familiarCommands.Add(fam.GenerateCommand());
+			BattleCommand fCmd = ai.PickFamiliarAction(this, fam);
+			if (fCmd != null)
+			{
+				GD.Print($"AI add slot={fam.slot} {fam.name} -> {fCmd.GetType().Name}");
+				familiarCommands.Add(fCmd);
+			}
 		}
 	}
 	
@@ -1242,8 +1258,9 @@ public partial class FamiliarActor : RefCounted, IBattleActor
 		return speed + speedBonus;
 	}
 	
-	public BattleCommand GenerateCommand()
+	public BattleCommand GenerateCommand(BattleManager battle)
 	{
+		
 		DefendCommand cmd = new DefendCommand {
 			source = this,
 			sourceSide = side
@@ -1275,5 +1292,95 @@ public partial class SpawnActor : RefCounted, IBattleActor
 	public void Damage(int amount)
 	{
 		
+	}
+}
+
+public interface IEncounterAI
+{
+	BattleCommand PickProjectorAction(BattleManager battle, BattleSide side);
+	BattleCommand PickFamiliarAction(BattleManager battle, FamiliarActor fam);
+}
+
+public class RandomWildAI : IEncounterAI
+{
+	public BattleCommand PickProjectorAction(BattleManager battle, BattleSide side) => null;
+	
+	public BattleCommand PickFamiliarAction(BattleManager battle, FamiliarActor fam)
+	{
+		int roll = (int)(GD.Randi() % 3);
+		
+		switch (roll)
+		{
+			case 0:
+			case 1:
+				return (BattleCommand)CommandFactory.AttackRandom(battle, fam)
+					?? CommandFactory.Defend(fam);
+		}
+		
+		return CommandFactory.Defend(fam);
+	}
+}
+
+public class CommandFactory
+{
+	public static DefendCommand Defend(FamiliarActor fam)
+	{
+		return new DefendCommand {
+			sourceSide = fam.side,
+			source = fam
+		};
+	}
+	
+	//public static AttackCommand Attack(FamiliarActor fam, object target)
+	
+	public static AttackCommand AttackRandom(BattleManager battle, FamiliarActor fam)
+	{
+		if (battle == null || fam == null)
+		{
+			return null;
+		}
+		
+		BattleSide otherSide = fam.side == battle.playerSide ? battle.enemySide : battle.playerSide;
+		
+		object randTarget = PickHostileTarget(otherSide);
+		
+		if (randTarget == null)
+		{
+			return null;
+		}
+		
+		return new AttackCommand {
+			sourceSide = fam.side,
+			source = fam,
+			target = randTarget,
+			power = 5
+		};
+	}
+	
+	//public static SummonCommand Summon(Projector proj, BattleSide side, RFamiliarInstance fam, int slot)
+	
+	//public static FocusCommand Focus(Projector proj)
+	
+	public static object PickHostileTarget(BattleSide side)
+	{
+		if (side == null)
+		{
+			return null;
+		}
+		
+		Godot.Collections.Array<FamiliarActor> famList = side.GetFamiliarList();
+		
+		if (famList != null && famList.Count > 0)
+		{
+			int randIdx = (int)(GD.Randi() % famList.Count);
+			return famList[randIdx];
+		}
+		
+		if (side.projector != null && side.projector.currentEnergy > 0)
+		{
+			return side.projector;
+		}
+		
+		return null;
 	}
 }

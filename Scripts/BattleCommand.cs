@@ -95,6 +95,8 @@ public partial class SummonCommand : BattleCommand
 			battle.AppendBattleText("Failed to summon");
 			GD.Print("SummonCommand: Failed to summon");
 		}
+		
+		GD.Print($"Execute {GetType().Name} source=projector {(source as Projector).name}");
 	}
 }
 
@@ -139,6 +141,8 @@ public partial class DismissCommand : BattleCommand
 		battle.AppendBattleText($"[b]{pName}[/b] dismisses [b]{aName}[/b] and recovers [b]{refund}[/b] energy.");
 		
 		battle.RefreshAllDisplays();
+		
+		GD.Print($"Execute {GetType().Name} source=projector {(source as Projector).name}");
 	}
 }
 
@@ -176,13 +180,16 @@ public partial class AttackCommand : BattleCommand
 		float defFactor = 1f;
 		
 		string fName = string.IsNullOrEmpty(srcFam.name) ? "(no name)" : srcFam.name;
+		string fEnemyPrefix = sourceSide == battle.enemySide ? "Enemy " : "";
 		
 		string tName = "(no name)";
+		string tEnemyPrefix = "";
 		
 		if (target is FamiliarActor tFam)
 		{
 			defFactor = tFam.defenseFactor;
 			tName = string.IsNullOrEmpty(tFam.name) ? "(no name)" : tFam.name;
+			tEnemyPrefix = tFam.side == battle.enemySide ? "Enemy " : "";
 		}
 		else if (target is Projector tProj)
 		{
@@ -194,7 +201,7 @@ public partial class AttackCommand : BattleCommand
 		
 		ApplyDamage(target, damage);
 		
-		string text = $"[b]{fName}[/b] deals {damage} damage to [b]{tName}[/b]";
+		string text = $"{fEnemyPrefix}[b]{fName}[/b] deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b]";
 		battle.AppendBattleText(text);
 		
 		if (target is FamiliarActor fam2)
@@ -218,7 +225,8 @@ public partial class AttackCommand : BattleCommand
 					FamiliarDisplay[] famDisplays = enemySide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
 					famDisplays[slot].Clear();
 					
-					text = $"[b]{fam2.name}[/b] was eliminated";
+					string fEnemyPrefix2 = enemySide == battle.enemySide ? "Enemy " : "";
+					text = $"{fEnemyPrefix2}[b]{fam2.name}[/b] was eliminated";
 					battle.AppendBattleText(text, false);
 				}
 			}
@@ -236,6 +244,8 @@ public partial class AttackCommand : BattleCommand
 		}
 		
 		battle.RefreshAllDisplays();
+		
+		GD.Print($"Execute {GetType().Name} source={(source as FamiliarActor)?.slot} {(source as FamiliarActor).name}");
 	}
 	
 	public override void Retarget(BattleManager battle)
@@ -331,16 +341,13 @@ public partial class DefendCommand : BattleCommand
 		}
 		
 		string name = string.IsNullOrEmpty(actor.familiar?.GetPreferredName()) ? "No Name" : actor.familiar.GetPreferredName();
-		string enemyPrefix = "";
-		
-		if (sourceSide == battle.enemySide)
-		{
-			enemyPrefix = "Enemy ";
-		}
+		string enemyPrefix = sourceSide == battle.enemySide ? "Enemy " : "";
 		
 		battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b] defends.");
 		
 		actor.defenseFactor = Math.Max(2, actor.defenseFactor);
+		
+		GD.Print($"Execute {GetType().Name} source={(source as FamiliarActor)?.slot} {(source as FamiliarActor).name}");
 	}
 }
 
@@ -364,5 +371,7 @@ public partial class FocusCommand : BattleCommand
 		}
 		
 		battle.RefreshAllDisplays();
+		
+		GD.Print($"Execute {GetType().Name} source=projector {(source as Projector).name}");
 	}
 }
