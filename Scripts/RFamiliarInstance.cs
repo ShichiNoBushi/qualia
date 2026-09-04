@@ -58,6 +58,36 @@ public partial class RFamiliarInstance : Resource
 		}
 	}
 	
+	public int GiveExperience(int expBonus)
+	{
+		if (expBonus <= 0)
+		{
+			return 0;
+		}
+		
+		int oldLevel = level;
+		
+		experience += expBonus;
+		
+		while (experience >= ExpToNextLevel())
+		{
+			experience -= ExpToNextLevel();
+			LevelUp();
+		}
+		
+		return level - oldLevel;
+	}
+	
+	public int ExpToNextLevel()
+	{
+		if (data == null)
+		{
+			return 1000;
+		}
+		
+		return Math.Max(1, Mathf.RoundToInt(level * 1000f * data.expGrowthFactor));
+	}
+	
 	public void LevelUp()
 	{
 		level++;

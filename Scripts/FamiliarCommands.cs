@@ -149,11 +149,13 @@ public partial class FamiliarCommands : Control
 		if (activeCommand != null)
 		{
 			battle.familiarCommands.Remove(activeCommand);
-			battle.famCommandsSubmitted = Math.Min(battle.famCommandsSubmitted - 1, 0);
+			battle.famCommandsSubmitted = Math.Max(battle.famCommandsSubmitted - 1, 0);
+			battle.AppendBattleText("Familiar: command undone");
 		}
 		activeCommand = null;
 		
 		battle.famCommandDisabled[slot] = false;
+		battle.AppendBattleText($"Player command submitted {battle.projCommandSubmitted}, {battle.famCommandsSubmitted} familiar commands submitted.");
 		EnableCommands();
 		undoButton.Visible = false;
 		

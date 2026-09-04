@@ -66,4 +66,48 @@ public partial class Projector : Node
 	{
 		currentEnergy = Mathf.Max(currentEnergy - amount, 0);
 	}
+	
+	public void Restore(int amount)
+	{
+		currentEnergy = Math.Min(currentEnergy + amount, maxEnergy);
+	}
+	
+	public void Recover()
+	{
+		currentEnergy = maxEnergy;
+	}
+	
+	public int GiveExperience(int expBonus)
+	{
+		int oldLevel = level;
+		
+		experience += expBonus;
+		
+		while (experience >= ExpToNextLevel())
+		{
+			experience -= ExpToNextLevel();
+			LevelUp();
+		}
+		
+		return level - oldLevel;
+	}
+	
+	public int ExpToNextLevel()
+	{
+		return Math.Max(1, level * 1000);
+	}
+	
+	public void LevelUp()
+	{
+		level++;
+		maxEnergy += data.levelEnergy;
+		currentEnergy += data.levelEnergy;
+	}
+	
+	public void SetLevel(int newLevel)
+	{
+		level = newLevel;
+		maxEnergy = 100 + data.levelEnergy * (level - 1);
+		currentEnergy = maxEnergy;
+	}
 }

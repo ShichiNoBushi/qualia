@@ -22,6 +22,8 @@ public partial class RFamiliarData : Resource
 	[Export] public float levelMDefense {get; set;} = 0.5f;
 	[Export] public float levelSpeed {get; set;} = 0.5f;
 	
+	[Export] public float expGrowthFactor {get; set;} = 1f;
+	
 	[Export] public Godot.Collections.Array<RTypeData> types {get; set;} = new();
 	[Export] public Godot.Collections.Array<RSkillData> learnableSkills {get; set;} = new();
 	

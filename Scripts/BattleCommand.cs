@@ -86,6 +86,11 @@ public partial class SummonCommand : BattleCommand
 			FamiliarDisplay[] displays = battle.GetFamiliarDisplays(sourceSide);
 			displays[slot].AssignFamiliar(actor);
 			
+			if (!battle.summonedFamiliars.Contains(familiar))
+			{
+				battle.summonedFamiliars.Add(familiar);
+			}
+			
 			string text = $"[b]{pName}[/b] summons [b]{aName}[/b]";
 			battle.AppendBattleText(text);
 			battle.RefreshAllDisplays();
@@ -228,6 +233,11 @@ public partial class AttackCommand : BattleCommand
 					string fEnemyPrefix2 = enemySide == battle.enemySide ? "Enemy " : "";
 					text = $"{fEnemyPrefix2}[b]{fam2.name}[/b] was eliminated";
 					battle.AppendBattleText(text, false);
+					
+					if (!battle.isProjectorEncounter && fam2.side == battle.enemySide)
+					{
+						battle.defeatedFamiliars.Add(fam2.familiar);
+					}
 				}
 			}
 		}

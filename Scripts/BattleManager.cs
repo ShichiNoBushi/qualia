@@ -75,6 +75,7 @@ public partial class BattleManager : Node
 	public Godot.Collections.Array<BattleCommand> familiarCommands;
 	public Godot.Collections.Array<BattleCommand> turnCommands;
 	
+	public Godot.Collections.Array<RFamiliarInstance> summonedFamiliars;
 	public Godot.Collections.Array<RFamiliarInstance> defeatedFamiliars;
 	
 	// Called when the node enters the scene tree for the first time.
@@ -210,6 +211,7 @@ public partial class BattleManager : Node
 		familiarCommands = new();
 		turnCommands = new();
 		
+		summonedFamiliars = new();
 		defeatedFamiliars = new();
 		
 		isProjectorEncounter = encounter.isProjectorEncounter;
@@ -460,7 +462,6 @@ public partial class BattleManager : Node
 			projCommandPanel.DisableCommands();
 			projCommandSubmitted = true;
 			projCommandDisabled = true;
-			//projCommandPanel.undoButton.Visible = true;
 			
 			RefreshNextButton();
 		}
@@ -824,9 +825,8 @@ public partial class BattleManager : Node
 	{
 		if (isProjectorEncounter)
 		{
-			//SetBattleState(BattleState.EndCheck);
-			//EndCheck();
-			BeginCommandSelect();
+			SetBattleState(BattleState.EndCheck);
+			EndCheck();
 			return;
 		}
 		
@@ -854,10 +854,8 @@ public partial class BattleManager : Node
 		
 		RefreshAllDisplays();
 		
-		//SetBattleState(BattleState.EndCheck);
-		//EndCheck();
-		
-		BeginCommandSelect();
+		SetBattleState(BattleState.EndCheck);
+		EndCheck();
 	}
 	
 	public void EndCheck()
@@ -868,23 +866,54 @@ public partial class BattleManager : Node
 		{
 			case VictoryResult.PlayerWin:
 				SetBattleState(BattleState.Cleanup);
-				//victory results
+				AppendBattleText($"Victory! [b]{playerSide.projector.name}[/b] wins!");
+				GrantRewards();
 				break;
 			case VictoryResult.PlayerLose:
 			case VictoryResult.Draw:
 				SetBattleState(BattleState.Cleanup);
-				//game over results
+				AppendBattleText($"[b]{playerSide.projector.name}[/b] loses.");
 				break;
 			case VictoryResult.None:
-				SetBattleState(BattleState.CommandSelect);
-				projCommandPanel.EnableCommands();
-				
-				foreach (var panel in famCommandPanels)
-				{
-					panel.EnableCommands();
-				}
-				
+				BeginCommandSelect();
 				break;
+		}
+	}
+	
+	public void GrantRewards()
+	{
+		int totalExp = 0;
+		
+		foreach (var fam in defeatedFamiliars)
+		{
+			totalExp += Mathf.RoundToInt(fam.level * 100 * fam.data.expGrowthFactor);
+		}
+		
+		AppendBattleText($"[b]{playerSide.projector.name}[/b] and familiars gain {totalExp} experience.");
+		
+		int projLevelIncrease = playerSide.projector.GiveExperience(totalExp);
+		
+		if (projLevelIncrease == 1)
+		{
+			AppendBattleText($"[b]{playerSide.projector.name}[/b] leveled up!", true);
+		}
+		else if (projLevelIncrease >= 2)
+		{
+			AppendBattleText($"[b]{playerSide.projector.name}[/b] gained {projLevelIncrease} levels!", true);
+		}
+		
+		foreach (var fam in summonedFamiliars)
+		{
+			int levelIncrease = fam.GiveExperience(totalExp);
+			
+			if (levelIncrease == 1)
+			{
+				AppendBattleText($"[b]{fam.GetPreferredName()}[/b] leveled up!", true);
+			}
+			else if (levelIncrease >= 2)
+			{
+				AppendBattleText($"[b]{fam.GetPreferredName()}[/b] gained {levelIncrease} levels!", true);
+			}
 		}
 	}
 	

@@ -182,6 +182,7 @@ public partial class ProjectorCommands : Control
 		
 		EnableCommands();
 		battle.projCommandSubmitted = false;
+		battle.AppendBattleText($"Player command submitted {battle.projCommandSubmitted}, {battle.famCommandsSubmitted} familiar commands submitted.");
 		battle.projCommandDisabled = false;
 		undoButton.Visible = false;
 		
