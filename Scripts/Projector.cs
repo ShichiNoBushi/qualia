@@ -100,14 +100,21 @@ public partial class Projector : Node
 	public void LevelUp()
 	{
 		level++;
-		maxEnergy += data.levelEnergy;
+		RecalculateEnergy();
 		currentEnergy += data.levelEnergy;
 	}
 	
 	public void SetLevel(int newLevel)
 	{
 		level = newLevel;
-		maxEnergy = 100 + data.levelEnergy * (level - 1);
+		RecalculateEnergy();
 		currentEnergy = maxEnergy;
+	}
+	
+	public void RecalculateEnergy()
+	{
+		int baseEnergy = data != null ? data.energy : 100;
+		int growth = data != null ? data.levelEnergy : 10;
+		maxEnergy = baseEnergy + growth * (level - 1);
 	}
 }

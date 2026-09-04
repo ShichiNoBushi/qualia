@@ -41,7 +41,9 @@ public partial class BattleManager : Node
 		Resolution,
 		SpawnCheck,
 		EndCheck,
-		Cleanup
+		Cleanup,
+		Victory,
+		Defeat
 	}
 	
 	public enum CommandState
@@ -254,43 +256,30 @@ public partial class BattleManager : Node
 	
 	public void OnNextPressed()
 	{
-		AppendBattleText("Next button pressed.");
-		GD.Print("Next button pressed.");
+		if (batState == BattleState.Victory)
+		{
+			FinishVictory();
+			return;
+		}
+		
+		if (batState == BattleState.Defeat)
+		{
+			FinishDefeat();
+			return;
+		}
 		
 		if (comState != CommandState.None)
 		{
-			AppendBattleText("Cancel pending command");
-			selectionPanel.HidePanel();
-			pendingCommand = null;
-			pendingSource = null;
-			SetCommandState(CommandState.None);
-			
-			UnblockCommands();
-			ClearHighlights();
-			RefreshNextButton();
+			CancelPendingCommand();
+			return;
 		}
-		else
+		
+		if (batState != BattleState.CommandSelect || !PlayerCommandsSubmitted())
 		{
-			AppendBattleText("Resolving turn", true);
-			try
-			{
-				projCommandSubmitted = false;
-				famCommandsSubmitted = 0;
-				SetBattleState(BattleState.Resolution);
-				SetCommandState(CommandState.None);
-				
-				RefreshNextButton();
-				
-				AssignComCommands();
-				BuildTurnOrder();
-				ResolveTurn();
-			}
-			catch (Exception e)
-			{
-				GD.PrintErr($"BattleManager: Error resolving turn {e}");
-				AppendBattleText("Error resolving turn");
-			}
+			return;
 		}
+		
+		CommitTurn();
 	}
 	
 	public void FamiliarSlotClicked(FamiliarDisplay display)
@@ -337,6 +326,11 @@ public partial class BattleManager : Node
 			bool canCancel = comState != CommandState.None;
 			nextButton.Text = canCommit ? "Commit" : (canCancel ? "Cancel" : "Next");
 			nextButton.Disabled = !canCommit && !canCancel;
+		}
+		else if (batState == BattleState.Victory || batState == BattleState.Defeat)
+		{
+			nextButton.Text = "Finish";
+			nextButton.Disabled = false;
 		}
 		else
 		{
@@ -637,6 +631,71 @@ public partial class BattleManager : Node
 		}
 	}
 	
+	public void FinishVictory()
+	{
+		DismissAllAndRefund(playerSide);
+		
+		//Later leave battle to game world.
+		GetTree().Quit();
+	}
+	
+	public void FinishDefeat()
+	{
+		playerSide.projector.Recover();
+		
+		//Later return player to safe place in game world.
+		GetTree().Quit();
+	}
+	
+	public void CancelPendingCommand()
+	{
+		AppendBattleText("Cancel pending command");
+		selectionPanel.HidePanel();
+		pendingCommand = null;
+		pendingSource = null;
+		SetCommandState(CommandState.None);
+		
+		UnblockCommands();
+		ClearHighlights();
+		RefreshNextButton();
+	}
+	
+	public void CommitTurn()
+	{
+		AppendBattleText("Resolving turn");
+		try
+		{
+			projCommandSubmitted = false;
+			famCommandsSubmitted = 0;
+			SetBattleState(BattleState.Resolution);
+			SetCommandState(CommandState.None);
+			
+			RefreshNextButton();
+			
+			AssignComCommands();
+			BuildTurnOrder();
+			ResolveTurn();
+		}
+		catch (Exception e)
+		{
+			GD.PrintErr($"BattleManager: Error resolving turn {e}");
+			AppendBattleText("Error resolving turn");
+		}
+	}
+	
+	public void DismissAllAndRefund(BattleSide side)
+	{
+		if (side?.projector == null)
+		{
+			return;
+		}
+		
+		foreach (var fam in side.GetFamiliarList())
+		{
+			side.projector.currentEnergy = Math.Min(side.projector.currentEnergy + fam.currentEnergy, side.projector.maxEnergy);
+		}
+	}
+	
 	public void AssignComCommands()
 	{
 		IEncounterAI ai = new RandomWildAI();
@@ -799,7 +858,7 @@ public partial class BattleManager : Node
 		}
 		else
 		{
-			enemyDefeat = enemySide.CountActiveFamiliars() == 0 && (spawns == null || spawns.Count == 0);
+			enemyDefeat = enemySide.CountActiveFamiliars() == 0 && PendingSparks() == 0 && (spawns == null || spawns.Count == 0);
 		}
 		
 		if (enemyDefeat && !playerDefeat)
@@ -819,6 +878,21 @@ public partial class BattleManager : Node
 		}
 		
 		return VictoryResult.None;
+	}
+	
+	public int PendingSparks()
+	{
+		int n = 0;
+		
+		foreach (var slot in enemySide.familiarSlots)
+		{
+			if (slot is SpawnActor)
+			{
+				n++;
+			}
+		}
+		
+		return n;
 	}
 	
 	public void SpawnCheck()
@@ -865,14 +939,14 @@ public partial class BattleManager : Node
 		switch (result)
 		{
 			case VictoryResult.PlayerWin:
-				SetBattleState(BattleState.Cleanup);
-				AppendBattleText($"Victory! [b]{playerSide.projector.name}[/b] wins!");
+				SetBattleState(BattleState.Victory);
 				GrantRewards();
+				RefreshNextButton();
 				break;
 			case VictoryResult.PlayerLose:
 			case VictoryResult.Draw:
-				SetBattleState(BattleState.Cleanup);
-				AppendBattleText($"[b]{playerSide.projector.name}[/b] loses.");
+				SetBattleState(BattleState.Defeat);
+				RefreshNextButton();
 				break;
 			case VictoryResult.None:
 				BeginCommandSelect();
@@ -886,10 +960,14 @@ public partial class BattleManager : Node
 		
 		foreach (var fam in defeatedFamiliars)
 		{
-			totalExp += Mathf.RoundToInt(fam.level * 100 * fam.data.expGrowthFactor);
+			float growthFactor = fam.data != null ? fam.data.expGrowthFactor : 1f;
+			totalExp += Mathf.RoundToInt(fam.level * 100 * growthFactor);
 		}
 		
-		AppendBattleText($"[b]{playerSide.projector.name}[/b] and familiars gain {totalExp} experience.");
+		int sharedExp = Math.Max(totalExp / Math.Max(summonedFamiliars.Count, 1), 1);
+		
+		AppendBattleText($"[b]{playerSide.projector.name}[/b] gains {totalExp} experience.");
+		AppendBattleText($"Familiars gain {sharedExp} experience.", true);
 		
 		int projLevelIncrease = playerSide.projector.GiveExperience(totalExp);
 		
@@ -904,7 +982,7 @@ public partial class BattleManager : Node
 		
 		foreach (var fam in summonedFamiliars)
 		{
-			int levelIncrease = fam.GiveExperience(totalExp);
+			int levelIncrease = fam.GiveExperience(sharedExp);
 			
 			if (levelIncrease == 1)
 			{
