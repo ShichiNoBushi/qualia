@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://dklaojj8nj1xh"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_eg6ck"]
+
+[resource]
+script = ExtResource("1_eg6ck")
+id = "strike"
+name = "Strike"
+cost = 3
+power = 10
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

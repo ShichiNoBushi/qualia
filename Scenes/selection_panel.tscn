@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cbgknl8tpufwd"]
 
-[ext_resource type="Script" uid="uid://coodlc7tcpex0" path="res://Scenes/SelectionPanel.cs" id="1_pg0fj"]
+[ext_resource type="Script" uid="uid://coodlc7tcpex0" path="res://Scripts/SelectionPanel.cs" id="1_pg0fj"]
 
 [node name="SelectionPanel" type="Control" unique_id=280050535]
 layout_mode = 3
