@@ -2,6 +2,9 @@
 
 [ext_resource type="TileSet" uid="uid://dq20sdjokbl3g" path="res://Resources/Assets/outside_tile_set.tres" id="1_a02cp"]
 [ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/player.tscn" id="2_go701"]
+[ext_resource type="PackedScene" uid="uid://by86ymrructfl" path="res://Scenes/npc.tscn" id="3_fo5ed"]
+[ext_resource type="Resource" uid="uid://dp3xd3ejwltlm" path="res://Resources/encounters/test_encounter.tres" id="4_5ukr8"]
+[ext_resource type="PackedScene" uid="uid://b6d0mqnw6j8i2" path="res://Scenes/battle_scene.tscn" id="5_o06y3"]
 
 [node name="World" type="Node2D" unique_id=1081555688]
 
@@ -19,3 +22,10 @@ scale = Vector2(2, 2)
 motion_mode = 1
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1774200387]
+
+[node name="NPC" parent="." unique_id=1120881869 instance=ExtResource("3_fo5ed")]
+position = Vector2(848, 496)
+scale = Vector2(2, 2)
+encounter = ExtResource("4_5ukr8")
+isBattleable = true
+battleScene = ExtResource("5_o06y3")

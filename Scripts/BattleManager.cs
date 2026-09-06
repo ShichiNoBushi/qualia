@@ -107,6 +107,7 @@ public partial class BattleManager : Node
 		{
 			famDisplaysE[i].slotIndex = i;
 			famDisplaysE[i].isPlayerSide = false;
+			famDisplaysE[i].SetVisibleEnergy(false);
 			famDisplaysE[i].battle = this;
 			
 			famDisplaysP[i].slotIndex = i;
@@ -149,7 +150,16 @@ public partial class BattleManager : Node
 		
 		selectionPanel.battle = this;
 		
-		StartTest();
+		GameSession session = GetNode<GameSession>("/root/GameSession");
+		
+		if (session.playerProjector != null && session.pendingEncounter != null)
+		{
+			Initialize(session.playerProjector, session.pendingEncounter);
+		}
+		else
+		{
+			StartTest();
+		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -258,12 +268,14 @@ public partial class BattleManager : Node
 	{
 		if (batState == BattleState.Victory)
 		{
+			GD.Print("BattleManager: Victory!");
 			FinishVictory();
 			return;
 		}
 		
 		if (batState == BattleState.Defeat)
 		{
+			GD.Print("BattleManager: Defeat.");
 			FinishDefeat();
 			return;
 		}
@@ -635,16 +647,14 @@ public partial class BattleManager : Node
 	{
 		DismissAllAndRefund(playerSide);
 		
-		//Later leave battle to game world.
-		GetTree().Quit();
+		ReturnToField(VictoryResult.PlayerWin);
 	}
 	
 	public void FinishDefeat()
 	{
 		playerSide.projector.Recover();
 		
-		//Later return player to safe place in game world.
-		GetTree().Quit();
+		ReturnToField(VictoryResult.PlayerLose);
 	}
 	
 	public void CancelPendingCommand()
@@ -993,6 +1003,21 @@ public partial class BattleManager : Node
 				AppendBattleText($"[b]{fam.GetPreferredName()}[/b] gained {levelIncrease} levels!", true);
 			}
 		}
+	}
+	
+	public void ReturnToField(VictoryResult result)
+	{
+		GameSession session = GetNode<GameSession>("/root/GameSession");
+		session.lastResult = result;
+		session.pendingEncounter = null;
+		
+		if (string.IsNullOrEmpty(session.returnPath))
+		{
+			GetTree().Quit();
+			return;
+		}
+		
+		GetTree().ChangeSceneToFile(session.returnPath);
 	}
 	
 	public FamiliarDisplay[] GetFamiliarDisplays(BattleSide side)

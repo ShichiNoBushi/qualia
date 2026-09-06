@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Qualia"
-run/main_scene="uid://b6d0mqnw6j8i2"
+run/main_scene="uid://bteolrjj8n7c0"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameSession="*uid://dhmyigv3hudik"
 
 [display]
 

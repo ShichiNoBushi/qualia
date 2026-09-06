@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Projector : Node
+public partial class Projector : RefCounted
 {
 	public RProjectorData data {get; set;}
 	
@@ -14,16 +14,6 @@ public partial class Projector : Node
 	public int currentEnergy {get; set;}
 	
 	public Godot.Collections.Array<RFamiliarInstance> ownedFamiliars {get; set;}
-	
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
 	
 	public void Initialize(RProjectorData pData)
 	{

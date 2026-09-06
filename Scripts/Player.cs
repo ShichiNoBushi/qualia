@@ -4,17 +4,44 @@ using System;
 public partial class Player : CharacterBody2D
 {
 	[Export] public float speed {get; set;} = 300.0f;
-	[Export] public Projector projector {get; set;}
+	public Projector projector {get; set;}
 	
 	public AnimatedSprite2D sprite;
 	public string lastAnim;
+	public Vector2 facing = Vector2.Down;
 	
 	public override void _Ready()
 	{
 		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		
-		sprite.Play("walk_front");
-		lastAnim = "walk_front";
+		GameSession session = GetNode<GameSession>("/root/GameSession");
+		
+		projector = session.playerProjector;
+		
+		if (session.returnPosition != Vector2.Zero)
+		{
+			GlobalPosition = session.returnPosition;
+			facing = session.returnFacing;
+		}
+		
+		if (facing != Vector2.Zero)
+		{
+			if (Mathf.Abs(facing.X) > Mathf.Abs(facing.Y))
+			{
+				lastAnim = facing.X > 0 ? "walk_right" : "walk_left";
+			}
+			else
+			{
+				lastAnim = facing.Y > 0 ? "walk_front" : "walk_back";
+			}
+			
+			sprite.Play(lastAnim);
+		}
+		else
+		{
+			sprite.Play("walk_front");
+			lastAnim = "walk_front";
+		}
 		sprite.Pause();
 	}
 
@@ -27,6 +54,7 @@ public partial class Player : CharacterBody2D
 		Vector2 direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		if (direction != Vector2.Zero)
 		{
+			facing = direction;
 			Velocity = direction * speed;
 			PlayWalkAnim(direction);
 		}
@@ -37,6 +65,38 @@ public partial class Player : CharacterBody2D
 		}
 
 		MoveAndSlide();
+	}
+	
+	public override void _UnhandledInput(InputEvent e)
+	{
+		if (!e.IsActionPressed("ui_accept"))
+		{
+			return;
+		}
+		
+		GD.Print("Player: Accept key pressed.");
+		GD.Print($"Player: pos={GlobalPosition} facing={facing} to={GlobalPosition + facing * 32}");
+		
+		var space = GetWorld2D().DirectSpaceState;
+		var query = PhysicsRayQueryParameters2D.Create(GlobalPosition, GlobalPosition + facing * 32f);
+		var hit = space.IntersectRay(query);
+		
+		GD.Print($"Player: hit count={hit.Count}");
+		
+		if (hit.Count > 0)
+		{
+			GD.Print($"Player: collider={hit["collider"]} type={hit["collider"].AsGodotObject().GetType()}");
+		}
+		
+		if (hit.Count > 0 && hit["collider"].AsGodotObject() is NPC npc)
+		{
+			GD.Print("Player: Interact with NPC.");
+			npc.Interact(this);
+		}
+		else
+		{
+			GD.Print("Player: No NPC present.");
+		}
 	}
 	
 	public void PlayWalkAnim(Vector2 direction)

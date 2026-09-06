@@ -123,7 +123,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ts14v"]
-radius = 7.071068
+radius = 8.0
 
 [node name="Player" type="CharacterBody2D" unique_id=838609280]
 script = ExtResource("1_cvnsp")
