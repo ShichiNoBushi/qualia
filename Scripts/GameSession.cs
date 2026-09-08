@@ -9,6 +9,13 @@ public partial class GameSession : Node
 	public Vector2 returnFacing {get; set;}
 	public REncounterData pendingEncounter {get; set;}
 	public BattleManager.VictoryResult lastResult {get; set;}
+	public GameMode gameMode {get; set;}
+	
+	public enum GameMode
+	{
+		World,
+		Battle
+	}
 	
 	public override void _Ready()
 	{
@@ -36,5 +43,7 @@ public partial class GameSession : Node
 		playerProjector.GiveFamiliar(salamanderInst);
 		playerProjector.GiveFamiliar(sylphInst);
 		playerProjector.GiveFamiliar(undineInst);
+		
+		gameMode = GameMode.World;
 	}
 }

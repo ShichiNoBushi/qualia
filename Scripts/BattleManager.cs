@@ -1010,6 +1010,7 @@ public partial class BattleManager : Node
 		GameSession session = GetNode<GameSession>("/root/GameSession");
 		session.lastResult = result;
 		session.pendingEncounter = null;
+		session.gameMode = GameSession.GameMode.World;
 		
 		if (string.IsNullOrEmpty(session.returnPath))
 		{

@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://cx6ao2ipst85o"]
+
+[ext_resource type="Script" uid="uid://cjcj4u6xnp7us" path="res://Scripts/GameMenu.cs" id="1_r7qr8"]
+
+[node name="GameMenu" type="CanvasLayer" unique_id=326509181]
+process_mode = 3
+layer = 100
+visible = false
+script = ExtResource("1_r7qr8")
+
+[node name="Panel" type="Panel" parent="." unique_id=1239281859]
+offset_left = 367.0
+offset_top = 97.0
+offset_right = 1511.0
+offset_bottom = 977.0
+
+[node name="TabContainer" type="TabContainer" parent="Panel" unique_id=1307417984]
+layout_mode = 0
+offset_right = 1144.0
+offset_bottom = 829.0
+tab_alignment = 1
+current_tab = 0
+
+[node name="Options" type="Control" parent="Panel/TabContainer" unique_id=1560943313]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="Panel/TabContainer/Options" unique_id=1227069406]
+layout_mode = 0
+offset_right = 1144.0
+offset_bottom = 849.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/TabContainer/Options/CenterContainer" unique_id=265674126]
+layout_mode = 2
+
+[node name="QuitButton" type="Button" parent="Panel/TabContainer/Options/CenterContainer/VBoxContainer" unique_id=1631859873]
+layout_mode = 2
+text = "Quit"
+
+[node name="CloseButton" type="Button" parent="Panel" unique_id=425865610]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 837.0
+offset_right = 617.0
+offset_bottom = 868.0
+text = "Close"
+
+[node name="QuitConfirm" type="ConfirmationDialog" parent="." unique_id=1038397278]
+process_mode = 3
+oversampling_override = 1.0
+position = Vector2i(0, 36)

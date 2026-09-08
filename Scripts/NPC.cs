@@ -51,6 +51,7 @@ public partial class NPC : CharacterBody2D
 		
 		if (encounter != null)
 		{
+			session.gameMode = GameSession.GameMode.Battle;
 			GetTree().ChangeSceneToPacked(battleScene);
 		}
 		else
