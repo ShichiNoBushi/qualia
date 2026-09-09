@@ -21,9 +21,132 @@ offset_bottom = 829.0
 tab_alignment = 1
 current_tab = 0
 
-[node name="Options" type="Control" parent="Panel/TabContainer" unique_id=1560943313]
+[node name="Projector" type="Control" parent="Panel/TabContainer" unique_id=1210988696]
 layout_mode = 2
 metadata/_tab_index = 0
+
+[node name="NameLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=1365430370]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 22.0
+offset_right = 67.0
+offset_bottom = 45.0
+text = "Name"
+
+[node name="LevelTextLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=553198624]
+layout_mode = 0
+offset_left = 299.0
+offset_top = 22.0
+offset_right = 339.0
+offset_bottom = 45.0
+text = "Level"
+
+[node name="LevelLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=1476683855]
+layout_mode = 0
+offset_left = 299.0
+offset_top = 45.0
+offset_right = 339.0
+offset_bottom = 68.0
+text = "0"
+horizontal_alignment = 2
+
+[node name="ExperienceTextLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=469878341]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 68.0
+offset_right = 60.0
+offset_bottom = 91.0
+text = "Experience"
+
+[node name="ExperienceProgress" type="ProgressBar" parent="Panel/TabContainer/Projector" unique_id=486864749]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 91.0
+offset_right = 208.0
+offset_bottom = 103.0
+step = 1.0
+show_percentage = false
+
+[node name="ExperienceLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=788200831]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 103.0
+offset_right = 94.0
+offset_bottom = 126.0
+text = "00000000"
+horizontal_alignment = 2
+
+[node name="ExperienceDividerLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=824372252]
+layout_mode = 0
+offset_left = 94.0
+offset_top = 103.0
+offset_right = 134.0
+offset_bottom = 126.0
+text = "/"
+horizontal_alignment = 1
+
+[node name="ExperienceNextLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=187329081]
+layout_mode = 0
+offset_left = 134.0
+offset_top = 103.0
+offset_right = 208.0
+offset_bottom = 126.0
+text = "00000000"
+
+[node name="EnergyTextLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=2141260069]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 145.0
+offset_right = 73.0
+offset_bottom = 168.0
+text = "Energy"
+
+[node name="EnergyProgress" type="ProgressBar" parent="Panel/TabContainer/Projector" unique_id=1210176416]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 168.0
+offset_right = 208.0
+offset_bottom = 180.0
+show_percentage = false
+
+[node name="CurrentEnergyLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=673453897]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 180.0
+offset_right = 66.0
+offset_bottom = 203.0
+text = "00000"
+horizontal_alignment = 2
+
+[node name="EnergyDividerLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=47366451]
+layout_mode = 0
+offset_left = 66.0
+offset_top = 180.0
+offset_right = 106.0
+offset_bottom = 203.0
+text = "/"
+horizontal_alignment = 1
+
+[node name="MaxEnergyLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=969821042]
+layout_mode = 0
+offset_left = 106.0
+offset_top = 180.0
+offset_right = 152.0
+offset_bottom = 203.0
+text = "00000"
+horizontal_alignment = 2
+
+[node name="PortraitRect" type="TextureRect" parent="Panel/TabContainer/Projector" unique_id=614046170]
+layout_mode = 0
+offset_left = 561.0
+offset_top = 22.0
+offset_right = 1125.0
+offset_bottom = 358.0
+
+[node name="Options" type="Control" parent="Panel/TabContainer" unique_id=1560943313]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="Panel/TabContainer/Options" unique_id=1227069406]
 layout_mode = 0
