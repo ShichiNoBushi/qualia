@@ -5,21 +5,45 @@ public partial class GameMenu : CanvasLayer
 {
 	public GameSession session;
 	
+	public RFamiliarInstance selectedFamiliar;
+	
 	public Button closeButton;
 	
-	public Label nameLabel;
+	public Label projNameLabel;
 	
-	public Label levelLabel;
+	public Label projLevelLabel;
 	
-	public ProgressBar experienceProgress;
-	public Label experienceLabel;
-	public Label experienceNextLabel;
+	public ProgressBar projExperienceProgress;
+	public Label projExperienceLabel;
+	public Label projExperienceNextLabel;
 	
-	public ProgressBar energyProgress;
-	public Label currentEnergyLabel;
-	public Label maxEnergyLabel;
+	public ProgressBar projEnergyProgress;
+	public Label projCurrentEnergyLabel;
+	public Label projMaxEnergyLabel;
 	
-	public TextureRect portraitRect;
+	public TextureRect projPortraitRect;
+	
+	public ItemList familiarsList;
+	
+	public Panel statsPanel;
+	
+	public Label famNameLabel;
+	public Label familiarLabel;
+	
+	public Label famLevelLabel;
+	
+	public ProgressBar famExperienceProgress;
+	public Label famExperienceLabel;
+	public Label famExperienceNextLabel;
+	
+	public Label famEnergyLabel;
+	public Label physAttackLabel;
+	public Label magAttackLabel;
+	public Label physDefenseLabel;
+	public Label magDefenseLabel;
+	public Label speedLabel;
+	
+	public TextureRect famPortraitRect;
 	
 	public Button quitButton;
 	public ConfirmationDialog quitConfirm;
@@ -30,19 +54,43 @@ public partial class GameMenu : CanvasLayer
 		
 		closeButton = GetNode<Button>("Panel/CloseButton");
 		
-		nameLabel = GetNode<Label>("Panel/TabContainer/Projector/NameLabel");
+		projNameLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjNameLabel");
 		
-		levelLabel = GetNode<Label>("Panel/TabContainer/Projector/LevelLabel");
+		projLevelLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjLevelLabel");
 		
-		experienceProgress = GetNode<ProgressBar>("Panel/TabContainer/Projector/ExperienceProgress");
-		experienceLabel = GetNode<Label>("Panel/TabContainer/Projector/ExperienceLabel");
-		experienceNextLabel = GetNode<Label>("Panel/TabContainer/Projector/ExperienceNextLabel");
+		projExperienceProgress = GetNode<ProgressBar>("Panel/TabContainer/Projector/ProjExperienceProgress");
+		projExperienceLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjExperienceLabel");
+		projExperienceNextLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjExperienceNextLabel");
 		
-		energyProgress = GetNode<ProgressBar>("Panel/TabContainer/Projector/EnergyProgress");
-		currentEnergyLabel = GetNode<Label>("Panel/TabContainer/Projector/CurrentEnergyLabel");
-		maxEnergyLabel = GetNode<Label>("Panel/TabContainer/Projector/MaxEnergyLabel");
+		projEnergyProgress = GetNode<ProgressBar>("Panel/TabContainer/Projector/ProjEnergyProgress");
+		projCurrentEnergyLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjCurrentEnergyLabel");
+		projMaxEnergyLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjMaxEnergyLabel");
 		
-		portraitRect = GetNode<TextureRect>("Panel/TabContainer/Projector/PortraitRect");
+		projPortraitRect = GetNode<TextureRect>("Panel/TabContainer/Projector/ProjPortraitRect");
+		
+		familiarsList = GetNode<ItemList>("Panel/TabContainer/Familiars/FamiliarsList");
+		
+		statsPanel = GetNode<Panel>("Panel/TabContainer/Familiars/StatsPanel");
+		
+		famNameLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamNameLabel");
+		familiarLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamiliarLabel");
+		
+		famLevelLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamLevelLabel");
+		
+		famExperienceProgress = GetNode<ProgressBar>("Panel/TabContainer/Familiars/StatsPanel/FamExperienceProgress");
+		famExperienceLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamExperienceLabel");
+		famExperienceNextLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamExperienceNextLabel");
+		
+		famEnergyLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/FamEnergyLabel");
+		physAttackLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/PhysAttackLabel");
+		magAttackLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/MagAttackLabel");
+		physDefenseLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/PhysDefenseLabel");
+		magDefenseLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/MagDefenseLabel");
+		speedLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/SpeedLabel");
+		
+		familiarsList.ItemSelected += OnFamiliarSelect;
+		
+		famPortraitRect = GetNode<TextureRect>("Panel/TAbContainer/Familiars/StatsPanel/FamPortraitRect");
 		
 		quitButton = GetNode<Button>("Panel/TabContainer/Options/CenterContainer/VBoxContainer/QuitButton");
 		quitConfirm = GetNode<ConfirmationDialog>("QuitConfirm");
@@ -55,8 +103,6 @@ public partial class GameMenu : CanvasLayer
 	
 	public override void _UnhandledInput(InputEvent e)
 	{
-		GD.Print($"GameMenu: mode={session.gameMode} visible={Visible}");
-		
 		if (session.gameMode != GameSession.GameMode.World)
 		{
 			return;
@@ -66,6 +112,8 @@ public partial class GameMenu : CanvasLayer
 		{
 			return;
 		}
+		
+		GD.Print($"GameMenu: mode={session.gameMode} visible={Visible}");
 		
 		GD.Print("GameMenu: Esc pressed");
 		
@@ -86,6 +134,41 @@ public partial class GameMenu : CanvasLayer
 		Close();
 	}
 	
+	public void OnFamiliarSelect(long index)
+	{
+		selectedFamiliar = (RFamiliarInstance)familiarsList.GetItemMetadata((int)index);
+		
+		if (selectedFamiliar == null)
+		{
+			statsPanel.Visible = false;
+			return;
+		}
+		
+		RFamiliarInstance fam = selectedFamiliar;
+		
+		statsPanel.Visible = true;
+		
+		famNameLabel.Text = fam.GetPreferredName();
+		familiarLabel.Text = string.IsNullOrEmpty(fam.data?.name) ? "(no name)" : fam.data.name;
+		
+		famLevelLabel.Text = $"{fam.level}";
+		
+		int next = fam.ExpToNextLevel();
+		famExperienceProgress.Value = fam.experience;
+		famExperienceProgress.MaxValue = next;
+		famExperienceLabel.Text = $"{fam.experience}";
+		famExperienceNextLabel.Text = $"{next}";
+		
+		famEnergyLabel.Text = $"{fam.energy}";
+		physAttackLabel.Text = $"{fam.pAttack}";
+		magAttackLabel.Text = $"{fam.mAttack}";
+		physDefenseLabel.Text = $"{fam.pDefense}";
+		magDefenseLabel.Text = $"{fam.mDefense}";
+		speedLabel.Text = $"{fam.speed}";
+		
+		famPortraitRect.Texture = fam.data?.portrait;
+	}
+	
 	public void OnQuitPressed()
 	{
 		quitConfirm.PopupCentered();
@@ -100,27 +183,74 @@ public partial class GameMenu : CanvasLayer
 	{
 		Projector proj = session.playerProjector;
 		
-		nameLabel.Text = proj.name;
+		if (proj == null)
+		{
+			return;
+		}
 		
-		levelLabel.Text = $"{proj.level}";
+		projNameLabel.Text = proj.name ?? "";
 		
-		experienceProgress.Value = proj.experience;
-		experienceProgress.MaxValue = proj.ExpToNextLevel();
-		experienceLabel.Text = $"{proj.experience}";
-		experienceNextLabel.Text = $"{proj.ExpToNextLevel()}";
+		projLevelLabel.Text = $"{proj.level}";
 		
-		energyProgress.Value = proj.currentEnergy;
-		energyProgress.MaxValue = proj.maxEnergy;
-		currentEnergyLabel.Text = $"{proj.currentEnergy}";
-		maxEnergyLabel.Text = $"{proj.maxEnergy}";
+		int next = proj.ExpToNextLevel();
+		projExperienceProgress.Value = proj.experience;
+		projExperienceProgress.MaxValue = next;
+		projExperienceLabel.Text = $"{proj.experience}";
+		projExperienceNextLabel.Text = $"{next}";
 		
-		portraitRect.Texture = proj.data?.portrait;
+		projEnergyProgress.Value = proj.currentEnergy;
+		projEnergyProgress.MaxValue = Math.Max(proj.maxEnergy, 1);
+		projCurrentEnergyLabel.Text = $"{proj.currentEnergy}";
+		projMaxEnergyLabel.Text = $"{proj.maxEnergy}";
+		
+		projPortraitRect.Texture = proj.data?.portrait;
+	}
+	
+	public void UpdateFamiliarList()
+	{
+		Godot.Collections.Array<RFamiliarInstance> familiars = session.playerProjector.ownedFamiliars;
+		
+		int restoreIdx = -1;
+		
+		familiarsList.Clear();
+		
+		for (int i = 0; i < familiars.Count; i++)
+		{
+			RFamiliarInstance fam = familiars[i];
+			
+			if (fam == null)
+			{
+				continue;
+			}
+			
+			familiarsList.AddItem(fam.GetPreferredName());
+			int idx = familiarsList.ItemCount - 1;
+			familiarsList.SetItemMetadata(idx, fam);
+			
+			if (selectedFamiliar != null && ReferenceEquals(fam, selectedFamiliar))
+			{
+				restoreIdx = idx;
+			}
+		}
+		
+		if (restoreIdx > 0)
+		{
+			familiarsList.Select(restoreIdx);
+			OnFamiliarSelect(restoreIdx);
+		}
+		else
+		{
+			selectedFamiliar = null;
+			familiarsList.DeselectAll();
+			statsPanel.Visible = false;
+		}
 	}
 	
 	public void Open()
 	{
 		Visible = true;
 		UpdateProjectorLabels();
+		UpdateFamiliarList();
 		GetTree().Paused = true;
 	}
 	

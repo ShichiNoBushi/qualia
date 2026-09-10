@@ -25,7 +25,7 @@ current_tab = 0
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="NameLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=1365430370]
+[node name="ProjNameLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=1365430370]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 22.0
@@ -41,7 +41,7 @@ offset_right = 339.0
 offset_bottom = 45.0
 text = "Level"
 
-[node name="LevelLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=1476683855]
+[node name="ProjLevelLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=1476683855]
 layout_mode = 0
 offset_left = 299.0
 offset_top = 45.0
@@ -58,7 +58,7 @@ offset_right = 60.0
 offset_bottom = 91.0
 text = "Experience"
 
-[node name="ExperienceProgress" type="ProgressBar" parent="Panel/TabContainer/Projector" unique_id=486864749]
+[node name="ProjExperienceProgress" type="ProgressBar" parent="Panel/TabContainer/Projector" unique_id=486864749]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 91.0
@@ -67,7 +67,7 @@ offset_bottom = 103.0
 step = 1.0
 show_percentage = false
 
-[node name="ExperienceLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=788200831]
+[node name="ProjExperienceLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=788200831]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 103.0
@@ -85,7 +85,7 @@ offset_bottom = 126.0
 text = "/"
 horizontal_alignment = 1
 
-[node name="ExperienceNextLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=187329081]
+[node name="ProjExperienceNextLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=187329081]
 layout_mode = 0
 offset_left = 134.0
 offset_top = 103.0
@@ -101,7 +101,7 @@ offset_right = 73.0
 offset_bottom = 168.0
 text = "Energy"
 
-[node name="EnergyProgress" type="ProgressBar" parent="Panel/TabContainer/Projector" unique_id=1210176416]
+[node name="ProjEnergyProgress" type="ProgressBar" parent="Panel/TabContainer/Projector" unique_id=1210176416]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 168.0
@@ -109,7 +109,7 @@ offset_right = 208.0
 offset_bottom = 180.0
 show_percentage = false
 
-[node name="CurrentEnergyLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=673453897]
+[node name="ProjCurrentEnergyLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=673453897]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 180.0
@@ -127,7 +127,7 @@ offset_bottom = 203.0
 text = "/"
 horizontal_alignment = 1
 
-[node name="MaxEnergyLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=969821042]
+[node name="ProjMaxEnergyLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=969821042]
 layout_mode = 0
 offset_left = 106.0
 offset_top = 180.0
@@ -136,17 +136,181 @@ offset_bottom = 203.0
 text = "00000"
 horizontal_alignment = 2
 
-[node name="PortraitRect" type="TextureRect" parent="Panel/TabContainer/Projector" unique_id=614046170]
+[node name="ProjPortraitRect" type="TextureRect" parent="Panel/TabContainer/Projector" unique_id=614046170]
 layout_mode = 0
 offset_left = 561.0
 offset_top = 22.0
 offset_right = 1125.0
 offset_bottom = 358.0
 
-[node name="Options" type="Control" parent="Panel/TabContainer" unique_id=1560943313]
+[node name="Familiars" type="Control" parent="Panel/TabContainer" unique_id=1281197824]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="FamiliarsList" type="ItemList" parent="Panel/TabContainer/Familiars" unique_id=492308136]
+layout_mode = 0
+offset_right = 372.0
+offset_bottom = 798.0
+theme_override_font_sizes/font_size = 32
+
+[node name="StatsPanel" type="Panel" parent="Panel/TabContainer/Familiars" unique_id=1717589658]
+visible = false
+layout_mode = 0
+offset_left = 376.0
+offset_right = 1144.0
+offset_bottom = 794.0
+
+[node name="FamNameLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1233312517]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 8.0
+offset_right = 144.0
+offset_bottom = 31.0
+text = "Name"
+
+[node name="FamiliarLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1909289165]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 31.0
+offset_right = 144.0
+offset_bottom = 54.0
+text = "Familiar"
+
+[node name="LevelTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1373115843]
+layout_mode = 0
+offset_left = 385.0
+offset_top = 8.0
+offset_right = 458.0
+offset_bottom = 31.0
+text = "Level"
+
+[node name="FamLevelLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=677123053]
+layout_mode = 0
+offset_left = 385.0
+offset_top = 31.0
+offset_right = 458.0
+offset_bottom = 54.0
+text = "0"
+horizontal_alignment = 2
+
+[node name="ExperienceTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1306693728]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 91.0
+offset_right = 105.0
+offset_bottom = 114.0
+text = "Experience"
+
+[node name="FamExperienceProgress" type="ProgressBar" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=282871570]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 114.0
+offset_right = 217.0
+offset_bottom = 126.0
+step = 1.0
+show_percentage = false
+
+[node name="FamExperienceLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1829536093]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 126.0
+offset_right = 94.0
+offset_bottom = 149.0
+text = "00000000"
+horizontal_alignment = 2
+
+[node name="ExperienceDividerLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1750771530]
+layout_mode = 0
+offset_left = 94.0
+offset_top = 126.0
+offset_right = 134.0
+offset_bottom = 149.0
+text = "/"
+horizontal_alignment = 1
+
+[node name="FamExperienceNextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1948889065]
+layout_mode = 0
+offset_left = 134.0
+offset_top = 126.0
+offset_right = 208.0
+offset_bottom = 149.0
+text = "00000000"
+
+[node name="GridContainer" type="GridContainer" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1501866478]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 158.0
+offset_right = 170.0
+offset_bottom = 316.0
+columns = 2
+
+[node name="EnergyTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=299794083]
+layout_mode = 2
+text = "Energy"
+
+[node name="FamEnergyLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1517559695]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="PhysAttackTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=739530298]
+layout_mode = 2
+text = "Phys. Attack"
+
+[node name="PhysAttackLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1058789828]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="MagAttackTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=567703060]
+layout_mode = 2
+text = "Mag. Attack"
+
+[node name="MagAttackLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1985560616]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="PhysDefenseTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1714331760]
+layout_mode = 2
+text = "Phys. Defense"
+
+[node name="PhysDefenseLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1635242407]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="MagDefenseTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=690734703]
+layout_mode = 2
+text = "Mag. Defense"
+
+[node name="MagDefenseLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=2037409133]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="SpeedTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=486859584]
+layout_mode = 2
+text = "Speed"
+
+[node name="SpeedLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1193513682]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="FamPortraitRect" type="TextureRect" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=69545901]
+visible = false
+layout_mode = 0
+offset_left = 581.0
+offset_top = 8.0
+offset_right = 761.0
+offset_bottom = 298.0
+
+[node name="Options" type="Control" parent="Panel/TabContainer" unique_id=1560943313]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="Panel/TabContainer/Options" unique_id=1227069406]
 layout_mode = 0
