@@ -29,6 +29,8 @@ public partial class BattleManager : Node
 	public CommandState comState;
 	
 	public BattleCommand pendingCommand;
+	public RSkillData pendingSkill;
+	//public RSpellData pendingSpell;
 	public FamiliarActor pendingSource;
 	
 	public bool projCommandSubmitted;
@@ -319,13 +321,15 @@ public partial class BattleManager : Node
 				TryFinishDismiss(display);
 				break;
 			//CommandState.SelectAllySpell
-			//CommandState.SelectAllySkill
+			case CommandState.SelectAllySkill:
+			case CommandState.SelectEnemySkill:
+				TryFinishSkill(display);
+				break;
 			//CommandState.SelectAllyItem
 			case CommandState.SelectEnemyAttack:
 				TryFinishAttack(display);
 				break;
 			//CommandState.SelectEnemySpell
-			//CommandState.SelectEnemySkill
 			//CommandState.SelectEnemyItem
 		}
 	}
@@ -552,12 +556,75 @@ public partial class BattleManager : Node
 		RefreshNextButton();
 	}
 	
+	public void TryFinishSkill(FamiliarDisplay display)
+	{
+		if (pendingSource is not FamiliarActor src || !src.isAlive)
+		{
+			return;
+		}
+		
+		if (pendingSkill == null)
+		{
+			return;
+		}
+		
+		if (pendingSkill.targetPattern == RSkillData.TargetPattern.OneEnemy && display.isPlayerSide)
+		{
+			return;
+		}
+		
+		if (pendingSkill.targetPattern == RSkillData.TargetPattern.OneAlly && !display.isPlayerSide)
+		{
+			return;
+		}
+		
+		BattleSide targetSide = display.isPlayerSide ? playerSide : enemySide;
+		
+		int slot = display.slotIndex;
+		
+		if (slot < 0 || slot >= BattleSide.MAX_SLOTS)
+		{
+			return;
+		}
+		
+		if (targetSide.familiarSlots[slot] is not FamiliarActor actor || !actor.isAlive)
+		{
+			return;
+		}
+		
+		int sourceSlot = playerSide.GetSlotIndex(pendingSource);
+		
+		if (sourceSlot < 0 || sourceSlot >= BattleSide.MAX_SLOTS)
+		{
+			return;
+		}
+		
+		SkillCommand cmd = new SkillCommand {
+			sourceSide = playerSide,
+			source = pendingSource,
+			target = actor,
+		};
+		
+		cmd.AssignSkill(pendingSkill);
+		
+		familiarCommands.Add(cmd);
+		famCommandPanels[sourceSlot].SetActiveCommand(cmd);
+		
+		ClearTargetMode();
+		famCommandsSubmitted++;
+		famCommandDisabled[sourceSlot] = true;
+		
+		RefreshNextButton();
+	}
+	
 	public void ClearTargetMode()
 	{
 		GD.Print("BattleManager: clearing targets");
 		
 		SetCommandState(CommandState.None);
 		pendingCommand = null;
+		pendingSkill = null;
+		//pendingSpell = null;
 		pendingSource = null;
 		ClearHighlights();
 		UnblockCommands();
@@ -662,6 +729,8 @@ public partial class BattleManager : Node
 		AppendBattleText("Cancel pending command");
 		selectionPanel.HidePanel();
 		pendingCommand = null;
+		pendingSkill = null;
+		//pendingSpell = null;
 		pendingSource = null;
 		SetCommandState(CommandState.None);
 		
@@ -1306,6 +1375,32 @@ public partial class BattleSide : RefCounted
 		
 		return famList;
 	}
+	
+	public FamiliarActor GetLeftFamiliar(int slot)
+	{
+		if (slot >= 1 && slot < MAX_SLOTS)
+		{
+			if (familiarSlots[slot - 1] is FamiliarActor fam)
+			{
+				return fam;
+			}
+		}
+		
+		return null;
+	}
+	
+	public FamiliarActor GetRightFamiliar(int slot)
+	{
+		if (slot >= 0 && slot < MAX_SLOTS - 1)
+		{
+			if (familiarSlots[slot + 1] is FamiliarActor fam)
+			{
+				return fam;
+			}
+		}
+		
+		return null;
+	}
 }
 
 public interface IBattleActor
@@ -1356,8 +1451,23 @@ public partial class FamiliarActor : RefCounted, IBattleActor
 		currentEnergy = maxEnergy;
 	}
 	
+	public void Heal(int amount)
+	{
+		if (amount <= 0)
+		{
+			return;
+		}
+		
+		currentEnergy = Mathf.Min(currentEnergy + amount, maxEnergy);
+	}
+	
 	public void Damage(int amount)
 	{
+		if (amount <= 0)
+		{
+			return;
+		}
+		
 		currentEnergy = Mathf.Max(currentEnergy - amount, 0);
 	}
 	

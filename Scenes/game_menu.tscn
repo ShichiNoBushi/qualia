@@ -5,6 +5,7 @@
 [node name="GameMenu" type="CanvasLayer" unique_id=326509181]
 process_mode = 3
 layer = 100
+visible = false
 script = ExtResource("1_r7qr8")
 
 [node name="Panel" type="Panel" parent="." unique_id=1239281859]
@@ -18,10 +19,9 @@ layout_mode = 0
 offset_right = 1144.0
 offset_bottom = 829.0
 tab_alignment = 1
-current_tab = 1
+current_tab = 0
 
 [node name="Projector" type="Control" parent="Panel/TabContainer" unique_id=1210988696]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -144,6 +144,7 @@ offset_right = 1125.0
 offset_bottom = 358.0
 
 [node name="Familiars" type="Control" parent="Panel/TabContainer" unique_id=1281197824]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 

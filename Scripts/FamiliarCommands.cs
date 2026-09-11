@@ -9,6 +9,7 @@ public partial class FamiliarCommands : Control
 	public Button attackButton;
 	public Button defendButton;
 	public List<Button> skillButtons = new();
+	public bool[] skillsDisabled;
 	public Button undoButton;
 	
 	public FamiliarActor familiar {get; set;}
@@ -56,11 +57,31 @@ public partial class FamiliarCommands : Control
 		familiarLabel.Text = string.IsNullOrEmpty(actor.name) ? "(no name)" : actor.name;
 		SetElementsVisible(true);
 		
-		foreach (var skill in actor.familiar.skills)
+		skillsDisabled = new bool[actor.familiar.skills.Count];
+		
+		for (int i = 0; i < actor.familiar.skills.Count; i++)
 		{
+			RSkillData skill = actor.familiar.skills[i];
+			
 			Button btn = new();
 			btn.Text = skill.name;
 			btn.Pressed += () => OnSkillPressed(skill);
+			
+			bool disabled = false;
+			
+			if (actor.currentEnergy < skill.cost)
+			{
+				disabled = true;
+			}
+			
+			if (skill.targetPattern == RSkillData.TargetPattern.OneEnemy && battle.enemySide.CountActiveFamiliars() == 0 && !battle.isProjectorEncounter)
+			{
+				disabled = true;
+			}
+			
+			btn.Disabled = disabled;
+			skillsDisabled[i] = disabled;
+			
 			skillButtons.Add(btn);
 			subCommandsVBox.AddChild(btn);
 		}
@@ -139,9 +160,85 @@ public partial class FamiliarCommands : Control
 	
 	public void OnSkillPressed(RSkillData skill)
 	{
-		
-		
-		DisableCommands();
+		if (skill.targetPattern == RSkillData.TargetPattern.OneEnemy)
+		{
+			if (battle.enemySide.CountActiveFamiliars() == 0 && !battle.isProjectorEncounter)
+			{
+				return;
+			}
+			
+			if (skill.cost > 0 && familiar.currentEnergy < skill.cost)
+			{
+				return;
+			}
+			
+			bool canAttackFamiliars = battle.enemySide.CountActiveFamiliars() > 0;
+			bool canAttackProjector = battle.isProjectorEncounter && !canAttackFamiliars && battle.enemySide.projector != null && battle.enemySide.projector.currentEnergy > 0;
+			
+			if (!canAttackFamiliars && !canAttackProjector)
+			{
+				return;
+			}
+			
+			if (familiar == null)
+			{
+				battle.AppendBattleText("FamiliarCommand: familiar null");
+				GD.Print("FamiliarCommand: familiar null");
+				return;
+			}
+			
+			battle.SetCommandState(BattleManager.CommandState.SelectEnemySkill);
+			battle.pendingCommand = null;
+			battle.pendingSkill = skill;
+			battle.pendingSource = familiar;
+			
+			if (canAttackFamiliars)
+			{
+				battle.HighlightEnemies();
+			}
+			else if (canAttackProjector)
+			{
+				battle.projectorDisplayE.Highlight(true);
+			}
+			
+			battle.BlockCommands();
+			battle.RefreshNextButton();
+		}
+		else if (skill.targetPattern == RSkillData.TargetPattern.OneAlly)
+		{
+			if (battle.playerSide.CountActiveFamiliars() == 0)
+			{
+				return;
+			}
+			
+			battle.SetCommandState(BattleManager.CommandState.SelectAllySkill);
+			battle.pendingCommand = null;
+			battle.pendingSkill = skill;
+			battle.pendingSource = familiar;
+			
+			battle.HighlightAllies();
+			
+			battle.BlockCommands();
+			battle.RefreshNextButton();
+		}
+		else
+		{
+			SkillCommand cmd = new SkillCommand
+			{
+				sourceSide = familiar.side,
+				source = familiar,
+				target = (skill.targetPattern == RSkillData.TargetPattern.Self || skill.targetPattern == RSkillData.TargetPattern.None) ? familiar : null
+			};
+			
+			cmd.AssignSkill(skill);
+			
+			battle.familiarCommands.Add(cmd);
+			battle.famCommandsSubmitted++;
+			
+			SetActiveCommand(cmd);
+			
+			battle.RefreshNextButton();
+		}
 	}
 	
 	public void OnUndoPressed()
@@ -168,6 +265,29 @@ public partial class FamiliarCommands : Control
 		bool canAttackProjector = battle.isProjectorEncounter && !canAttackFamiliars && battle.enemySide.projector != null && battle.enemySide.projector.currentEnergy > 0;
 		
 		disableAttack = !canAttackFamiliars && !canAttackProjector;
+		
+		if (familiar == null)
+		{
+			return;
+		}
+		
+		for (int i = 0; i < skillsDisabled.Length; i++)
+		{
+			bool disabled = false;
+			RSkillData skill = familiar.familiar.skills[i];
+			
+			if (familiar.currentEnergy < skill.cost)
+			{
+				disabled = true;
+			}
+			
+			if (skill.targetPattern == RSkillData.TargetPattern.OneEnemy && disableAttack)
+			{
+				disabled = true;
+			}
+			
+			skillsDisabled[i] = disabled;
+		}
 	}
 	
 	public void DisableCommands()
@@ -186,9 +306,9 @@ public partial class FamiliarCommands : Control
 		attackButton.Disabled = disableAttack;
 		defendButton.Disabled = false;
 		
-		foreach (var btn in skillButtons)
+		for (int i = 0; i < skillButtons.Count; i++)
 		{
-			//btn.Disabled = false;
+			skillButtons[i].Disabled = skillsDisabled[i];
 		}
 	}
 	
