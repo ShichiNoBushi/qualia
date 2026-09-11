@@ -1,13 +1,14 @@
 [gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://dd0ycosprdajc"]
 
 [ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_m4vac"]
+[ext_resource type="Resource" uid="uid://dklaojj8nj1xh" path="res://Resources/Skills/strike.tres" id="2_f8sgw"]
 [ext_resource type="Script" uid="uid://df7vrqh187nx2" path="res://Scripts/RQualiaRequirement.cs" id="2_qedgj"]
 [ext_resource type="Script" uid="uid://cm64tnf4fly34" path="res://Scripts/RPrismRecipe.cs" id="3_f8sgw"]
 [ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="4_61f7u"]
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="5_jh2e0"]
 [ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/type_data/fire.tres" id="6_go1fl"]
 
-[sub_resource type="Resource" id="Resource_dlnog"]
+[sub_resource type="Resource" id="Resource_2db5h"]
 script = ExtResource("3_f8sgw")
 
 [resource]
@@ -18,4 +19,5 @@ basePAttack = 4
 baseMDefense = 4
 baseSpeed = 5
 types = Array[ExtResource("5_jh2e0")]([ExtResource("6_go1fl")])
+learnableSkills = Array[ExtResource("1_m4vac")]([ExtResource("2_f8sgw")])
 metadata/_custom_type_script = "uid://c6t16g27uf4ia"

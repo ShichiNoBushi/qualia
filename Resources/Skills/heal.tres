@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://cmx500spe3o76"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_l36wx"]
+
+[resource]
+script = ExtResource("1_l36wx")
+id = "heal"
+name = "Heal"
+targetPattern = 2
+cost = 3
+isMagicalAttack = true
+healPower = 5
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

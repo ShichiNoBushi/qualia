@@ -2,11 +2,12 @@
 
 [ext_resource type="Script" uid="uid://482mjwvdetpu" path="res://Scripts/RFamiliarInstance.cs" id="1_n037b"]
 [ext_resource type="Resource" uid="uid://dd0ycosprdajc" path="res://Resources/familiar_data/ex_salamander.tres" id="1_r5bo7"]
+[ext_resource type="Resource" uid="uid://dklaojj8nj1xh" path="res://Resources/Skills/strike.tres" id="3_3q8sv"]
 [ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/type_data/fire.tres" id="3_4sutr"]
 
 [resource]
 script = ExtResource("1_n037b")
 data = ExtResource("1_r5bo7")
 types = Array[Object]([ExtResource("3_4sutr")])
-skills = null
+skills = Array[Object]([ExtResource("3_3q8sv")])
 metadata/_custom_type_script = "uid://482mjwvdetpu"

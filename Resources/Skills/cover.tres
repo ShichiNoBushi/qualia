@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://bjc3sb856vv3t"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_48pek"]
+
+[resource]
+script = ExtResource("1_48pek")
+id = "cover"
+name = "Cover"
+targetPattern = 4
+cost = 3
+speedFactor = 2.0
+defenseFactorOnUser = 1.5
+defenseFactorOnTarget = 2.0
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

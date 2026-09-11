@@ -6,6 +6,7 @@ public partial class GameMenu : CanvasLayer
 	public GameSession session;
 	
 	public RFamiliarInstance selectedFamiliar;
+	public RSkillData selectedSkill;
 	
 	public Button closeButton;
 	
@@ -44,6 +45,10 @@ public partial class GameMenu : CanvasLayer
 	public Label speedLabel;
 	
 	public TextureRect famPortraitRect;
+	
+	public ItemList skillsList;
+	
+	public RichTextLabel skillDescLabel;
 	
 	public Button quitButton;
 	public ConfirmationDialog quitConfirm;
@@ -88,9 +93,15 @@ public partial class GameMenu : CanvasLayer
 		magDefenseLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/MagDefenseLabel");
 		speedLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/SpeedLabel");
 		
+		skillsList = GetNode<ItemList>("Panel/TabContainer/Familiars/StatsPanel/SkillsList");
+		
+		skillDescLabel = GetNode<RichTextLabel>("Panel/TabContainer/Familiars/StatsPanel/SkillDescLabel");
+		
+		famPortraitRect = GetNode<TextureRect>("Panel/TabContainer/Familiars/StatsPanel/FamPortraitRect");
+		
 		familiarsList.ItemSelected += OnFamiliarSelect;
 		
-		famPortraitRect = GetNode<TextureRect>("Panel/TAbContainer/Familiars/StatsPanel/FamPortraitRect");
+		skillsList.ItemSelected += OnSkillSelect;
 		
 		quitButton = GetNode<Button>("Panel/TabContainer/Options/CenterContainer/VBoxContainer/QuitButton");
 		quitConfirm = GetNode<ConfirmationDialog>("QuitConfirm");
@@ -136,7 +147,7 @@ public partial class GameMenu : CanvasLayer
 	
 	public void OnFamiliarSelect(long index)
 	{
-		selectedFamiliar = (RFamiliarInstance)familiarsList.GetItemMetadata((int)index);
+		selectedFamiliar = familiarsList.GetItemMetadata((int)index).As<RFamiliarInstance>();
 		
 		if (selectedFamiliar == null)
 		{
@@ -167,6 +178,27 @@ public partial class GameMenu : CanvasLayer
 		speedLabel.Text = $"{fam.speed}";
 		
 		famPortraitRect.Texture = fam.data?.portrait;
+		
+		if (fam.skills != null)
+		{
+			GD.Print($"GameMenu: {fam.GetPreferredName()} has {fam.skills.Count} Skills");
+			foreach (var skill in fam.skills)
+			{
+				GD.Print($"  {skill.name}");
+			}
+		}
+		else
+		{
+			GD.Print($"GameMenu: {fam.GetPreferredName()}'s Skills is null");
+		}
+		UpdateSkillList();
+	}
+	
+	public void OnSkillSelect(long index)
+	{
+		selectedSkill = skillsList.GetItemMetadata((int)index).As<RSkillData>();
+		
+		skillDescLabel.Text = selectedSkill != null ? selectedSkill.FormatDescription() : "";
 	}
 	
 	public void OnQuitPressed()
@@ -233,7 +265,7 @@ public partial class GameMenu : CanvasLayer
 			}
 		}
 		
-		if (restoreIdx > 0)
+		if (restoreIdx >= 0)
 		{
 			familiarsList.Select(restoreIdx);
 			OnFamiliarSelect(restoreIdx);
@@ -243,6 +275,64 @@ public partial class GameMenu : CanvasLayer
 			selectedFamiliar = null;
 			familiarsList.DeselectAll();
 			statsPanel.Visible = false;
+			
+			selectedSkill = null;
+			skillsList.DeselectAll();
+			skillDescLabel.Text = "";
+		}
+	}
+	
+	public void UpdateSkillList()
+	{
+		skillsList.Clear();
+		
+		if (selectedFamiliar == null)
+		{
+			selectedSkill = null;
+			skillDescLabel.Text = "";
+			return;
+		}
+		
+		Godot.Collections.Array<RSkillData> skills = selectedFamiliar.skills;
+		
+		if (skills == null || skills.Count == 0)
+		{
+			selectedSkill = null;
+			skillDescLabel.Text = "";
+			return;
+		}
+		
+		int restoreIdx = -1;
+		
+		for (int i = 0; i < skills.Count; i++)
+		{
+			RSkillData skill = skills[i];
+			
+			if (skill == null)
+			{
+				continue;
+			}
+			
+			skillsList.AddItem(skill.name);
+			int idx = skillsList.ItemCount - 1;
+			skillsList.SetItemMetadata(idx, skill);
+			
+			if (skill == selectedSkill)
+			{
+				restoreIdx = idx;
+			}
+		}
+		
+		if (restoreIdx >= 0)
+		{
+			skillsList.Select(restoreIdx);
+			OnSkillSelect(restoreIdx);
+		}
+		else
+		{
+			selectedSkill = null;
+			skillsList.DeselectAll();
+			skillDescLabel.Text = "";
 		}
 	}
 	
