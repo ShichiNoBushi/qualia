@@ -1550,13 +1550,20 @@ public class RandomWildAI : IEncounterAI
 	
 	public BattleCommand PickFamiliarAction(BattleManager battle, FamiliarActor fam)
 	{
-		int roll = (int)(GD.Randi() % 3);
+		int roll = (int)(GD.Randi() % 5);
+		
+		GD.Print($"AI {fam.name} rolls {roll} to select action...");
 		
 		switch (roll)
 		{
 			case 0:
 			case 1:
 				return (BattleCommand)CommandFactory.AttackRandom(battle, fam)
+					?? CommandFactory.Defend(fam);
+			case 2:
+			case 3:
+				return (BattleCommand)CommandFactory.SkillRandom(battle, fam)
+					?? (BattleCommand)CommandFactory.AttackRandom(battle, fam)
 					?? CommandFactory.Defend(fam);
 		}
 		
@@ -1578,8 +1585,11 @@ public class CommandFactory
 	
 	public static AttackCommand AttackRandom(BattleManager battle, FamiliarActor fam)
 	{
+		GD.Print($"CommandFactory: {fam.name} attempts to attack");
+		
 		if (battle == null || fam == null)
 		{
+			GD.Print("  invalid due to null battle or familiar");
 			return null;
 		}
 		
@@ -1589,6 +1599,7 @@ public class CommandFactory
 		
 		if (randTarget == null)
 		{
+			GD.Print("  invalud due to null target");
 			return null;
 		}
 		
@@ -1600,9 +1611,97 @@ public class CommandFactory
 		};
 	}
 	
+	public static SkillCommand SkillRandom(BattleManager battle, FamiliarActor fam)
+	{
+		GD.Print($"CommandFactory: {fam.name} attempts to pick a skill");
+		
+		if (battle == null || fam?.familiar?.skills == null)
+		{
+			GD.Print($"  invalid due to null battle, familiar, or skills");
+			GD.Print($"  battle null={battle == null}, familiar null={fam?.familiar == null}, skills null={fam?.familiar?.skills == null}");
+			return null;
+		}
+		
+		BattleSide otherSide = fam.side == battle.playerSide ? battle.enemySide : battle.playerSide;
+		
+		Godot.Collections.Array<RSkillData> validSkills = new();
+		
+		foreach (var skl in fam.familiar.skills)
+		{
+			if (skl == null || fam.currentEnergy < skl.cost)
+			{
+				continue;
+			}
+			
+			bool ok = skl.targetPattern switch
+			{
+				RSkillData.TargetPattern.OneAlly =>
+					fam.side.CountActiveFamiliars() > 0,
+				RSkillData.TargetPattern.OneEnemy =>
+					otherSide.CountActiveFamiliars() > 0 || (otherSide.projector != null && otherSide.projector.currentEnergy > 0),
+				_ => true
+			};
+			
+			if (ok)
+			{
+				validSkills.Add(skl);
+			}
+		}
+		
+		if (validSkills.Count == 0)
+		{
+			GD.Print("  no valid skills");
+			return null;
+		}
+		
+		RSkillData skill = validSkills[(int)(GD.Randi() % validSkills.Count)];
+		
+		SkillCommand cmd = new SkillCommand
+		{
+			sourceSide = fam.side,
+			source = fam
+		};
+		
+		cmd.target = skill.targetPattern switch
+		{
+			RSkillData.TargetPattern.Self or RSkillData.TargetPattern.None => fam,
+			RSkillData.TargetPattern.OneAlly => PickFriendlyTarget(fam.side),
+			RSkillData.TargetPattern.OneEnemy => PickHostileTarget(otherSide),
+			_ => null
+		};
+		
+		if (skill.targetPattern is RSkillData.TargetPattern.OneAlly or RSkillData.TargetPattern.OneEnemy && cmd.target == null)
+		{
+			GD.Print("  single target with null target");
+			return null;
+		}
+		
+		cmd.AssignSkill(skill);
+		
+		return cmd;
+	}
+	
 	//public static SummonCommand Summon(Projector proj, BattleSide side, RFamiliarInstance fam, int slot)
 	
 	//public static FocusCommand Focus(Projector proj)
+	
+	public static object PickFriendlyTarget(BattleSide side)
+	{
+		if (side == null)
+		{
+			return null;
+		}
+		
+		Godot.Collections.Array<FamiliarActor> famList = side.GetFamiliarList();
+		
+		if (famList != null && famList.Count > 0)
+		{
+			int randIdx = (int)(GD.Randi() % famList.Count);
+			return famList[randIdx];
+		}
+		
+		return null;
+	}
 	
 	public static object PickHostileTarget(BattleSide side)
 	{

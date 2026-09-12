@@ -205,7 +205,7 @@ public partial class AttackCommand : BattleCommand
 		
 		ApplyDamage(target, damage);
 		
-		string text = $"{fEnemyPrefix}[b]{fName}[/b] deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b]";
+		string text = $"{fEnemyPrefix}[b]{fName}[/b] attacks and deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b]";
 		battle.AppendBattleText(text);
 		
 		if (target is FamiliarActor fam2)
@@ -425,9 +425,11 @@ public partial class SkillCommand : BattleCommand
 			}
 		}
 		
+		battle.AppendBattleText($"[b]{srcFam.name}[/b] uses [b]{skill.name}[/b]...");
+		
 		if (cost > 0 && srcFam.currentEnergy < cost)
 		{
-			battle.AppendBattleText($"{srcFam.name} doesn't have enough energy.");
+			battle.AppendBattleText($"{srcFam.name} doesn't have enough energy.", false);
 			return;
 		}
 		
@@ -623,7 +625,7 @@ public partial class SkillCommand : BattleCommand
 		ApplyHealing(target, healing);
 		
 		string text = $"{fEnemyPrefix}[b]{fName}[/b] heals {healing} energy for {tEnemyPrefix}[b]{tName}[/b]";
-		battle.AppendBattleText(text);
+		battle.AppendBattleText(text, false);
 		
 		if (target is FamiliarActor fam2)
 		{
@@ -700,7 +702,7 @@ public partial class SkillCommand : BattleCommand
 		ApplyDamage(target, damage, overwhelming, battle);
 		
 		string text = $"{fEnemyPrefix}[b]{fName}[/b] deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
-		battle.AppendBattleText(text);
+		battle.AppendBattleText(text, false);
 		
 		if (target is FamiliarActor fam2)
 		{
@@ -848,14 +850,14 @@ public partial class SkillCommand : BattleCommand
 		if (defFactor <= 0)
 		{
 			GD.Print($"BattleCommand: invalid defense factor ({defFactor})");
-			battle.AppendBattleText($"Skill Error: invalid defense factor ({defFactor})");
+			battle.AppendBattleText($"Skill Error: invalid defense factor ({defFactor}), false");
 			return;
 		}
 		
 		if (target is Projector proj)
 		{
 			GD.Print($"BattleCommand: invalid defense target ({proj.name})");
-			battle.AppendBattleText($"Skill Error: invalid defense target ({proj.name})");
+			battle.AppendBattleText($"Skill Error: invalid defense target ({proj.name}), false");
 			return;
 		}
 		
@@ -913,7 +915,7 @@ public partial class SkillCommand : BattleCommand
 		{
 			string tText = ReferenceEquals(target, source) ? "itself" : $"{tEnemyPrefix}[b]{tName}[/b]";
 			string text = $"{fEnemyPrefix}[b]{fName}[/b] makes {tText} {defDescription}.";
-			battle.AppendBattleText(text);
+			battle.AppendBattleText(text, false);
 		}
 	}
 	

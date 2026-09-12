@@ -49,6 +49,13 @@ public partial class RFamiliarInstance : Resource
 		
 		RecalculateStats();
 		
+		skills = new();
+		
+		foreach (var skill in data.learnableSkills)
+		{
+			skills.Add(skill);
+		}
+		
 		foreach (var t in data.types)
 		{
 			if (!types.Contains(t))
