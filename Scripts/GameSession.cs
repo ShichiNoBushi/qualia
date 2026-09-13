@@ -25,6 +25,9 @@ public partial class GameSession : Node
 		RFamiliarInstance sylphInst = GD.Load<RFamiliarInstance>("res://Resources/familiar_instance/ex_sylph.tres");
 		RFamiliarInstance undineInst = GD.Load<RFamiliarInstance>("res://Resources/familiar_instance/ex_undine.tres");
 		
+		RSpellData boltSpell = GD.Load<RSpellData>("res://Resources/Spells/Bolt.tres");
+		RSpellData recoverSpell = GD.Load<RSpellData>("res://Resources/Spells/Recover.tres");
+		
 		if (pData == null)
 		{
 			GD.Print("BattleManager - Failed to start: invalid projector data");
@@ -43,6 +46,9 @@ public partial class GameSession : Node
 		playerProjector.GiveFamiliar(salamanderInst);
 		playerProjector.GiveFamiliar(sylphInst);
 		playerProjector.GiveFamiliar(undineInst);
+		
+		playerProjector.LearnSpell(boltSpell);
+		playerProjector.LearnSpell(recoverSpell);
 		
 		gameMode = GameMode.World;
 	}

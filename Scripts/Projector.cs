@@ -14,6 +14,7 @@ public partial class Projector : RefCounted
 	public int currentEnergy {get; set;}
 	
 	public Godot.Collections.Array<RFamiliarInstance> ownedFamiliars {get; set;}
+	public Godot.Collections.Array<RSpellData> spells {get; set;}
 	
 	public void Initialize(RProjectorData pData)
 	{
@@ -28,6 +29,7 @@ public partial class Projector : RefCounted
 		currentEnergy = maxEnergy;
 		
 		ownedFamiliars = new();
+		spells = new();
 	}
 	
 	public bool GiveFamiliar(RFamiliarInstance familiar)
@@ -50,6 +52,14 @@ public partial class Projector : RefCounted
 		
 		ownedFamiliars.Remove(familiar);
 		return familiar;
+	}
+	
+	public void LearnSpell(RSpellData spell)
+	{
+		if (spell != null || !spells.Contains(spell))
+		{
+			spells.Add(spell);
+		}
 	}
 	
 	public void Damage(int amount)

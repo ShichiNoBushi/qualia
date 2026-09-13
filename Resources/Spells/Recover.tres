@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RSpellData" format=3 uid="uid://ccroc3uhlivui"]
+
+[ext_resource type="Script" uid="uid://woseyfbovo6l" path="res://Scripts/RSpellData.cs" id="1_2t03k"]
+
+[resource]
+script = ExtResource("1_2t03k")
+id = "recover"
+name = "Recover"
+spellPattern = 1
+cost = 5
+healPower = 5
+metadata/_custom_type_script = "uid://woseyfbovo6l"

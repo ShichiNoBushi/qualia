@@ -18,6 +18,7 @@ public partial class ProjectorCommands : Control
 	
 	public bool disableSummon {get; set;} = false;
 	public bool disableDismiss {get; set;} = false;
+	public bool disableSpell {get; set;} = false;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -39,9 +40,10 @@ public partial class ProjectorCommands : Control
 		escapeButton.Pressed += OnEscapePressed;
 		undoButton.Pressed += OnUndoPressed;
 		
+		CheckValidCommands();
+		EnableCommands();
+		
 		//Disable buttons currently without function
-		dismissButton.Disabled = true;
-		spellButton.Disabled = true;
 		itemButton.Disabled = true;
 		escapeButton.Disabled = true;
 	}
@@ -53,8 +55,6 @@ public partial class ProjectorCommands : Control
 	
 	public void OnSummonPressed()
 	{
-		battle.SetCommandState(BattleManager.CommandState.SelectSummon);
-		
 		Projector projector = battle.playerSide.projector;
 		
 		if (projector == null)
@@ -63,6 +63,8 @@ public partial class ProjectorCommands : Control
 			GD.Print("ProjectorCommand: null projector");
 			return;
 		}
+		
+		battle.SetCommandState(BattleManager.CommandState.SelectSummon);
 		
 		Godot.Collections.Array<RFamiliarInstance> alreadyOut = new();
 		
@@ -81,7 +83,7 @@ public partial class ProjectorCommands : Control
 		foreach (var inst in projector.ownedFamiliars)
 		{
 			bool alreadySummoned = alreadyOut.Contains(inst);
-			string label = string.IsNullOrEmpty(inst.nickName) ? inst.data.name : inst.nickName;
+			string label = inst.GetPreferredName();
 			label += $"  (E {inst.energy})";
 			
 			entries.Add((inst, label, !alreadySummoned && projector.currentEnergy >= inst.energy));
@@ -91,15 +93,6 @@ public partial class ProjectorCommands : Control
 		
 		battle.selectionPanel.OnItemChosen = OnFamiliarPicked;
 		battle.selectionPanel.Open("Summon", entries);
-		
-		/*battle.HighlightAllySlots();
-		battle.pendingCommand = new SummonCommand {
-			sourceSide = battle.playerSide,
-			source = battle.playerSide.projector
-		};
-		
-		DisableCommands();
-		undoButton.Visible = true;*/
 		battle.BlockCommands();
 		
 		battle.RefreshNextButton();
@@ -123,10 +116,45 @@ public partial class ProjectorCommands : Control
 	
 	public void OnSpellPressed()
 	{
+		Projector projector = battle.playerSide.projector;
 		
+		if (projector == null)
+		{
+			battle.AppendBattleText("ProjectorCommand: null projector");
+			GD.Print("ProjectorCommand: null projector");
+			return;
+		}
 		
-		DisableCommands();
-		undoButton.Visible = true;
+		battle.SetCommandState(BattleManager.CommandState.SelectSpell);
+		
+		List<(object, string, bool)> entries = new();
+		
+		foreach (var spell in projector.spells)
+		{
+			bool validTargets = true;
+			
+			if (spell.spellPattern == RSpellData.SpellPattern.OneAlly && battle.playerSide.CountActiveFamiliars() == 0)
+			{
+				validTargets = false;
+			}
+			else if (spell.spellPattern == RSpellData.SpellPattern.OneEnemy && battle.enemySide.CountActiveFamiliars() == 0 && battle.enemySide.projector == null)
+			{
+				validTargets = false;
+			}
+			
+			string label = string.IsNullOrEmpty(spell.name) ? "(no name)" : spell.name;
+			label += $"  (E {spell.cost})";
+			
+			entries.Add((spell, label, validTargets && projector.currentEnergy > spell.cost));
+		}
+		
+		GD.Print($"ProjectorCommand: {entries.Count} entries in spell list");
+		
+		battle.selectionPanel.OnItemChosen = OnSpellPicked;
+		battle.selectionPanel.Open("Spell", entries);
+		battle.BlockCommands();
+		
+		battle.RefreshNextButton();
 	}
 	
 	public void OnFocusPressed()
@@ -197,12 +225,6 @@ public partial class ProjectorCommands : Control
 			return;
 		}
 		
-		battle.pendingCommand = new SummonCommand {
-			sourceSide = battle.playerSide,
-			source = battle.playerSide.projector,
-			familiar = inst
-		};
-		
 		try
 		{
 			GD.Print($"ProjectorCommands: familiar {inst.GetPreferredName()} picked");
@@ -213,21 +235,75 @@ public partial class ProjectorCommands : Control
 		}
 		
 		battle.HighlightAllySlots();
-		battle.pendingCommand = new SummonCommand {
+		battle.pendingCommand = new SummonCommand
+		{
 			sourceSide = battle.playerSide,
 			source = battle.playerSide.projector,
 			familiar = inst
 		};
 		
-		//battle.selectionPanel.UnblockCommands();
 		DisableCommands();
-		//undoButton.Visible = true;
+	}
+	
+	public void OnSpellPicked(object data)
+	{
+		if (data is not RSpellData spell)
+		{
+			GD.Print("ProjectorCommands: assigned data is not a spell");
+			return;
+		}
+		
+		battle.pendingSource = battle.playerSide.projector;
+		battle.pendingSpell = spell;
+		
+		try
+		{
+			GD.Print($"ProjectorCommands: spell {spell.name} picked");
+		}
+		catch (Exception e)
+		{
+			GD.PrintErr($"ProjectorCommands: failed to identify spell - {e}");
+		}
+		
+		if (spell.spellPattern == RSpellData.SpellPattern.OneAlly)
+		{
+			battle.HighlightAllies();
+			battle.SetCommandState(BattleManager.CommandState.SelectAllySpell);
+		}
+		else if (spell.spellPattern == RSpellData.SpellPattern.OneEnemy)
+		{
+			if (battle.enemySide.CountActiveFamiliars() > 0)
+			{
+				battle.HighlightEnemies();
+			}
+			
+			battle.SetCommandState(BattleManager.CommandState.SelectEnemySpell);
+		}
+		else
+		{
+			SpellCommand cmd = new SpellCommand
+			{
+				sourceSide = battle.playerSide,
+				source = battle.playerSide.projector
+			};
+			
+			cmd.AssignSpell(spell);
+			
+			battle.projectorCommands.Add(cmd);
+			battle.projCommandSubmitted = true;
+			
+			SetActiveCommand(cmd);
+			
+			battle.ClearTargetMode();
+			battle.RefreshNextButton();
+		}
 	}
 	
 	public void CheckValidCommands()
 	{
-		disableSummon = !battle.playerSide.HasOpenSlot();
+		disableSummon = battle.playerSide.projector.currentEnergy == 0 && !battle.playerSide.HasOpenSlot();
 		disableDismiss = battle.playerSide.CountActiveFamiliars() == 0;
+		disableSpell = battle.playerSide.projector.currentEnergy == 0;
 	}
 	
 	public void DisableCommands()
@@ -244,7 +320,7 @@ public partial class ProjectorCommands : Control
 	{
 		summonButton.Disabled = disableSummon;
 		dismissButton.Disabled = disableDismiss;
-		//spellButton.Disabled = false;
+		spellButton.Disabled = disableSpell;
 		focusButton.Disabled = false;
 		//itemButton.Disabled = false;
 		//escapeButton.Disabled = false;

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RSpellData" format=3 uid="uid://bc6gwkq37pjfh"]
+
+[ext_resource type="Script" uid="uid://woseyfbovo6l" path="res://Scripts/RSpellData.cs" id="1_bujg1"]
+
+[resource]
+script = ExtResource("1_bujg1")
+id = "bolt"
+name = "Bolt"
+cost = 5
+power = 5
+metadata/_custom_type_script = "uid://woseyfbovo6l"

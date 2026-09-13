@@ -850,14 +850,14 @@ public partial class SkillCommand : BattleCommand
 		if (defFactor <= 0)
 		{
 			GD.Print($"BattleCommand: invalid defense factor ({defFactor})");
-			battle.AppendBattleText($"Skill Error: invalid defense factor ({defFactor}), false");
+			battle.AppendBattleText($"Skill Error: invalid defense factor ({defFactor})", false);
 			return;
 		}
 		
 		if (target is Projector proj)
 		{
 			GD.Print($"BattleCommand: invalid defense target ({proj.name})");
-			battle.AppendBattleText($"Skill Error: invalid defense target ({proj.name}), false");
+			battle.AppendBattleText($"Skill Error: invalid defense target ({proj.name})", false);
 			return;
 		}
 		
@@ -996,11 +996,578 @@ public partial class SkillCommand : BattleCommand
 	
 	public bool MultiTarget()
 	{
-		return targetPattern == RSkillData.TargetPattern.AllAllies || targetPattern == RSkillData.TargetPattern.AllEnemies;
+		return targetPattern == RSkillData.TargetPattern.AllAllies || targetPattern == RSkillData.TargetPattern.AllEnemies || targetPattern == RSkillData.TargetPattern.AllUnits;
 	}
 	
 	public bool OpenTarget()
 	{
 		return targetPattern != RSkillData.TargetPattern.OneAlly && targetPattern != RSkillData.TargetPattern.OneEnemy;
+	}
+}
+
+public partial class SpellCommand : BattleCommand
+{
+	public RSpellData spell {get; set;}
+	
+	public RSpellData.SpellPattern spellPattern {get; set;}
+	
+	public int cost {get; set;} = 0;
+	
+	public int power {get; set;} = 0;
+	public float splash {get; set;} = 0f;
+	
+	public int heal {get; set;} = 0;
+	
+	public float defenseTarget {get; set;} = 1f;
+	
+	public bool isMagicTarget {get; set;} = false;
+	
+	public override void Execute(BattleManager battle)
+	{
+		if (source is not Projector proj || proj.currentEnergy == 0)
+		{
+			isValid = false;
+			return;
+		}
+		
+		if (!OpenTarget() && !IsUsableTarget(target))
+		{
+			target = null;
+			Retarget(battle);
+			
+			if (!IsUsableTarget(target))
+			{
+				battle.AppendBattleText("No target available");
+				return;
+			}
+		}
+		
+		battle.AppendBattleText($"[b]{proj.name}[/b] uses [b]{spell.name}[/b]...");
+		
+		if (cost > 0 && proj.currentEnergy < cost)
+		{
+			battle.AppendBattleText($"[b]{proj.name}[/b] doesn't have enough energy.", false);
+			return;
+		}
+		
+		proj.currentEnergy -= cost;
+		
+		if (SingleTarget())
+		{
+			if (power > 0)
+			{
+				AttackTarget(proj, target, battle);
+			}
+			
+			if (heal > 0)
+			{
+				HealTarget(proj, target, battle);
+			}
+			
+			if (defenseTarget != 1f)
+			{
+				DefendTarget(target, defenseTarget, battle);
+			}
+		}
+		else if (MultiTarget())
+		{
+			Godot.Collections.Array<RefCounted> targets = new();
+			
+			if (spellPattern == RSpellData.SpellPattern.AllAllies || spellPattern == RSpellData.SpellPattern.AllUnits)
+			{
+				foreach (var fam in sourceSide.GetFamiliarList())
+				{
+					targets.Add(fam);
+				}
+			}
+			
+			if (spellPattern == RSpellData.SpellPattern.AllEnemies || spellPattern == RSpellData.SpellPattern.AllUnits)
+			{
+				BattleSide enemySide = sourceSide == battle.playerSide ? battle.enemySide : battle.playerSide;
+				
+				foreach (var fam in enemySide.GetFamiliarList())
+				{
+					targets.Add(fam);
+				}
+				
+				if (enemySide.CountActiveFamiliars() == 0 && enemySide.projector != null && enemySide.projector.currentEnergy > 0)
+				{
+					targets.Add(enemySide.projector);
+				}
+			}
+			
+			if (power > 0)
+			{
+				foreach (var t in targets)
+				{
+					AttackTarget(proj, t, battle);
+				}
+			}
+			
+			if (heal > 0)
+			{
+				foreach (var t in targets)
+				{
+					HealTarget(proj, t, battle);
+				}
+			}
+			
+			if (defenseTarget != 1f)
+			{
+				foreach (var t in targets)
+				{
+					DefendTarget(t, defenseTarget, battle);
+				}
+			}
+		}
+		
+		battle.RefreshAllDisplays();
+		
+		GD.Print($"Execute {GetType().Name} source={(source as Projector).name}");
+	}
+	
+	public override void Retarget(BattleManager battle)
+	{
+		if (OpenTarget())
+		{
+			return;
+		}
+		
+		if (spellPattern == RSpellData.SpellPattern.OneAlly)
+		{
+			if (sourceSide.CountActiveFamiliars() > 0)
+			{
+				Godot.Collections.Array<FamiliarActor> famList = sourceSide.GetFamiliarList();
+				
+				int idx = (int)(GD.Randi() % famList.Count);
+				
+				target = famList[idx];
+			}
+			else
+			{
+				isValid = false;
+			}
+		}
+		else if (spellPattern == RSpellData.SpellPattern.OneEnemy)
+		{
+			BattleSide enemySide = sourceSide == battle.playerSide ? battle.enemySide : battle.playerSide;
+			
+			if (enemySide.CountActiveFamiliars() > 0)
+			{
+				Godot.Collections.Array<FamiliarActor> famList = enemySide.GetFamiliarList();
+				
+				int idx = (int)(GD.Randi() % famList.Count);
+				
+				target = famList[idx];
+			}
+			else if (enemySide.projector != null && enemySide.projector.currentEnergy > 0)
+			{
+				target = enemySide.projector;
+			}
+			else
+			{
+				isValid = false;
+			}
+		}
+	}
+	
+	public bool IsUsableTarget(object target)
+	{
+		if (target is FamiliarActor fam)
+		{
+			return fam.isAlive && fam.side != null && fam.side.GetSlotIndex(fam) >= 0;
+		}
+		if (target is Projector proj)
+		{
+			return proj.currentEnergy > 0;
+		}
+		
+		return false;
+	}
+	
+	public int GetDefenseStat(object target)
+	{
+		if (target is FamiliarActor fam)
+		{
+			return isMagicTarget ? fam.ModMDefense() : fam.ModPDefense();
+		}
+		
+		return 10;
+	}
+	
+	public void HealTarget(Projector proj, object target, BattleManager battle)
+	{
+		string pName = string.IsNullOrEmpty(proj.name) ? "(no name)" : proj.name;
+		
+		string tName = "(no name)";
+		string tEnemyPrefix = "";
+		
+		if (target is FamiliarActor tFam)
+		{
+			tName = string.IsNullOrEmpty(tFam.name) ? "(no name)" : tFam.name;
+			tEnemyPrefix = tFam.side == battle.enemySide ? "Enemy " : "";
+		}
+		else if (target is Projector tProj)
+		{
+			tName = string.IsNullOrEmpty(tProj.name) ? "(no name)" : tProj.name;
+		}
+		
+		int healing = heal;
+		
+		ApplyHealing(target, healing);
+		
+		string text = $"[b]{pName}[/b] heals {healing} energy for {tEnemyPrefix}[b]{tName}[/b]";
+		battle.AppendBattleText(text, false);
+		
+		if (target is FamiliarActor fam2)
+		{
+			BattleSide targetSide = fam2.side;
+			FamiliarDisplay[] displays = battle.GetFamiliarDisplays(targetSide);
+			
+			int slot = targetSide.GetSlotIndex(fam2);
+			
+			if (slot >= 0 && slot < BattleSide.MAX_SLOTS)
+			{
+				displays[slot].UpdateDisplay();
+			}
+			
+			if (SingleTarget() && splash > 0f)
+			{
+				FamiliarActor famLeft = targetSide.GetLeftFamiliar(slot);
+				
+				if (famLeft != null)
+				{
+					healing = (int)(heal * splash);
+					
+					ApplyHealing(famLeft, healing);
+					
+					tName = string.IsNullOrEmpty(famLeft.name) ? "(no name)" : famLeft.name;
+					
+					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
+					battle.AppendBattleText(text, false);
+				}
+				
+				FamiliarActor famRight = targetSide.GetRightFamiliar(slot);
+				
+				if (famRight != null)
+				{
+					healing = (int)(heal * splash);
+					
+					ApplyHealing(famRight, healing);
+					
+					tName = string.IsNullOrEmpty(famRight.name) ? "(no name)" : famRight.name;
+					
+					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
+					battle.AppendBattleText(text, false);
+				}
+			}
+		}
+	}
+	
+	public void AttackTarget(Projector proj, object target, BattleManager battle)
+	{
+		int defenseStat = GetDefenseStat(target);
+		
+		float defFactor = 1f;
+		
+		string pName = string.IsNullOrEmpty(proj.name) ? "(no name)" : proj.name;
+		
+		string tName = "(no name)";
+		string tEnemyPrefix = "";
+		
+		if (target is FamiliarActor tFam)
+		{
+			defFactor = tFam.defenseFactor;
+			tName = string.IsNullOrEmpty(tFam.name) ? "(no name)" : tFam.name;
+			tEnemyPrefix = tFam.side == battle.enemySide ? "Enemy " : "";
+		}
+		else if (target is Projector tProj)
+		{
+			tName = string.IsNullOrEmpty(tProj.name) ? "(no name)" : tProj.name;
+		}
+		
+		float raw = (float)(power) / Mathf.Max(defenseStat, 1);
+		int damage = Mathf.Max(1, Mathf.RoundToInt(raw / defFactor));
+		
+		ApplyDamage(target, damage, battle);
+		
+		string text = $"[b]{pName}[/b] deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
+		battle.AppendBattleText(text, false);
+		
+		if (target is FamiliarActor fam2)
+		{
+			BattleSide targetSide = fam2.side;
+			FamiliarDisplay[] displays = battle.GetFamiliarDisplays(targetSide);
+			
+			int slot = targetSide.GetSlotIndex(fam2);
+			
+			if (slot >= 0 && slot < BattleSide.MAX_SLOTS)
+			{
+				displays[slot].UpdateDisplay();
+			}
+			
+			if (!fam2.isAlive)
+			{
+				if (slot != -1)
+				{
+					targetSide.ClearSlot(slot);
+					battle.InvalidateFamiliarCommands(fam2, this);
+					
+					FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
+					famDisplays[slot].Clear();
+					
+					string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
+					text = $"{fEnemyPrefix2}[b]{fam2.name}[/b] was eliminated";
+					battle.AppendBattleText(text, false);
+					
+					if (!battle.isProjectorEncounter && fam2.side == battle.enemySide)
+					{
+						battle.defeatedFamiliars.Add(fam2.familiar);
+					}
+				}
+			}
+			
+			if (SingleTarget() && splash > 0f)
+			{
+				FamiliarActor famLeft = fam2.side.GetLeftFamiliar(slot);
+				
+				if (famLeft != null)
+				{
+					int defenseStatLeft = GetDefenseStat(famLeft);
+					defFactor = famLeft.defenseFactor;
+					
+					raw = (float)(power * splash) / Mathf.Max(defenseStatLeft, 1);
+					damage = Mathf.Max(1, Mathf.RoundToInt(raw / defFactor));
+					
+					ApplyDamage(famLeft, damage, battle);
+					
+					tName = string.IsNullOrEmpty(famLeft.name) ? "(no name)" : famLeft.name;
+					
+					text = $"Attack's splash deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
+					battle.AppendBattleText(text, false);
+					
+					int slotL = slot - 1;
+					
+					if (slotL >= 0 && slotL < BattleSide.MAX_SLOTS)
+					{
+						displays[slotL].UpdateDisplay();
+					}
+					
+					if (!famLeft.isAlive)
+					{
+						if (slotL != -1)
+						{
+							targetSide.ClearSlot(slotL);
+							battle.InvalidateFamiliarCommands(famLeft, this);
+							
+							FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
+							famDisplays[slotL].Clear();
+							
+							string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
+							text = $"{fEnemyPrefix2}[b]{famLeft.name}[/b] was eliminated";
+							battle.AppendBattleText(text, false);
+							
+							if (!battle.isProjectorEncounter && famLeft.side == battle.enemySide)
+							{
+								battle.defeatedFamiliars.Add(famLeft.familiar);
+							}
+						}
+					}
+				}
+				
+				FamiliarActor famRight = fam2.side.GetRightFamiliar(slot);
+				
+				if (famRight != null)
+				{
+					int defenseStatRight = GetDefenseStat(famRight);
+					defFactor = famRight.defenseFactor;
+					
+					raw = (float)(power * splash) / Mathf.Max(defenseStatRight, 1);
+					damage = Mathf.Max(1, Mathf.RoundToInt(raw / defFactor));
+					
+					ApplyDamage(famRight, damage, battle);
+					
+					tName = string.IsNullOrEmpty(famRight.name) ? "(no name)" : famRight.name;
+					
+					text = $"Attack's splash deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
+					battle.AppendBattleText(text, false);
+					
+					int slotR = slot + 1;
+					
+					if (slotR >= 0 && slotR < BattleSide.MAX_SLOTS)
+					{
+						displays[slotR].UpdateDisplay();
+					}
+					
+					if (!famRight.isAlive)
+					{
+						if (slotR != -1)
+						{
+							targetSide.ClearSlot(slotR);
+							battle.InvalidateFamiliarCommands(famRight, this);
+							
+							FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
+							famDisplays[slotR].Clear();
+							
+							string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
+							text = $"{fEnemyPrefix2}[b]{famRight.name}[/b] was eliminated";
+							battle.AppendBattleText(text, false);
+							
+							if (!battle.isProjectorEncounter && famRight.side == battle.enemySide)
+							{
+								battle.defeatedFamiliars.Add(famRight.familiar);
+							}
+						}
+					}
+				}
+			}
+		}
+		else if (target is Projector tProj)
+		{
+			ProjectorDisplay display = sourceSide == battle.playerSide ? battle.projectorDisplayE : battle.projectorDisplayP;
+			display.UpdateDisplay();
+			
+			if (proj.currentEnergy <= 0)
+			{
+				text = $"[b]{tProj.name}'s[/b] Energy was reduced to 0";
+				battle.AppendBattleText(text, false);
+			}
+		}
+	}
+	
+	public void DefendTarget(object target, float defFactor, BattleManager battle)
+	{
+		if (defFactor <= 0)
+		{
+			GD.Print($"BattleCommand: invalid defense factor ({defFactor})");
+			battle.AppendBattleText($"Skill Error: invalid defense factor ({defFactor})", false);
+			return;
+		}
+		
+		if (target is Projector tProj)
+		{
+			GD.Print($"BattleCommand: invalid defense target ({tProj.name})");
+			battle.AppendBattleText($"Skill Error: invalid defense target ({tProj.name})", false);
+			return;
+		}
+		
+		string pName = "(no name)";
+		
+		if (source is Projector proj)
+		{
+			pName = string.IsNullOrEmpty(proj.name) ? "(no name)" : proj.name;
+		}
+		
+		string tName = "(no name)";
+		string tEnemyPrefix = "";
+		
+		if (target is FamiliarActor tFam)
+		{
+			tName = string.IsNullOrEmpty(tFam.name) ? "(no name)" : tFam.name;
+			tEnemyPrefix = tFam.side == battle.enemySide ? "Enemy " : "";
+			
+			if (defFactor > 1f)
+			{
+				tFam.defenseFactor = Mathf.Max(defFactor, tFam.defenseFactor);
+			}
+			else if (defFactor < 1f && defFactor > 0f)
+			{
+				tFam.defenseFactor = Mathf.Min(defFactor, tFam.defenseFactor);
+			}
+		}
+		
+		string defDescription = "";
+		
+		if (defFactor >= 2.25f)
+		{
+			defDescription = "greatly defended";
+		}
+		else if (defFactor >= 1.75f && defFactor < 2.25f)
+		{
+			defDescription = "defended";
+		}
+		else if (defFactor > 1f && defFactor < 1.75f)
+		{
+			defDescription = "moderately defended";
+		}
+		else if (defFactor >= 0.5f && defFactor < 1f)
+		{
+			defDescription = "vulnerable";
+		}
+		else if (defFactor > 0f && defFactor < 0.5f)
+		{
+			defDescription = "greatly vulnerable";
+		}
+		
+		if (defFactor != 1f)
+		{
+			string text = $"[b]{pName}[/b] makes {tEnemyPrefix}[b]{tName}[/b] {defDescription}.";
+			battle.AppendBattleText(text, false);
+		}
+	}
+	
+	public void ApplyHealing(object target, int amount)
+	{
+		if (amount <= 0)
+		{
+			return;
+		}
+		
+		if (target is not FamiliarActor fam)
+		{
+			return;
+		}
+		
+		fam.Heal(amount);
+	}
+	
+	public void ApplyDamage(object target, int amount, BattleManager battle)
+	{
+		if (amount <= 0)
+		{
+			return;
+		}
+		
+		if (target is FamiliarActor fam)
+		{
+			fam.Damage(amount);
+		}
+		else if (target is Projector proj)
+		{
+			proj.Damage(amount);
+		}
+	}
+	
+	public void AssignSpell(RSpellData spl)
+	{
+		spell = spl;
+		
+		spellPattern = spell.spellPattern;
+		
+		cost = spell.cost;
+		
+		isMagicTarget = spell.isMagicalDefense;
+		
+		power = spell.power;
+		splash = spell.splashFactor;
+		
+		heal = spell.healPower;
+		
+		defenseTarget = spell.defenseFactorOnTarget;
+	}
+	
+	public bool SingleTarget()
+	{
+		return spellPattern == RSpellData.SpellPattern.OneAlly || spellPattern == RSpellData.SpellPattern.OneEnemy;
+	}
+	
+	public bool MultiTarget()
+	{
+		return spellPattern == RSpellData.SpellPattern.AllAllies || spellPattern == RSpellData.SpellPattern.AllEnemies || spellPattern == RSpellData.SpellPattern.AllUnits;
+	}
+	
+	public bool OpenTarget()
+	{
+		return spellPattern != RSpellData.SpellPattern.OneAlly && spellPattern != RSpellData.SpellPattern.OneEnemy;
 	}
 }

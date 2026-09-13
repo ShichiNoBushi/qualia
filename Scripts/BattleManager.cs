@@ -30,8 +30,8 @@ public partial class BattleManager : Node
 	
 	public BattleCommand pendingCommand;
 	public RSkillData pendingSkill;
-	//public RSpellData pendingSpell;
-	public FamiliarActor pendingSource;
+	public RSpellData pendingSpell;
+	public object pendingSource;
 	
 	public bool projCommandSubmitted;
 	public int famCommandsSubmitted;
@@ -53,6 +53,7 @@ public partial class BattleManager : Node
 		None,
 		SelectSummon,
 		SelectDismiss,
+		SelectSpell,
 		SelectAllySpell,
 		SelectAllySkill,
 		SelectAllyItem,
@@ -320,7 +321,10 @@ public partial class BattleManager : Node
 			case CommandState.SelectDismiss:
 				TryFinishDismiss(display);
 				break;
-			//CommandState.SelectAllySpell
+			case CommandState.SelectAllySpell:
+			case CommandState.SelectEnemySpell:
+				TryFinishSpell(display);
+				break;
 			case CommandState.SelectAllySkill:
 			case CommandState.SelectEnemySkill:
 				TryFinishSkill(display);
@@ -329,7 +333,6 @@ public partial class BattleManager : Node
 			case CommandState.SelectEnemyAttack:
 				TryFinishAttack(display);
 				break;
-			//CommandState.SelectEnemySpell
 			//CommandState.SelectEnemyItem
 		}
 	}
@@ -508,9 +511,63 @@ public partial class BattleManager : Node
 		RefreshNextButton();
 	}
 	
+	public void TryFinishSpell(FamiliarDisplay display)
+	{
+		if (pendingSource is not Projector proj || proj.currentEnergy == 0)
+		{
+			return;
+		}
+		
+		if (pendingSpell == null)
+		{
+			return;
+		}
+		
+		if (pendingSpell.spellPattern == RSpellData.SpellPattern.OneEnemy && display.isPlayerSide)
+		{
+			return;
+		}
+		
+		if (pendingSpell.spellPattern == RSpellData.SpellPattern.OneAlly && !display.isPlayerSide)
+		{
+			return;
+		}
+		
+		BattleSide targetSide = display.isPlayerSide ? playerSide : enemySide;
+		
+		int slot = display.slotIndex;
+		
+		if (slot < 0 || slot >= BattleSide.MAX_SLOTS)
+		{
+			return;
+		}
+		
+		if (targetSide.familiarSlots[slot] is not FamiliarActor actor || !actor.isAlive)
+		{
+			return;
+		}
+		
+		SpellCommand cmd = new SpellCommand {
+			sourceSide = playerSide,
+			source = pendingSource,
+			target = actor,
+		};
+		
+		cmd.AssignSpell(pendingSpell);
+		
+		projectorCommands.Add(cmd);
+		projCommandPanel.SetActiveCommand(cmd);
+		
+		ClearTargetMode();
+		projCommandSubmitted = true;
+		projCommandDisabled = true;
+		
+		RefreshNextButton();
+	}
+	
 	public void TryFinishAttack(FamiliarDisplay display)
 	{
-		if (pendingSource is not FamiliarActor src || !src.isAlive)
+		if (pendingSource is not FamiliarActor srcFam || !srcFam.isAlive)
 		{
 			return;
 		}
@@ -532,7 +589,7 @@ public partial class BattleManager : Node
 			return;
 		}
 		
-		int sourceSlot = playerSide.GetSlotIndex(pendingSource);
+		int sourceSlot = playerSide.GetSlotIndex(srcFam);
 		
 		if (sourceSlot < 0 || sourceSlot >= BattleSide.MAX_SLOTS)
 		{
@@ -541,7 +598,7 @@ public partial class BattleManager : Node
 		
 		AttackCommand cmd = new AttackCommand {
 			sourceSide = playerSide,
-			source = pendingSource,
+			source = srcFam,
 			target = actor,
 			power = 5
 		};
@@ -558,7 +615,7 @@ public partial class BattleManager : Node
 	
 	public void TryFinishSkill(FamiliarDisplay display)
 	{
-		if (pendingSource is not FamiliarActor src || !src.isAlive)
+		if (pendingSource is not FamiliarActor srcFam || !srcFam.isAlive)
 		{
 			return;
 		}
@@ -592,7 +649,7 @@ public partial class BattleManager : Node
 			return;
 		}
 		
-		int sourceSlot = playerSide.GetSlotIndex(pendingSource);
+		int sourceSlot = playerSide.GetSlotIndex(srcFam);
 		
 		if (sourceSlot < 0 || sourceSlot >= BattleSide.MAX_SLOTS)
 		{
@@ -601,7 +658,7 @@ public partial class BattleManager : Node
 		
 		SkillCommand cmd = new SkillCommand {
 			sourceSide = playerSide,
-			source = pendingSource,
+			source = srcFam,
 			target = actor,
 		};
 		
@@ -624,7 +681,7 @@ public partial class BattleManager : Node
 		SetCommandState(CommandState.None);
 		pendingCommand = null;
 		pendingSkill = null;
-		//pendingSpell = null;
+		pendingSpell = null;
 		pendingSource = null;
 		ClearHighlights();
 		UnblockCommands();
@@ -730,7 +787,7 @@ public partial class BattleManager : Node
 		selectionPanel.HidePanel();
 		pendingCommand = null;
 		pendingSkill = null;
-		//pendingSpell = null;
+		pendingSpell = null;
 		pendingSource = null;
 		SetCommandState(CommandState.None);
 		
