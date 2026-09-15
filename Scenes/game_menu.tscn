@@ -142,6 +142,7 @@ offset_left = 561.0
 offset_top = 22.0
 offset_right = 1125.0
 offset_bottom = 358.0
+stretch_mode = 5
 
 [node name="Familiars" type="Control" parent="Panel/TabContainer" unique_id=1281197824]
 visible = false
@@ -305,6 +306,7 @@ offset_left = 554.0
 offset_top = 8.0
 offset_right = 734.0
 offset_bottom = 298.0
+stretch_mode = 5
 
 [node name="SkillsList" type="ItemList" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1842523951]
 layout_mode = 0

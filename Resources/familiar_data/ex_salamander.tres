@@ -8,7 +8,10 @@
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="5_jh2e0"]
 [ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/type_data/fire.tres" id="6_go1fl"]
 
-[sub_resource type="Resource" id="Resource_2db5h"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qedgj"]
+load_path = "res://.godot/imported/crocodile 1.png-c84d5a6a9469afbf128b9b1302ccb5d8.ctex"
+
+[sub_resource type="Resource" id="Resource_jcjdn"]
 script = ExtResource("3_f8sgw")
 
 [resource]
@@ -20,4 +23,5 @@ baseMDefense = 4
 baseSpeed = 5
 types = Array[ExtResource("5_jh2e0")]([ExtResource("6_go1fl")])
 learnableSkills = Array[ExtResource("1_m4vac")]([ExtResource("2_f8sgw")])
+portrait = SubResource("CompressedTexture2D_qedgj")
 metadata/_custom_type_script = "uid://c6t16g27uf4ia"

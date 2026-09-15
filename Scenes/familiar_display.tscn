@@ -21,6 +21,7 @@ offset_left = 3.0
 offset_top = 3.0
 offset_right = 183.0
 offset_bottom = 293.0
+stretch_mode = 5
 
 [node name="NameLabel" type="Label" parent="." unique_id=1820078636]
 layout_mode = 0

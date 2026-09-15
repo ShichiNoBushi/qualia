@@ -45,6 +45,7 @@ layout_mode = 0
 offset_left = 186.0
 offset_right = 468.0
 offset_bottom = 168.0
+stretch_mode = 5
 
 [node name="HighlightRect" type="ColorRect" parent="." unique_id=2046548352]
 visible = false

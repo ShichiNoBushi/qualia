@@ -22,6 +22,7 @@ offset_bottom = 168.0
 layout_mode = 0
 offset_right = 282.0
 offset_bottom = 168.0
+stretch_mode = 5
 
 [node name="EnergyProgress" type="ProgressBar" parent="." unique_id=1759553144]
 layout_mode = 0

@@ -3,12 +3,13 @@
 [ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_pbae1"]
 [ext_resource type="Script" uid="uid://df7vrqh187nx2" path="res://Scripts/RQualiaRequirement.cs" id="2_5283n"]
 [ext_resource type="Resource" uid="uid://bjc3sb856vv3t" path="res://Resources/Skills/cover.tres" id="2_voenv"]
+[ext_resource type="Texture2D" uid="uid://bktmrl4vyiuq" path="res://Resources/Assets/Retro Monsters (111)/armadillo.png" id="3_2db5h"]
 [ext_resource type="Script" uid="uid://cm64tnf4fly34" path="res://Scripts/RPrismRecipe.cs" id="3_voenv"]
 [ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="4_2db5h"]
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="5_t6cg2"]
 [ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/type_data/earth.tres" id="6_6mn88"]
 
-[sub_resource type="Resource" id="Resource_2db5h"]
+[sub_resource type="Resource" id="Resource_jcjdn"]
 script = ExtResource("3_voenv")
 
 [resource]
@@ -20,4 +21,5 @@ baseMAttack = 2
 basePDefense = 4
 types = Array[ExtResource("5_t6cg2")]([ExtResource("6_6mn88")])
 learnableSkills = Array[ExtResource("1_pbae1")]([ExtResource("2_voenv")])
+portrait = ExtResource("3_2db5h")
 metadata/_custom_type_script = "uid://c6t16g27uf4ia"
