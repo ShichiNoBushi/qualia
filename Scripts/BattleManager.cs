@@ -45,7 +45,8 @@ public partial class BattleManager : Node
 		EndCheck,
 		Cleanup,
 		Victory,
-		Defeat
+		Defeat,
+		Escape
 	}
 	
 	public enum CommandState
@@ -68,7 +69,8 @@ public partial class BattleManager : Node
 		None,
 		PlayerWin,
 		PlayerLose,
-		Draw
+		Draw,
+		PlayerEscape
 	}
 	
 	public BattleSide playerSide;
@@ -283,6 +285,13 @@ public partial class BattleManager : Node
 			return;
 		}
 		
+		if (batState == BattleState.Escape)
+		{
+			GD.Print("BattleManager: Escape.");
+			FinishEscape();
+			return;
+		}
+		
 		if (comState != CommandState.None)
 		{
 			CancelPendingCommand();
@@ -346,7 +355,7 @@ public partial class BattleManager : Node
 			nextButton.Text = canCommit ? "Commit" : (canCancel ? "Cancel" : "Next");
 			nextButton.Disabled = !canCommit && !canCancel;
 		}
-		else if (batState == BattleState.Victory || batState == BattleState.Defeat)
+		else if (batState == BattleState.Victory || batState == BattleState.Defeat || batState == BattleState.Escape)
 		{
 			nextButton.Text = "Finish";
 			nextButton.Disabled = false;
@@ -781,6 +790,13 @@ public partial class BattleManager : Node
 		ReturnToField(VictoryResult.PlayerLose);
 	}
 	
+	public void FinishEscape()
+	{
+		DismissAllAndRefund(playerSide);
+		
+		ReturnToField(VictoryResult.PlayerEscape);
+	}
+	
 	public void CancelPendingCommand()
 	{
 		AppendBattleText("Cancel pending command");
@@ -943,6 +959,12 @@ public partial class BattleManager : Node
 				try
 				{
 					cmd.Execute(this);
+					
+					if (batState == BattleState.Escape)
+					{
+						EndCheck();
+						return;
+					}
 				}
 				catch (Exception e)
 				{
@@ -1070,6 +1092,12 @@ public partial class BattleManager : Node
 	
 	public void EndCheck()
 	{
+		if (batState == BattleState.Escape)
+		{
+			RefreshNextButton();
+			return;
+		}
+		
 		VictoryResult result = CheckVictory();
 		
 		switch (result)

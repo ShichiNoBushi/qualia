@@ -19,6 +19,7 @@ public partial class ProjectorCommands : Control
 	public bool disableSummon {get; set;} = false;
 	public bool disableDismiss {get; set;} = false;
 	public bool disableSpell {get; set;} = false;
+	public bool disableEscape {get; set;} = false;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -45,7 +46,6 @@ public partial class ProjectorCommands : Control
 		
 		//Disable buttons currently without function
 		itemButton.Disabled = true;
-		escapeButton.Disabled = true;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -193,10 +193,25 @@ public partial class ProjectorCommands : Control
 	
 	public void OnEscapePressed()
 	{
+		if (battle?.playerSide?.projector == null)
+		{
+			GD.Print("No projector.");
+			return;
+		}
 		
+		EscapeCommand cmd = new()
+		{
+			sourceSide = battle.playerSide,
+			source = battle.playerSide.projector
+		};
 		
-		DisableCommands();
-		undoButton.Visible = true;
+		battle.projectorCommands.Add(cmd);
+		battle.projCommandSubmitted = true;
+		battle.AppendBattleText("Player: Escape Command added.");
+		
+		SetActiveCommand(cmd);
+		
+		battle.RefreshNextButton();
 	}
 	
 	public void OnUndoPressed()
@@ -304,6 +319,7 @@ public partial class ProjectorCommands : Control
 		disableSummon = battle.playerSide.projector.currentEnergy == 0 && !battle.playerSide.HasOpenSlot();
 		disableDismiss = battle.playerSide.CountActiveFamiliars() == 0;
 		disableSpell = battle.playerSide.projector.currentEnergy == 0;
+		disableEscape = battle.isProjectorEncounter;
 	}
 	
 	public void DisableCommands()
@@ -323,7 +339,7 @@ public partial class ProjectorCommands : Control
 		spellButton.Disabled = disableSpell;
 		focusButton.Disabled = false;
 		//itemButton.Disabled = false;
-		//escapeButton.Disabled = false;
+		escapeButton.Disabled = disableEscape;
 	}
 	
 	public void SetActiveCommand(BattleCommand command)

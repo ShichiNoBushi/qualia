@@ -1571,3 +1571,45 @@ public partial class SpellCommand : BattleCommand
 		return spellPattern != RSpellData.SpellPattern.OneAlly && spellPattern != RSpellData.SpellPattern.OneEnemy;
 	}
 }
+
+public partial class EscapeCommand : BattleCommand
+{
+	public override void Execute(BattleManager battle)
+	{
+		if (source is not Projector proj)
+		{
+			return;
+		}
+		
+		if (battle.isProjectorEncounter)
+		{
+			battle.AppendBattleText($"[b]{proj.name}[/b] cannot flee from enemy projector.");
+			return;
+		}
+		
+		battle.AppendBattleText($"[b]{proj.name}[/b] attempts to escape...");
+		
+		int roll = (int)(GD.Randi() % 2);
+		
+		if (roll == 1)
+		{
+			battle.AppendBattleText($"[b]{proj.name}[/b] successfully escapes.", false);
+			
+			foreach (var fam in battle.playerSide.GetFamiliarList())
+			{
+				battle.InvalidateFamiliarCommands(fam);
+			}
+			
+			foreach (var fam in battle.enemySide.GetFamiliarList())
+			{
+				battle.InvalidateFamiliarCommands(fam);
+			}
+			
+			battle.SetBattleState(BattleManager.BattleState.Escape);
+		}
+		else
+		{
+			battle.AppendBattleText("And fails.", false);
+		}
+	}
+}
