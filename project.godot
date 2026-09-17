@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GameSession="*uid://bulw1l6ukd1pr"
 GameMenu="*uid://cx6ao2ipst85o"
+DialogBox="*uid://ca0t0l63qgfmf"
 
 [display]
 

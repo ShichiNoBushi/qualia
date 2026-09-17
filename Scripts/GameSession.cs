@@ -14,6 +14,7 @@ public partial class GameSession : Node
 	public enum GameMode
 	{
 		World,
+		Dialog,
 		Battle
 	}
 	

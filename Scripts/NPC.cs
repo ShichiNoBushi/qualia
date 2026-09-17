@@ -24,12 +24,14 @@ public partial class NPC : CharacterBody2D
 	{
 		FaceToward(player.GlobalPosition);
 		
-		//Display dialog.
+		DialogBox box = GetNode<DialogBox>("/root/DialogBox");
 		
-		if (isBattleable && encounter != null)
+		if (box.IsOpen)
 		{
-			StartBattle(player);
+			return;
 		}
+		
+		box.Play(name, dialog, () => AfterDialog(player));
 	}
 	
 	public void FaceToward(Vector2 target)
@@ -39,6 +41,16 @@ public partial class NPC : CharacterBody2D
 		string anim = Mathf.Abs(d.X) > Mathf.Abs(d.Y) ? (d.X > 0 ? "walk_right" : "walk_left") : (d.Y > 0 ? "walk_front" : "walk_back");
 		
 		sprite.Play(anim);
+	}
+	
+	public void AfterDialog(Player player)
+	{
+		if (!isBattleable || encounter == null)
+		{
+			return;
+		}
+		
+		StartBattle(player);
 	}
 	
 	public void StartBattle(Player player)

@@ -28,4 +28,6 @@ position = Vector2(848, 496)
 scale = Vector2(2, 2)
 encounter = ExtResource("4_5ukr8")
 isBattleable = true
+name = "Woman"
+dialog = "Testing dialog and battle.[break]Beginning wild familiar encounter."
 battleScene = ExtResource("5_o06y3")

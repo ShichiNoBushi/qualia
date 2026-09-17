@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://ca0t0l63qgfmf"]
+
+[ext_resource type="Script" uid="uid://wwttdncsac0f" path="res://Scripts/DialogBox.cs" id="1_twcdb"]
+
+[node name="DialogBox" type="CanvasLayer" unique_id=1153933886]
+process_mode = 3
+process_priority = 10
+visible = false
+script = ExtResource("1_twcdb")
+
+[node name="Panel" type="Panel" parent="." unique_id=1772620940]
+offset_left = 312.0
+offset_top = 709.0
+offset_right = 1643.0
+offset_bottom = 1026.0
+
+[node name="SpeakerLabel" type="Label" parent="Panel" unique_id=521201805]
+layout_mode = 0
+offset_right = 183.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 32
+text = "Name"
+
+[node name="BodyLabel" type="RichTextLabel" parent="Panel" unique_id=48888532]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 51.0
+offset_right = 1318.0
+offset_bottom = 266.0
+theme_override_font_sizes/normal_font_size = 48
+theme_override_font_sizes/bold_font_size = 48
+theme_override_font_sizes/bold_italics_font_size = 48
+theme_override_font_sizes/italics_font_size = 48
+theme_override_font_sizes/mono_font_size = 48
+bbcode_enabled = true
+scroll_following = true
+
+[node name="PromptLabel" type="Label" parent="Panel" unique_id=1807720820]
+layout_mode = 0
+offset_left = 1244.0
+offset_top = 266.0
+offset_right = 1323.0
+offset_bottom = 311.0
+theme_override_font_sizes/font_size = 32
+text = ">>>"
+horizontal_alignment = 2
