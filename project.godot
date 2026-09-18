@@ -68,6 +68,11 @@ ui_down={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Sparks"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

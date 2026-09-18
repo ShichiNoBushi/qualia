@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://h3qvqlbvbmva"]
+
+[ext_resource type="Script" uid="uid://4vwvmi3hipxx" path="res://Scripts/WildSpark.cs" id="1_kxrte"]
+[ext_resource type="Texture2D" uid="uid://c2n1f3v6bilhe" path="res://Resources/Assets/Sprites/sparkle_small.png" id="2_oqkot"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ts14v"]
+radius = 8.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ts14v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_oqkot")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="WildSparkSmall" type="Area2D" unique_id=878548883]
+collision_layer = 2
+script = ExtResource("1_kxrte")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1546803799]
+shape = SubResource("CircleShape2D_ts14v")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=747995531]
+sprite_frames = SubResource("SpriteFrames_ts14v")
+
+[node name="Timer" type="Timer" parent="." unique_id=102661194]
+one_shot = true

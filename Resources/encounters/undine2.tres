@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="REncounterData" format=3 uid="uid://2qpekw05f34s"]
+
+[ext_resource type="Script" uid="uid://dki63xii04tcd" path="res://Scripts/RFamiliarSpawn.cs" id="1_4qupt"]
+[ext_resource type="Script" uid="uid://ctnjg4mtw7rfj" path="res://Scripts/REncounterData.cs" id="2_8nchg"]
+[ext_resource type="Resource" uid="uid://chkgu8q8pff4y" path="res://Resources/familiar_data/ex_undine.tres" id="2_jovcd"]
+
+[sub_resource type="Resource" id="Resource_jovcd"]
+script = ExtResource("1_4qupt")
+familiar = ExtResource("2_jovcd")
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[sub_resource type="Resource" id="Resource_ugrw7"]
+script = ExtResource("1_4qupt")
+familiar = ExtResource("2_jovcd")
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[resource]
+script = ExtResource("2_8nchg")
+id = "undine2"
+name = "Undine x2"
+familiarList = Array[ExtResource("1_4qupt")]([SubResource("Resource_jovcd"), SubResource("Resource_ugrw7")])
+metadata/_custom_type_script = "uid://ctnjg4mtw7rfj"
