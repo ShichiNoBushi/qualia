@@ -8,25 +8,26 @@ process_priority = 10
 visible = false
 script = ExtResource("1_twcdb")
 
-[node name="Panel" type="Panel" parent="." unique_id=1772620940]
+[node name="DialogPanel" type="Panel" parent="." unique_id=1772620940]
 offset_left = 312.0
 offset_top = 709.0
 offset_right = 1643.0
 offset_bottom = 1026.0
 
-[node name="SpeakerLabel" type="Label" parent="Panel" unique_id=521201805]
+[node name="SpeakerLabel" type="Label" parent="DialogPanel" unique_id=521201805]
 layout_mode = 0
 offset_right = 183.0
 offset_bottom = 23.0
 theme_override_font_sizes/font_size = 32
 text = "Name"
 
-[node name="BodyLabel" type="RichTextLabel" parent="Panel" unique_id=48888532]
+[node name="BodyLabel" type="RichTextLabel" parent="DialogPanel" unique_id=48888532]
 layout_mode = 0
 offset_left = 15.0
 offset_top = 51.0
 offset_right = 1318.0
 offset_bottom = 266.0
+mouse_filter = 2
 theme_override_font_sizes/normal_font_size = 48
 theme_override_font_sizes/bold_font_size = 48
 theme_override_font_sizes/bold_italics_font_size = 48
@@ -35,7 +36,7 @@ theme_override_font_sizes/mono_font_size = 48
 bbcode_enabled = true
 scroll_following = true
 
-[node name="PromptLabel" type="Label" parent="Panel" unique_id=1807720820]
+[node name="PromptLabel" type="Label" parent="DialogPanel" unique_id=1807720820]
 layout_mode = 0
 offset_left = 1244.0
 offset_top = 266.0

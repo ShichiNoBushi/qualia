@@ -12,6 +12,8 @@ public partial class ProjectorDisplay : Control
 	public Projector projector;
 	public bool energyVisible;
 	
+	public BattleManager battle {get; set;}
+	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -21,11 +23,29 @@ public partial class ProjectorDisplay : Control
 		energyLabel = GetNode<Label>("EnergyLabel");
 		highlightRect = GetNode<ColorRect>("HighlightRect");
 		energyVisible = false;
+		
+		highlightRect.GuiInput += OnGuiInput;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+	}
+	
+	public void OnGuiInput(InputEvent e)
+	{
+		if (e is InputEventMouseButton mb && mb.Pressed && mb.ButtonIndex == MouseButton.Left)
+		{
+			GD.Print("ProjectorDisplay: clicked");
+			try
+			{
+				battle.ProjectorClicked(this);
+			}
+			catch (Exception ex)
+			{
+				GD.PrintErr($"ProjectorDisplay: {ex}");
+			}
+		}
 	}
 	
 	public void AssignProjector(Projector proj)

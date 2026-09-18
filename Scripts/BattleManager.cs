@@ -95,6 +95,9 @@ public partial class BattleManager : Node
 		projectorDisplayE = GetNode<ProjectorDisplay>("ProjectorDisplayEnemy");
 		projectorDisplayP = GetNode<ProjectorDisplay>("ProjectorDisplayPlayer");
 		
+		projectorDisplayE.battle = this;
+		projectorDisplayP.battle = this;
+		
 		famDisplaysE = new FamiliarDisplay[4];
 		famDisplaysP = new FamiliarDisplay[4];
 		
@@ -346,6 +349,33 @@ public partial class BattleManager : Node
 		}
 	}
 	
+	public void ProjectorClicked(ProjectorDisplay display)
+	{
+		GD.Print($"BattleManager: battle state {batState}, command state {comState}");
+		
+		if (batState != BattleState.CommandSelect)
+		{
+			return;
+		}
+		
+		switch (comState)
+		{
+			case CommandState.SelectAllySpell:
+			case CommandState.SelectEnemySpell:
+				TryFinishSpell(display);
+				break;
+			case CommandState.SelectAllySkill:
+			case CommandState.SelectEnemySkill:
+				TryFinishSkill(display);
+				break;
+			//CommandState.SelectAllyItem
+			case CommandState.SelectEnemyAttack:
+				TryFinishAttack(display);
+				break;
+			//CommandState.SelectEnemyItem
+		}
+	}
+	
 	public void RefreshNextButton()
 	{
 		if (batState == BattleState.CommandSelect)
@@ -574,6 +604,63 @@ public partial class BattleManager : Node
 		RefreshNextButton();
 	}
 	
+	public void TryFinishSpell(ProjectorDisplay display)
+	{
+		if (pendingSource is not Projector proj || proj.currentEnergy == 0)
+		{
+			return;
+		}
+		
+		if (pendingSpell == null)
+		{
+			return;
+		}
+		
+		if (pendingSpell.spellPattern == RSpellData.SpellPattern.OneEnemy)
+		{
+			if (display == projectorDisplayP)
+			{
+				return;
+			}
+			
+			if (enemySide.CountActiveFamiliars() > 0)
+			{
+				return;
+			}
+		}
+		
+		if (pendingSpell.spellPattern == RSpellData.SpellPattern.OneAlly)
+		{
+			return;
+		}
+		
+		BattleSide targetSide = display == projectorDisplayP ? playerSide : enemySide;
+		
+		Projector projector = targetSide.projector;
+		
+		if (projector == null || projector.currentEnergy == 0)
+		{
+			return;
+		}
+		
+		SpellCommand cmd = new SpellCommand {
+			sourceSide = playerSide,
+			source = pendingSource,
+			target = projector,
+		};
+		
+		cmd.AssignSpell(pendingSpell);
+		
+		projectorCommands.Add(cmd);
+		projCommandPanel.SetActiveCommand(cmd);
+		
+		ClearTargetMode();
+		projCommandSubmitted = true;
+		projCommandDisabled = true;
+		
+		RefreshNextButton();
+	}
+	
 	public void TryFinishAttack(FamiliarDisplay display)
 	{
 		if (pendingSource is not FamiliarActor srcFam || !srcFam.isAlive)
@@ -609,6 +696,54 @@ public partial class BattleManager : Node
 			sourceSide = playerSide,
 			source = srcFam,
 			target = actor,
+			power = 5
+		};
+		
+		familiarCommands.Add(cmd);
+		famCommandPanels[sourceSlot].SetActiveCommand(cmd);
+		
+		ClearTargetMode();
+		famCommandsSubmitted++;
+		famCommandDisabled[sourceSlot] = true;
+		
+		RefreshNextButton();
+	}
+	
+	public void TryFinishAttack(ProjectorDisplay display)
+	{
+		if (pendingSource is not FamiliarActor srcFam || !srcFam.isAlive)
+		{
+			return;
+		}
+		
+		if (display == projectorDisplayP)
+		{
+			return;
+		}
+		
+		if (enemySide.CountActiveFamiliars() > 0)
+		{
+			return;
+		}
+		
+		Projector projector = enemySide.projector;
+		
+		if (projector == null || projector.currentEnergy == 0)
+		{
+			return;
+		}
+		
+		int sourceSlot = playerSide.GetSlotIndex(srcFam);
+		
+		if (sourceSlot < 0 || sourceSlot >= BattleSide.MAX_SLOTS)
+		{
+			return;
+		}
+		
+		AttackCommand cmd = new AttackCommand {
+			sourceSide = playerSide,
+			source = srcFam,
+			target = projector,
 			power = 5
 		};
 		
@@ -669,6 +804,70 @@ public partial class BattleManager : Node
 			sourceSide = playerSide,
 			source = srcFam,
 			target = actor,
+		};
+		
+		cmd.AssignSkill(pendingSkill);
+		
+		familiarCommands.Add(cmd);
+		famCommandPanels[sourceSlot].SetActiveCommand(cmd);
+		
+		ClearTargetMode();
+		famCommandsSubmitted++;
+		famCommandDisabled[sourceSlot] = true;
+		
+		RefreshNextButton();
+	}
+	
+	public void TryFinishSkill(ProjectorDisplay display)
+	{
+		if (pendingSource is not FamiliarActor srcFam || !srcFam.isAlive)
+		{
+			return;
+		}
+		
+		if (pendingSkill == null)
+		{
+			return;
+		}
+		
+		if (pendingSkill.targetPattern == RSkillData.TargetPattern.OneEnemy)
+		{
+			if (display == projectorDisplayP)
+			{
+				return;
+			}
+			
+			if (enemySide.CountActiveFamiliars() > 0)
+			{
+				return;
+			}
+		}
+		
+		if (pendingSkill.targetPattern == RSkillData.TargetPattern.OneAlly)
+		{
+			return;
+		}
+		
+		BattleSide targetSide = display == projectorDisplayP ? playerSide : enemySide;
+		
+		Projector projector = targetSide.projector;
+		
+		if (projector == null || projector.currentEnergy == 0)
+		{
+			return;
+		}
+		
+		int sourceSlot = playerSide.GetSlotIndex(srcFam);
+		
+		if (sourceSlot < 0 || sourceSlot >= BattleSide.MAX_SLOTS)
+		{
+			return;
+		}
+		
+		SkillCommand cmd = new SkillCommand {
+			sourceSide = playerSide,
+			source = srcFam,
+			target = projector,
 		};
 		
 		cmd.AssignSkill(pendingSkill);

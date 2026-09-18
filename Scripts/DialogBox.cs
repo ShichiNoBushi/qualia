@@ -7,6 +7,7 @@ public partial class DialogBox : CanvasLayer
 	
 	public GameSession session;
 	
+	public Panel dialogPanel;
 	public Label speakerLabel;
 	public RichTextLabel bodyLabel;
 	public Label promptLabel;
@@ -25,9 +26,12 @@ public partial class DialogBox : CanvasLayer
 	{
 		session = GetNode<GameSession>("/root/GameSession");
 		
-		speakerLabel = GetNode<Label>("Panel/SpeakerLabel");
-		bodyLabel = GetNode<RichTextLabel>("Panel/BodyLabel");
-		promptLabel = GetNode<Label>("Panel/PromptLabel");
+		dialogPanel = GetNode<Panel>("DialogPanel");
+		speakerLabel = GetNode<Label>("DialogPanel/SpeakerLabel");
+		bodyLabel = GetNode<RichTextLabel>("DialogPanel/BodyLabel");
+		promptLabel = GetNode<Label>("DialogPanel/PromptLabel");
+		
+		dialogPanel.GuiInput += OnDialogClicked;
 	}
 	
 	public override void _UnhandledInput(InputEvent e)
@@ -38,6 +42,32 @@ public partial class DialogBox : CanvasLayer
 		}
 		
 		if (session.gameMode != GameSession.GameMode.Dialog)
+		{
+			return;
+		}
+		
+		if ((int)Engine.GetProcessFrames() <= openedOnFrame)
+		{
+			return;
+		}
+		
+		Advance();
+		GetViewport().SetInputAsHandled();
+	}
+	
+	public void OnDialogClicked(InputEvent e)
+	{
+		if (e is not InputEventMouseButton mb)
+		{
+			return;
+		}
+		
+		if (!mb.Pressed || mb.ButtonIndex != MouseButton.Left)
+		{
+			return;
+		}
+		
+		if (!Visible || session.gameMode != GameSession.GameMode.Dialog)
 		{
 			return;
 		}
