@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="REncounterData" format=3 uid="uid://cyp4vnvhjl3hk"]
+
+[ext_resource type="Script" uid="uid://gfgke8c4gxem" path="res://Scripts/RProjectorData.cs" id="1_435ie"]
+[ext_resource type="Script" uid="uid://dki63xii04tcd" path="res://Scripts/RFamiliarSpawn.cs" id="1_e5sse"]
+[ext_resource type="Texture2D" uid="uid://ttpktdchnamd" path="res://Resources/Assets/Sprites/woman_walk_1.png" id="1_no230"]
+[ext_resource type="Script" uid="uid://ctnjg4mtw7rfj" path="res://Scripts/REncounterData.cs" id="2_nfyh6"]
+[ext_resource type="Resource" uid="uid://b1d1nkynkkoh5" path="res://Resources/familiar_data/ex_gnome.tres" id="3_no230"]
+[ext_resource type="Resource" uid="uid://dd0ycosprdajc" path="res://Resources/familiar_data/ex_salamander.tres" id="4_qb38n"]
+[ext_resource type="Resource" uid="uid://cph17bvgufjx3" path="res://Resources/familiar_data/ex_sylph.tres" id="5_xbb5x"]
+[ext_resource type="Resource" uid="uid://chkgu8q8pff4y" path="res://Resources/familiar_data/ex_undine.tres" id="6_mlsma"]
+
+[sub_resource type="Resource" id="Resource_rvt0w"]
+script = ExtResource("1_435ie")
+id = "girl"
+name = "Girl"
+portrait = ExtResource("1_no230")
+metadata/_custom_type_script = "uid://gfgke8c4gxem"
+
+[sub_resource type="Resource" id="Resource_uch5g"]
+script = ExtResource("1_e5sse")
+familiar = ExtResource("3_no230")
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[sub_resource type="Resource" id="Resource_ujmlc"]
+script = ExtResource("1_e5sse")
+familiar = ExtResource("4_qb38n")
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[sub_resource type="Resource" id="Resource_435ie"]
+script = ExtResource("1_e5sse")
+familiar = ExtResource("5_xbb5x")
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[sub_resource type="Resource" id="Resource_no230"]
+script = ExtResource("1_e5sse")
+familiar = ExtResource("6_mlsma")
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[resource]
+script = ExtResource("2_nfyh6")
+id = "vs_rand_proj"
+name = "Vs Random Projector"
+isProjectorEncounter = true
+enemyProjector = SubResource("Resource_rvt0w")
+familiarList = Array[ExtResource("1_e5sse")]([SubResource("Resource_uch5g"), SubResource("Resource_ujmlc"), SubResource("Resource_435ie"), SubResource("Resource_no230")])
+metadata/_custom_type_script = "uid://ctnjg4mtw7rfj"

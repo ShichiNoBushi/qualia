@@ -306,20 +306,34 @@ public partial class AttackCommand : BattleCommand
 	{
 		if (source is FamiliarActor fam)
 		{
-			return isMagicAttack ? fam.ModMAttack() : fam.ModPAttack();
+			return Mathf.Max(isMagicAttack ? fam.ModMAttack() : fam.ModPAttack(), 1);
 		}
 		
-		return 10;
+		int level = 1;
+		
+		if (source is Projector proj)
+		{
+			level = proj.level;
+		}
+		
+		return Mathf.Max(level, 1);
 	}
 	
 	public int GetDefenseStat(object target)
 	{
 		if (target is FamiliarActor fam)
 		{
-			return isMagicTarget ? fam.ModMDefense() : fam.ModPDefense();
+			return Mathf.Max(isMagicTarget ? fam.ModMDefense() : fam.ModPDefense(), 1);
 		}
 		
-		return 10;
+		int level = 1;
+		
+		if (target is Projector proj)
+		{
+			level = proj.level;
+		}
+		
+		return Mathf.Max(level, 1);
 	}
 	
 	public void ApplyDamage(object target, int amount)

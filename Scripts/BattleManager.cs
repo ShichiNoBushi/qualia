@@ -1049,7 +1049,16 @@ public partial class BattleManager : Node
 	
 	public void AssignComCommands()
 	{
-		IEncounterAI ai = new RandomWildAI();
+		IEncounterAI ai;
+		
+		if (isProjectorEncounter && enemySide.projector != null)
+		{
+			ai = new RandomProjectorAI();
+		}
+		else
+		{
+			ai = new RandomWildAI();
+		}
 		
 		if (isProjectorEncounter && enemySide.projector != null)
 		{
@@ -1855,8 +1864,262 @@ public class RandomWildAI : IEncounterAI
 	}
 }
 
+public class RandomProjectorAI : IEncounterAI
+{
+	public BattleCommand PickProjectorAction(BattleManager battle, BattleSide side)
+	{
+		int roll = (int)(GD.Randi() % 10);
+		
+		switch (roll)
+		{
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+				return (BattleCommand)CommandFactory.SummonRandom(battle, side)
+					?? CommandFactory.Focus(side);
+			case 4:
+				return (BattleCommand)CommandFactory.DismissRandom(battle, side)
+					?? (BattleCommand)CommandFactory.SummonRandom(battle, side)
+					?? CommandFactory.Focus(side);
+			case 5:
+			case 6:
+			case 7:
+				return (BattleCommand)CommandFactory.SpellRandom(battle, side)
+					?? CommandFactory.Focus(side);
+		}
+		
+		return CommandFactory.Focus(side);
+	}
+	
+	public BattleCommand PickFamiliarAction(BattleManager battle, FamiliarActor fam)
+	{
+		int roll = (int)(GD.Randi() % 5);
+		
+		GD.Print($"AI {fam.name} rolls {roll} to select action...");
+		
+		switch (roll)
+		{
+			case 0:
+			case 1:
+				return (BattleCommand)CommandFactory.AttackRandom(battle, fam)
+					?? CommandFactory.Defend(fam);
+			case 2:
+			case 3:
+				return (BattleCommand)CommandFactory.SkillRandom(battle, fam)
+					?? (BattleCommand)CommandFactory.AttackRandom(battle, fam)
+					?? CommandFactory.Defend(fam);
+		}
+		
+		return CommandFactory.Defend(fam);
+	}
+}
+
 public class CommandFactory
 {
+	public static SummonCommand SummonRandom(BattleManager battle, BattleSide side)
+	{
+		if (side == null)
+		{
+			return null;
+		}
+		
+		if (!side.HasOpenSlot())
+		{
+			return null;
+		}
+		
+		Projector projector = side.projector;
+		
+		if (projector == null)
+		{
+			return null;
+		}
+		
+		Godot.Collections.Array<RFamiliarInstance> summonable = new();
+		Godot.Collections.Array<RFamiliarInstance> alreadyOut = new();
+		
+		foreach (var actor in side.GetFamiliarList())
+		{
+			alreadyOut.Add(actor.familiar);
+		}
+		
+		foreach (var fam in projector.ownedFamiliars)
+		{
+			bool summoned = false;
+			
+			foreach (var fam2 in alreadyOut)
+			{
+				if (ReferenceEquals(fam, fam2))
+				{
+					summoned = true;
+					break;
+				}
+			}
+			
+			if (!summoned && projector.currentEnergy >= fam.energy)
+			{
+				summonable.Add(fam);
+			}
+		}
+		
+		if (summonable.Count == 0)
+		{
+			return null;
+		}
+		
+		int roll = (int)(GD.Randi() % summonable.Count);
+		
+		SummonCommand cmd = new SummonCommand
+		{
+			sourceSide = side,
+			source = projector,
+			familiar = summonable[roll],
+			slot = side.GetPreferredOpenSlot()
+		};
+		
+		return cmd;
+	}
+	
+	public static DismissCommand DismissRandom(BattleManager battle, BattleSide side)
+	{
+		if (side == null)
+		{
+			return null;
+		}
+		
+		if (side.CountActiveFamiliars() == 0)
+		{
+			return null;
+		}
+		
+		Projector projector = side.projector;
+		
+		if (projector == null)
+		{
+			return null;
+		}
+		
+		Godot.Collections.Array<FamiliarActor> familiars = side.GetFamiliarList();
+		
+		int roll = (int)(GD.Randi() % familiars.Count);
+		
+		DismissCommand cmd = new DismissCommand
+		{
+			sourceSide = side,
+			source = projector,
+			target = familiars[roll]
+		};
+		
+		return cmd;
+	}
+	
+	public static SpellCommand SpellRandom(BattleManager battle, BattleSide side)
+	{
+		if (side == null)
+		{
+			return null;
+		}
+		
+		BattleSide enemySide = side == battle.playerSide ? battle.enemySide : battle.playerSide;
+		
+		Projector projector = side.projector;
+		
+		if (projector == null)
+		{
+			return null;
+		}
+		
+		if (projector.spells.Count == 0)
+		{
+			return null;
+		}
+		
+		Godot.Collections.Array<RSpellData> castable = new();
+		
+		foreach (var spell in projector.spells)
+		{
+			if (projector.currentEnergy >= spell.cost)
+			{
+				bool ok = spell.spellPattern switch
+				{
+					RSpellData.SpellPattern.OneAlly => side.CountActiveFamiliars() > 0,
+					RSpellData.SpellPattern.OneEnemy => enemySide.CountActiveFamiliars() > 0 || (enemySide.projector != null && enemySide.projector.currentEnergy > 0),
+					_ => true
+				};
+				
+				if (ok)
+				{
+					castable.Add(spell);
+				}
+			}
+		}
+		
+		if (castable.Count == 0)
+		{
+			return null;
+		}
+		
+		int roll = (int)(GD.Randi() % castable.Count);
+		
+		RSpellData selectedSpell = castable[roll];
+		
+		SpellCommand cmd = new SpellCommand
+		{
+			sourceSide = side,
+			source = projector
+		};
+		
+		cmd.AssignSpell(selectedSpell);
+		
+		if (selectedSpell.spellPattern == RSpellData.SpellPattern.OneAlly)
+		{
+			Godot.Collections.Array<FamiliarActor> allies = side.GetFamiliarList();
+			
+			roll = (int)(GD.Randi() % allies.Count);
+			
+			cmd.target = allies[roll];
+		}
+		else if (selectedSpell.spellPattern == RSpellData.SpellPattern.OneEnemy)
+		{
+			if (enemySide.CountActiveFamiliars() > 0)
+			{
+				Godot.Collections.Array<FamiliarActor> enemies = enemySide.GetFamiliarList();
+				
+				roll = (int)(GD.Randi() % enemies.Count);
+				
+				cmd.target = enemies[roll];
+			}
+			else
+			{
+				cmd.target = enemySide.projector;
+			}
+		}
+		
+		return cmd;
+	}
+	
+	public static FocusCommand Focus(BattleSide side)
+	{
+		if (side == null)
+		{
+			return null;
+		}
+		
+		Projector projector = side.projector;
+		
+		if (projector == null)
+		{
+			return null;
+		}
+		
+		return new FocusCommand
+		{
+			sourceSide = side,
+			source = projector
+		};
+	}
+	
 	public static DefendCommand Defend(FamiliarActor fam)
 	{
 		return new DefendCommand {

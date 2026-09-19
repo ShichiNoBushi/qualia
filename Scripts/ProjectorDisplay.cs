@@ -98,7 +98,7 @@ public partial class ProjectorDisplay : Control
 	{
 		portraitRect.Visible = visible;
 		nameLabel.Visible = visible;
-		energyProgress.Visible = visible && energyVisible;
+		energyProgress.Visible = visible;
 		energyLabel.Visible = visible && energyVisible;
 	}
 	

@@ -10,6 +10,8 @@ public partial class Player : CharacterBody2D
 	public string lastAnim;
 	public Vector2 facing = Vector2.Down;
 	
+	public Vector2 lastVelocity;
+	
 	public override void _Ready()
 	{
 		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -57,6 +59,12 @@ public partial class Player : CharacterBody2D
 			facing = direction;
 			Velocity = direction * speed;
 			PlayWalkAnim(direction);
+			
+			if (Velocity != lastVelocity)
+			{
+				GD.Print($"Player: velocity={Velocity}");
+				lastVelocity = Velocity;
+			}
 		}
 		else
 		{
