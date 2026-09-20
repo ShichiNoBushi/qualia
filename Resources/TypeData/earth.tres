@@ -6,4 +6,5 @@
 script = ExtResource("1_yyq53")
 id = "earth"
 name = "Earth"
+color = Color(1, 0.84313726, 0, 1)
 metadata/_custom_type_script = "uid://3uin7wh74kon"

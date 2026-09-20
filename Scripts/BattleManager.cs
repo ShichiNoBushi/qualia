@@ -180,10 +180,10 @@ public partial class BattleManager : Node
 		GD.Print("BattleManager - Starting test...");
 		
 		RProjectorData pData = GD.Load<RProjectorData>("res://Resources/test_projector.tres");
-		RFamiliarInstance gnomeInst = GD.Load<RFamiliarInstance>("res://Resources/familiar_instance/ex_gnome.tres");
-		RFamiliarInstance salamanderInst = GD.Load<RFamiliarInstance>("res://Resources/familiar_instance/ex_salamander.tres");
-		RFamiliarInstance sylphInst = GD.Load<RFamiliarInstance>("res://Resources/familiar_instance/ex_sylph.tres");
-		RFamiliarInstance undineInst = GD.Load<RFamiliarInstance>("res://Resources/familiar_instance/ex_undine.tres");
+		RFamiliarInstance gnomeInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_gnome.tres");
+		RFamiliarInstance salamanderInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_salamander.tres");
+		RFamiliarInstance sylphInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_sylph.tres");
+		RFamiliarInstance undineInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_undine.tres");
 		
 		if (pData == null)
 		{

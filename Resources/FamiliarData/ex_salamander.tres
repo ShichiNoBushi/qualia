@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://cm64tnf4fly34" path="res://Scripts/RPrismRecipe.cs" id="3_f8sgw"]
 [ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="4_61f7u"]
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="5_jh2e0"]
-[ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/type_data/fire.tres" id="6_go1fl"]
+[ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/TypeData/fire.tres" id="6_go1fl"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qedgj"]
 load_path = "res://.godot/imported/crocodile 1.png-c84d5a6a9469afbf128b9b1302ccb5d8.ctex"

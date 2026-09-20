@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="RFamiliarInstance" format=3 uid="uid://b0bxs4b3jv42f"]
 
 [ext_resource type="Script" uid="uid://482mjwvdetpu" path="res://Scripts/RFamiliarInstance.cs" id="1_fd2s3"]
-[ext_resource type="Resource" uid="uid://b1d1nkynkkoh5" path="res://Resources/familiar_data/ex_gnome.tres" id="1_qsdvh"]
-[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/type_data/earth.tres" id="3_4mvif"]
+[ext_resource type="Resource" uid="uid://b1d1nkynkkoh5" path="res://Resources/FamiliarData/ex_gnome.tres" id="1_qsdvh"]
+[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="3_4mvif"]
 [ext_resource type="Resource" uid="uid://bjc3sb856vv3t" path="res://Resources/Skills/cover.tres" id="3_mmdwn"]
 
 [resource]

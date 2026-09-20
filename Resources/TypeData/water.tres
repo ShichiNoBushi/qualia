@@ -6,4 +6,5 @@
 script = ExtResource("1_vgmwi")
 id = "water"
 name = "Water"
+color = Color(0, 0.64705884, 1, 1)
 metadata/_custom_type_script = "uid://3uin7wh74kon"

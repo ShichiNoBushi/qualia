@@ -31,6 +31,8 @@ public partial class GameMenu : CanvasLayer
 	public Label famNameLabel;
 	public Label familiarLabel;
 	
+	public RichTextLabel typesLabel;
+	
 	public Label famLevelLabel;
 	
 	public ProgressBar famExperienceProgress;
@@ -79,6 +81,8 @@ public partial class GameMenu : CanvasLayer
 		
 		famNameLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamNameLabel");
 		familiarLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamiliarLabel");
+		
+		typesLabel = GetNode<RichTextLabel>("Panel/TabContainer/Familiars/StatsPanel/TypesLabel");
 		
 		famLevelLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamLevelLabel");
 		
@@ -161,6 +165,34 @@ public partial class GameMenu : CanvasLayer
 		
 		famNameLabel.Text = fam.GetPreferredName();
 		familiarLabel.Text = string.IsNullOrEmpty(fam.data?.name) ? "(no name)" : fam.data.name;
+		
+		Godot.Collections.Array<RTypeData> types = fam.types != null && fam.types.Count > 0 ? fam.types : fam.data?.types;
+		
+		if (types != null && types.Count > 0)
+		{
+			System.Collections.Generic.List<string> typeTexts = new();
+			
+			foreach (var t in types)
+			{
+				if (t == null)
+				{
+					continue;
+				}
+				
+				string name = string.IsNullOrEmpty(t.name) ? "(type)" : t.name;
+				string fill = t.color.ToHtml(false);
+				string edge = t.outline.A > 0 ? t.outline.ToHtml(false) : t.ContrastColor().ToHtml(false);
+				
+				typeTexts.Add($"[outline_size=4][outline_color=#{edge}][color=#{fill}]{name}[/color][/outline_color][/outline_size]");
+			}
+			
+			string typeFull = string.Join("\n", typeTexts);
+			typesLabel.Text = typeFull;
+		}
+		else
+		{
+			typesLabel.Text = "(untyped)";
+		}
 		
 		famLevelLabel.Text = $"{fam.level}";
 		

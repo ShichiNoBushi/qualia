@@ -27,6 +27,9 @@ public partial class RFamiliarData : Resource
 	[Export] public Godot.Collections.Array<RTypeData> types {get; set;} = new();
 	[Export] public Godot.Collections.Array<RSkillData> learnableSkills {get; set;} = new();
 	
+	[Export] public int crystals {get; set;} = 0;
+	[Export] public Godot.Collections.Dictionary<string, int> crystalDrops {get; set;}
+	
 	[Export] public RPrismRecipe recipe {get; set;} = new();
 	
 	[Export] public Texture2D portrait {get; set;}

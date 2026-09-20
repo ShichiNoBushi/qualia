@@ -30,6 +30,11 @@ public partial class WildSpark : Area2D
 			return;
 		}
 		
+		if (player.noEncounter)
+		{
+			return;
+		}
+		
 		zone?.RemoveSpark(this);
 		QueueFree();
 		

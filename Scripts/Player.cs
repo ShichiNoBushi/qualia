@@ -10,11 +10,16 @@ public partial class Player : CharacterBody2D
 	public string lastAnim;
 	public Vector2 facing = Vector2.Down;
 	
-	public Vector2 lastVelocity;
+	public Timer timer;
+	
+	public bool noEncounter = false;
 	
 	public override void _Ready()
 	{
 		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		timer = GetNode<Timer>("Timer");
+		
+		timer.Timeout += OnInvulnerableTimeout;
 		
 		GameSession session = GetNode<GameSession>("/root/GameSession");
 		
@@ -24,6 +29,11 @@ public partial class Player : CharacterBody2D
 		{
 			GlobalPosition = session.returnPosition;
 			facing = session.returnFacing;
+		}
+		
+		if (session.lastResult == BattleManager.VictoryResult.PlayerWin || session.lastResult == BattleManager.VictoryResult.PlayerEscape)
+		{
+			SetInvulnerable();
 		}
 		
 		if (facing != Vector2.Zero)
@@ -59,12 +69,6 @@ public partial class Player : CharacterBody2D
 			facing = direction;
 			Velocity = direction * speed;
 			PlayWalkAnim(direction);
-			
-			if (Velocity != lastVelocity)
-			{
-				GD.Print($"Player: velocity={Velocity}");
-				lastVelocity = Velocity;
-			}
 		}
 		else
 		{
@@ -107,6 +111,11 @@ public partial class Player : CharacterBody2D
 		}
 	}
 	
+	public void OnInvulnerableTimeout()
+	{
+		noEncounter = false;
+	}
+	
 	public void PlayWalkAnim(Vector2 direction)
 	{
 		string anim;
@@ -125,5 +134,11 @@ public partial class Player : CharacterBody2D
 			sprite.Play(anim);
 			lastAnim = anim;
 		}
+	}
+	
+	public void SetInvulnerable()
+	{
+		noEncounter = true;
+		timer.Start();
 	}
 }

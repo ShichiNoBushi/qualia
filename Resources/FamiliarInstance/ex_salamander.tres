@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="RFamiliarInstance" format=3 uid="uid://chorlhv6ten61"]
 
 [ext_resource type="Script" uid="uid://482mjwvdetpu" path="res://Scripts/RFamiliarInstance.cs" id="1_n037b"]
-[ext_resource type="Resource" uid="uid://dd0ycosprdajc" path="res://Resources/familiar_data/ex_salamander.tres" id="1_r5bo7"]
+[ext_resource type="Resource" uid="uid://dd0ycosprdajc" path="res://Resources/FamiliarData/ex_salamander.tres" id="1_r5bo7"]
 [ext_resource type="Resource" uid="uid://dklaojj8nj1xh" path="res://Resources/Skills/strike.tres" id="3_3q8sv"]
-[ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/type_data/fire.tres" id="3_4sutr"]
+[ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/TypeData/fire.tres" id="3_4sutr"]
 
 [resource]
 script = ExtResource("1_n037b")

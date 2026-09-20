@@ -178,6 +178,25 @@ offset_right = 144.0
 offset_bottom = 54.0
 text = "Familiar"
 
+[node name="TypesTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=158141714]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 54.0
+offset_right = 73.0
+offset_bottom = 77.0
+text = "Types:"
+
+[node name="TypesLabel" type="RichTextLabel" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=413670546]
+layout_mode = 0
+offset_left = 94.0
+offset_top = 54.0
+offset_right = 193.0
+offset_bottom = 123.0
+bbcode_enabled = true
+text = "Type1
+Type2
+Type3"
+
 [node name="LevelTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1373115843]
 layout_mode = 0
 offset_left = 385.0
@@ -198,52 +217,52 @@ horizontal_alignment = 2
 [node name="ExperienceTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1306693728]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 91.0
+offset_top = 123.0
 offset_right = 105.0
-offset_bottom = 114.0
+offset_bottom = 146.0
 text = "Experience"
 
 [node name="FamExperienceProgress" type="ProgressBar" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=282871570]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 114.0
+offset_top = 146.0
 offset_right = 217.0
-offset_bottom = 126.0
+offset_bottom = 158.0
 step = 1.0
 show_percentage = false
 
 [node name="FamExperienceLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1829536093]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 126.0
+offset_top = 158.0
 offset_right = 94.0
-offset_bottom = 149.0
+offset_bottom = 181.0
 text = "00000000"
 horizontal_alignment = 2
 
 [node name="ExperienceDividerLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1750771530]
 layout_mode = 0
 offset_left = 94.0
-offset_top = 126.0
+offset_top = 158.0
 offset_right = 134.0
-offset_bottom = 149.0
+offset_bottom = 181.0
 text = "/"
 horizontal_alignment = 1
 
 [node name="FamExperienceNextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1948889065]
 layout_mode = 0
 offset_left = 134.0
-offset_top = 126.0
+offset_top = 158.0
 offset_right = 208.0
-offset_bottom = 149.0
+offset_bottom = 181.0
 text = "00000000"
 
 [node name="GridContainer" type="GridContainer" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1501866478]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 158.0
+offset_top = 190.0
 offset_right = 170.0
-offset_bottom = 316.0
+offset_bottom = 348.0
 columns = 2
 
 [node name="EnergyTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=299794083]

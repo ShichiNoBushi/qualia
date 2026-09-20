@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dox7wt8huyy0o" path="res://Resources/Assets/Retro Monsters (111)/ugly fish 1.png" id="3_uf1g8"]
 [ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="4_uf1g8"]
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="5_jcjdn"]
-[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/type_data/water.tres" id="6_w0uhf"]
+[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="6_w0uhf"]
 
 [sub_resource type="Resource" id="Resource_jcjdn"]
 script = ExtResource("3_sh5ei")

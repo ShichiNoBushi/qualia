@@ -135,3 +135,7 @@ animation = &"walk_front"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1465717657]
 shape = SubResource("CircleShape2D_ts14v")
+
+[node name="Timer" type="Timer" parent="." unique_id=1024088542]
+wait_time = 5.0
+one_shot = true
