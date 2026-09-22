@@ -54,6 +54,7 @@ public partial class DataRegistry : Node
 			}
 			
 			dest[id] = res;
+			GD.Print($"DataRegistry: loaded from {path} as {res.GetType().Name}");
 		}
 	}
 	

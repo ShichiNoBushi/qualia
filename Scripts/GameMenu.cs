@@ -4,6 +4,7 @@ using System;
 public partial class GameMenu : CanvasLayer
 {
 	public GameSession session;
+	public DataRegistry registry;
 	
 	public RFamiliarInstance selectedFamiliar;
 	public RSkillData selectedSkill;
@@ -52,62 +53,75 @@ public partial class GameMenu : CanvasLayer
 	
 	public RichTextLabel skillDescLabel;
 	
+	public ItemList crystalsList;
+	public RichTextLabel crystalDescLabel;
+	
+	public Label gCrystalsLabel;
+	
 	public Button quitButton;
 	public ConfirmationDialog quitConfirm;
 	
 	public override void _Ready()
 	{
 		session = GetNode<GameSession>("/root/GameSession");
+		registry = GetNode<DataRegistry>("/root/DataRegistry");
 		
 		closeButton = GetNode<Button>("Panel/CloseButton");
 		
-		projNameLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjNameLabel");
+		projNameLabel = GetNode<Label>("Panel/MainTab/Projector/ProjNameLabel");
 		
-		projLevelLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjLevelLabel");
+		projLevelLabel = GetNode<Label>("Panel/MainTab/Projector/ProjLevelLabel");
 		
-		projExperienceProgress = GetNode<ProgressBar>("Panel/TabContainer/Projector/ProjExperienceProgress");
-		projExperienceLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjExperienceLabel");
-		projExperienceNextLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjExperienceNextLabel");
+		projExperienceProgress = GetNode<ProgressBar>("Panel/MainTab/Projector/ProjExperienceProgress");
+		projExperienceLabel = GetNode<Label>("Panel/MainTab/Projector/ProjExperienceLabel");
+		projExperienceNextLabel = GetNode<Label>("Panel/MainTab/Projector/ProjExperienceNextLabel");
 		
-		projEnergyProgress = GetNode<ProgressBar>("Panel/TabContainer/Projector/ProjEnergyProgress");
-		projCurrentEnergyLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjCurrentEnergyLabel");
-		projMaxEnergyLabel = GetNode<Label>("Panel/TabContainer/Projector/ProjMaxEnergyLabel");
+		projEnergyProgress = GetNode<ProgressBar>("Panel/MainTab/Projector/ProjEnergyProgress");
+		projCurrentEnergyLabel = GetNode<Label>("Panel/MainTab/Projector/ProjCurrentEnergyLabel");
+		projMaxEnergyLabel = GetNode<Label>("Panel/MainTab/Projector/ProjMaxEnergyLabel");
 		
-		projPortraitRect = GetNode<TextureRect>("Panel/TabContainer/Projector/ProjPortraitRect");
+		projPortraitRect = GetNode<TextureRect>("Panel/MainTab/Projector/ProjPortraitRect");
 		
-		familiarsList = GetNode<ItemList>("Panel/TabContainer/Familiars/FamiliarsList");
+		familiarsList = GetNode<ItemList>("Panel/MainTab/Familiars/FamiliarsList");
 		
-		statsPanel = GetNode<Panel>("Panel/TabContainer/Familiars/StatsPanel");
+		statsPanel = GetNode<Panel>("Panel/MainTab/Familiars/StatsPanel");
 		
-		famNameLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamNameLabel");
-		familiarLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamiliarLabel");
+		famNameLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/FamNameLabel");
+		familiarLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/FamiliarLabel");
 		
-		typesLabel = GetNode<RichTextLabel>("Panel/TabContainer/Familiars/StatsPanel/TypesLabel");
+		typesLabel = GetNode<RichTextLabel>("Panel/MainTab/Familiars/StatsPanel/TypesLabel");
 		
-		famLevelLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamLevelLabel");
+		famLevelLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/FamLevelLabel");
 		
-		famExperienceProgress = GetNode<ProgressBar>("Panel/TabContainer/Familiars/StatsPanel/FamExperienceProgress");
-		famExperienceLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamExperienceLabel");
-		famExperienceNextLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/FamExperienceNextLabel");
+		famExperienceProgress = GetNode<ProgressBar>("Panel/MainTab/Familiars/StatsPanel/FamExperienceProgress");
+		famExperienceLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/FamExperienceLabel");
+		famExperienceNextLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/FamExperienceNextLabel");
 		
-		famEnergyLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/FamEnergyLabel");
-		physAttackLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/PhysAttackLabel");
-		magAttackLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/MagAttackLabel");
-		physDefenseLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/PhysDefenseLabel");
-		magDefenseLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/MagDefenseLabel");
-		speedLabel = GetNode<Label>("Panel/TabContainer/Familiars/StatsPanel/GridContainer/SpeedLabel");
+		famEnergyLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/GridContainer/FamEnergyLabel");
+		physAttackLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/GridContainer/PhysAttackLabel");
+		magAttackLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/GridContainer/MagAttackLabel");
+		physDefenseLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/GridContainer/PhysDefenseLabel");
+		magDefenseLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/GridContainer/MagDefenseLabel");
+		speedLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/GridContainer/SpeedLabel");
 		
-		skillsList = GetNode<ItemList>("Panel/TabContainer/Familiars/StatsPanel/SkillsList");
+		skillsList = GetNode<ItemList>("Panel/MainTab/Familiars/StatsPanel/SkillsList");
 		
-		skillDescLabel = GetNode<RichTextLabel>("Panel/TabContainer/Familiars/StatsPanel/SkillDescLabel");
+		skillDescLabel = GetNode<RichTextLabel>("Panel/MainTab/Familiars/StatsPanel/SkillDescLabel");
 		
-		famPortraitRect = GetNode<TextureRect>("Panel/TabContainer/Familiars/StatsPanel/FamPortraitRect");
+		famPortraitRect = GetNode<TextureRect>("Panel/MainTab/Familiars/StatsPanel/FamPortraitRect");
 		
 		familiarsList.ItemSelected += OnFamiliarSelect;
 		
 		skillsList.ItemSelected += OnSkillSelect;
 		
-		quitButton = GetNode<Button>("Panel/TabContainer/Options/CenterContainer/VBoxContainer/QuitButton");
+		crystalsList = GetNode<ItemList>("Panel/MainTab/Inventory/InventoryTab/Crystals/CrystalsList");
+		crystalDescLabel = GetNode<RichTextLabel>("Panel/MainTab/Inventory/InventoryTab/Crystals/CrystalDescLabel");
+		
+		crystalsList.ItemSelected += OnCrystalSelect;
+		
+		gCrystalsLabel = GetNode<Label>("Panel/MainTab/Inventory/GCrystalsLabel");
+		
+		quitButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/QuitButton");
 		quitConfirm = GetNode<ConfirmationDialog>("QuitConfirm");
 		
 		closeButton.Pressed += OnClosePressed;
@@ -231,6 +245,30 @@ public partial class GameMenu : CanvasLayer
 		selectedSkill = skillsList.GetItemMetadata((int)index).As<RSkillData>();
 		
 		skillDescLabel.Text = selectedSkill != null ? selectedSkill.FormatDescription() : "";
+	}
+	
+	public void OnCrystalSelect(long index)
+	{
+		string crystalKey = crystalsList.GetItemMetadata((int)index).AsString();
+		
+		if (string.IsNullOrEmpty(crystalKey))
+		{
+			crystalDescLabel.Text = "";
+			return;
+		}
+		
+		RQualiaCrystal crystal = registry.Crystal(crystalKey);
+		
+		int amount = session.qualiaCrystals.TryGetValue(crystalKey, out int n) ? n : 0;
+		
+		if (crystal == null)
+		{
+			crystalDescLabel.Text = $"{crystalKey} x{amount}";
+			return;
+		}
+		
+		crystalDescLabel.Clear();
+		crystalDescLabel.AppendText($"{crystal.name}\n\nHeld: {amount}\nValue: {crystal.value}");
 	}
 	
 	public void OnQuitPressed()
@@ -368,11 +406,35 @@ public partial class GameMenu : CanvasLayer
 		}
 	}
 	
+	public void UpdateInventory()
+	{
+		crystalsList.Clear();
+		
+		foreach (var qc in session.qualiaCrystals)
+		{
+			RQualiaCrystal crystal = registry.Crystal(qc.Key);
+			
+			if (crystal == null || qc.Value <= 0)
+			{
+				continue;
+			}
+			
+			string name = string.IsNullOrEmpty(crystal.name) ? crystal.id : crystal.name;
+			
+			crystalsList.AddItem(name);
+			int idx = crystalsList.ItemCount - 1;
+			crystalsList.SetItemMetadata(idx, qc.Key);
+		}
+		
+		gCrystalsLabel.Text = $"{session.qualiaGeneric}";
+	}
+	
 	public void Open()
 	{
 		Visible = true;
 		UpdateProjectorLabels();
 		UpdateFamiliarList();
+		UpdateInventory();
 		GetTree().Paused = true;
 	}
 	

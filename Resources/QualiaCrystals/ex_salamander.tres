@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RQualiaCrystal" format=3 uid="uid://dew7e3dh3hodm"]
+
+[ext_resource type="Script" uid="uid://drrp5ejurlp51" path="res://Scripts/RQualiaCrystal.cs" id="1_p6f4a"]
+
+[resource]
+script = ExtResource("1_p6f4a")
+id = "ex_salamander"
+name = "Ex. Salamander"
+recipe = null
+value = 20
+metadata/_custom_type_script = "uid://drrp5ejurlp51"

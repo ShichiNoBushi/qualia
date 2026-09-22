@@ -14,18 +14,18 @@ offset_top = 97.0
 offset_right = 1511.0
 offset_bottom = 977.0
 
-[node name="TabContainer" type="TabContainer" parent="Panel" unique_id=1307417984]
+[node name="MainTab" type="TabContainer" parent="Panel" unique_id=1307417984]
 layout_mode = 0
 offset_right = 1144.0
 offset_bottom = 829.0
 tab_alignment = 1
 current_tab = 0
 
-[node name="Projector" type="Control" parent="Panel/TabContainer" unique_id=1210988696]
+[node name="Projector" type="Control" parent="Panel/MainTab" unique_id=1210988696]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="ProjNameLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=1365430370]
+[node name="ProjNameLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=1365430370]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 22.0
@@ -33,7 +33,7 @@ offset_right = 67.0
 offset_bottom = 45.0
 text = "Name"
 
-[node name="LevelTextLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=553198624]
+[node name="LevelTextLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=553198624]
 layout_mode = 0
 offset_left = 299.0
 offset_top = 22.0
@@ -41,7 +41,7 @@ offset_right = 339.0
 offset_bottom = 45.0
 text = "Level"
 
-[node name="ProjLevelLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=1476683855]
+[node name="ProjLevelLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=1476683855]
 layout_mode = 0
 offset_left = 299.0
 offset_top = 45.0
@@ -50,7 +50,7 @@ offset_bottom = 68.0
 text = "0"
 horizontal_alignment = 2
 
-[node name="ExperienceTextLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=469878341]
+[node name="ExperienceTextLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=469878341]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 68.0
@@ -58,7 +58,7 @@ offset_right = 60.0
 offset_bottom = 91.0
 text = "Experience"
 
-[node name="ProjExperienceProgress" type="ProgressBar" parent="Panel/TabContainer/Projector" unique_id=486864749]
+[node name="ProjExperienceProgress" type="ProgressBar" parent="Panel/MainTab/Projector" unique_id=486864749]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 91.0
@@ -67,7 +67,7 @@ offset_bottom = 103.0
 step = 1.0
 show_percentage = false
 
-[node name="ProjExperienceLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=788200831]
+[node name="ProjExperienceLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=788200831]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 103.0
@@ -76,7 +76,7 @@ offset_bottom = 126.0
 text = "00000000"
 horizontal_alignment = 2
 
-[node name="ExperienceDividerLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=824372252]
+[node name="ExperienceDividerLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=824372252]
 layout_mode = 0
 offset_left = 94.0
 offset_top = 103.0
@@ -85,7 +85,7 @@ offset_bottom = 126.0
 text = "/"
 horizontal_alignment = 1
 
-[node name="ProjExperienceNextLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=187329081]
+[node name="ProjExperienceNextLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=187329081]
 layout_mode = 0
 offset_left = 134.0
 offset_top = 103.0
@@ -93,7 +93,7 @@ offset_right = 208.0
 offset_bottom = 126.0
 text = "00000000"
 
-[node name="EnergyTextLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=2141260069]
+[node name="EnergyTextLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=2141260069]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 145.0
@@ -101,7 +101,7 @@ offset_right = 73.0
 offset_bottom = 168.0
 text = "Energy"
 
-[node name="ProjEnergyProgress" type="ProgressBar" parent="Panel/TabContainer/Projector" unique_id=1210176416]
+[node name="ProjEnergyProgress" type="ProgressBar" parent="Panel/MainTab/Projector" unique_id=1210176416]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 168.0
@@ -109,7 +109,7 @@ offset_right = 208.0
 offset_bottom = 180.0
 show_percentage = false
 
-[node name="ProjCurrentEnergyLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=673453897]
+[node name="ProjCurrentEnergyLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=673453897]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 180.0
@@ -118,7 +118,7 @@ offset_bottom = 203.0
 text = "00000"
 horizontal_alignment = 2
 
-[node name="EnergyDividerLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=47366451]
+[node name="EnergyDividerLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=47366451]
 layout_mode = 0
 offset_left = 66.0
 offset_top = 180.0
@@ -127,7 +127,7 @@ offset_bottom = 203.0
 text = "/"
 horizontal_alignment = 1
 
-[node name="ProjMaxEnergyLabel" type="Label" parent="Panel/TabContainer/Projector" unique_id=969821042]
+[node name="ProjMaxEnergyLabel" type="Label" parent="Panel/MainTab/Projector" unique_id=969821042]
 layout_mode = 0
 offset_left = 106.0
 offset_top = 180.0
@@ -136,7 +136,7 @@ offset_bottom = 203.0
 text = "00000"
 horizontal_alignment = 2
 
-[node name="ProjPortraitRect" type="TextureRect" parent="Panel/TabContainer/Projector" unique_id=614046170]
+[node name="ProjPortraitRect" type="TextureRect" parent="Panel/MainTab/Projector" unique_id=614046170]
 layout_mode = 0
 offset_left = 561.0
 offset_top = 22.0
@@ -144,25 +144,25 @@ offset_right = 1125.0
 offset_bottom = 358.0
 stretch_mode = 5
 
-[node name="Familiars" type="Control" parent="Panel/TabContainer" unique_id=1281197824]
+[node name="Familiars" type="Control" parent="Panel/MainTab" unique_id=1281197824]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="FamiliarsList" type="ItemList" parent="Panel/TabContainer/Familiars" unique_id=492308136]
+[node name="FamiliarsList" type="ItemList" parent="Panel/MainTab/Familiars" unique_id=492308136]
 layout_mode = 0
 offset_right = 372.0
 offset_bottom = 798.0
 theme_override_font_sizes/font_size = 32
 
-[node name="StatsPanel" type="Panel" parent="Panel/TabContainer/Familiars" unique_id=1717589658]
+[node name="StatsPanel" type="Panel" parent="Panel/MainTab/Familiars" unique_id=1717589658]
 layout_mode = 0
 offset_left = 400.0
 offset_top = 22.0
 offset_right = 1144.0
 offset_bottom = 794.0
 
-[node name="FamNameLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1233312517]
+[node name="FamNameLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1233312517]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 8.0
@@ -170,7 +170,7 @@ offset_right = 144.0
 offset_bottom = 31.0
 text = "Name"
 
-[node name="FamiliarLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1909289165]
+[node name="FamiliarLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1909289165]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 31.0
@@ -178,7 +178,7 @@ offset_right = 144.0
 offset_bottom = 54.0
 text = "Familiar"
 
-[node name="TypesTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=158141714]
+[node name="TypesTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=158141714]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 54.0
@@ -186,7 +186,7 @@ offset_right = 73.0
 offset_bottom = 77.0
 text = "Types:"
 
-[node name="TypesLabel" type="RichTextLabel" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=413670546]
+[node name="TypesLabel" type="RichTextLabel" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=413670546]
 layout_mode = 0
 offset_left = 94.0
 offset_top = 54.0
@@ -197,7 +197,7 @@ text = "Type1
 Type2
 Type3"
 
-[node name="LevelTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1373115843]
+[node name="LevelTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1373115843]
 layout_mode = 0
 offset_left = 385.0
 offset_top = 8.0
@@ -205,7 +205,7 @@ offset_right = 458.0
 offset_bottom = 31.0
 text = "Level"
 
-[node name="FamLevelLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=677123053]
+[node name="FamLevelLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=677123053]
 layout_mode = 0
 offset_left = 385.0
 offset_top = 31.0
@@ -214,7 +214,7 @@ offset_bottom = 54.0
 text = "0"
 horizontal_alignment = 2
 
-[node name="ExperienceTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1306693728]
+[node name="ExperienceTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1306693728]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 123.0
@@ -222,7 +222,7 @@ offset_right = 105.0
 offset_bottom = 146.0
 text = "Experience"
 
-[node name="FamExperienceProgress" type="ProgressBar" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=282871570]
+[node name="FamExperienceProgress" type="ProgressBar" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=282871570]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 146.0
@@ -231,7 +231,7 @@ offset_bottom = 158.0
 step = 1.0
 show_percentage = false
 
-[node name="FamExperienceLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1829536093]
+[node name="FamExperienceLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1829536093]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 158.0
@@ -240,7 +240,7 @@ offset_bottom = 181.0
 text = "00000000"
 horizontal_alignment = 2
 
-[node name="ExperienceDividerLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1750771530]
+[node name="ExperienceDividerLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1750771530]
 layout_mode = 0
 offset_left = 94.0
 offset_top = 158.0
@@ -249,7 +249,7 @@ offset_bottom = 181.0
 text = "/"
 horizontal_alignment = 1
 
-[node name="FamExperienceNextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1948889065]
+[node name="FamExperienceNextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1948889065]
 layout_mode = 0
 offset_left = 134.0
 offset_top = 158.0
@@ -257,7 +257,7 @@ offset_right = 208.0
 offset_bottom = 181.0
 text = "00000000"
 
-[node name="GridContainer" type="GridContainer" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1501866478]
+[node name="GridContainer" type="GridContainer" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1501866478]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 190.0
@@ -265,61 +265,61 @@ offset_right = 170.0
 offset_bottom = 348.0
 columns = 2
 
-[node name="EnergyTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=299794083]
+[node name="EnergyTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=299794083]
 layout_mode = 2
 text = "Energy"
 
-[node name="FamEnergyLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1517559695]
+[node name="FamEnergyLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=1517559695]
 layout_mode = 2
 text = "0000"
 horizontal_alignment = 2
 
-[node name="PhysAttackTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=739530298]
+[node name="PhysAttackTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=739530298]
 layout_mode = 2
 text = "Phys. Attack"
 
-[node name="PhysAttackLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1058789828]
+[node name="PhysAttackLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=1058789828]
 layout_mode = 2
 text = "0000"
 horizontal_alignment = 2
 
-[node name="MagAttackTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=567703060]
+[node name="MagAttackTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=567703060]
 layout_mode = 2
 text = "Mag. Attack"
 
-[node name="MagAttackLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1985560616]
+[node name="MagAttackLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=1985560616]
 layout_mode = 2
 text = "0000"
 horizontal_alignment = 2
 
-[node name="PhysDefenseTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1714331760]
+[node name="PhysDefenseTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=1714331760]
 layout_mode = 2
 text = "Phys. Defense"
 
-[node name="PhysDefenseLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1635242407]
+[node name="PhysDefenseLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=1635242407]
 layout_mode = 2
 text = "0000"
 horizontal_alignment = 2
 
-[node name="MagDefenseTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=690734703]
+[node name="MagDefenseTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=690734703]
 layout_mode = 2
 text = "Mag. Defense"
 
-[node name="MagDefenseLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=2037409133]
+[node name="MagDefenseLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=2037409133]
 layout_mode = 2
 text = "0000"
 horizontal_alignment = 2
 
-[node name="SpeedTextLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=486859584]
+[node name="SpeedTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=486859584]
 layout_mode = 2
 text = "Speed"
 
-[node name="SpeedLabel" type="Label" parent="Panel/TabContainer/Familiars/StatsPanel/GridContainer" unique_id=1193513682]
+[node name="SpeedLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=1193513682]
 layout_mode = 2
 text = "0000"
 horizontal_alignment = 2
 
-[node name="FamPortraitRect" type="TextureRect" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=69545901]
+[node name="FamPortraitRect" type="TextureRect" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=69545901]
 layout_mode = 0
 offset_left = 554.0
 offset_top = 8.0
@@ -327,14 +327,14 @@ offset_right = 734.0
 offset_bottom = 298.0
 stretch_mode = 5
 
-[node name="SkillsList" type="ItemList" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=1842523951]
+[node name="SkillsList" type="ItemList" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1842523951]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 409.0
 offset_right = 208.0
 offset_bottom = 635.0
 
-[node name="SkillDescLabel" type="RichTextLabel" parent="Panel/TabContainer/Familiars/StatsPanel" unique_id=345320346]
+[node name="SkillDescLabel" type="RichTextLabel" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=345320346]
 layout_mode = 0
 offset_left = 230.0
 offset_top = 409.0
@@ -342,20 +342,67 @@ offset_right = 581.0
 offset_bottom = 631.0
 bbcode_enabled = true
 
-[node name="Options" type="Control" parent="Panel/TabContainer" unique_id=1560943313]
+[node name="Inventory" type="Control" parent="Panel/MainTab" unique_id=541420838]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="Panel/TabContainer/Options" unique_id=1227069406]
+[node name="InventoryTab" type="TabContainer" parent="Panel/MainTab/Inventory" unique_id=1592879859]
+layout_mode = 0
+offset_left = 45.0
+offset_right = 1125.0
+offset_bottom = 762.0
+tab_alignment = 1
+current_tab = 0
+
+[node name="Crystals" type="Control" parent="Panel/MainTab/Inventory/InventoryTab" unique_id=744477125]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="CrystalsList" type="ItemList" parent="Panel/MainTab/Inventory/InventoryTab/Crystals" unique_id=1572234986]
+layout_mode = 0
+offset_right = 394.0
+offset_bottom = 731.0
+
+[node name="CrystalDescLabel" type="RichTextLabel" parent="Panel/MainTab/Inventory/InventoryTab/Crystals" unique_id=565051590]
+layout_mode = 0
+offset_left = 428.0
+offset_top = 4.0
+offset_right = 1080.0
+offset_bottom = 731.0
+bbcode_enabled = true
+
+[node name="GCrystalsTextLabel" type="Label" parent="Panel/MainTab/Inventory" unique_id=1369286270]
+layout_mode = 0
+offset_left = 443.0
+offset_top = 766.0
+offset_right = 529.0
+offset_bottom = 789.0
+text = "G. Crystals:"
+
+[node name="GCrystalsLabel" type="Label" parent="Panel/MainTab/Inventory" unique_id=2147082268]
+layout_mode = 0
+offset_left = 548.0
+offset_top = 766.0
+offset_right = 688.0
+offset_bottom = 789.0
+text = "0000000"
+horizontal_alignment = 2
+
+[node name="Options" type="Control" parent="Panel/MainTab" unique_id=1560943313]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="Panel/MainTab/Options" unique_id=1227069406]
 layout_mode = 0
 offset_right = 1144.0
 offset_bottom = 849.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/TabContainer/Options/CenterContainer" unique_id=265674126]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MainTab/Options/CenterContainer" unique_id=265674126]
 layout_mode = 2
 
-[node name="QuitButton" type="Button" parent="Panel/TabContainer/Options/CenterContainer/VBoxContainer" unique_id=1631859873]
+[node name="QuitButton" type="Button" parent="Panel/MainTab/Options/CenterContainer/VBoxContainer" unique_id=1631859873]
 layout_mode = 2
 text = "Quit"
 

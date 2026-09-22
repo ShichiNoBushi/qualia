@@ -1329,17 +1329,41 @@ public partial class BattleManager : Node
 	public void GrantRewards()
 	{
 		int totalExp = 0;
+		int totalCrystals = 0;
+		Godot.Collections.Dictionary<string, int> qualiaCrystals = new();
 		
 		foreach (var fam in defeatedFamiliars)
 		{
+			if (fam == null)
+			{
+				continue;
+			}
+			
 			float growthFactor = fam.data != null ? fam.data.expGrowthFactor : 1f;
 			totalExp += Mathf.RoundToInt(fam.level * 100 * growthFactor);
+			totalCrystals += fam.level * fam.data.crystals;
+			
+			if (fam.data.crystalDrops == null)
+			{
+				continue;
+			}
+			
+			foreach (var qc in fam.data.crystalDrops)
+			{
+				if (string.IsNullOrEmpty(qc.Key) || qc.Value <= 0)
+				{
+					continue;
+				}
+				
+				int amt = qc.Value * Math.Max(fam.level, 1);
+				qualiaCrystals[qc.Key] = (qualiaCrystals.TryGetValue(qc.Key, out int c) ? c : 0) + amt;
+			}
 		}
 		
 		int sharedExp = Math.Max(totalExp / Math.Max(summonedFamiliars.Count, 1), 1);
 		
 		AppendBattleText($"[b]{playerSide.projector.name}[/b] gains {totalExp} experience.");
-		AppendBattleText($"Familiars gain {sharedExp} experience.", true);
+		AppendBattleText($"Familiars gain {sharedExp} experience.", false);
 		
 		int projLevelIncrease = playerSide.projector.GiveExperience(totalExp);
 		
@@ -1364,6 +1388,34 @@ public partial class BattleManager : Node
 			{
 				AppendBattleText($"[b]{fam.GetPreferredName()}[/b] gained {levelIncrease} levels!", true);
 			}
+		}
+		
+		DataRegistry registry = GetNode<DataRegistry>("/root/DataRegistry");
+		GameSession session = GetNode<GameSession>("/root/GameSession");
+		
+		bool firstLine = true;
+		
+		foreach (var drop in qualiaCrystals)
+		{
+			RQualiaCrystal crystal = registry.Crystal(drop.Key);
+			
+			if (crystal == null || drop.Value <= 0)
+			{
+				continue;
+			}
+			
+			string name = string.IsNullOrEmpty(crystal.name) ? crystal.id : crystal.name;
+			
+			session.AddCrystal(crystal, drop.Value);
+			
+			AppendBattleText($"[b]{playerSide.projector.name}[/b] acquired [b]{drop.Value}[/b] {name} crystals (total: {session.qualiaCrystals[drop.Key]}).", firstLine);
+			firstLine = false;
+		}
+		
+		if (totalCrystals > 0)
+		{
+			session.qualiaGeneric += totalCrystals;
+			AppendBattleText($"[b]{playerSide.projector.name}[/b] acquired [b]{totalCrystals}[/b] generic qualia crystals.");
 		}
 	}
 	

@@ -1,25 +1,29 @@
 [gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://chkgu8q8pff4y"]
 
-[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_7k78h"]
-[ext_resource type="Script" uid="uid://df7vrqh187nx2" path="res://Scripts/RQualiaRequirement.cs" id="2_blcvd"]
-[ext_resource type="Resource" uid="uid://cmx500spe3o76" path="res://Resources/Skills/heal.tres" id="2_sh5ei"]
-[ext_resource type="Script" uid="uid://cm64tnf4fly34" path="res://Scripts/RPrismRecipe.cs" id="3_sh5ei"]
-[ext_resource type="Texture2D" uid="uid://dox7wt8huyy0o" path="res://Resources/Assets/Retro Monsters (111)/ugly fish 1.png" id="3_uf1g8"]
-[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="4_uf1g8"]
-[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="5_jcjdn"]
-[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="6_w0uhf"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_gvhi5"]
+[ext_resource type="Resource" uid="uid://cmx500spe3o76" path="res://Resources/Skills/heal.tres" id="2_c44ub"]
+[ext_resource type="Texture2D" uid="uid://dox7wt8huyy0o" path="res://Resources/Assets/Retro Monsters (111)/ugly fish 1.png" id="3_dirdi"]
+[ext_resource type="Script" uid="uid://df7vrqh187nx2" path="res://Scripts/RQualiaRequirement.cs" id="4_v6dyb"]
+[ext_resource type="Script" uid="uid://cm64tnf4fly34" path="res://Scripts/RPrismRecipe.cs" id="5_svl1l"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="6_dwpya"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="7_8fcn8"]
+[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="8_78g30"]
 
-[sub_resource type="Resource" id="Resource_jcjdn"]
-script = ExtResource("3_sh5ei")
+[sub_resource type="Resource" id="Resource_c3wsm"]
+script = ExtResource("5_svl1l")
 
 [resource]
-script = ExtResource("4_uf1g8")
+script = ExtResource("6_dwpya")
 id = "ex_undine"
 name = "Ex. Undine"
 baseMAttack = 5
 baseMDefense = 4
 baseSpeed = 4
-types = Array[ExtResource("5_jcjdn")]([ExtResource("6_w0uhf")])
-learnableSkills = Array[ExtResource("1_7k78h")]([ExtResource("2_sh5ei")])
-portrait = ExtResource("3_uf1g8")
+types = Array[ExtResource("7_8fcn8")]([ExtResource("8_78g30")])
+learnableSkills = Array[ExtResource("1_gvhi5")]([ExtResource("2_c44ub")])
+crystalDrops = Dictionary[String, int]({
+"ex_undine": 1,
+"water": 1
+})
+portrait = ExtResource("3_dirdi")
 metadata/_custom_type_script = "uid://c6t16g27uf4ia"

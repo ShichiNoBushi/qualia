@@ -1,25 +1,30 @@
 [gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://b1d1nkynkkoh5"]
 
-[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_pbae1"]
-[ext_resource type="Script" uid="uid://df7vrqh187nx2" path="res://Scripts/RQualiaRequirement.cs" id="2_5283n"]
-[ext_resource type="Resource" uid="uid://bjc3sb856vv3t" path="res://Resources/Skills/cover.tres" id="2_voenv"]
-[ext_resource type="Texture2D" uid="uid://bktmrl4vyiuq" path="res://Resources/Assets/Retro Monsters (111)/armadillo.png" id="3_2db5h"]
-[ext_resource type="Script" uid="uid://cm64tnf4fly34" path="res://Scripts/RPrismRecipe.cs" id="3_voenv"]
-[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="4_2db5h"]
-[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="5_t6cg2"]
-[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="6_6mn88"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_7l8ww"]
+[ext_resource type="Resource" uid="uid://bjc3sb856vv3t" path="res://Resources/Skills/cover.tres" id="2_x8qlk"]
+[ext_resource type="Texture2D" uid="uid://bktmrl4vyiuq" path="res://Resources/Assets/Retro Monsters (111)/armadillo.png" id="3_22aus"]
+[ext_resource type="Script" uid="uid://df7vrqh187nx2" path="res://Scripts/RQualiaRequirement.cs" id="4_koksw"]
+[ext_resource type="Script" uid="uid://cm64tnf4fly34" path="res://Scripts/RPrismRecipe.cs" id="5_f4okt"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="6_1lyvm"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="7_3ehj8"]
+[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="8_sptfm"]
 
-[sub_resource type="Resource" id="Resource_jcjdn"]
-script = ExtResource("3_voenv")
+[sub_resource type="Resource" id="Resource_c3wsm"]
+script = ExtResource("5_f4okt")
 
 [resource]
-script = ExtResource("4_2db5h")
+script = ExtResource("6_1lyvm")
 id = "ex_gnome"
 name = "Ex. Gnome"
 basePAttack = 5
 baseMAttack = 2
 basePDefense = 4
-types = Array[ExtResource("5_t6cg2")]([ExtResource("6_6mn88")])
-learnableSkills = Array[ExtResource("1_pbae1")]([ExtResource("2_voenv")])
-portrait = ExtResource("3_2db5h")
+types = Array[ExtResource("7_3ehj8")]([ExtResource("8_sptfm")])
+learnableSkills = Array[ExtResource("1_7l8ww")]([ExtResource("2_x8qlk")])
+crystals = 10
+crystalDrops = Dictionary[String, int]({
+"earth": 1,
+"ex_gnome": 1
+})
+portrait = ExtResource("3_22aus")
 metadata/_custom_type_script = "uid://c6t16g27uf4ia"

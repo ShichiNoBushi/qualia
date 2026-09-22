@@ -7,10 +7,10 @@ public partial class RQualiaCrystal : Resource
 	[Export] public string id {get; set;} = "";
 	[Export] public string name {get; set;} = "";
 	
-	[Export] public QualiaType type {get; set;} = QualiaType.Attuned;
+	[Export] public QualiaType type {get; set;} = QualiaType.Aspected;
 	
 	[Export] public Godot.Collections.Array<RQualiaRequirement> recipe {get; set;}
-	[Export] public int value {get; set;} = 1;
+	[Export] public int value {get; set;} = 5;
 	
 	[Export] public Texture2D icon {get; set;}
 	
