@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://by86ymrructfl" path="res://Scenes/npc.tscn" id="3_fo5ed"]
 [ext_resource type="Resource" uid="uid://dp3xd3ejwltlm" path="res://Resources/Encounters/test_encounter.tres" id="4_5ukr8"]
 [ext_resource type="Resource" uid="uid://cyp4vnvhjl3hk" path="res://Resources/Encounters/vs_rand_proj.tres" id="4_7yui6"]
-[ext_resource type="PackedScene" uid="uid://b6d0mqnw6j8i2" path="res://Scenes/battle_scene.tscn" id="5_o06y3"]
+[ext_resource type="PackedScene" uid="uid://d1wgptwxtbgi3" path="res://Scenes/inn_npc.tscn" id="5_7yui6"]
 [ext_resource type="Script" uid="uid://c1himha5535u8" path="res://Scripts/EncounterZone.cs" id="6_5ukr8"]
 [ext_resource type="Resource" uid="uid://cptc8in5acupn" path="res://Resources/Encounters/gnome2.tres" id="7_ikia7"]
 [ext_resource type="Resource" uid="uid://7kahqvhasm45" path="res://Resources/Encounters/salamander2.tres" id="8_7yui6"]
@@ -36,7 +36,12 @@ encounter = ExtResource("4_7yui6")
 isBattleable = true
 name = "Woman"
 dialog = "Testing dialog and battle.[break]Beginning wild familiar encounter."
-battleScene = ExtResource("5_o06y3")
+
+[node name="InnNPC" parent="." unique_id=1563121890 instance=ExtResource("5_7yui6")]
+position = Vector2(464, 368)
+scale = Vector2(2, 2)
+name = "Healer"
+dialog = "I will restore your energy and provide a safe place to return to.[break]Hold still."
 
 [node name="Area2D" type="Area2D" parent="." unique_id=597241109]
 position = Vector2(960, 608)

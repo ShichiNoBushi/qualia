@@ -25,16 +25,31 @@ public partial class Player : CharacterBody2D
 		
 		projector = session.playerProjector;
 		
-		if (session.returnPosition != Vector2.Zero)
-		{
-			GlobalPosition = session.returnPosition;
-			facing = session.returnFacing;
-		}
-		
 		if (session.lastResult == BattleManager.VictoryResult.PlayerWin || session.lastResult == BattleManager.VictoryResult.PlayerEscape)
 		{
+			if (session.returnPosition != Vector2.Zero)
+			{
+				GlobalPosition = session.returnPosition;
+				facing = session.returnFacing;
+			}
+			
 			SetInvulnerable();
 		}
+		else if (session.lastResult == BattleManager.VictoryResult.PlayerLose)
+		{
+			if (session.safePosition != Vector2.Zero && session.safePath == GetTree().CurrentScene.SceneFilePath)
+			{
+				GlobalPosition = session.safePosition;
+				facing = session.safeFacing != Vector2.Zero ? session.safeFacing : Vector2.Down;
+				projector?.Recover();
+			}
+			else
+			{
+				GD.PrintErr($"Player: invalid safe return position and location path - safe={session.safePosition} current={GetTree().CurrentScene.SceneFilePath}");
+			}
+		}
+		
+		session.lastResult = BattleManager.VictoryResult.None;
 		
 		if (facing != Vector2.Zero)
 		{

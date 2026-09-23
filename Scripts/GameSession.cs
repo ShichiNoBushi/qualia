@@ -9,6 +9,9 @@ public partial class GameSession : Node
 	public string returnPath {get; set;}
 	public Vector2 returnPosition {get; set;}
 	public Vector2 returnFacing {get; set;}
+	public string safePath {get; set;}
+	public Vector2 safePosition {get; set;}
+	public Vector2 safeFacing {get; set;}
 	public REncounterData pendingEncounter {get; set;}
 	public BattleManager.VictoryResult lastResult {get; set;}
 	public GameMode gameMode {get; set;}

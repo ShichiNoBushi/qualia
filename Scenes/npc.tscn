@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://d0opea643xq17" path="res://Resources/Assets/Sprites/woman_spritesheet.png" id="1_xxsvc"]
 [ext_resource type="Script" uid="uid://bkg5av6hjlsny" path="res://Scripts/NPC.cs" id="2_g6unj"]
-[ext_resource type="Resource" uid="uid://cyp4vnvhjl3hk" path="res://Resources/Encounters/vs_rand_proj.tres" id="2_h1ryf"]
 [ext_resource type="PackedScene" uid="uid://b6d0mqnw6j8i2" path="res://Scenes/battle_scene.tscn" id="3_1ig1v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h1ryf"]
@@ -129,7 +128,6 @@ radius = 8.0
 
 [node name="NPC" type="CharacterBody2D" unique_id=1612370295]
 script = ExtResource("2_g6unj")
-encounter = ExtResource("2_h1ryf")
 battleScene = ExtResource("3_1ig1v")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1037246869]

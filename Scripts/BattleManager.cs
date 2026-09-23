@@ -1426,13 +1426,16 @@ public partial class BattleManager : Node
 		session.pendingEncounter = null;
 		session.gameMode = GameSession.GameMode.World;
 		
-		if (string.IsNullOrEmpty(session.returnPath))
+		string path = result == VictoryResult.PlayerLose ? session.safePath : session.returnPath;
+		
+		if (string.IsNullOrEmpty(path))
 		{
+			GD.PrintErr($"BattleManager: no return path for {result}");
 			GetTree().Quit();
 			return;
 		}
 		
-		GetTree().ChangeSceneToFile(session.returnPath);
+		GetTree().ChangeSceneToFile(path);
 	}
 	
 	public FamiliarDisplay[] GetFamiliarDisplays(BattleSide side)

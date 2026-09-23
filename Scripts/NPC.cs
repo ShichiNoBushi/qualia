@@ -43,7 +43,7 @@ public partial class NPC : CharacterBody2D
 		sprite.Play(anim);
 	}
 	
-	public void AfterDialog(Player player)
+	public virtual void AfterDialog(Player player)
 	{
 		if (!isBattleable || encounter == null)
 		{
