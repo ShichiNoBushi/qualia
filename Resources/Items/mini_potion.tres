@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RItemData" format=3 uid="uid://dr1v8iekc1m03"]
+
+[ext_resource type="Script" uid="uid://bey23rug01jld" path="res://Scripts/RItemData.cs" id="1_q0p78"]
+
+[resource]
+script = ExtResource("1_q0p78")
+id = "mini_potion"
+name = "Mini Potion"
+description = "A small potion that recovers a miniscule amount of energy."
+healPower = 10
+metadata/_custom_type_script = "uid://bey23rug01jld"

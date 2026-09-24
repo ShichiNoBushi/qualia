@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://d0opea643xq17" path="res://Resources/Assets/Sprites/woman_spritesheet.png" id="1_xxsvc"]
 [ext_resource type="Script" uid="uid://bkg5av6hjlsny" path="res://Scripts/NPC.cs" id="2_g6unj"]
-[ext_resource type="PackedScene" uid="uid://b6d0mqnw6j8i2" path="res://Scenes/battle_scene.tscn" id="3_1ig1v"]
+[ext_resource type="PackedScene" uid="uid://b6d0mqnw6j8i2" path="res://Scenes/Interface/battle_scene.tscn" id="3_1ig1v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h1ryf"]
 atlas = ExtResource("1_xxsvc")

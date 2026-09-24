@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://b6d0mqnw6j8i2"]
 
 [ext_resource type="Script" uid="uid://blhgwusyey2rj" path="res://Scripts/BattleManager.cs" id="1_e5vbs"]
-[ext_resource type="PackedScene" uid="uid://dkeaxitdwb5wf" path="res://Scenes/projector_display_enemy.tscn" id="2_3gnqe"]
-[ext_resource type="PackedScene" uid="uid://bvro6acuxhp5o" path="res://Scenes/familiar_display.tscn" id="3_gt16y"]
-[ext_resource type="PackedScene" uid="uid://dp7p8gcqqqqr6" path="res://Scenes/projector_display_player.tscn" id="4_20f6w"]
-[ext_resource type="PackedScene" uid="uid://dscfpwphefhyk" path="res://Scenes/projector_commands.tscn" id="5_gt16y"]
-[ext_resource type="PackedScene" uid="uid://hs0di4oaqh6c" path="res://Scenes/familiar_commands.tscn" id="6_20f6w"]
-[ext_resource type="PackedScene" uid="uid://cbgknl8tpufwd" path="res://Scenes/selection_panel.tscn" id="7_20f6w"]
+[ext_resource type="PackedScene" uid="uid://dkeaxitdwb5wf" path="res://Scenes/Interface/projector_display_enemy.tscn" id="2_3gnqe"]
+[ext_resource type="PackedScene" uid="uid://bvro6acuxhp5o" path="res://Scenes/Interface/familiar_display.tscn" id="3_gt16y"]
+[ext_resource type="PackedScene" uid="uid://dp7p8gcqqqqr6" path="res://Scenes/Interface/projector_display_player.tscn" id="4_20f6w"]
+[ext_resource type="PackedScene" uid="uid://dscfpwphefhyk" path="res://Scenes/Interface/projector_commands.tscn" id="5_gt16y"]
+[ext_resource type="PackedScene" uid="uid://hs0di4oaqh6c" path="res://Scenes/Interface/familiar_commands.tscn" id="6_20f6w"]
+[ext_resource type="PackedScene" uid="uid://cbgknl8tpufwd" path="res://Scenes/Interface/selection_panel.tscn" id="7_20f6w"]
 
 [node name="BattleScene" type="Node2D" unique_id=2070022109]
 

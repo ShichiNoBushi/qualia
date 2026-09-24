@@ -8,6 +8,7 @@ public partial class DataRegistry : Node
 	public Godot.Collections.Dictionary<string, RSpellData> spells = new();
 	public Godot.Collections.Dictionary<string, RSkillData> skills = new();
 	public Godot.Collections.Dictionary<string, RTypeData> types = new();
+	public Godot.Collections.Dictionary<string, RItemData> items = new();
 	
 	public override void _Ready()
 	{
@@ -16,6 +17,7 @@ public partial class DataRegistry : Node
 		LoadAll("res://Resources/Spells/", spells);
 		LoadAll("res://Resources/Skills/", skills);
 		LoadAll("res://Resources/TypeData/", types);
+		LoadAll("res://Resources/Items/", items);
 	}
 	
 	public void LoadAll<[MustBeVariant] T>(string dir, Godot.Collections.Dictionary<string, T> dest) where T : Resource
@@ -65,6 +67,7 @@ public partial class DataRegistry : Node
 		RSpellData spl => spl.id,
 		RSkillData skl => skl.id,
 		RTypeData type => type.id,
+		RItemData it => it.id,
 		_ => ""
 	};
 	
@@ -73,4 +76,5 @@ public partial class DataRegistry : Node
 	public RSpellData Spell(string id) => spells.TryGetValue(id, out RSpellData spl) ? spl : null;
 	public RSkillData Skill(string id) => skills.TryGetValue(id, out RSkillData skl) ? skl : null;
 	public RTypeData Type(string id) => types.TryGetValue(id, out RTypeData type) ? type : null;
+	public RItemData Item(string id) => items.TryGetValue(id, out RItemData it) ? it : null;
 }

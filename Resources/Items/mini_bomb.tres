@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RItemData" format=3 uid="uid://dmeybu37nwjvv"]
+
+[ext_resource type="Script" uid="uid://bey23rug01jld" path="res://Scripts/RItemData.cs" id="1_nxjw5"]
+
+[resource]
+script = ExtResource("1_nxjw5")
+id = "mini_bomb"
+name = "Mini Bomb"
+description = "A small bomb that deals a miniscule amount of damage."
+fieldUsable = false
+itemPattern = 2
+power = 10
+metadata/_custom_type_script = "uid://bey23rug01jld"
