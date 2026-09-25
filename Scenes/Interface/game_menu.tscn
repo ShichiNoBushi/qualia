@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://cx6ao2ipst85o"]
 
-[ext_resource type="Script" uid="uid://cjcj4u6xnp7us" path="res://Scripts/GameMenu.cs" id="1_r7qr8"]
+[ext_resource type="Script" uid="uid://cjcj4u6xnp7us" path="res://Scripts/GameMenu.cs" id="1_r2ljc"]
 
 [node name="GameMenu" type="CanvasLayer" unique_id=326509181]
 process_mode = 3
 layer = 100
 visible = false
-script = ExtResource("1_r7qr8")
+script = ExtResource("1_r2ljc")
 
 [node name="Panel" type="Panel" parent="." unique_id=1239281859]
 offset_left = 367.0
@@ -355,9 +355,25 @@ offset_bottom = 762.0
 tab_alignment = 1
 current_tab = 0
 
-[node name="Crystals" type="Control" parent="Panel/MainTab/Inventory/InventoryTab" unique_id=744477125]
+[node name="Items" type="Control" parent="Panel/MainTab/Inventory/InventoryTab" unique_id=2145220847]
 layout_mode = 2
 metadata/_tab_index = 0
+
+[node name="ItemList" type="ItemList" parent="Panel/MainTab/Inventory/InventoryTab/Items" unique_id=693878645]
+layout_mode = 0
+offset_right = 428.0
+offset_bottom = 727.0
+
+[node name="ItemDescLabel" type="RichTextLabel" parent="Panel/MainTab/Inventory/InventoryTab/Items" unique_id=1568969892]
+layout_mode = 0
+offset_left = 432.0
+offset_right = 1080.0
+offset_bottom = 723.0
+
+[node name="Crystals" type="Control" parent="Panel/MainTab/Inventory/InventoryTab" unique_id=744477125]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="CrystalsList" type="ItemList" parent="Panel/MainTab/Inventory/InventoryTab/Crystals" unique_id=1572234986]
 layout_mode = 0

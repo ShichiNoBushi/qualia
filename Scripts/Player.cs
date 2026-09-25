@@ -120,6 +120,11 @@ public partial class Player : CharacterBody2D
 			GD.Print("Player: Interact with NPC.");
 			npc.Interact(this);
 		}
+		else if (hit.Count > 0 && hit["collider"].AsGodotObject() is Chest chest)
+		{
+			GD.Print("Player: Interact with Chest.");
+			chest.Interact(this);
+		}
 		else
 		{
 			GD.Print("Player: No NPC present.");

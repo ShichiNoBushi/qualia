@@ -39,60 +39,73 @@ public partial class RSkillData : Resource
 		
 		if (!string.IsNullOrEmpty(name))
 		{
-			lines.Add(name + "\n");
+			lines.Add(name);
 		}
 		
 		if (type != null && !string.IsNullOrEmpty(type.name))
 		{
-			lines.Add(type.name + "\n");
+			lines.Add(type.name);
 		}
 		
-		lines.Add($"Cost: {cost}\n");
+		lines.Add($"Cost: {cost}");
 		
 		if (targetPattern != TargetPattern.None)
 		{
-			lines.Add("Target: " + TargetLabel() + "\n");
+			lines.Add($"Target: {TargetLabel()}");
 		}
 		
-		lines.Add($"Speed Factor: {speedFactor:0.0}\n");
+		lines.Add($"Speed Factor: {speedFactor:0.0}");
 		
 		if (power > 0f)
 		{
-			lines.Add(isMagicalAttack ? "Attack: Magical" : "Attack: Physical");
-			lines.Add(isMagicalDefense ? "Defense: Magical\n" : "Defense: Physical\n");
+			System.Collections.Generic.List<string> sublines = new();
 			
-			lines.Add($"Power: {power}");
+			sublines.Add(isMagicalAttack ? "Attack: Magical" : "Attack: Physical");
+			sublines.Add(isMagicalDefense ? "Defense: Magical\n" : "Defense: Physical");
+			
+			sublines.Add("");
+			
+			sublines.Add($"Power: {power}");
 			
 			if (splashFactor > 0f)
 			{
-				lines.Add($"Splash: {splashFactor:0.0}");
+				sublines.Add($"Splash: {splashFactor:0.0}");
 			}
 			
 			if (overwhelming)
 			{
-				lines.Add("Overwhelming");
+				sublines.Add("Overwhelming");
 			}
 			
-			lines.Add("\n");
+			lines.Add(string.Join("\n", sublines));
 		}
 		
 		if (healPower > 0f)
 		{
-			lines.Add(isMagicalAttack ? "Healing: Magical\n" : "Healing: Physical\n");
-			lines.Add($"Healing: {healPower}\n");
+			System.Collections.Generic.List<string> sublines = new();
+			
+			sublines.Add(isMagicalAttack ? "Healing: Magical\n" : "Healing: Physical");
+			sublines.Add("");
+			sublines.Add($"Healing: {healPower}");
+			
+			lines.Add(string.Join("\n", sublines));
 		}
 		
 		if (defenseFactorOnUser != 1f || defenseFactorOnTarget != 1f)
 		{
+			System.Collections.Generic.List<string> sublines = new();
+			
 			if (defenseFactorOnUser == defenseFactorOnTarget)
 			{
-				lines.Add($"Defense: {defenseFactorOnUser:0.0}\n");
+				sublines.Add($"Defense: {defenseFactorOnUser:0.0}\n");
 			}
 			else
 			{
-				lines.Add($"User Defense: {defenseFactorOnUser:0.0}");
-				lines.Add($"Target Defense: {defenseFactorOnTarget:0.0}\n");
+				sublines.Add($"User Defense: {defenseFactorOnUser:0.0}");
+				sublines.Add($"Target Defense: {defenseFactorOnTarget:0.0}\n");
 			}
+			
+			lines.Add(string.Join("\n", sublines));
 		}
 		
 		if (!string.IsNullOrEmpty(description))
@@ -100,7 +113,7 @@ public partial class RSkillData : Resource
 			lines.Add(description);
 		}
 		
-		return string.Join("\n", lines);
+		return string.Join("\n\n", lines);
 	}
 	
 	string TargetLabel() => targetPattern switch

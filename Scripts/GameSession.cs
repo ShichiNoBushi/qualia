@@ -30,7 +30,11 @@ public partial class GameSession : Node
 	public override void _Ready()
 	{
 		qualiaGeneric = 0;
+		itemStacks = new();
+		uniqueItems = new();
 		qualiaCrystals = new();
+		
+		openedChests = new();
 		
 		RProjectorData pData = GD.Load<RProjectorData>("res://Resources/test_projector.tres");
 		RFamiliarInstance gnomeInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_gnome.tres");

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c7ghumn7n000w"]
 
 [ext_resource type="Texture2D" uid="uid://csgo4pv54vtrh" path="res://Resources/Assets/Sprites/crate_1.png" id="1_cjfl1"]
+[ext_resource type="Script" uid="uid://xs6y5r0ut8s6" path="res://Scripts/Chest.cs" id="1_matv7"]
 [ext_resource type="Texture2D" uid="uid://dn1qraj15evej" path="res://Resources/Assets/Sprites/crate_2.png" id="2_bagqn"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ts14v"]
@@ -26,6 +27,7 @@ animations = [{
 size = Vector2(16, 16)
 
 [node name="Chest" type="StaticBody2D" unique_id=1187087599]
+script = ExtResource("1_matv7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=464265869]
 sprite_frames = SubResource("SpriteFrames_ts14v")

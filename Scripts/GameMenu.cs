@@ -9,6 +9,9 @@ public partial class GameMenu : CanvasLayer
 	public RFamiliarInstance selectedFamiliar;
 	public RSkillData selectedSkill;
 	
+	public ItemInstance selectedUnique;
+	public string selectedItemId;
+	
 	public Button closeButton;
 	
 	public Label projNameLabel;
@@ -53,6 +56,8 @@ public partial class GameMenu : CanvasLayer
 	
 	public RichTextLabel skillDescLabel;
 	
+	public ItemList itemList;
+	public RichTextLabel itemDescLabel;
 	public ItemList crystalsList;
 	public RichTextLabel crystalDescLabel;
 	
@@ -114,9 +119,12 @@ public partial class GameMenu : CanvasLayer
 		
 		skillsList.ItemSelected += OnSkillSelect;
 		
+		itemList = GetNode<ItemList>("Panel/MainTab/Inventory/InventoryTab/Items/ItemList");
+		itemDescLabel = GetNode<RichTextLabel>("Panel/MainTab/Inventory/InventoryTab/Items/ItemDescLabel");
 		crystalsList = GetNode<ItemList>("Panel/MainTab/Inventory/InventoryTab/Crystals/CrystalsList");
 		crystalDescLabel = GetNode<RichTextLabel>("Panel/MainTab/Inventory/InventoryTab/Crystals/CrystalDescLabel");
 		
+		itemList.ItemSelected += OnItemSelect;
 		crystalsList.ItemSelected += OnCrystalSelect;
 		
 		gCrystalsLabel = GetNode<Label>("Panel/MainTab/Inventory/GCrystalsLabel");
@@ -245,6 +253,44 @@ public partial class GameMenu : CanvasLayer
 		selectedSkill = skillsList.GetItemMetadata((int)index).As<RSkillData>();
 		
 		skillDescLabel.Text = selectedSkill != null ? selectedSkill.FormatDescription() : "";
+	}
+	
+	public void OnItemSelect(long index)
+	{
+		Variant meta = itemList.GetItemMetadata((int)index);
+		
+		itemDescLabel.Clear();
+		
+		if (meta.VariantType == Variant.Type.String)
+		{
+			string id = meta.AsString();
+			RItemData item = registry.Item(id);
+			
+			int stack = session.itemStacks.TryGetValue(id, out int c) ? c : 0;
+			
+			itemDescLabel.AppendText(item.FormatDescription());
+			itemDescLabel.Newline();
+			itemDescLabel.AppendText($"Held: {stack}");
+			
+			selectedUnique = null;
+			selectedItemId = id;
+			return;
+		}
+		else if (meta.AsGodotObject() is ItemInstance inst && inst != null)
+		{
+			string id = inst.data.id;
+			
+			itemDescLabel.AppendText(inst.data.FormatDescription());
+			itemDescLabel.Newline();
+			itemDescLabel.AppendText($"Uses: ({inst.usesLeft} / {inst.maxUses})");
+			
+			selectedUnique = inst;
+			selectedItemId = id;
+			return;
+		}
+		
+		selectedUnique = null;
+		selectedItemId = null;
 	}
 	
 	public void OnCrystalSelect(long index)
@@ -408,22 +454,84 @@ public partial class GameMenu : CanvasLayer
 	
 	public void UpdateInventory()
 	{
+		itemList.Clear();
+		
+		if (session.itemStacks != null)
+		{
+			foreach (var it in session.itemStacks)
+			{
+				RItemData item = registry.Item(it.Key);
+				
+				if (item == null || it.Value <= 0)
+				{
+					continue;
+				}
+				
+				string name = string.IsNullOrEmpty(item.name) ? item.id : item.name;
+				
+				itemList.AddItem($"{name} x{it.Value}");
+				int idx = itemList.ItemCount - 1;
+				itemList.SetItemMetadata(idx, it.Key);
+			}
+		}
+		else
+		{
+			GD.PrintErr("GameMenu: item stacks is null");
+		}
+		
+		if (session.uniqueItems != null)
+		{
+			foreach (var unIt in session.uniqueItems)
+			{
+				RItemData item = unIt.data;
+				
+				if (item == null)
+				{
+					continue;
+				}
+				
+				string name = string.IsNullOrEmpty(item.name) ? item.id : item.name;
+				
+				string label = name;
+				
+				if ((unIt.data.fieldUsable || unIt.data.battleUsable) && unIt.data.uses > 0)
+				{
+					label = $"{name} ({unIt.usesLeft} / {unIt.maxUses})";
+				}
+				
+				itemList.AddItem(label);
+				int idx = itemList.ItemCount - 1;
+				itemList.SetItemMetadata(idx, unIt);
+			}
+		}
+		else
+		{
+			GD.PrintErr("GameMenu: unique items is null");
+		}
+		
 		crystalsList.Clear();
 		
-		foreach (var qc in session.qualiaCrystals)
+		if (session.qualiaCrystals != null)
 		{
-			RQualiaCrystal crystal = registry.Crystal(qc.Key);
-			
-			if (crystal == null || qc.Value <= 0)
+			foreach (var qc in session.qualiaCrystals)
 			{
-				continue;
+				RQualiaCrystal crystal = registry.Crystal(qc.Key);
+				
+				if (crystal == null || qc.Value <= 0)
+				{
+					continue;
+				}
+				
+				string name = string.IsNullOrEmpty(crystal.name) ? crystal.id : crystal.name;
+				
+				crystalsList.AddItem($"{name} x{qc.Value}");
+				int idx = crystalsList.ItemCount - 1;
+				crystalsList.SetItemMetadata(idx, qc.Key);
 			}
-			
-			string name = string.IsNullOrEmpty(crystal.name) ? crystal.id : crystal.name;
-			
-			crystalsList.AddItem(name);
-			int idx = crystalsList.ItemCount - 1;
-			crystalsList.SetItemMetadata(idx, qc.Key);
+		}
+		else
+		{
+			GD.PrintErr("GameMenu: qualia crystals is null");
 		}
 		
 		gCrystalsLabel.Text = $"{session.qualiaGeneric}";

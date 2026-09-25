@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://2qpekw05f34s" path="res://Resources/Encounters/undine2.tres" id="10_fgwjc"]
 [ext_resource type="Resource" uid="uid://dp3xd3ejwltlm" path="res://Resources/Encounters/test_encounter.tres" id="11_ov7jo"]
 [ext_resource type="PackedScene" uid="uid://h3qvqlbvbmva" path="res://Scenes/Characters/wild_spark_small.tscn" id="12_jkuiv"]
+[ext_resource type="PackedScene" uid="uid://c7ghumn7n000w" path="res://Scenes/Objects/chest.tscn" id="13_pnsqa"]
 
 [node name="World" type="Node2D" unique_id=1081555688]
 
@@ -61,3 +62,37 @@ polygon = PackedVector2Array(0, 0, 480, 0, 480, 352, 0, 352)
 
 [node name="Timer" type="Timer" parent="Area2D" unique_id=365231085]
 one_shot = true
+
+[node name="Chest" parent="." unique_id=1187087599 instance=ExtResource("13_pnsqa")]
+position = Vector2(336, 880)
+scale = Vector2(2, 2)
+id = "test_g_crystals"
+loot = Dictionary[String, int]({
+"generic": 1000
+})
+
+[node name="Chest2" parent="." unique_id=2137850632 instance=ExtResource("13_pnsqa")]
+position = Vector2(400, 880)
+scale = Vector2(2, 2)
+id = "test_aspect_crys"
+loot = Dictionary[String, int]({
+"q_crystal:air": 5,
+"q_crystal:fire": 5
+})
+
+[node name="Chest3" parent="." unique_id=482176018 instance=ExtResource("13_pnsqa")]
+position = Vector2(464, 880)
+scale = Vector2(2, 2)
+id = "test_attuned_cryst"
+loot = Dictionary[String, int]({
+"q_crystal:ex_gnome": 3,
+"q_crystal:ex_undine": 3
+})
+
+[node name="Chest4" parent="." unique_id=512784631 instance=ExtResource("13_pnsqa")]
+position = Vector2(528, 880)
+scale = Vector2(2, 2)
+id = "test_items"
+loot = Dictionary[String, int]({
+"mini_potion": 5
+})

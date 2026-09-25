@@ -316,7 +316,7 @@ public partial class ProjectorCommands : Control
 	
 	public void CheckValidCommands()
 	{
-		disableSummon = battle.playerSide.projector.currentEnergy == 0 && !battle.playerSide.HasOpenSlot();
+		disableSummon = battle.playerSide.projector.currentEnergy == 0 || !battle.playerSide.HasOpenSlot();
 		disableDismiss = battle.playerSide.CountActiveFamiliars() == 0;
 		disableSpell = battle.playerSide.projector.currentEnergy == 0;
 		disableEscape = battle.isProjectorEncounter;
