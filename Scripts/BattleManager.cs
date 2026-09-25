@@ -4,6 +4,9 @@ using System.Linq;
 
 public partial class BattleManager : Node
 {
+	public GameSession session;
+	public DataRegistry registry;
+	
 	public TextureRect backgroundRect;
 	
 	public ProjectorDisplay projectorDisplayE;
@@ -31,6 +34,8 @@ public partial class BattleManager : Node
 	public BattleCommand pendingCommand;
 	public RSkillData pendingSkill;
 	public RSpellData pendingSpell;
+	public RItemData pendingItem;
+	public ItemInstance pendingUnique;
 	public object pendingSource;
 	
 	public bool projCommandSubmitted;
@@ -55,6 +60,7 @@ public partial class BattleManager : Node
 		SelectSummon,
 		SelectDismiss,
 		SelectSpell,
+		SelectItem,
 		SelectAllySpell,
 		SelectAllySkill,
 		SelectAllyItem,
@@ -88,6 +94,9 @@ public partial class BattleManager : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		session = GetNode<GameSession>("/root/GameSession");
+		registry = GetNode<DataRegistry>("/root/DataRegistry");
+		
 		GD.Print($"BattleManager: _Ready on {Name}, path={GetPath()}, id={GetInstanceId()}");
 		
 		backgroundRect = GetNode<TextureRect>("BackgroundRect");
@@ -157,8 +166,6 @@ public partial class BattleManager : Node
 		}
 		
 		selectionPanel.battle = this;
-		
-		GameSession session = GetNode<GameSession>("/root/GameSession");
 		
 		if (session.playerProjector != null && session.pendingEncounter != null)
 		{
@@ -341,11 +348,13 @@ public partial class BattleManager : Node
 			case CommandState.SelectEnemySkill:
 				TryFinishSkill(display);
 				break;
-			//CommandState.SelectAllyItem
+			case CommandState.SelectAllyItem:
+			case CommandState.SelectEnemyItem:
+				TryFinishItem(display);
+				break;
 			case CommandState.SelectEnemyAttack:
 				TryFinishAttack(display);
 				break;
-			//CommandState.SelectEnemyItem
 		}
 	}
 	
@@ -368,11 +377,13 @@ public partial class BattleManager : Node
 			case CommandState.SelectEnemySkill:
 				TryFinishSkill(display);
 				break;
-			//CommandState.SelectAllyItem
+			case CommandState.SelectAllyItem:
+			case CommandState.SelectEnemyItem:
+				TryFinishItem(display);
+				break;
 			case CommandState.SelectEnemyAttack:
 				TryFinishAttack(display);
 				break;
-			//CommandState.SelectEnemyItem
 		}
 	}
 	
@@ -661,6 +672,147 @@ public partial class BattleManager : Node
 		RefreshNextButton();
 	}
 	
+	public void TryFinishItem(FamiliarDisplay display)
+	{
+		bool enough;
+		
+		if (pendingItem != null && pendingUnique == null)
+		{
+			enough = session.itemStacks.TryGetValue(pendingItem.id, out int n) && n > 0;
+		}
+		else if (pendingItem != null && pendingUnique != null)
+		{
+			enough = pendingUnique.usesLeft > 0;
+		}
+		else
+		{
+			enough = false;
+		}
+		
+		if (pendingSource is not Projector proj || !enough)
+		{
+			return;
+		}
+		
+		if (!pendingItem.familiarUsable)
+		{
+			return;
+		}
+		
+		if (pendingItem.itemPattern == RItemData.ItemPattern.OneEnemy && display.isPlayerSide)
+		{
+			return;
+		}
+		
+		if (pendingItem.itemPattern == RItemData.ItemPattern.OneAlly && !display.isPlayerSide)
+		{
+			return;
+		}
+		
+		BattleSide targetSide = display.isPlayerSide ? playerSide : enemySide;
+		
+		int slot = display.slotIndex;
+		
+		if (slot < 0 || slot >= BattleSide.MAX_SLOTS)
+		{
+			return;
+		}
+		
+		if (targetSide.familiarSlots[slot] is not FamiliarActor actor || !actor.isAlive)
+		{
+			return;
+		}
+		
+		ItemCommand cmd = new ItemCommand {
+			sourceSide = playerSide,
+			source = pendingSource,
+			target = actor,
+		};
+		
+		cmd.AssignItem(pendingItem, pendingUnique);
+		
+		projectorCommands.Add(cmd);
+		projCommandPanel.SetActiveCommand(cmd);
+		
+		ClearTargetMode();
+		projCommandSubmitted = true;
+		projCommandDisabled = true;
+		
+		RefreshNextButton();
+	}
+	
+	public void TryFinishItem(ProjectorDisplay display)
+	{
+		bool enough;
+		
+		if (pendingItem != null && pendingUnique == null)
+		{
+			enough = session.itemStacks.TryGetValue(pendingItem.id, out int n) && n > 0;
+		}
+		else if (pendingItem != null && pendingUnique != null)
+		{
+			enough = pendingUnique.usesLeft > 0;
+		}
+		else
+		{
+			enough = false;
+		}
+		
+		if (pendingSource is not Projector proj || !enough)
+		{
+			return;
+		}
+		
+		if (!pendingItem.projectorUsable)
+		{
+			return;
+		}
+		
+		if (pendingItem.itemPattern == RItemData.ItemPattern.OneEnemy)
+		{
+			if (display == projectorDisplayP)
+			{
+				return;
+			}
+			
+			if (enemySide.CountActiveFamiliars() > 0)
+			{
+				return;
+			}
+		}
+		
+		if (pendingItem.itemPattern == RItemData.ItemPattern.OneAlly && display == projectorDisplayE)
+		{
+			return;
+		}
+		
+		BattleSide targetSide = display == projectorDisplayP ? playerSide : enemySide;
+		
+		Projector projector = targetSide.projector;
+		
+		if (projector == null || projector.currentEnergy == 0)
+		{
+			return;
+		}
+		
+		ItemCommand cmd = new ItemCommand {
+			sourceSide = playerSide,
+			source = pendingSource,
+			target = projector,
+		};
+		
+		cmd.AssignItem(pendingItem, pendingUnique);
+		
+		projectorCommands.Add(cmd);
+		projCommandPanel.SetActiveCommand(cmd);
+		
+		ClearTargetMode();
+		projCommandSubmitted = true;
+		projCommandDisabled = true;
+		
+		RefreshNextButton();
+	}
+	
 	public void TryFinishAttack(FamiliarDisplay display)
 	{
 		if (pendingSource is not FamiliarActor srcFam || !srcFam.isAlive)
@@ -890,6 +1042,8 @@ public partial class BattleManager : Node
 		pendingCommand = null;
 		pendingSkill = null;
 		pendingSpell = null;
+		pendingItem = null;
+		pendingUnique = null;
 		pendingSource = null;
 		ClearHighlights();
 		UnblockCommands();

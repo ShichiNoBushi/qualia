@@ -362,13 +362,22 @@ metadata/_tab_index = 0
 [node name="ItemList" type="ItemList" parent="Panel/MainTab/Inventory/InventoryTab/Items" unique_id=693878645]
 layout_mode = 0
 offset_right = 428.0
-offset_bottom = 727.0
+offset_bottom = 672.0
 
 [node name="ItemDescLabel" type="RichTextLabel" parent="Panel/MainTab/Inventory/InventoryTab/Items" unique_id=1568969892]
 layout_mode = 0
 offset_left = 432.0
 offset_right = 1080.0
 offset_bottom = 723.0
+
+[node name="UseButton" type="Button" parent="Panel/MainTab/Inventory/InventoryTab/Items" unique_id=1534030066]
+layout_mode = 0
+offset_left = 163.0
+offset_top = 688.0
+offset_right = 270.0
+offset_bottom = 719.0
+disabled = true
+text = "Use"
 
 [node name="Crystals" type="Control" parent="Panel/MainTab/Inventory/InventoryTab" unique_id=744477125]
 visible = false

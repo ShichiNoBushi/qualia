@@ -58,6 +58,7 @@ public partial class GameMenu : CanvasLayer
 	
 	public ItemList itemList;
 	public RichTextLabel itemDescLabel;
+	public Button useButton;
 	public ItemList crystalsList;
 	public RichTextLabel crystalDescLabel;
 	
@@ -121,10 +122,12 @@ public partial class GameMenu : CanvasLayer
 		
 		itemList = GetNode<ItemList>("Panel/MainTab/Inventory/InventoryTab/Items/ItemList");
 		itemDescLabel = GetNode<RichTextLabel>("Panel/MainTab/Inventory/InventoryTab/Items/ItemDescLabel");
+		useButton = GetNode<Button>("Panel/MainTab/Inventory/InventoryTab/Items/UseButton");
 		crystalsList = GetNode<ItemList>("Panel/MainTab/Inventory/InventoryTab/Crystals/CrystalsList");
 		crystalDescLabel = GetNode<RichTextLabel>("Panel/MainTab/Inventory/InventoryTab/Crystals/CrystalDescLabel");
 		
 		itemList.ItemSelected += OnItemSelect;
+		useButton.Pressed += OnUsePressed;
 		crystalsList.ItemSelected += OnCrystalSelect;
 		
 		gCrystalsLabel = GetNode<Label>("Panel/MainTab/Inventory/GCrystalsLabel");
@@ -274,6 +277,9 @@ public partial class GameMenu : CanvasLayer
 			
 			selectedUnique = null;
 			selectedItemId = id;
+			
+			RefreshUseButton();
+			
 			return;
 		}
 		else if (meta.AsGodotObject() is ItemInstance inst && inst != null)
@@ -286,11 +292,45 @@ public partial class GameMenu : CanvasLayer
 			
 			selectedUnique = inst;
 			selectedItemId = id;
+			
+			RefreshUseButton();
+			
 			return;
 		}
 		
 		selectedUnique = null;
 		selectedItemId = null;
+	}
+	
+	public void OnUsePressed()
+	{
+		RItemData item = selectedUnique?.data ?? registry.Item(selectedItemId);
+		
+		if (item == null || !item.fieldUsable)
+		{
+			return;
+		}
+		
+		bool canUse = selectedUnique != null ? selectedUnique.usesLeft > 0 : session.itemStacks.TryGetValue(item.id, out int n) && n > 0;
+		
+		if (!canUse)
+		{
+			return;
+		}
+		
+		if (item.healPower > 0)
+		{
+			session.playerProjector.Restore(item.healPower);
+		}
+		
+		if (!session.TryUseItem(item, selectedUnique))
+		{
+			return;
+		}
+		
+		UpdateInventory();
+		RefreshUseButton();
+		UpdateProjectorLabels();
 	}
 	
 	public void OnCrystalSelect(long index)
@@ -535,6 +575,26 @@ public partial class GameMenu : CanvasLayer
 		}
 		
 		gCrystalsLabel.Text = $"{session.qualiaGeneric}";
+	}
+	
+	public void RefreshUseButton()
+	{
+		if (string.IsNullOrEmpty(selectedItemId))
+		{
+			useButton.Disabled = true;
+			return;
+		}
+		
+		if (selectedUnique == null)
+		{
+			RItemData item = registry.Item(selectedItemId);
+			
+			useButton.Disabled = !(item != null && item.fieldUsable && session.itemStacks.TryGetValue(item.id, out int n) && n > 0);
+		}
+		else
+		{
+			useButton.Disabled = !(selectedUnique.data != null && selectedUnique.data.fieldUsable && selectedUnique.usesLeft > 0);
+		}
 	}
 	
 	public void Open()

@@ -19,6 +19,7 @@ public partial class ProjectorCommands : Control
 	public bool disableSummon {get; set;} = false;
 	public bool disableDismiss {get; set;} = false;
 	public bool disableSpell {get; set;} = false;
+	public bool disableItem {get; set;} = false;
 	public bool disableEscape {get; set;} = false;
 	
 	// Called when the node enters the scene tree for the first time.
@@ -43,9 +44,6 @@ public partial class ProjectorCommands : Control
 		
 		CheckValidCommands();
 		EnableCommands();
-		
-		//Disable buttons currently without function
-		itemButton.Disabled = true;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -185,10 +183,91 @@ public partial class ProjectorCommands : Control
 	
 	public void OnItemPressed()
 	{
+		Projector projector = battle.playerSide.projector;
 		
+		if (projector == null)
+		{
+			battle.AppendBattleText("ProjectorCommand: null projector");
+			GD.Print("ProjectorCommand: null projector");
+			return;
+		}
 		
-		DisableCommands();
-		undoButton.Visible = true;
+		battle.SetCommandState(BattleManager.CommandState.SelectItem);
+		
+		List<(object, string, bool)> entries = new();
+		
+		List<(RItemData item, ItemInstance unique)> totalInventory = new();
+		
+		foreach (var it in battle.session.itemStacks.Keys)
+		{
+			RItemData item = battle.registry.Item(it);
+			
+			if (item != null && item.battleUsable)
+			{
+				totalInventory.Add((item, null));
+			}
+		}
+		
+		foreach (var unq in battle.session.uniqueItems)
+		{
+			if (unq.data != null && unq.data.battleUsable)
+			{
+				totalInventory.Add((unq.data, unq));
+			}
+		}
+		
+		foreach (var itTup in totalInventory)
+		{
+			RItemData item = itTup.item;
+			ItemInstance unique = itTup.unique;
+			
+			bool canAllyFam = item.familiarUsable && battle.playerSide.CountActiveFamiliars() > 0;
+			bool canAllyProj = item.projectorUsable && battle.playerSide.projector != null;
+			bool canEnemyFam = item.familiarUsable && battle.enemySide.CountActiveFamiliars() > 0;
+			bool canEnemyProj = item.projectorUsable && battle.enemySide.projector != null && battle.enemySide.projector.currentEnergy > 0;
+			
+			bool validTargets = item.itemPattern switch
+			{
+				RItemData.ItemPattern.OneAlly => canAllyFam || canAllyProj,
+				RItemData.ItemPattern.OneEnemy => canEnemyFam || canEnemyProj,
+				RItemData.ItemPattern.AllAllies => canAllyFam || canAllyProj,
+				RItemData.ItemPattern.AllEnemies => canEnemyFam || canEnemyProj,
+				_ => true
+			};
+			
+			string label = string.IsNullOrEmpty(item.name) ? "(no name)" : item.name;
+			
+			if (unique == null)
+			{
+				int count = battle.session.itemStacks.TryGetValue(item.id, out int n) ? n : 0;
+				label += $"  (x{count})";
+			}
+			else
+			{
+				label += $"  ({unique.usesLeft} / {unique.maxUses})";
+			}
+			
+			bool enough;
+			
+			if (unique == null)
+			{
+				enough = battle.session.itemStacks.TryGetValue(item.id, out int n) && n > 0;
+				entries.Add((item, label, enough));
+			}
+			else
+			{
+				enough = unique.usesLeft > 0;
+				entries.Add((unique, label, enough));
+			}
+		}
+		
+		GD.Print($"ProjectorCommand: {entries.Count} entries in item list");
+		
+		battle.selectionPanel.OnItemChosen = OnItemPicked;
+		battle.selectionPanel.Open("Item", entries);
+		battle.BlockCommands();
+		
+		battle.RefreshNextButton();
 	}
 	
 	public void OnEscapePressed()
@@ -314,11 +393,92 @@ public partial class ProjectorCommands : Control
 		}
 	}
 	
+	public void OnItemPicked(object data)
+	{
+		RItemData item;
+		ItemInstance unique = data as ItemInstance;
+		
+		if (unique != null)
+		{
+			item = unique.data;
+		}
+		else if (data is RItemData it)
+		{
+			item = it;
+		}
+		else
+		{
+			GD.Print("ProjectorCommands: assigned data is not an item");
+			return;
+		}
+		
+		battle.pendingSource = battle.playerSide.projector;
+		battle.pendingItem = item;
+		battle.pendingUnique = unique;
+		
+		try
+		{
+			GD.Print($"ProjectorCommands: spell {item.name} picked");
+		}
+		catch (Exception e)
+		{
+			GD.PrintErr($"ProjectorCommands: failed to identify item - {e}");
+		}
+		
+		if (item.itemPattern == RItemData.ItemPattern.OneAlly)
+		{
+			if (item.familiarUsable && battle.playerSide.CountActiveFamiliars() > 0)
+			{
+				battle.HighlightAllies();
+			}
+			
+			if (item.projectorUsable)
+			{
+				battle.projectorDisplayP.Highlight(true);
+			}
+			
+			battle.SetCommandState(BattleManager.CommandState.SelectAllyItem);
+		}
+		else if (item.itemPattern == RItemData.ItemPattern.OneEnemy)
+		{
+			if (item.familiarUsable && battle.enemySide.CountActiveFamiliars() > 0)
+			{
+				battle.HighlightEnemies();
+			}
+			
+			if (item.projectorUsable && battle.enemySide.CountActiveFamiliars() == 0 && battle.enemySide.projector != null && battle.enemySide.projector.currentEnergy > 0)
+			{
+				battle.projectorDisplayE.Highlight(true);
+			}
+			
+			battle.SetCommandState(BattleManager.CommandState.SelectEnemyItem);
+		}
+		else
+		{
+			ItemCommand cmd = new ItemCommand
+			{
+				sourceSide = battle.playerSide,
+				source = battle.playerSide.projector
+			};
+			
+			cmd.AssignItem(item, unique);
+			
+			battle.projectorCommands.Add(cmd);
+			battle.projCommandSubmitted = true;
+			
+			SetActiveCommand(cmd);
+			
+			battle.ClearTargetMode();
+			battle.RefreshNextButton();
+		}
+	}
+	
 	public void CheckValidCommands()
 	{
 		disableSummon = battle.playerSide.projector.currentEnergy == 0 || !battle.playerSide.HasOpenSlot();
 		disableDismiss = battle.playerSide.CountActiveFamiliars() == 0;
 		disableSpell = battle.playerSide.projector.currentEnergy == 0;
+		disableItem = battle.session.itemStacks.Count == 0 && battle.session.uniqueItems.Count == 0;
 		disableEscape = battle.isProjectorEncounter;
 	}
 	
@@ -338,7 +498,7 @@ public partial class ProjectorCommands : Control
 		dismissButton.Disabled = disableDismiss;
 		spellButton.Disabled = disableSpell;
 		focusButton.Disabled = false;
-		//itemButton.Disabled = false;
+		itemButton.Disabled = disableItem;
 		escapeButton.Disabled = disableEscape;
 	}
 	
