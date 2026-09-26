@@ -36,9 +36,9 @@ public partial class WildSpark : Area2D
 		}
 		
 		zone?.RemoveSpark(this);
-		QueueFree();
 		
-		StartBattle(player);
+		CallDeferred(nameof(StartBattle), player);
+		//StartBattle(player);
 	}
 	
 	public void StartBattle(Player player)
@@ -49,6 +49,7 @@ public partial class WildSpark : Area2D
 		session.returnPosition = player.GlobalPosition;
 		session.returnFacing = player.facing;
 		GetTree().ChangeSceneToFile("res://Scenes/Interface/battle_scene.tscn");
+		QueueFree();
 	}
 	
 	public void Despawn()

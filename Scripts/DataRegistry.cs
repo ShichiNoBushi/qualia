@@ -33,7 +33,19 @@ public partial class DataRegistry : Node
 		
 		for (string name = folder.GetNext(); name != ""; name = folder.GetNext())
 		{
-			if (folder.CurrentIsDir() || !name.EndsWith(".tres"))
+			GD.Print($"DataRegistry raw: \"{name}\"");
+			
+			if (folder.CurrentIsDir())
+			{
+				continue;
+			}
+			
+			if (name.EndsWith(".remap"))
+			{
+				name = name.Substring(0, name.Length - 6);
+			}
+			
+			if (!name.EndsWith(".tres"))
 			{
 				continue;
 			}
@@ -58,6 +70,8 @@ public partial class DataRegistry : Node
 			dest[id] = res;
 			GD.Print($"DataRegistry: loaded from {path} as {res.GetType().Name}");
 		}
+		
+		GD.Print($"DataRegistry: {dir} count={dest.Count}");
 	}
 	
 	public string GetId(Resource res) => res switch

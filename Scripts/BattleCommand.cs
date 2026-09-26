@@ -441,7 +441,7 @@ public partial class SkillCommand : BattleCommand
 		
 		battle.AppendBattleText($"[b]{srcFam.name}[/b] uses [b]{skill.name}[/b]...");
 		
-		if (cost > 0 && srcFam.currentEnergy < cost)
+		if (cost > 0 && srcFam.currentEnergy <= cost)
 		{
 			battle.AppendBattleText($"{srcFam.name} doesn't have enough energy.", false);
 			return;
@@ -527,6 +527,33 @@ public partial class SkillCommand : BattleCommand
 						DefendTarget(t, defenseTarget, battle);
 					}
 				}
+			}
+		}
+		
+		if (!srcFam.isAlive)
+		{
+			int slot = sourceSide.GetSlotIndex(srcFam);
+			
+			if (slot >= 0)
+			{
+				sourceSide.ClearSlot(slot);
+				battle.InvalidateFamiliarCommands(srcFam, this);
+				
+				FamiliarDisplay[] displays = sourceSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
+				
+				if (slot < displays.Length)
+				{
+					displays[slot].Clear();
+				}
+			}
+			
+			string fEnemyPrefix = sourceSide == battle.enemySide ? "Enemy " : "";
+			string text = $"{fEnemyPrefix}[b]{srcFam.name}[/b] eliminated itself from exhaustion";
+			battle.AppendBattleText(text, false);
+			
+			if (!battle.isProjectorEncounter && srcFam.side == battle.enemySide)
+			{
+				battle.defeatedFamiliars.Add(srcFam.familiar);
 			}
 		}
 		

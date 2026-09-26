@@ -24,7 +24,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ec203"]
-size = Vector2(16, 16)
+size = Vector2(14, 14)
 
 [node name="Chest" type="StaticBody2D" unique_id=1187087599]
 script = ExtResource("1_matv7")

@@ -2,9 +2,6 @@
 .godot/
 *.translation
 
-# Godot import cache (legacy / safety)
-.import/
-
 # C# / .NET
 .mono/
 bin/
@@ -29,13 +26,11 @@ builds/
 releases/
 *.pck
 *.zip
+*.dmg
 *.exe
 *.app
 *.x86_64
 *.x86
-*.dll
-*.so
-*.dylib
 
 # Android
 *.apk

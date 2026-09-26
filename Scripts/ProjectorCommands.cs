@@ -42,8 +42,8 @@ public partial class ProjectorCommands : Control
 		escapeButton.Pressed += OnEscapePressed;
 		undoButton.Pressed += OnUndoPressed;
 		
-		CheckValidCommands();
-		EnableCommands();
+		//CheckValidCommands();
+		//EnableCommands();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -475,10 +475,15 @@ public partial class ProjectorCommands : Control
 	
 	public void CheckValidCommands()
 	{
+		if (battle?.playerSide?.projector == null)
+		{
+			GD.PrintErr($"BattleManager: NullReference - battle is null? ({battle == null}); player side is null? ({battle?.playerSide == null}); projector is null? ({battle?.playerSide?.projector == null})");
+		}
+		
 		disableSummon = battle.playerSide.projector.currentEnergy == 0 || !battle.playerSide.HasOpenSlot();
 		disableDismiss = battle.playerSide.CountActiveFamiliars() == 0;
 		disableSpell = battle.playerSide.projector.currentEnergy == 0;
-		disableItem = battle.session.itemStacks.Count == 0 && battle.session.uniqueItems.Count == 0;
+		disableItem = (battle.session.itemStacks == null || battle.session.itemStacks.Count == 0) && (battle.session.uniqueItems == null || battle.session.uniqueItems.Count == 0);
 		disableEscape = battle.isProjectorEncounter;
 	}
 	

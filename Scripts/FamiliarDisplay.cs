@@ -17,6 +17,7 @@ public partial class FamiliarDisplay : Control
 	public bool isPlayerSide {get; set;}
 	public int slotIndex {get; set;}
 	public BattleManager battle {get; set;}
+	public Texture2D sparkTexture {get; set;}
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -28,6 +29,7 @@ public partial class FamiliarDisplay : Control
 		highlightAllyRect = GetNode<ColorRect>("HighlightAllyRect");
 		highlightEnemyRect = GetNode<ColorRect>("HighlightEnemyRect");
 		energyLabel.Visible = false;
+		sparkTexture = GD.Load<Texture2D>("res://Resources/Assets/Sprites/sparkle_small.png");
 		
 		highlightAllyRect.GuiInput += OnGuiInput;
 		highlightEnemyRect.GuiInput += OnGuiInput;
@@ -129,7 +131,7 @@ public partial class FamiliarDisplay : Control
 			if (spark.familiar == null)
 			{
 				SetElementsVisible(false);
-				portraitRect.Texture = null;
+				portraitRect.Texture = sparkTexture;
 				nameLabel.Text = "";
 				energyProgress.MaxValue = 1;
 				energyProgress.Value = 0;
@@ -139,7 +141,7 @@ public partial class FamiliarDisplay : Control
 			
 			SetElementsVisible(true);
 			
-			portraitRect.Texture = null; //set to default spark portrait
+			portraitRect.Texture = sparkTexture;
 			
 			nameLabel.Text = "Manifesting...";
 			

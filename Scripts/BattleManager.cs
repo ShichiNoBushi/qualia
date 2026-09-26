@@ -41,6 +41,8 @@ public partial class BattleManager : Node
 	public bool projCommandSubmitted;
 	public int famCommandsSubmitted;
 	
+	public int battleTextIndex = 0;
+	
 	public enum BattleState
 	{
 		Setup,
@@ -276,6 +278,7 @@ public partial class BattleManager : Node
 		}
 		
 		RefreshAllDisplays();
+		projCommandPanel.CheckValidCommands();
 		BeginCommandSelect();
 	}
 	
@@ -299,6 +302,12 @@ public partial class BattleManager : Node
 		{
 			GD.Print("BattleManager: Escape.");
 			FinishEscape();
+			return;
+		}
+		
+		if (batState == BattleState.Resolution)
+		{
+			AdvanceTurn();
 			return;
 		}
 		
@@ -401,6 +410,11 @@ public partial class BattleManager : Node
 			nextButton.Text = "Finish";
 			nextButton.Disabled = false;
 		}
+		else if (batState == BattleState.Resolution)
+		{
+			nextButton.Text = "Next";
+			nextButton.Disabled = false;
+		}
 		else
 		{
 			nextButton.Text = "Next";
@@ -443,6 +457,7 @@ public partial class BattleManager : Node
 		projectorCommands.Clear();
 		familiarCommands.Clear();
 		turnCommands.Clear();
+		battleTextIndex = 0;
 		
 		ResetSideModifiers(playerSide);
 		ResetSideModifiers(enemySide);
@@ -1179,7 +1194,8 @@ public partial class BattleManager : Node
 			
 			AssignComCommands();
 			BuildTurnOrder();
-			ResolveTurn();
+			//ResolveTurn();
+			AdvanceTurn();
 		}
 		catch (Exception e)
 		{
@@ -1303,6 +1319,66 @@ public partial class BattleManager : Node
 				cmd.Retarget(this);
 			}
 		}
+	}
+	
+	public void AdvanceTurn()
+	{
+		if (batState != BattleState.Resolution)
+		{
+			return;
+		}
+		
+		while (battleTextIndex < turnCommands.Count)
+		{
+			BattleCommand cmd = turnCommands[battleTextIndex];
+			battleTextIndex++;
+			
+			if (cmd == null || !cmd.isValid)
+			{
+				string srcName = "(no name)";
+				
+				if (cmd.source is FamiliarActor fam)
+				{
+					srcName = fam.name;
+				}
+				else if (cmd.source is Projector proj)
+				{
+					srcName = proj.name;
+				}
+				
+				AppendBattleText($"{srcName}'s {cmd.GetType().Name} is invalid and skipped");
+				continue;
+			}
+			
+			try
+			{
+				cmd.Execute(this);
+			}
+			catch (Exception e)
+			{
+				GD.PrintErr($"BattleManager: command execution failed - {e}");
+			}
+			
+			if (batState == BattleState.Escape)
+			{
+				EndCheck();
+				return;
+			}
+			
+			VictoryResult result = CheckVictory();
+			
+			if (result != VictoryResult.None)
+			{
+				EndCheck();
+				return;
+			}
+			
+			RefreshNextButton();
+			return;
+		}
+		
+		SetBattleState(BattleState.SpawnCheck);
+		SpawnCheck();
 	}
 	
 	public void ResolveTurn()
