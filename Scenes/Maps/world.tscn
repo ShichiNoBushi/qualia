@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://bteolrjj8n7c0"]
 
 [ext_resource type="TileSet" uid="uid://dq20sdjokbl3g" path="res://Resources/Assets/outside_tile_set.tres" id="1_08va7"]
+[ext_resource type="Script" uid="uid://bsb0d7lk34yln" path="res://Scripts/Map.cs" id="1_gjrm8"]
 [ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/Characters/player.tscn" id="2_pnsqa"]
 [ext_resource type="PackedScene" uid="uid://by86ymrructfl" path="res://Scenes/Characters/npc.tscn" id="3_gjrm8"]
 [ext_resource type="Resource" uid="uid://cyp4vnvhjl3hk" path="res://Resources/Encounters/vs_rand_proj.tres" id="4_qe4dn"]
@@ -15,6 +16,9 @@
 [ext_resource type="PackedScene" uid="uid://c7ghumn7n000w" path="res://Scenes/Objects/chest.tscn" id="13_pnsqa"]
 
 [node name="World" type="Node2D" unique_id=1081555688]
+script = ExtResource("1_gjrm8")
+id = "test_world"
+name = "Test World"
 
 [node name="GroundTileMap" type="TileMapLayer" parent="." unique_id=1064510853]
 scale = Vector2(2, 2)
@@ -22,15 +26,20 @@ tile_map_data = PackedByteArray("AAAAAAAAAAAAAAMAAAAAAAEAAAAAAAMAAAABAAEAAAAAAAM
 tile_set = ExtResource("1_08va7")
 
 [node name="ObjectsTileMap" type="TileMapLayer" parent="." unique_id=1662334726]
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAAOAAQAAAAIAAAAAAAOAAUAAAAIAAEAAAAPAAQAAAAJAAAAAAAPAAUAAAAJAAEAAAAQAAQAAAAKAAAAAAAQAAUAAAAKAAEAAAAOAAYAAAAIAAIAAAAPAAYAAAAKAAMAAAAQAAYAAAAKAAIAAAA=")
 tile_set = ExtResource("1_08va7")
 
-[node name="Player" parent="." unique_id=838609280 instance=ExtResource("2_pnsqa")]
+[node name="YSort" type="Node2D" parent="." unique_id=2010643530]
+y_sort_enabled = true
+
+[node name="Player" parent="YSort" unique_id=838609280 instance=ExtResource("2_pnsqa")]
 position = Vector2(624, 528)
 scale = Vector2(2, 2)
 
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1774200387]
+[node name="Camera2D" type="Camera2D" parent="YSort/Player" unique_id=1774200387]
 
-[node name="NPC" parent="." unique_id=1120881869 instance=ExtResource("3_gjrm8")]
+[node name="NPC" parent="YSort" unique_id=1120881869 instance=ExtResource("3_gjrm8")]
 position = Vector2(848, 496)
 scale = Vector2(2, 2)
 encounter = ExtResource("4_qe4dn")
@@ -38,13 +47,47 @@ isBattleable = true
 name = "Woman"
 dialog = "Testing dialog and battle.[break]Beginning wild familiar encounter."
 
-[node name="InnNPC" parent="." unique_id=1563121890 instance=ExtResource("5_ngc2t")]
+[node name="InnNPC" parent="YSort" unique_id=1563121890 instance=ExtResource("5_ngc2t")]
 position = Vector2(464, 368)
 scale = Vector2(2, 2)
 name = "Healer"
 dialog = "I will restore your energy and provide a safe place to return to.[break]Hold still."
 
-[node name="Area2D" type="Area2D" parent="." unique_id=597241109]
+[node name="Chest" parent="YSort" unique_id=1187087599 instance=ExtResource("13_pnsqa")]
+position = Vector2(336, 880)
+scale = Vector2(2, 2)
+id = "test_g_crystals"
+loot = Dictionary[String, int]({
+"generic": 1000
+})
+
+[node name="Chest2" parent="YSort" unique_id=2137850632 instance=ExtResource("13_pnsqa")]
+position = Vector2(400, 880)
+scale = Vector2(2, 2)
+id = "test_aspect_crys"
+loot = Dictionary[String, int]({
+"q_crystal:air": 5,
+"q_crystal:fire": 5
+})
+
+[node name="Chest3" parent="YSort" unique_id=482176018 instance=ExtResource("13_pnsqa")]
+position = Vector2(464, 880)
+scale = Vector2(2, 2)
+id = "test_attuned_cryst"
+loot = Dictionary[String, int]({
+"q_crystal:ex_gnome": 3,
+"q_crystal:ex_undine": 3
+})
+
+[node name="Chest4" parent="YSort" unique_id=512784631 instance=ExtResource("13_pnsqa")]
+position = Vector2(528, 880)
+scale = Vector2(2, 2)
+id = "test_items"
+loot = Dictionary[String, int]({
+"mini_potion": 5
+})
+
+[node name="Area2D" type="Area2D" parent="YSort" unique_id=597241109]
 position = Vector2(960, 608)
 collision_layer = 2
 collision_mask = 2
@@ -57,42 +100,8 @@ maxSparks = 5
 minInterval = 1.0
 maxInterval = 5.0
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" unique_id=1436850096]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="YSort/Area2D" unique_id=1436850096]
 polygon = PackedVector2Array(0, 0, 480, 0, 480, 352, 0, 352)
 
-[node name="Timer" type="Timer" parent="Area2D" unique_id=365231085]
+[node name="Timer" type="Timer" parent="YSort/Area2D" unique_id=365231085]
 one_shot = true
-
-[node name="Chest" parent="." unique_id=1187087599 instance=ExtResource("13_pnsqa")]
-position = Vector2(336, 880)
-scale = Vector2(2, 2)
-id = "test_g_crystals"
-loot = Dictionary[String, int]({
-"generic": 1000
-})
-
-[node name="Chest2" parent="." unique_id=2137850632 instance=ExtResource("13_pnsqa")]
-position = Vector2(400, 880)
-scale = Vector2(2, 2)
-id = "test_aspect_crys"
-loot = Dictionary[String, int]({
-"q_crystal:air": 5,
-"q_crystal:fire": 5
-})
-
-[node name="Chest3" parent="." unique_id=482176018 instance=ExtResource("13_pnsqa")]
-position = Vector2(464, 880)
-scale = Vector2(2, 2)
-id = "test_attuned_cryst"
-loot = Dictionary[String, int]({
-"q_crystal:ex_gnome": 3,
-"q_crystal:ex_undine": 3
-})
-
-[node name="Chest4" parent="." unique_id=512784631 instance=ExtResource("13_pnsqa")]
-position = Vector2(528, 880)
-scale = Vector2(2, 2)
-id = "test_items"
-loot = Dictionary[String, int]({
-"mini_potion": 5
-})

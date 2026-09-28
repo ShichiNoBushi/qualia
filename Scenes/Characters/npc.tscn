@@ -124,7 +124,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ts14v"]
-radius = 8.0
+radius = 7.0
 
 [node name="NPC" type="CharacterBody2D" unique_id=1612370295]
 script = ExtResource("2_g6unj")
