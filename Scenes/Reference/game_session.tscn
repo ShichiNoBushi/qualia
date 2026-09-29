@@ -4,3 +4,7 @@
 
 [node name="GameSession" type="Node" unique_id=276338620]
 script = ExtResource("1_jq318")
+mapScenes = Dictionary[String, String]({
+"test_world_inn": "Scenes/Maps/test_world_inn.tscn",
+"world": "Scenes/Maps/world.tscn"
+})

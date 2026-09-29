@@ -1,0 +1,58 @@
+[gd_scene format=4 uid="uid://drjy25v2o7eje"]
+
+[ext_resource type="Script" uid="uid://bsb0d7lk34yln" path="res://Scripts/Map.cs" id="1_jggtr"]
+[ext_resource type="TileSet" uid="uid://dq20sdjokbl3g" path="res://Resources/Assets/outside_tile_set.tres" id="2_7f12l"]
+[ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/Characters/player.tscn" id="3_qbswe"]
+[ext_resource type="PackedScene" uid="uid://d1wgptwxtbgi3" path="res://Scenes/Characters/inn_npc.tscn" id="3_w2cb1"]
+[ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="5_bh5it"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
+size = Vector2(64, 32)
+
+[node name="TestWorldInn" type="Node2D" unique_id=886216021 node_paths=PackedStringArray("spawnMarkers")]
+script = ExtResource("1_jggtr")
+id = "test_world_inn"
+name = "Test World Inn"
+spawnMarkers = {
+"entrance": NodePath("Markers/entrance")
+}
+
+[node name="GroundTileMap" type="TileMapLayer" parent="." unique_id=947842279]
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAAAAAAAAAANAAUAAAABAAAAAAANAAUAAAACAAAAAAANAAUAAAADAAAAAAANAAUAAAAEAAAAAAANAAUAAAAFAAAAAAANAAUAAAAGAAAAAAANAAUAAAAHAAAAAAANAAUAAAAIAAAAAAANAAUAAAAJAAAAAAANAAUAAAAKAAAAAAANAAUAAAAKAAEAAAANAAUAAAAKAAIAAAANAAUAAAAKAAMAAAANAAUAAAAKAAQAAAANAAUAAAAKAAUAAAANAAUAAAAKAAYAAAANAAUAAAAKAAcAAAANAAUAAAAKAAgAAAANAAUAAAAAAAEAAAANAAUAAAAAAAIAAAANAAUAAAAAAAMAAAANAAUAAAAAAAQAAAANAAUAAAAAAAUAAAANAAUAAAAAAAYAAAANAAUAAAAAAAcAAAANAAUAAAAAAAgAAAANAAUAAAABAAEAAAANAAUAAAABAAIAAAANAAUAAAABAAMAAAANAAUAAAABAAQAAAANAAUAAAABAAUAAAANAAUAAAABAAYAAAANAAUAAAABAAcAAAANAAUAAAABAAgAAAANAAUAAAACAAEAAAANAAUAAAACAAIAAAANAAUAAAACAAMAAAANAAUAAAACAAQAAAANAAUAAAACAAUAAAANAAUAAAACAAYAAAANAAUAAAACAAcAAAANAAUAAAACAAgAAAANAAUAAAADAAEAAAANAAUAAAADAAIAAAANAAUAAAADAAMAAAANAAUAAAADAAQAAAANAAUAAAADAAUAAAANAAUAAAADAAYAAAANAAUAAAADAAcAAAANAAUAAAADAAgAAAANAAUAAAAEAAEAAAANAAUAAAAEAAIAAAANAAUAAAAEAAMAAAANAAUAAAAEAAQAAAANAAUAAAAEAAUAAAANAAUAAAAEAAYAAAANAAUAAAAEAAcAAAANAAUAAAAEAAgAAAAMAAUAAAAFAAEAAAANAAUAAAAFAAIAAAANAAUAAAAFAAMAAAANAAUAAAAFAAQAAAANAAUAAAAFAAUAAAANAAUAAAAFAAYAAAANAAUAAAAFAAcAAAANAAUAAAAFAAgAAAAMAAUAAAAGAAEAAAANAAUAAAAGAAIAAAANAAUAAAAGAAMAAAANAAUAAAAGAAQAAAANAAUAAAAGAAUAAAANAAUAAAAGAAYAAAANAAUAAAAGAAcAAAANAAUAAAAGAAgAAAANAAUAAAAHAAEAAAANAAUAAAAHAAIAAAANAAUAAAAHAAMAAAANAAUAAAAHAAQAAAANAAUAAAAHAAUAAAANAAUAAAAHAAYAAAANAAUAAAAHAAcAAAANAAUAAAAHAAgAAAANAAUAAAAIAAEAAAANAAUAAAAIAAIAAAANAAUAAAAIAAMAAAANAAUAAAAIAAQAAAANAAUAAAAIAAUAAAANAAUAAAAIAAYAAAANAAUAAAAIAAcAAAANAAUAAAAIAAgAAAANAAUAAAAJAAEAAAANAAUAAAAJAAIAAAANAAUAAAAJAAMAAAANAAUAAAAJAAQAAAANAAUAAAAJAAUAAAANAAUAAAAJAAYAAAANAAUAAAAJAAcAAAANAAUAAAAJAAgAAAANAAUAAAAAAP//AAAHAAQAAAABAP//AAAHAAQAAAACAP//AAAHAAQAAAADAP//AAAHAAQAAAAEAP//AAAHAAQAAAAFAP//AAAHAAQAAAAGAP//AAAHAAQAAAAHAP//AAAHAAQAAAAIAP//AAAHAAQAAAAJAP//AAAHAAQAAAAKAP//AAAHAAQAAAA=")
+tile_set = ExtResource("2_7f12l")
+
+[node name="ObjectsTileMap" type="TileMapLayer" parent="." unique_id=2017438708]
+scale = Vector2(2, 2)
+tile_set = ExtResource("2_7f12l")
+
+[node name="YSort" type="Node2D" parent="." unique_id=2118953611]
+
+[node name="Player" parent="YSort" unique_id=838609280 instance=ExtResource("3_qbswe")]
+position = Vector2(176, 240)
+scale = Vector2(2, 2)
+
+[node name="InnNPC" parent="YSort" unique_id=1563121890 instance=ExtResource("3_w2cb1")]
+position = Vector2(176, 80)
+scale = Vector2(2, 2)
+
+[node name="Markers" type="Node2D" parent="." unique_id=2123063079]
+
+[node name="default" type="Marker2D" parent="Markers" unique_id=773212855]
+position = Vector2(176, 240)
+
+[node name="entrance" type="Marker2D" parent="Markers" unique_id=836001384]
+position = Vector2(176, 240)
+
+[node name="Transitions" type="Node2D" parent="." unique_id=1004992529]
+
+[node name="Entrance" type="Area2D" parent="Transitions" unique_id=1170497098]
+script = ExtResource("5_bh5it")
+warp = "world:inn_exit:down"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/Entrance" unique_id=500625159]
+position = Vector2(160, 272)
+shape = SubResource("RectangleShape2D_ts14v")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=950642570]
+position = Vector2(168, 136)

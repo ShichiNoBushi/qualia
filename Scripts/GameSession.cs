@@ -3,19 +3,26 @@ using System;
 
 public partial class GameSession : Node
 {
+	[Export] public Godot.Collections.Dictionary<string, string> mapScenes {get; set;}
+	
 	public Projector playerProjector {get; set;}
 	public int qualiaGeneric {get; set;}
 	public Godot.Collections.Dictionary<string, int> qualiaCrystals {get; set;}
 	public Godot.Collections.Dictionary<string, int> itemStacks {get; set;}
 	public Godot.Collections.Array<ItemInstance> uniqueItems {get; set;}
+	
 	public string returnPath {get; set;}
 	public Vector2 returnPosition {get; set;}
 	public Vector2 returnFacing {get; set;}
 	public string safePath {get; set;}
 	public Vector2 safePosition {get; set;}
 	public Vector2 safeFacing {get; set;}
+	
 	public REncounterData pendingEncounter {get; set;}
+	public string pendingWarp {get; set;}
+	
 	public BattleManager.VictoryResult lastResult {get; set;}
+	
 	public GameMode gameMode {get; set;}
 	
 	public Godot.Collections.Array<string> openedChests {get; set;}
@@ -69,6 +76,9 @@ public partial class GameSession : Node
 		
 		gameMode = GameMode.World;
 	}
+	
+	public string SceneForMap(string mapId) =>
+		mapScenes != null && mapScenes.TryGetValue(mapId, out string p) ? p : null;
 	
 	public void AddCrystal(RQualiaCrystal crystal, int amount = 1)
 	{

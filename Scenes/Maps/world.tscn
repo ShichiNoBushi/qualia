@@ -14,11 +14,16 @@
 [ext_resource type="Resource" uid="uid://dp3xd3ejwltlm" path="res://Resources/Encounters/test_encounter.tres" id="11_ov7jo"]
 [ext_resource type="PackedScene" uid="uid://h3qvqlbvbmva" path="res://Scenes/Characters/wild_spark_small.tscn" id="12_jkuiv"]
 [ext_resource type="PackedScene" uid="uid://c7ghumn7n000w" path="res://Scenes/Objects/chest.tscn" id="13_pnsqa"]
+[ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="15_qe4dn"]
 
-[node name="World" type="Node2D" unique_id=1081555688]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
+size = Vector2(32, 32)
+
+[node name="World" type="Node2D" unique_id=1081555688 node_paths=PackedStringArray("spawnMarkers")]
 script = ExtResource("1_gjrm8")
 id = "test_world"
 name = "Test World"
+spawnMarkers = {}
 
 [node name="GroundTileMap" type="TileMapLayer" parent="." unique_id=1064510853]
 scale = Vector2(2, 2)
@@ -105,3 +110,21 @@ polygon = PackedVector2Array(0, 0, 480, 0, 480, 352, 0, 352)
 
 [node name="Timer" type="Timer" parent="YSort/Area2D" unique_id=365231085]
 one_shot = true
+
+[node name="Markers" type="Node2D" parent="." unique_id=192262155]
+
+[node name="default" type="Marker2D" parent="Markers" unique_id=1742431485]
+position = Vector2(624, 528)
+
+[node name="inn_exit" type="Marker2D" parent="Markers" unique_id=1307322999]
+position = Vector2(496, 240)
+
+[node name="Transitions" type="Node2D" parent="." unique_id=1097379754]
+
+[node name="Area2D" type="Area2D" parent="Transitions" unique_id=357110141]
+script = ExtResource("15_qe4dn")
+warp = "test_world_inn:entrance:up"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/Area2D" unique_id=1859466299]
+position = Vector2(496, 208)
+shape = SubResource("RectangleShape2D_ts14v")
