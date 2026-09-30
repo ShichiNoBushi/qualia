@@ -7,7 +7,7 @@ public partial class Map : Node2D
 	[Export] public string name {get; set;}
 	[Export] public Godot.Collections.Dictionary<string, Marker2D> spawnMarkers {get; set;}
 	
-	public override void _Ready()
+	public override async void _Ready()
 	{
 		GameSession session = GetNode<GameSession>("/root/GameSession");
 		
@@ -17,6 +17,7 @@ public partial class Map : Node2D
 		
 		if (WarpDest.TryParse(session.pendingWarp, out WarpDest dest))
 		{
+			player.warping = true;
 			ApplyMarker(player, dest.markerKey, dest.facing);
 			session.pendingWarp = "";
 		}
@@ -47,11 +48,42 @@ public partial class Map : Node2D
 		}
 		
 		session.pendingEncounter = null;
+		
+		bool seen = false;
+		
+		for (int i = 0; i < 12; i++)
+		{
+			await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
+			
+			if (IsOverlappingTransition(player))
+			{
+				seen = true;
+				break;
+			}
+		}
+		
+		if (!seen)
+		{
+			player.warping = false;
+		}
 	}
 	
 	public Marker2D GetMarker(string key)
 	{
 		return GetNodeOrNull<Marker2D>($"Markers/{key}");
+	}
+	
+	public bool IsOverlappingTransition(Player player)
+	{
+		foreach (var n in GetTree().GetNodesInGroup("map_transitions"))
+		{
+			if (n is MapTransition t && t.GetOverlappingBodies().Contains(player))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public void ApplyMarker(Player player, string key, Vector2 facing)

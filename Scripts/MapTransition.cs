@@ -8,11 +8,12 @@ public partial class MapTransition : Area2D
 	public override void _Ready()
 	{
 		BodyEntered += OnBodyEntered;
+		BodyExited += OnBodyExited;
 	}
 	
 	public void OnBodyEntered(Node2D body)
 	{
-		if (body is not Player player)
+		if (body is not Player player || player.warping)
 		{
 			return;
 		}
@@ -30,6 +31,16 @@ public partial class MapTransition : Area2D
 		}
 		
 		CallDeferred(nameof(GoTo), dest.mapId, dest.markerKey, dest.facing);
+	}
+	
+	public void OnBodyExited(Node2D body)
+	{
+		if (body is not Player player)
+		{
+			return;
+		}
+		
+		player.warping = false;
 	}
 	
 	public void GoTo(string mapId, string markerKey, Vector2 facing)

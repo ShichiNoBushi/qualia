@@ -117,14 +117,14 @@ one_shot = true
 position = Vector2(624, 528)
 
 [node name="inn_exit" type="Marker2D" parent="Markers" unique_id=1307322999]
-position = Vector2(496, 240)
+position = Vector2(496, 208)
 
 [node name="Transitions" type="Node2D" parent="." unique_id=1097379754]
 
-[node name="Area2D" type="Area2D" parent="Transitions" unique_id=357110141]
+[node name="InnEntrance" type="Area2D" parent="Transitions" unique_id=357110141 groups=["map_transitions"]]
 script = ExtResource("15_qe4dn")
 warp = "test_world_inn:entrance:up"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/Area2D" unique_id=1859466299]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/InnEntrance" unique_id=1859466299]
 position = Vector2(496, 208)
 shape = SubResource("RectangleShape2D_ts14v")

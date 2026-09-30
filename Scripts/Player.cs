@@ -13,6 +13,7 @@ public partial class Player : CharacterBody2D
 	public Timer timer;
 	
 	public bool noEncounter = false;
+	public bool warping = false;
 	
 	public override void _Ready()
 	{
