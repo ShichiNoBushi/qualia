@@ -9,7 +9,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
 size = Vector2(64, 32)
 
-[node name="TestWorldInn" type="Node2D" unique_id=886216021 node_paths=PackedStringArray("spawnMarkers")]
+[node name="TestWorldInn" type="Node2D" unique_id=886216021 node_paths=PackedStringArray("spawnMarkers") groups=["map"]]
 script = ExtResource("1_jggtr")
 id = "test_world_inn"
 name = "Test World Inn"
@@ -32,9 +32,13 @@ tile_set = ExtResource("2_7f12l")
 position = Vector2(176, 240)
 scale = Vector2(2, 2)
 
-[node name="InnNPC" parent="YSort" unique_id=1563121890 instance=ExtResource("3_w2cb1")]
+[node name="InnNPC" parent="YSort" unique_id=1563121890 node_paths=PackedStringArray("safeMarker") instance=ExtResource("3_w2cb1")]
 position = Vector2(176, 80)
 scale = Vector2(2, 2)
+safeMarker = NodePath("../../Markers/safe")
+safeKey = "safe"
+name = "Healer"
+dialog = "I will restore your energy and provide a safe place to return to.[break]Hold still."
 
 [node name="Markers" type="Node2D" parent="." unique_id=2123063079]
 
@@ -43,6 +47,9 @@ position = Vector2(176, 240)
 
 [node name="entrance" type="Marker2D" parent="Markers" unique_id=836001384]
 position = Vector2(176, 272)
+
+[node name="safe" type="Marker2D" parent="Markers" unique_id=1342994533]
+position = Vector2(240, 112)
 
 [node name="Transitions" type="Node2D" parent="." unique_id=1004992529]
 

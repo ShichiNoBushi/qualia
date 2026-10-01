@@ -15,6 +15,8 @@ public partial class GameSession : Node
 	public Vector2 returnPosition {get; set;}
 	public Vector2 returnFacing {get; set;}
 	public string safePath {get; set;}
+	public string safeMapId {get; set;}
+	public string safeMarkerId {get; set;}
 	public Vector2 safePosition {get; set;}
 	public Vector2 safeFacing {get; set;}
 	

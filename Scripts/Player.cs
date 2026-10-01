@@ -50,8 +50,6 @@ public partial class Player : CharacterBody2D
 			}
 		}
 		
-		session.lastResult = BattleManager.VictoryResult.None;
-		
 		if (facing != Vector2.Zero)
 		{
 			if (Mathf.Abs(facing.X) > Mathf.Abs(facing.Y))

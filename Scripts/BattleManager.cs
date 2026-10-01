@@ -1185,6 +1185,13 @@ public partial class BattleManager : Node
 		AppendBattleText("Resolving turn");
 		try
 		{
+			projCommandPanel.undoButton.Visible = false;
+			
+			foreach (var panel in famCommandPanels)
+			{
+				panel.undoButton.Visible = false;
+			}
+			
 			projCommandSubmitted = false;
 			famCommandsSubmitted = 0;
 			SetBattleState(BattleState.Resolution);

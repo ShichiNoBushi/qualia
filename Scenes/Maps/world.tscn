@@ -19,7 +19,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
 size = Vector2(32, 32)
 
-[node name="World" type="Node2D" unique_id=1081555688 node_paths=PackedStringArray("spawnMarkers")]
+[node name="World" type="Node2D" unique_id=1081555688 node_paths=PackedStringArray("spawnMarkers") groups=["map"]]
 script = ExtResource("1_gjrm8")
 id = "test_world"
 name = "Test World"

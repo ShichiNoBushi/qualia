@@ -23,10 +23,14 @@ public partial class Map : Node2D
 		}
 		else if (session.lastResult == BattleManager.VictoryResult.PlayerLose)
 		{
-			if (session.safePosition != Vector2.Zero)
+			if (session.safePath != null)
 			{
 				player.GlobalPosition = session.safePosition;
 				player.PlayWalkAnim(session.safeFacing);
+			}
+			else
+			{
+				ApplyMarker(player, "default", Vector2.Down);
 			}
 			
 			session.lastResult = BattleManager.VictoryResult.None;
@@ -48,6 +52,13 @@ public partial class Map : Node2D
 		}
 		
 		session.pendingEncounter = null;
+		
+		if (string.IsNullOrEmpty(session.safePath))
+		{
+			session.safePath = GetTree().CurrentScene.SceneFilePath;
+			session.safePosition = GetNode<Marker2D>("Markers/default").GlobalPosition;
+			session.safeFacing = Vector2.Down;
+		}
 		
 		bool seen = false;
 		
