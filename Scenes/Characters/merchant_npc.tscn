@@ -1,0 +1,136 @@
+[gd_scene format=3 uid="uid://e50xasid0gsm"]
+
+[ext_resource type="Texture2D" uid="uid://mndcjvy8q83" path="res://Resources/Assets/Sprites/executivef_spritesheet.png" id="3_cotxy"]
+[ext_resource type="Script" uid="uid://bqkp741baumbb" path="res://Scripts/MerchantNPC.cs" id="4_pvhts"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vo8kc"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nak0n"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gtbhe"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u17n4"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j2nno"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_17g26"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2b85"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dd7ur"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7on7x"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2h4pu"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vonjs"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yasdk"]
+atlas = ExtResource("3_cotxy")
+region = Rect2(32, 32, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3n58y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vo8kc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nak0n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vo8kc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gtbhe")
+}],
+"loop": 1,
+"name": &"walk_back",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u17n4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j2nno")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u17n4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_17g26")
+}],
+"loop": 1,
+"name": &"walk_front",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2b85")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dd7ur")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2b85")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7on7x")
+}],
+"loop": 1,
+"name": &"walk_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2h4pu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vonjs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2h4pu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yasdk")
+}],
+"loop": 1,
+"name": &"walk_right",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ts14v"]
+radius = 7.0
+
+[node name="MerchantNPC" type="CharacterBody2D" unique_id=1612370295]
+script = ExtResource("4_pvhts")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1037246869]
+sprite_frames = SubResource("SpriteFrames_3n58y")
+animation = &"walk_front"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=97110102]
+shape = SubResource("CircleShape2D_ts14v")

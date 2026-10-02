@@ -32,7 +32,6 @@ public partial class GameMenu : CanvasLayer
 	
 	public Panel statsPanel;
 	
-	public Label famNameLabel;  //Visibility = false
 	public LineEdit famNameText;
 	public Label familiarLabel;
 	
@@ -95,7 +94,6 @@ public partial class GameMenu : CanvasLayer
 		
 		statsPanel = GetNode<Panel>("Panel/MainTab/Familiars/StatsPanel");
 		
-		famNameLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/FamNameLabel");
 		famNameText = GetNode<LineEdit>("Panel/MainTab/Familiars/StatsPanel/FamNameText");
 		familiarLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/FamiliarLabel");
 		

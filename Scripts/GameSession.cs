@@ -33,6 +33,7 @@ public partial class GameSession : Node
 	{
 		World,
 		Dialog,
+		Shop,
 		Battle
 	}
 	
@@ -157,6 +158,44 @@ public partial class GameSession : Node
 				maxUses = item.uses,
 				usesLeft = item.uses
 			});
+		}
+	}
+	
+	public void RemoveItem(RItemData item, int amount = 1)
+	{
+		if (item == null || amount <= 0 || string.IsNullOrEmpty(item.id))
+		{
+			return;
+		}
+		
+		string id = item.id;
+		
+		if (item.stackable)
+		{
+			if (itemStacks == null)
+			{
+				return;
+			}
+			
+			int current = itemStacks.TryGetValue(id, out int n) ? n : 0;
+			itemStacks[id] = Mathf.Max(current - amount, 0);
+			
+			if (itemStacks[id] == 0)
+			{
+				itemStacks.Remove(id);
+			}
+			
+			return;
+		}
+		
+		if (uniqueItems == null)
+		{
+			return;
+		}
+		
+		for (int i = 0; i < amount; i++)
+		{
+			//remove instance of item from uniqueItems
 		}
 	}
 	

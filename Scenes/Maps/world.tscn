@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://h3qvqlbvbmva" path="res://Scenes/Characters/wild_spark_small.tscn" id="12_jkuiv"]
 [ext_resource type="PackedScene" uid="uid://c7ghumn7n000w" path="res://Scenes/Objects/chest.tscn" id="13_pnsqa"]
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="15_qe4dn"]
+[ext_resource type="PackedScene" uid="uid://e50xasid0gsm" path="res://Scenes/Characters/merchant_npc.tscn" id="16_ngc2t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
 size = Vector2(32, 32)
@@ -128,3 +129,13 @@ warp = "test_world_inn:entrance:up"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/InnEntrance" unique_id=1859466299]
 position = Vector2(496, 208)
 shape = SubResource("RectangleShape2D_ts14v")
+
+[node name="MerchantNPC" parent="." unique_id=1612370295 instance=ExtResource("16_ngc2t")]
+position = Vector2(688, 176)
+scale = Vector2(2, 2)
+itemStock = Dictionary[String, int]({
+"mini_bomb": 5,
+"mini_potion": -1
+})
+name = "Merchant"
+dialog = "Welcome![break]I have lots of good things on sale."

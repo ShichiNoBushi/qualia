@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://dvtkmhppex7oc"]
+
+[ext_resource type="Script" uid="uid://b1jye6tomdd8s" path="res://Scripts/MerchantMenu.cs" id="1_7r2uf"]
+
+[node name="MerchantMenu" type="CanvasLayer" unique_id=1041887560]
+visible = false
+script = ExtResource("1_7r2uf")
+
+[node name="Panel" type="Panel" parent="." unique_id=562120711]
+offset_left = 170.0
+offset_top = 85.0
+offset_right = 1684.0
+offset_bottom = 988.0
+
+[node name="TabContainer" type="TabContainer" parent="Panel" unique_id=255622405]
+layout_mode = 0
+offset_right = 1514.0
+offset_bottom = 869.0
+tab_alignment = 1
+current_tab = 0
+
+[node name="Buy" type="Control" parent="Panel/TabContainer" unique_id=1775246918]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="ShopList" type="ItemList" parent="Panel/TabContainer/Buy" unique_id=1827088847]
+layout_mode = 0
+offset_right = 587.0
+offset_bottom = 799.0
+
+[node name="CrystalsBuyTextLabel" type="Label" parent="Panel/TabContainer/Buy" unique_id=532502893]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 803.0
+offset_right = 142.0
+offset_bottom = 826.0
+text = "G. Crystals:"
+
+[node name="CrystalsBuyLabel" type="Label" parent="Panel/TabContainer/Buy" unique_id=1953759020]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 803.0
+offset_right = 261.0
+offset_bottom = 826.0
+text = "00000000"
+horizontal_alignment = 2
+
+[node name="BuySpin" type="SpinBox" parent="Panel/TabContainer/Buy" unique_id=1511960858]
+layout_mode = 0
+offset_left = 309.0
+offset_top = 803.0
+offset_right = 395.5
+offset_bottom = 834.0
+
+[node name="BuyButton" type="Button" parent="Panel/TabContainer/Buy" unique_id=501975984]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 803.0
+offset_right = 501.0
+offset_bottom = 834.0
+text = "Buy"
+
+[node name="ShopItemLabel" type="RichTextLabel" parent="Panel/TabContainer/Buy" unique_id=383462281]
+layout_mode = 0
+offset_left = 591.0
+offset_right = 1514.0
+offset_bottom = 834.0
+bbcode_enabled = true
+
+[node name="Sell" type="Control" parent="Panel/TabContainer" unique_id=797152457]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="InventoryList" type="ItemList" parent="Panel/TabContainer/Sell" unique_id=418287926]
+layout_mode = 0
+offset_right = 587.0
+offset_bottom = 795.0
+
+[node name="CrystalsSellTextLabel" type="Label" parent="Panel/TabContainer/Sell" unique_id=1570227101]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 803.0
+offset_right = 142.0
+offset_bottom = 826.0
+text = "G. Crystals:"
+
+[node name="CrystalsSellLabel" type="Label" parent="Panel/TabContainer/Sell" unique_id=280300676]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 803.0
+offset_right = 261.0
+offset_bottom = 826.0
+text = "00000000"
+horizontal_alignment = 2
+
+[node name="SellSpin" type="SpinBox" parent="Panel/TabContainer/Sell" unique_id=351836562]
+layout_mode = 0
+offset_left = 309.0
+offset_top = 803.0
+offset_right = 395.5
+offset_bottom = 834.0
+
+[node name="SellButton" type="Button" parent="Panel/TabContainer/Sell" unique_id=2084845511]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 803.0
+offset_right = 500.0
+offset_bottom = 834.0
+text = "Sell"
+
+[node name="InventoryItemLabel" type="RichTextLabel" parent="Panel/TabContainer/Sell" unique_id=1340884000]
+layout_mode = 0
+offset_left = 583.0
+offset_top = 4.0
+offset_right = 1514.0
+offset_bottom = 834.0
+bbcode_enabled = true
+
+[node name="CloseButton" type="Button" parent="Panel" unique_id=980808094]
+layout_mode = 0
+offset_left = 712.0
+offset_top = 869.0
+offset_right = 784.0
+offset_bottom = 900.0
+text = "Close"
