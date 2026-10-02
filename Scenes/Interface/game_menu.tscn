@@ -5,7 +5,6 @@
 [node name="GameMenu" type="CanvasLayer" unique_id=326509181]
 process_mode = 3
 layer = 100
-visible = false
 script = ExtResource("1_r2ljc")
 
 [node name="Panel" type="Panel" parent="." unique_id=1239281859]
@@ -19,9 +18,10 @@ layout_mode = 0
 offset_right = 1144.0
 offset_bottom = 829.0
 tab_alignment = 1
-current_tab = 0
+current_tab = 1
 
 [node name="Projector" type="Control" parent="Panel/MainTab" unique_id=1210988696]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -145,7 +145,6 @@ offset_bottom = 358.0
 stretch_mode = 5
 
 [node name="Familiars" type="Control" parent="Panel/MainTab" unique_id=1281197824]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -163,6 +162,7 @@ offset_right = 1144.0
 offset_bottom = 794.0
 
 [node name="FamNameLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1233312517]
+visible = false
 layout_mode = 0
 offset_left = 20.0
 offset_top = 8.0
@@ -170,28 +170,45 @@ offset_right = 144.0
 offset_bottom = 31.0
 text = "Name"
 
+[node name="FamNameText" type="LineEdit" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1394607299]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 8.0
+offset_right = 212.0
+offset_bottom = 39.0
+placeholder_text = "Name"
+max_length = 20
+
+[node name="RenameButton" type="Button" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=767455375]
+layout_mode = 0
+offset_left = 230.0
+offset_top = 8.0
+offset_right = 328.0
+offset_bottom = 39.0
+text = "Rename"
+
 [node name="FamiliarLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1909289165]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 31.0
+offset_top = 39.0
 offset_right = 144.0
-offset_bottom = 54.0
+offset_bottom = 62.0
 text = "Familiar"
 
 [node name="TypesTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=158141714]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 54.0
+offset_top = 62.0
 offset_right = 73.0
-offset_bottom = 77.0
+offset_bottom = 85.0
 text = "Types:"
 
 [node name="TypesLabel" type="RichTextLabel" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=413670546]
 layout_mode = 0
 offset_left = 94.0
-offset_top = 54.0
+offset_top = 62.0
 offset_right = 193.0
-offset_bottom = 123.0
+offset_bottom = 131.0
 bbcode_enabled = true
 text = "Type1
 Type2
@@ -217,52 +234,52 @@ horizontal_alignment = 2
 [node name="ExperienceTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1306693728]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 123.0
+offset_top = 131.0
 offset_right = 105.0
-offset_bottom = 146.0
+offset_bottom = 154.0
 text = "Experience"
 
 [node name="FamExperienceProgress" type="ProgressBar" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=282871570]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 146.0
+offset_top = 154.0
 offset_right = 217.0
-offset_bottom = 158.0
+offset_bottom = 166.0
 step = 1.0
 show_percentage = false
 
 [node name="FamExperienceLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1829536093]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 158.0
+offset_top = 166.0
 offset_right = 94.0
-offset_bottom = 181.0
+offset_bottom = 189.0
 text = "00000000"
 horizontal_alignment = 2
 
 [node name="ExperienceDividerLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1750771530]
 layout_mode = 0
 offset_left = 94.0
-offset_top = 158.0
+offset_top = 166.0
 offset_right = 134.0
-offset_bottom = 181.0
+offset_bottom = 189.0
 text = "/"
 horizontal_alignment = 1
 
 [node name="FamExperienceNextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1948889065]
 layout_mode = 0
 offset_left = 134.0
-offset_top = 158.0
+offset_top = 166.0
 offset_right = 208.0
-offset_bottom = 181.0
+offset_bottom = 189.0
 text = "00000000"
 
 [node name="GridContainer" type="GridContainer" parent="Panel/MainTab/Familiars/StatsPanel" unique_id=1501866478]
 layout_mode = 0
 offset_left = 20.0
-offset_top = 190.0
+offset_top = 198.0
 offset_right = 170.0
-offset_bottom = 348.0
+offset_bottom = 356.0
 columns = 2
 
 [node name="EnergyTextLabel" type="Label" parent="Panel/MainTab/Familiars/StatsPanel/GridContainer" unique_id=299794083]

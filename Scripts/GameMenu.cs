@@ -32,8 +32,11 @@ public partial class GameMenu : CanvasLayer
 	
 	public Panel statsPanel;
 	
-	public Label famNameLabel;
+	public Label famNameLabel;  //Visibility = false
+	public LineEdit famNameText;
 	public Label familiarLabel;
+	
+	public Button renameButton;
 	
 	public RichTextLabel typesLabel;
 	
@@ -93,7 +96,10 @@ public partial class GameMenu : CanvasLayer
 		statsPanel = GetNode<Panel>("Panel/MainTab/Familiars/StatsPanel");
 		
 		famNameLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/FamNameLabel");
+		famNameText = GetNode<LineEdit>("Panel/MainTab/Familiars/StatsPanel/FamNameText");
 		familiarLabel = GetNode<Label>("Panel/MainTab/Familiars/StatsPanel/FamiliarLabel");
+		
+		renameButton = GetNode<Button>("Panel/MainTab/Familiars/StatsPanel/RenameButton");
 		
 		typesLabel = GetNode<RichTextLabel>("Panel/MainTab/Familiars/StatsPanel/TypesLabel");
 		
@@ -115,6 +121,10 @@ public partial class GameMenu : CanvasLayer
 		skillDescLabel = GetNode<RichTextLabel>("Panel/MainTab/Familiars/StatsPanel/SkillDescLabel");
 		
 		famPortraitRect = GetNode<TextureRect>("Panel/MainTab/Familiars/StatsPanel/FamPortraitRect");
+		
+		famNameText.TextChanged += OnNameChanged;
+		famNameText.TextSubmitted += OnNameSubmitted;
+		renameButton.Pressed += OnRenamePressed;
 		
 		familiarsList.ItemSelected += OnFamiliarSelect;
 		
@@ -184,14 +194,13 @@ public partial class GameMenu : CanvasLayer
 			return;
 		}
 		
-		RFamiliarInstance fam = selectedFamiliar;
-		
 		statsPanel.Visible = true;
 		
-		famNameLabel.Text = fam.GetPreferredName();
-		familiarLabel.Text = string.IsNullOrEmpty(fam.data?.name) ? "(no name)" : fam.data.name;
+		famNameText.Text = selectedFamiliar.nickName ?? "";
+		famNameText.PlaceholderText = selectedFamiliar.data?.name ?? "(no name)";
+		familiarLabel.Text = string.IsNullOrEmpty(selectedFamiliar.data?.name) ? "(no name)" : selectedFamiliar.data.name;
 		
-		Godot.Collections.Array<RTypeData> types = fam.types != null && fam.types.Count > 0 ? fam.types : fam.data?.types;
+		Godot.Collections.Array<RTypeData> types = selectedFamiliar.types != null && selectedFamiliar.types.Count > 0 ? selectedFamiliar.types : selectedFamiliar.data?.types;
 		
 		if (types != null && types.Count > 0)
 		{
@@ -219,36 +228,57 @@ public partial class GameMenu : CanvasLayer
 			typesLabel.Text = "(untyped)";
 		}
 		
-		famLevelLabel.Text = $"{fam.level}";
+		famLevelLabel.Text = $"{selectedFamiliar.level}";
 		
-		int next = fam.ExpToNextLevel();
-		famExperienceProgress.Value = fam.experience;
+		int next = selectedFamiliar.ExpToNextLevel();
+		famExperienceProgress.Value = selectedFamiliar.experience;
 		famExperienceProgress.MaxValue = next;
-		famExperienceLabel.Text = $"{fam.experience}";
+		famExperienceLabel.Text = $"{selectedFamiliar.experience}";
 		famExperienceNextLabel.Text = $"{next}";
 		
-		famEnergyLabel.Text = $"{fam.energy}";
-		physAttackLabel.Text = $"{fam.pAttack}";
-		magAttackLabel.Text = $"{fam.mAttack}";
-		physDefenseLabel.Text = $"{fam.pDefense}";
-		magDefenseLabel.Text = $"{fam.mDefense}";
-		speedLabel.Text = $"{fam.speed}";
+		famEnergyLabel.Text = $"{selectedFamiliar.energy}";
+		physAttackLabel.Text = $"{selectedFamiliar.pAttack}";
+		magAttackLabel.Text = $"{selectedFamiliar.mAttack}";
+		physDefenseLabel.Text = $"{selectedFamiliar.pDefense}";
+		magDefenseLabel.Text = $"{selectedFamiliar.mDefense}";
+		speedLabel.Text = $"{selectedFamiliar.speed}";
 		
-		famPortraitRect.Texture = fam.data?.portrait;
+		famPortraitRect.Texture = selectedFamiliar.data?.portrait;
 		
-		if (fam.skills != null)
+		if (selectedFamiliar.skills != null)
 		{
-			GD.Print($"GameMenu: {fam.GetPreferredName()} has {fam.skills.Count} Skills");
-			foreach (var skill in fam.skills)
+			GD.Print($"GameMenu: {selectedFamiliar.GetPreferredName()} has {selectedFamiliar.skills.Count} Skills");
+			foreach (var skill in selectedFamiliar.skills)
 			{
 				GD.Print($"  {skill.name}");
 			}
 		}
 		else
 		{
-			GD.Print($"GameMenu: {fam.GetPreferredName()}'s Skills is null");
+			GD.Print($"GameMenu: {selectedFamiliar.GetPreferredName()}'s Skills is null");
 		}
 		UpdateSkillList();
+	}
+	
+	public void OnNameChanged(string newText)
+	{
+		if (selectedFamiliar == null)
+		{
+			renameButton.Disabled = true;
+			return;
+		}
+		
+		renameButton.Disabled = newText.Trim() == selectedFamiliar.GetPreferredName();
+	}
+	
+	public void OnNameSubmitted(string newText)
+	{
+		ApplyNickname(newText);
+	}
+	
+	public void OnRenamePressed()
+	{
+		ApplyNickname(famNameText.Text);
 	}
 	
 	public void OnSkillSelect(long index)
@@ -595,6 +625,19 @@ public partial class GameMenu : CanvasLayer
 		{
 			useButton.Disabled = !(selectedUnique.data != null && selectedUnique.data.fieldUsable && selectedUnique.usesLeft > 0);
 		}
+	}
+	
+	public void ApplyNickname(string raw)
+	{
+		if (selectedFamiliar == null)
+		{
+			return;
+		}
+		
+		selectedFamiliar.nickName = raw.Trim();
+		renameButton.Disabled = true;
+		famNameText.ReleaseFocus();
+		UpdateFamiliarList();
 	}
 	
 	public void Open()
