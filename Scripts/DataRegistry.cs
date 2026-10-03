@@ -9,6 +9,7 @@ public partial class DataRegistry : Node
 	public Godot.Collections.Dictionary<string, RSkillData> skills = new();
 	public Godot.Collections.Dictionary<string, RTypeData> types = new();
 	public Godot.Collections.Dictionary<string, RItemData> items = new();
+	public Godot.Collections.Dictionary<string, RForgeRecipe> recipes = new();
 	
 	public override void _Ready()
 	{
@@ -18,6 +19,7 @@ public partial class DataRegistry : Node
 		LoadAll("res://Resources/Skills/", skills);
 		LoadAll("res://Resources/TypeData/", types);
 		LoadAll("res://Resources/Items/", items);
+		LoadAll("res://REsources/Recipes/", recipes);
 	}
 	
 	public void LoadAll<[MustBeVariant] T>(string dir, Godot.Collections.Dictionary<string, T> dest) where T : Resource
@@ -82,6 +84,7 @@ public partial class DataRegistry : Node
 		RSkillData skl => skl.id,
 		RTypeData type => type.id,
 		RItemData it => it.id,
+		RForgeRecipe rec => rec.id,
 		_ => ""
 	};
 	
@@ -91,4 +94,5 @@ public partial class DataRegistry : Node
 	public RSkillData Skill(string id) => skills.TryGetValue(id, out RSkillData skl) ? skl : null;
 	public RTypeData Type(string id) => types.TryGetValue(id, out RTypeData type) ? type : null;
 	public RItemData Item(string id) => items.TryGetValue(id, out RItemData it) ? it : null;
+	public RForgeRecipe Recipe(string id) => recipes.TryGetValue(id, out RForgeRecipe rec) ? rec : null;
 }

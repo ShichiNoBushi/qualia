@@ -77,6 +77,11 @@ public partial class MerchantMenu : CanvasLayer
 			{
 				RItemData data = registry.Item(item.Key);
 				
+				if (data == null)
+				{
+					continue;
+				}
+				
 				string label = $"{data.name} ({data.value} qc)";
 				
 				if (item.Value > 0)
@@ -97,8 +102,10 @@ public partial class MerchantMenu : CanvasLayer
 		
 		buySpin.Value = 0f;
 		buySpin.MaxValue = 0f;
+		buyButton.Disabled = true;
 		sellSpin.Value = 0f;
 		sellSpin.MaxValue = 0f;
+		sellButton.Disabled = true;
 		
 		shopItemLabel.Text = "";
 		inventoryItemLabel.Text = "";
@@ -251,6 +258,12 @@ public partial class MerchantMenu : CanvasLayer
 		}
 		
 		int amount = (int)buySpin.Value;
+		
+		if (amount <= 0 || data.value <= 0)
+		{
+			return;
+		}
+		
 		int cost = data.value * amount;
 		
 		if (session.qualiaGeneric < cost)
@@ -280,7 +293,7 @@ public partial class MerchantMenu : CanvasLayer
 		}
 		
 		int amount = (int)sellSpin.Value;
-		int cost = Mathf.RoundToInt(data.value * 0.5 * amount);
+		int cost = Mathf.RoundToInt(data.value * 0.5f * amount);
 		
 		if (!session.itemStacks.TryGetValue(id, out int n) || n < amount || amount <= 0)
 		{

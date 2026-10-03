@@ -30,7 +30,5 @@ public partial class RFamiliarData : Resource
 	[Export] public int crystals {get; set;} = 0;
 	[Export] public Godot.Collections.Dictionary<string, int> crystalDrops {get; set;}
 	
-	[Export] public RPrismRecipe recipe {get; set;} = new();
-	
 	[Export] public Texture2D portrait {get; set;}
 }

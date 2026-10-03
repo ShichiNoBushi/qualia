@@ -1,0 +1,221 @@
+[gd_scene format=3 uid="uid://d1otttf2opki7"]
+
+[node name="ForgeMenu" type="CanvasLayer" unique_id=464621726]
+visible = false
+
+[node name="Panel" type="Panel" parent="." unique_id=246710113]
+offset_left = 312.0
+offset_top = 120.0
+offset_right = 1632.0
+offset_bottom = 984.0
+
+[node name="MainTab" type="TabContainer" parent="Panel" unique_id=870061915]
+layout_mode = 0
+offset_right = 1320.0
+offset_bottom = 816.0
+tab_alignment = 1
+current_tab = 0
+
+[node name="Trade" type="Control" parent="Panel/MainTab" unique_id=1652402950]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="TradeTab" type="TabContainer" parent="Panel/MainTab/Trade" unique_id=1646962962]
+layout_mode = 0
+offset_right = 1320.0
+offset_bottom = 785.0
+tab_alignment = 1
+current_tab = 0
+
+[node name="Buy" type="Control" parent="Panel/MainTab/Trade/TradeTab" unique_id=595262963]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="ShopList" type="ItemList" parent="Panel/MainTab/Trade/TradeTab/Buy" unique_id=1008672447]
+layout_mode = 0
+offset_right = 587.0
+offset_bottom = 706.0
+
+[node name="CrystalsBuyTextLabel" type="Label" parent="Panel/MainTab/Trade/TradeTab/Buy" unique_id=1448467748]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 714.0
+offset_right = 142.0
+offset_bottom = 737.0
+text = "G. Crystals:"
+
+[node name="CrystalsBuyLabel" type="Label" parent="Panel/MainTab/Trade/TradeTab/Buy" unique_id=597955216]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 714.0
+offset_right = 261.0
+offset_bottom = 737.0
+text = "00000000"
+horizontal_alignment = 2
+
+[node name="BuySpin" type="SpinBox" parent="Panel/MainTab/Trade/TradeTab/Buy" unique_id=355087256]
+layout_mode = 0
+offset_left = 309.0
+offset_top = 714.0
+offset_right = 395.5
+offset_bottom = 745.0
+max_value = 0.0
+
+[node name="BuyButton" type="Button" parent="Panel/MainTab/Trade/TradeTab/Buy" unique_id=1905131011]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 714.0
+offset_right = 501.0
+offset_bottom = 745.0
+text = "Buy"
+
+[node name="ShopItemLabel" type="RichTextLabel" parent="Panel/MainTab/Trade/TradeTab/Buy" unique_id=1810626877]
+layout_mode = 0
+offset_left = 591.0
+offset_right = 1320.0
+offset_bottom = 754.0
+bbcode_enabled = true
+
+[node name="Sell" type="Control" parent="Panel/MainTab/Trade/TradeTab" unique_id=1428083565]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="InventoryList" type="ItemList" parent="Panel/MainTab/Trade/TradeTab/Sell" unique_id=851146237]
+layout_mode = 0
+offset_right = 587.0
+offset_bottom = 706.0
+
+[node name="CrystalsSellTextLabel" type="Label" parent="Panel/MainTab/Trade/TradeTab/Sell" unique_id=575809010]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 714.0
+offset_right = 142.0
+offset_bottom = 737.0
+text = "G. Crystals:"
+
+[node name="CrystalsSellLabel" type="Label" parent="Panel/MainTab/Trade/TradeTab/Sell" unique_id=286349411]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 714.0
+offset_right = 261.0
+offset_bottom = 737.0
+text = "00000000"
+horizontal_alignment = 2
+
+[node name="SellSpin" type="SpinBox" parent="Panel/MainTab/Trade/TradeTab/Sell" unique_id=1740849492]
+layout_mode = 0
+offset_left = 309.0
+offset_top = 714.0
+offset_right = 395.5
+offset_bottom = 745.0
+max_value = 0.0
+
+[node name="SellButton" type="Button" parent="Panel/MainTab/Trade/TradeTab/Sell" unique_id=1911674272]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 714.0
+offset_right = 501.0
+offset_bottom = 745.0
+text = "Sell"
+
+[node name="InventoryItemLabel" type="RichTextLabel" parent="Panel/MainTab/Trade/TradeTab/Sell" unique_id=389077992]
+layout_mode = 0
+offset_left = 591.0
+offset_right = 1320.0
+offset_bottom = 754.0
+bbcode_enabled = true
+
+[node name="Craft" type="Control" parent="Panel/MainTab" unique_id=1443153119]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="CraftTab" type="TabContainer" parent="Panel/MainTab/Craft" unique_id=1781019510]
+layout_mode = 0
+offset_right = 1320.0
+offset_bottom = 785.0
+tab_alignment = 1
+current_tab = 0
+
+[node name="Crystals" type="Control" parent="Panel/MainTab/Craft/CraftTab" unique_id=130406498]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="RecipeCrList" type="ItemList" parent="Panel/MainTab/Craft/CraftTab/Crystals" unique_id=89048623]
+layout_mode = 0
+offset_right = 504.0
+offset_bottom = 706.0
+
+[node name="CrystalsCraftCrTextLabel" type="Label" parent="Panel/MainTab/Craft/CraftTab/Crystals" unique_id=39464273]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 714.0
+offset_right = 142.0
+offset_bottom = 737.0
+text = "G. Crystals:"
+
+[node name="CrystalsCraftCrLabel" type="Label" parent="Panel/MainTab/Craft/CraftTab/Crystals" unique_id=524398976]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 714.0
+offset_right = 261.0
+offset_bottom = 737.0
+text = "00000000"
+horizontal_alignment = 2
+
+[node name="CraftCrSpin" type="SpinBox" parent="Panel/MainTab/Craft/CraftTab/Crystals" unique_id=6675359]
+layout_mode = 0
+offset_left = 309.0
+offset_top = 714.0
+offset_right = 395.5
+offset_bottom = 745.0
+max_value = 0.0
+
+[node name="CraftCrButton" type="Button" parent="Panel/MainTab/Craft/CraftTab/Crystals" unique_id=1271171682]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 714.0
+offset_right = 501.0
+offset_bottom = 745.0
+text = "Buy"
+
+[node name="CraftCrResultLabel" type="RichTextLabel" parent="Panel/MainTab/Craft/CraftTab/Crystals" unique_id=1490874739]
+layout_mode = 0
+offset_left = 508.0
+offset_top = 10.0
+offset_right = 1320.0
+offset_bottom = 754.0
+
+[node name="Prisms" type="Control" parent="Panel/MainTab/Craft/CraftTab" unique_id=2146248646]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Refine" type="Control" parent="Panel/MainTab" unique_id=511291238]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="RefineTab" type="TabContainer" parent="Panel/MainTab/Refine" unique_id=1347031532]
+layout_mode = 0
+offset_right = 1320.0
+offset_bottom = 785.0
+tab_alignment = 1
+current_tab = 0
+
+[node name="Crystals" type="Control" parent="Panel/MainTab/Refine/RefineTab" unique_id=382433981]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Prisms" type="Control" parent="Panel/MainTab/Refine/RefineTab" unique_id=772911425]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="CloseButton" type="Button" parent="." unique_id=245035053]
+offset_left = 920.0
+offset_top = 944.0
+offset_right = 1008.0
+offset_bottom = 975.0
+text = "Close"

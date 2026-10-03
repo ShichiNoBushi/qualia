@@ -22,6 +22,7 @@ GameMenu="*uid://cx6ao2ipst85o"
 DialogBox="*uid://ca0t0l63qgfmf"
 DataRegistry="*uid://dy85rre4d1xqt"
 MerchantMenu="*uid://dvtkmhppex7oc"
+ForgeMenu="*uid://d1otttf2opki7"
 
 [display]
 
