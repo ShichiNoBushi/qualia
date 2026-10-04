@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://d1otttf2opki7"]
 
+[ext_resource type="Script" uid="uid://de1frrqhop2nd" path="res://Scripts/ForgeMenu.cs" id="1_vp2jb"]
+
 [node name="ForgeMenu" type="CanvasLayer" unique_id=464621726]
 visible = false
+script = ExtResource("1_vp2jb")
 
 [node name="Panel" type="Panel" parent="." unique_id=246710113]
 offset_left = 312.0
@@ -178,7 +181,7 @@ offset_left = 431.0
 offset_top = 714.0
 offset_right = 501.0
 offset_bottom = 745.0
-text = "Buy"
+text = "Craft"
 
 [node name="CraftCrResultLabel" type="RichTextLabel" parent="Panel/MainTab/Craft/CraftTab/Crystals" unique_id=1490874739]
 layout_mode = 0
@@ -191,6 +194,43 @@ offset_bottom = 754.0
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="RecipePrList" type="ItemList" parent="Panel/MainTab/Craft/CraftTab/Prisms" unique_id=1468636658]
+layout_mode = 0
+offset_right = 504.0
+offset_bottom = 706.0
+
+[node name="CrystalsCraftPrTextLabel" type="Label" parent="Panel/MainTab/Craft/CraftTab/Prisms" unique_id=625997067]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 714.0
+offset_right = 142.0
+offset_bottom = 737.0
+text = "G. Crystals:"
+
+[node name="CrystalsCraftPrLabel" type="Label" parent="Panel/MainTab/Craft/CraftTab/Prisms" unique_id=2073290530]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 714.0
+offset_right = 261.0
+offset_bottom = 737.0
+text = "00000000"
+horizontal_alignment = 2
+
+[node name="CraftPrButton" type="Button" parent="Panel/MainTab/Craft/CraftTab/Prisms" unique_id=1760121789]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 714.0
+offset_right = 501.0
+offset_bottom = 745.0
+text = "Craft"
+
+[node name="CraftPrResultLabel" type="RichTextLabel" parent="Panel/MainTab/Craft/CraftTab/Prisms" unique_id=188225434]
+layout_mode = 0
+offset_left = 508.0
+offset_top = 10.0
+offset_right = 1320.0
+offset_bottom = 754.0
 
 [node name="Refine" type="Control" parent="Panel/MainTab" unique_id=511291238]
 visible = false
@@ -208,14 +248,63 @@ current_tab = 0
 layout_mode = 2
 metadata/_tab_index = 0
 
+[node name="BreakCrList" type="ItemList" parent="Panel/MainTab/Refine/RefineTab/Crystals" unique_id=777677075]
+layout_mode = 0
+offset_right = 504.0
+offset_bottom = 706.0
+
+[node name="BreakCrSpin" type="SpinBox" parent="Panel/MainTab/Refine/RefineTab/Crystals" unique_id=2019074759]
+layout_mode = 0
+offset_left = 309.0
+offset_top = 714.0
+offset_right = 395.5
+offset_bottom = 745.0
+max_value = 0.0
+
+[node name="BreakCrButton" type="Button" parent="Panel/MainTab/Refine/RefineTab/Crystals" unique_id=539574729]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 714.0
+offset_right = 501.0
+offset_bottom = 745.0
+text = "Break"
+
+[node name="BreakCrResultLabel" type="RichTextLabel" parent="Panel/MainTab/Refine/RefineTab/Crystals" unique_id=513595639]
+layout_mode = 0
+offset_left = 508.0
+offset_top = 10.0
+offset_right = 1320.0
+offset_bottom = 754.0
+
 [node name="Prisms" type="Control" parent="Panel/MainTab/Refine/RefineTab" unique_id=772911425]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="CloseButton" type="Button" parent="." unique_id=245035053]
-offset_left = 920.0
-offset_top = 944.0
-offset_right = 1008.0
-offset_bottom = 975.0
+[node name="BreakPrList" type="ItemList" parent="Panel/MainTab/Refine/RefineTab/Prisms" unique_id=621124723]
+layout_mode = 0
+offset_right = 504.0
+offset_bottom = 706.0
+
+[node name="BreakPrButton" type="Button" parent="Panel/MainTab/Refine/RefineTab/Prisms" unique_id=1498443301]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 714.0
+offset_right = 501.0
+offset_bottom = 745.0
+text = "Break"
+
+[node name="BreakPrResultLabel" type="RichTextLabel" parent="Panel/MainTab/Refine/RefineTab/Prisms" unique_id=868494204]
+layout_mode = 0
+offset_left = 508.0
+offset_top = 10.0
+offset_right = 1320.0
+offset_bottom = 754.0
+
+[node name="CloseButton" type="Button" parent="Panel" unique_id=245035053]
+layout_mode = 0
+offset_left = 608.0
+offset_top = 824.0
+offset_right = 696.0
+offset_bottom = 855.0
 text = "Close"

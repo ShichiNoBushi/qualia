@@ -19,7 +19,7 @@ public partial class DataRegistry : Node
 		LoadAll("res://Resources/Skills/", skills);
 		LoadAll("res://Resources/TypeData/", types);
 		LoadAll("res://Resources/Items/", items);
-		LoadAll("res://REsources/Recipes/", recipes);
+		LoadAll("res://Resources/Recipes/", recipes);
 	}
 	
 	public void LoadAll<[MustBeVariant] T>(string dir, Godot.Collections.Dictionary<string, T> dest) where T : Resource

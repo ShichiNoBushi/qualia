@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://c1himha5535u8" path="res://Scripts/EncounterZone.cs" id="6_vi3vx"]
 [ext_resource type="Resource" uid="uid://cptc8in5acupn" path="res://Resources/Encounters/gnome2.tres" id="7_utdyw"]
 [ext_resource type="Resource" uid="uid://7kahqvhasm45" path="res://Resources/Encounters/salamander2.tres" id="8_pll4v"]
+[ext_resource type="PackedScene" uid="uid://bls1fwt0xxap8" path="res://Scenes/Characters/forge_npc.tscn" id="8_vi3vx"]
 [ext_resource type="Resource" uid="uid://kog0drycdr6h" path="res://Resources/Encounters/sylph2.tres" id="9_s0v22"]
 [ext_resource type="Resource" uid="uid://2qpekw05f34s" path="res://Resources/Encounters/undine2.tres" id="10_fgwjc"]
 [ext_resource type="Resource" uid="uid://dp3xd3ejwltlm" path="res://Resources/Encounters/test_encounter.tres" id="11_ov7jo"]
@@ -58,6 +59,34 @@ position = Vector2(464, 368)
 scale = Vector2(2, 2)
 name = "Healer"
 dialog = "I will restore your energy and provide a safe place to return to.[break]Hold still."
+
+[node name="MerchantNPC" parent="YSort" unique_id=1612370295 instance=ExtResource("16_ngc2t")]
+position = Vector2(688, 176)
+scale = Vector2(2, 2)
+itemStock = Dictionary[String, int]({
+"mini_bomb": 5,
+"mini_potion": -1
+})
+name = "Merchant"
+dialog = "Welcome![break]I have lots of good things on sale."
+
+[node name="ForgeNPC" parent="YSort" unique_id=1048131569 instance=ExtResource("8_vi3vx")]
+position = Vector2(784, 176)
+scale = Vector2(2, 2)
+itemStock = Dictionary[String, int]({
+"air": -1,
+"earth": -1,
+"ex_gnome": 1,
+"ex_salamander": 1,
+"ex_sylph": 1,
+"ex_undine": 1,
+"fire": -1,
+"water": -1
+})
+compatibleRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
+knownRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
+name = "Forge"
+dialog = "I'm a crystalsmith. I can combine qualia crystals into different types or into familiar prisms.[break]I can also break them down or sell you some."
 
 [node name="Chest" parent="YSort" unique_id=1187087599 instance=ExtResource("13_pnsqa")]
 position = Vector2(336, 880)
@@ -129,13 +158,3 @@ warp = "test_world_inn:entrance:up"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/InnEntrance" unique_id=1859466299]
 position = Vector2(496, 208)
 shape = SubResource("RectangleShape2D_ts14v")
-
-[node name="MerchantNPC" parent="." unique_id=1612370295 instance=ExtResource("16_ngc2t")]
-position = Vector2(688, 176)
-scale = Vector2(2, 2)
-itemStock = Dictionary[String, int]({
-"mini_bomb": 5,
-"mini_potion": -1
-})
-name = "Merchant"
-dialog = "Welcome![break]I have lots of good things on sale."

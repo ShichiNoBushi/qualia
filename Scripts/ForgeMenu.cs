@@ -24,6 +24,20 @@ public partial class ForgeMenu : CanvasLayer
 	public Button craftCrButton;
 	public RichTextLabel craftCrResultLabel;
 	
+	public ItemList recipePrList;
+	public Label crystalCraftPrLabel;
+	public Button craftPrButton;
+	public RichTextLabel craftPrResultLabel;
+	
+	public ItemList breakCrList;
+	public SpinBox breakCrSpin;
+	public Button breakCrButton;
+	public RichTextLabel breakCrResultLabel;
+	
+	public ItemList breakPrList;
+	public Button breakPrButton;
+	public RichTextLabel breakPrResultLabel;
+	
 	public Button closeButton;
 	
 	public ForgeNPC selectedForge;
@@ -46,10 +60,24 @@ public partial class ForgeMenu : CanvasLayer
 		inventoryItemLabel = GetNode<RichTextLabel>("Panel/MainTab/Trade/TradeTab/Sell/InventoryItemLabel");
 		
 		recipeCrList = GetNode<ItemList>("Panel/MainTab/Craft/CraftTab/Crystals/RecipeCrList");
-		crystalCraftCrLabel = GetNode<Label>("Panel/MainTab/Craft/CraftTab/Crystals/CrystalCraftCrLabel");
+		crystalCraftCrLabel = GetNode<Label>("Panel/MainTab/Craft/CraftTab/Crystals/CrystalsCraftCrLabel");
 		craftCrSpin = GetNode<SpinBox>("Panel/MainTab/Craft/CraftTab/Crystals/CraftCrSpin");
 		craftCrButton = GetNode<Button>("Panel/MainTab/Craft/CraftTab/Crystals/CraftCrButton");
 		craftCrResultLabel = GetNode<RichTextLabel>("Panel/MainTab/Craft/CraftTab/Crystals/CraftCrResultLabel");
+		
+		recipePrList = GetNode<ItemList>("Panel/MainTab/Craft/CraftTab/Prisms/RecipePrList");
+		crystalCraftPrLabel = GetNode<Label>("Panel/MainTab/Craft/CraftTab/Prisms/CrystalsCraftPrLabel");
+		craftPrButton = GetNode<Button>("Panel/MainTab/Craft/CraftTab/Prisms/CraftPrButton");
+		craftPrResultLabel = GetNode<RichTextLabel>("Panel/MainTab/Craft/CraftTab/Prisms/CraftPrResultLabel");
+		
+		breakCrList = GetNode<ItemList>("Panel/MainTab/Refine/RefineTab/Crystals/BreakCrList");
+		breakCrSpin = GetNode<SpinBox>("Panel/MainTab/Refine/RefineTab/Crystals/BreakCrSpin");
+		breakCrButton = GetNode<Button>("Panel/MainTab/Refine/RefineTab/Crystals/BreakCrButton");
+		breakCrResultLabel = GetNode<RichTextLabel>("Panel/MainTab/Refine/RefineTab/Crystals/BreakCrResultLabel");
+		
+		breakPrList = GetNode<ItemList>("Panel/MainTab/Refine/RefineTab/Prisms/BreakPrList");
+		breakPrButton = GetNode<Button>("Panel/MainTab/Refine/RefineTab/Prisms/BreakPrButton");
+		breakPrResultLabel = GetNode<RichTextLabel>("Panel/MainTab/Refine/RefineTab/Prisms/BreakPrResultLabel");
 		
 		closeButton = GetNode<Button>("Panel/CloseButton");
 		
@@ -65,6 +93,16 @@ public partial class ForgeMenu : CanvasLayer
 		craftCrSpin.GuiInput += OnCraftCrSpinGui;
 		craftCrButton.Pressed += OnCraftCrPressed;
 		
+		recipePrList.ItemSelected += OnRecipePrSelected;
+		craftPrButton.Pressed += OnCraftPrPressed;
+		
+		breakCrList.ItemSelected += OnBreakCrSelected;
+		breakCrSpin.GuiInput += OnBreakCrSpinGui;
+		breakCrButton.Pressed += OnBreakCrPressed;
+		
+		breakPrList.ItemSelected += OnBreakPrSelected;
+		breakPrButton.Pressed += OnBreakPrPressed;
+		
 		closeButton.Pressed += OnClosePressed;
 	}
 	
@@ -73,6 +111,9 @@ public partial class ForgeMenu : CanvasLayer
 		shopList.Clear();
 		inventoryList.Clear();
 		recipeCrList.Clear();
+		recipePrList.Clear();
+		breakCrList.Clear();
+		breakPrList.Clear();
 		
 		foreach (var crystal in session.qualiaCrystals)
 		{
@@ -83,10 +124,21 @@ public partial class ForgeMenu : CanvasLayer
 			inventoryList.AddItem(label);
 			int idx = inventoryList.ItemCount - 1;
 			inventoryList.SetItemMetadata(idx, crystal.Key);
+			
+			if (HasRecipe(data))
+			{
+				label = $"{data.name} x{crystal.Value}";
+				
+				breakCrList.AddItem(label);
+				idx = breakCrList.ItemCount - 1;
+				breakCrList.SetItemMetadata(idx, crystal.Key);
+			}
 		}
 		
 		crystalBuyLabel.Text = $"{session.qualiaGeneric}";
 		crystalSellLabel.Text = $"{session.qualiaGeneric}";
+		crystalCraftCrLabel.Text = $"{session.qualiaGeneric}";
+		crystalCraftPrLabel.Text = $"{session.qualiaGeneric}";
 		
 		if (selectedForge != null)
 		{
@@ -132,14 +184,39 @@ public partial class ForgeMenu : CanvasLayer
 					
 					if (data.makesPrism)
 					{
+						string label = data.GetResultName(registry);
+						
+						recipePrList.AddItem(label);
+						int idx = recipePrList.ItemCount - 1;
+						recipePrList.SetItemMetadata(idx, recipe);
+					}
+					else
+					{
+						string label = data.GetResultName(registry);
+						
+						recipeCrList.AddItem(label);
+						int idx = recipeCrList.ItemCount - 1;
+						recipeCrList.SetItemMetadata(idx, recipe);
+					}
+				}
+			}
+			
+			if (session.playerProjector?.ownedFamiliars != null)
+			{
+				for (int i = 0; i < session.playerProjector.ownedFamiliars.Count; i++)
+				{
+					RFamiliarInstance familiar = session.playerProjector.ownedFamiliars[i];
+					
+					if (familiar?.data == null || !HasRecipe(familiar.data))
+					{
 						continue;
 					}
 					
-					string label = data.GetResultName(registry);
+					string label = familiar.GetPreferredName();
 					
-					recipeCrList.AddItem(label);
-					int idx = recipeCrList.ItemCount - 1;
-					recipeCrList.SetItemMetadata(idx, recipe);
+					breakPrList.AddItem(label);
+					int idx = breakPrList.ItemCount - 1;
+					breakPrList.SetItemMetadata(idx, i);
 				}
 			}
 		}
@@ -147,16 +224,27 @@ public partial class ForgeMenu : CanvasLayer
 		buySpin.Value = 0f;
 		buySpin.MaxValue = 0f;
 		buyButton.Disabled = true;
+		
 		sellSpin.Value = 0f;
 		sellSpin.MaxValue = 0f;
 		sellButton.Disabled = true;
+		
 		craftCrSpin.Value = 0f;
 		craftCrSpin.MaxValue = 0f;
 		craftCrButton.Disabled = true;
 		
+		craftPrButton.Disabled = true;
+		
+		breakCrSpin.Value = 0f;
+		breakCrSpin.MaxValue = 0f;
+		breakCrButton.Disabled = true;
+		
+		breakPrButton.Disabled = true;
+		
 		shopItemLabel.Text = "";
 		inventoryItemLabel.Text = "";
 		craftCrResultLabel.Text = "";
+		craftPrResultLabel.Text = "";
 	}
 	
 	public void OnShopSelected(long index)
@@ -233,7 +321,7 @@ public partial class ForgeMenu : CanvasLayer
 		
 		if (data == null)
 		{
-			inventoryItemLabel.Text = "Invalid item data.";
+			inventoryItemLabel.Text = "Invalid crystal data.";
 			
 			sellSpin.Value = 0f;
 			sellSpin.MaxValue = 0f;
@@ -296,7 +384,7 @@ public partial class ForgeMenu : CanvasLayer
 		string id = recipeCrList.GetItemMetadata((int)index).AsString();
 		RForgeRecipe data = registry.Recipe(id);
 		
-		if (data == null)
+		if (data == null || data.makesPrism)
 		{
 			inventoryItemLabel.Text = "Invalid recipe data.";
 			
@@ -329,7 +417,7 @@ public partial class ForgeMenu : CanvasLayer
 	{
 		if (e.IsActionPressed("ui_accept"))
 		{
-			var selected = shopList.GetSelectedItems();
+			var selected = recipeCrList.GetSelectedItems();
 			
 			if (selected.Length == 0)
 			{
@@ -344,7 +432,7 @@ public partial class ForgeMenu : CanvasLayer
 	
 	public void OnCraftCrPressed()
 	{
-		var selected = shopList.GetSelectedItems();
+		var selected = recipeCrList.GetSelectedItems();
 		
 		if (selected.Length == 0)
 		{
@@ -354,6 +442,153 @@ public partial class ForgeMenu : CanvasLayer
 		string recipeId = recipeCrList.GetItemMetadata(selected[0]).AsString();
 		
 		CraftCrystal(recipeId);
+	}
+	
+	public void OnRecipePrSelected(long index)
+	{
+		string id = recipePrList.GetItemMetadata((int)index).AsString();
+		RForgeRecipe data = registry.Recipe(id);
+		
+		if (data == null || !data.makesPrism)
+		{
+			inventoryItemLabel.Text = "Invalid recipe data.";
+			
+			craftCrButton.Disabled = true;
+			
+			return;
+		}
+		
+		craftPrResultLabel.Text = data.FormatDescription(registry);
+		
+		if (session.qualiaCrystals != null)
+		{
+			int maxCraftable = TimesCraftable(data);
+			
+			craftPrButton.Disabled = maxCraftable <= 0 || session.playerProjector.ownedFamiliars.Count >= 10;
+		}
+		else
+		{
+			craftPrButton.Disabled = true;
+		}
+	}
+	
+	public void OnCraftPrPressed()
+	{
+		var selected = recipePrList.GetSelectedItems();
+		
+		if (selected.Length == 0)
+		{
+			return;
+		}
+		
+		string recipeId = recipePrList.GetItemMetadata(selected[0]).AsString();
+		
+		CraftPrism(recipeId);
+	}
+	
+	public void OnBreakCrSelected(long index)
+	{
+		string id = breakCrList.GetItemMetadata((int)index).AsString();
+		RQualiaCrystal data = registry.Crystal(id);
+		
+		if (data == null)
+		{
+			breakCrResultLabel.Text = "Invalid crystal data.";
+			
+			breakCrSpin.Value = 0f;
+			breakCrSpin.MaxValue = 0f;
+			breakCrButton.Disabled = true;
+			
+			return;
+		}
+		
+		breakCrResultLabel.Text = data.FormatDescription();
+		
+		if (session.qualiaCrystals != null)
+		{
+			int maxAvailable = session.qualiaCrystals.TryGetValue(id, out int n) && n > 0 ? n : 0;
+			
+			breakCrSpin.Value = maxAvailable > 0 ? 1f : 0f;
+			breakCrSpin.MaxValue = maxAvailable;
+			breakCrButton.Disabled = maxAvailable <= 0;
+		}
+		else
+		{
+			breakCrSpin.Value = 0f;
+			breakCrSpin.MaxValue = 0f;
+			breakCrButton.Disabled = true;
+		}
+	}
+	
+	public void OnBreakCrSpinGui(InputEvent e)
+	{
+		if (e.IsActionPressed("ui_accept"))
+		{
+			var selected = breakCrList.GetSelectedItems();
+			
+			if (selected.Length == 0)
+			{
+				return;
+			}
+			
+			string crystalId = breakCrList.GetItemMetadata(selected[0]).AsString();
+			
+			BreakCrystal(crystalId);
+		}
+	}
+	
+	public void OnBreakCrPressed()
+	{
+		var selected = breakCrList.GetSelectedItems();
+		
+		if (selected.Length == 0)
+		{
+			return;
+		}
+		
+		string crystalId = breakCrList.GetItemMetadata(selected[0]).AsString();
+		
+		BreakCrystal(crystalId);
+	}
+	
+	public void OnBreakPrSelected(long index)
+	{
+		int idx = (int)breakPrList.GetItemMetadata((int)index);
+		RFamiliarInstance familiar = session.playerProjector?.ownedFamiliars?[idx];
+		RFamiliarData data = familiar?.data;
+		
+		if (familiar == null || data == null)
+		{
+			breakCrResultLabel.Text = "Invalid familiar data.";
+			
+			breakCrButton.Disabled = true;
+			
+			return;
+		}
+		
+		breakPrResultLabel.Text = familiar.GetPreferredName();
+		
+		breakPrButton.Disabled = session.playerProjector.ownedFamiliars.Count <= 1;
+	}
+	
+	public void OnBreakPrPressed()
+	{
+		var selected = breakPrList.GetSelectedItems();
+		
+		if (selected.Length == 0)
+		{
+			return;
+		}
+		
+		int idx = breakPrList.GetItemMetadata(selected[0]).AsInt32();
+		Godot.Collections.Array<RFamiliarInstance> familiars = session.playerProjector?.ownedFamiliars;
+		
+		if (familiars == null || idx < 0 || idx >= familiars.Count)
+		{
+			return;
+		}
+		
+		BreakPrism(familiars[idx]);
 	}
 	
 	public void OnClosePressed()
@@ -459,7 +694,7 @@ public partial class ForgeMenu : CanvasLayer
 			
 			if (cData == null || !session.RemoveCrystal(cData, ing.Value * amount))
 			{
-				continue;
+				return;
 			}
 		}
 		
@@ -474,17 +709,174 @@ public partial class ForgeMenu : CanvasLayer
 	
 	public void CraftPrism(string id)
 	{
+		if (session.playerProjector?.ownedFamiliars == null || session.playerProjector.ownedFamiliars.Count >= 10)
+		{
+			return;
+		}
 		
+		RForgeRecipe data = registry.Recipe(id);
+		
+		if (data == null || !data.makesPrism)
+		{
+			return;
+		}
+		
+		if (!CanCraft(data, 1))
+		{
+			return;
+		}
+		
+		RFamiliarData result = registry.Familiar(data.resultId);
+		
+		if (result == null)
+		{
+			return;
+		}
+		
+		RFamiliarInstance instance = new();
+		instance.Initialize(result);
+		
+		foreach (var ing in data.ingredients)
+		{
+			if (ing.Value <= 0)
+			{
+				continue;
+			}
+			
+			RQualiaCrystal cData = registry.Crystal(ing.Key);
+			
+			if (cData == null || !session.RemoveCrystal(cData, ing.Value))
+			{
+				return;
+			}
+		}
+		
+		if (data.cost > 0)
+		{
+			session.qualiaGeneric -= data.cost;
+		}
+		
+		if (!session.playerProjector.GiveFamiliar(instance))
+		{
+			return;
+		}
+		
+		UpdateInventory();
 	}
 	
 	public void BreakCrystal(string id)
 	{
+		RQualiaCrystal data = registry.Crystal(id);
+		RForgeRecipe recipe = data == null ? null : GetBreakRecipe(data);
 		
+		int amount = (int)breakCrSpin.Value;
+		
+		if (recipe == null || amount <= 0)
+		{
+			return;
+		}
+		
+		if (!session.qualiaCrystals.TryGetValue(id, out int n) || n < amount)
+		{
+			return;
+		}
+		
+		if (!session.RemoveCrystal(data, amount))
+		{
+			return;
+		}
+		
+		Godot.Collections.Dictionary<string, int> total = new();
+		
+		foreach (var ing in recipe.ingredients)
+		{
+			for (int i = 0; i < ing.Value * amount; i++)
+			{
+				if (GD.Randf() > 0.5f)
+				{
+					total[ing.Key] = (total.TryGetValue(ing.Key, out int m) ? m : 0) + 1;
+				}
+			}
+		}
+		
+		System.Collections.Generic.List<string> lines = new();
+		lines.Add("Total Result:");
+		
+		if (total.Count == 0)
+		{
+			lines.Add("Nothing");
+		}
+		
+		foreach (var ing in total)
+		{
+			RQualiaCrystal cData = registry.Crystal(ing.Key);
+			
+			if (cData == null)
+			{
+				continue;
+			}
+			
+			session.AddCrystal(cData, ing.Value);
+			lines.Add($"{cData.name} x{ing.Value}");
+		}
+		
+		breakCrResultLabel.Text = string.Join("\n", lines);
+		UpdateInventory();
 	}
 	
-	public void BreakPrism(string id)
+	public void BreakPrism(RFamiliarInstance familiar)
 	{
+		RFamiliarData data = familiar?.data;
+		RForgeRecipe recipe = data == null ? null : GetBreakRecipe(data);
 		
+		int level = familiar != null ? familiar.level : -1;
+		
+		if (recipe == null || level <= 0)
+		{
+			return;
+		}
+		
+		if (session.playerProjector.RemoveFamiliar(familiar) == null)
+		{
+			return;
+		}
+		
+		Godot.Collections.Dictionary<string, int> total = new();
+		
+		foreach (var ing in recipe.ingredients)
+		{
+			for (int i = 0; i < ing.Value * level; i++)
+			{
+				if (GD.Randf() > 0.5f)
+				{
+					total[ing.Key] = (total.TryGetValue(ing.Key, out int m) ? m : 0) + 1;
+				}
+			}
+		}
+		
+		System.Collections.Generic.List<string> lines = new();
+		lines.Add("Total Result:");
+		
+		if (total.Count == 0)
+		{
+			lines.Add("Nothing");
+		}
+		
+		foreach (var ing in total)
+		{
+			RQualiaCrystal cData = registry.Crystal(ing.Key);
+			
+			if (cData == null)
+			{
+				continue;
+			}
+			
+			session.AddCrystal(cData, ing.Value);
+			lines.Add($"{cData.name} x{ing.Value}");
+		}
+		
+		breakPrResultLabel.Text = string.Join("\n", lines);
+		UpdateInventory();
 	}
 	
 	public int TimesCraftable(RForgeRecipe recipe)
@@ -535,6 +927,66 @@ public partial class ForgeMenu : CanvasLayer
 		}
 		
 		return true;
+	}
+	
+	public bool HasRecipe(RQualiaCrystal crystal)
+	{
+		string id = crystal.id;
+		
+		foreach (var recipe in registry.recipes.Values)
+		{
+			 if (!recipe.makesPrism && recipe.resultId == id)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public bool HasRecipe(RFamiliarData familiar)
+	{
+		string id = familiar.id;
+		
+		foreach (var recipe in registry.recipes.Values)
+		{
+			if (recipe.makesPrism && recipe.resultId == id)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public RForgeRecipe GetBreakRecipe(RFamiliarData familiar)
+	{
+		string id = familiar.id;
+		
+		foreach (var recipe in registry.recipes.Values)
+		{
+			if (recipe.makesPrism && recipe.resultId == id)
+			{
+				return recipe;
+			}
+		}
+		
+		return null;
+	}
+	
+		public RForgeRecipe GetBreakRecipe(RQualiaCrystal crystal)
+	{
+		string id = crystal.id;
+		
+		foreach (var recipe in registry.recipes.Values)
+		{
+			if (!recipe.makesPrism && recipe.resultId == id)
+			{
+				return recipe;
+			}
+		}
+		
+		return null;
 	}
 	
 	public void Open(ForgeNPC forge)

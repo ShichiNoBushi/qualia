@@ -27,6 +27,7 @@ scale = Vector2(2, 2)
 tile_set = ExtResource("2_7f12l")
 
 [node name="YSort" type="Node2D" parent="." unique_id=2118953611]
+y_sort_enabled = true
 
 [node name="Player" parent="YSort" unique_id=838609280 instance=ExtResource("3_qbswe")]
 position = Vector2(176, 240)

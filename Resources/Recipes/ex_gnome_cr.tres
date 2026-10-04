@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://di88c0fbpjcnc"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_lt3b2"]
+
+[resource]
+script = ExtResource("1_lt3b2")
+id = "ex_gnome_cr"
+resultId = "ex_gnome"
+makesPrism = false
+ingredients = Dictionary[String, int]({
+"earth": 3
+})
+cost = 20
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"
