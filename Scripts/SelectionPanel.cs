@@ -55,7 +55,6 @@ public partial class SelectionPanel : Control
 		}
 		
 		Visible = true;
-		BlockCommands();
 	}
 	
 	public void HidePanel()
@@ -63,7 +62,6 @@ public partial class SelectionPanel : Control
 		Visible = false;
 		OnItemChosen = null;
 		ClearRows();
-		UnblockCommands();
 	}
 	
 	public void ClearRows()
@@ -71,32 +69,6 @@ public partial class SelectionPanel : Control
 		foreach (var child in itemVBox.GetChildren())
 		{
 			child.QueueFree();
-		}
-	}
-	
-	public void BlockCommands()
-	{
-		battle.projCommandPanel.DisableCommands();
-		
-		for (int i = 0; i < 4; i++)
-		{
-			battle.famCommandPanels[i].DisableCommands();
-		}
-	}
-	
-	public void UnblockCommands()
-	{
-		if (!battle.projCommandDisabled)
-		{
-			battle.projCommandPanel.EnableCommands();
-		}
-		
-		for (int i = 0; i < 4; i++)
-		{
-			if (!battle.famCommandDisabled[i])
-			{
-				battle.famCommandPanels[i].EnableCommands();
-			}
 		}
 	}
 }

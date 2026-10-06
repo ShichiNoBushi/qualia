@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://duy000bar45m2"]
+
+[ext_resource type="Script" uid="uid://tp1pjvkvqrc1" path="res://Scripts/Sign.cs" id="1_kisi6"]
+[ext_resource type="Texture2D" uid="uid://bgtvacgako0ao" path="res://Resources/Assets/Sprites/sign_4.png" id="1_o8j4f"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ts14v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_o8j4f")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ec203"]
+size = Vector2(8, 8)
+
+[node name="Sign" type="StaticBody2D" unique_id=281475496]
+script = ExtResource("1_kisi6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1331898813]
+position = Vector2(0, -1)
+sprite_frames = SubResource("SpriteFrames_ts14v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1810321534]
+shape = SubResource("RectangleShape2D_ec203")

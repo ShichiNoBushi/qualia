@@ -398,28 +398,66 @@ public partial class BattleManager : Node
 	
 	public void RefreshNextButton()
 	{
+		nextButton.RemoveThemeStyleboxOverride("normal");
+		nextButton.RemoveThemeStyleboxOverride("hover");
+		nextButton.RemoveThemeStyleboxOverride("pressed");
+		
 		if (batState == BattleState.CommandSelect)
 		{
 			bool canCommit = PlayerCommandsSubmitted();
 			bool canCancel = comState != CommandState.None;
 			nextButton.Text = canCommit ? "Commit" : (canCancel ? "Cancel" : "Next");
 			nextButton.Disabled = !canCommit && !canCancel;
+			
+			if (canCommit)
+			{
+				TintNextButton(new Color("7dff9a"), new Color("272727"));
+			}
+			else if (canCancel)
+			{
+				TintNextButton(new Color("ff7d7d"), new Color("272727"));
+			}
 		}
 		else if (batState == BattleState.Victory || batState == BattleState.Defeat || batState == BattleState.Escape)
 		{
 			nextButton.Text = "Finish";
 			nextButton.Disabled = false;
+			TintNextButton(new Color("8eb6ff"), new Color("272727"));
 		}
 		else if (batState == BattleState.Resolution)
 		{
 			nextButton.Text = "Next";
 			nextButton.Disabled = false;
+			TintNextButton(new Color("ffe08a"), new Color("272727"));
 		}
 		else
 		{
 			nextButton.Text = "Next";
 			nextButton.Disabled = false;
 		}
+	}
+	
+	public void TintNextButton(Color cb, Color ct)
+	{
+		nextButton.AddThemeStyleboxOverride("normal", MakeBox(cb));
+		nextButton.AddThemeColorOverride("font_color", ct);
+		nextButton.AddThemeStyleboxOverride("hover", MakeBox(cb.Lightened(0.15f)));
+		nextButton.AddThemeColorOverride("font_hover_color", ct.Lightened(0.15f));
+		nextButton.AddThemeStyleboxOverride("pressed", MakeBox(cb.Darkened(0.1f)));
+		nextButton.AddThemeColorOverride("font_pressed_color", ct.Darkened(0.1f));
+	}
+	
+	public StyleBoxFlat MakeBox(Color c)
+	{
+		StyleBoxFlat box = new();
+		box.BgColor = c;
+		box.SetCornerRadiusAll(4);
+		box.ContentMarginLeft = 8;
+		box.ContentMarginRight = 8;
+		box.ContentMarginTop = 4;
+		box.ContentMarginBottom = 4;
+		
+		return box;
 	}
 	
 	public void RefreshCommandPanels()

@@ -125,6 +125,44 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_ts14v"]
 radius = 7.0
 
+[sub_resource type="Animation" id="Animation_40svl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_al8ar"]
+resource_name = "no_encounter"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 0.25, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gy20a"]
+_data = {
+&"RESET": SubResource("Animation_40svl"),
+&"no_encounter": SubResource("Animation_al8ar")
+}
+
 [node name="Player" type="CharacterBody2D" unique_id=838609280]
 motion_mode = 1
 script = ExtResource("1_cvnsp")
@@ -135,6 +173,9 @@ animation = &"walk_front"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1465717657]
 shape = SubResource("CircleShape2D_ts14v")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1319320336]
+libraries/ = SubResource("AnimationLibrary_gy20a")
 
 [node name="Timer" type="Timer" parent="." unique_id=1024088542]
 wait_time = 5.0

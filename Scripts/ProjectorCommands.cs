@@ -41,9 +41,6 @@ public partial class ProjectorCommands : Control
 		itemButton.Pressed += OnItemPressed;
 		escapeButton.Pressed += OnEscapePressed;
 		undoButton.Pressed += OnUndoPressed;
-		
-		//CheckValidCommands();
-		//EnableCommands();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

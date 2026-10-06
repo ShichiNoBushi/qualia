@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/Characters/player.tscn" id="2_pnsqa"]
 [ext_resource type="PackedScene" uid="uid://by86ymrructfl" path="res://Scenes/Characters/npc.tscn" id="3_gjrm8"]
 [ext_resource type="Resource" uid="uid://cyp4vnvhjl3hk" path="res://Resources/Encounters/vs_rand_proj.tres" id="4_qe4dn"]
-[ext_resource type="PackedScene" uid="uid://d1wgptwxtbgi3" path="res://Scenes/Characters/inn_npc.tscn" id="5_ngc2t"]
 [ext_resource type="Script" uid="uid://c1himha5535u8" path="res://Scripts/EncounterZone.cs" id="6_vi3vx"]
 [ext_resource type="Resource" uid="uid://cptc8in5acupn" path="res://Resources/Encounters/gnome2.tres" id="7_utdyw"]
 [ext_resource type="Resource" uid="uid://7kahqvhasm45" path="res://Resources/Encounters/salamander2.tres" id="8_pll4v"]
@@ -17,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://c7ghumn7n000w" path="res://Scenes/Objects/chest.tscn" id="13_pnsqa"]
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="15_qe4dn"]
 [ext_resource type="PackedScene" uid="uid://e50xasid0gsm" path="res://Scenes/Characters/merchant_npc.tscn" id="16_ngc2t"]
+[ext_resource type="PackedScene" uid="uid://duy000bar45m2" path="res://Scenes/Objects/sign.tscn" id="17_vi3vx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
 size = Vector2(32, 32)
@@ -54,12 +54,6 @@ isBattleable = true
 name = "Woman"
 dialog = "Testing dialog and battle.[break]Beginning wild familiar encounter."
 
-[node name="InnNPC" parent="YSort" unique_id=1563121890 instance=ExtResource("5_ngc2t")]
-position = Vector2(464, 368)
-scale = Vector2(2, 2)
-name = "Healer"
-dialog = "I will restore your energy and provide a safe place to return to.[break]Hold still."
-
 [node name="MerchantNPC" parent="YSort" unique_id=1612370295 instance=ExtResource("16_ngc2t")]
 position = Vector2(688, 176)
 scale = Vector2(2, 2)
@@ -87,6 +81,36 @@ compatibleRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_
 knownRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
 name = "Forge"
 dialog = "I'm a crystalsmith. I can combine qualia crystals into different types or into familiar prisms.[break]I can also break them down or sell you some."
+
+[node name="InnSign" parent="YSort" unique_id=281475496 instance=ExtResource("17_vi3vx")]
+position = Vector2(432, 208)
+scale = Vector2(2, 2)
+label = "Healers"
+textSouth = "Healers will restore you to full health as well as set a place to return to if you lose a battle."
+
+[node name="MerchantSign" parent="YSort" unique_id=181848659 instance=ExtResource("17_vi3vx")]
+position = Vector2(656, 176)
+scale = Vector2(2, 2)
+label = "Merchants"
+textSouth = "Merchants can sell and buy items."
+
+[node name="SmithSign" parent="YSort" unique_id=1392727624 instance=ExtResource("17_vi3vx")]
+position = Vector2(816, 176)
+scale = Vector2(2, 2)
+label = "Smiths"
+textSouth = "Crystal smiths can combine crystals into other crystals or prisms to summon familiars. They can also break them into component crystals or trade crystals with you."
+
+[node name="ProjectorSign" parent="YSort" unique_id=394638430 instance=ExtResource("17_vi3vx")]
+position = Vector2(816, 496)
+scale = Vector2(2, 2)
+label = "Projectors"
+textSouth = "Some characters are projectors like yourself and will start a battle with you. You will defeat them by eliminating all the familiars they summon as well as reduce their Energy to 0."
+
+[node name="WildSparkSign" parent="YSort" unique_id=251241764 instance=ExtResource("17_vi3vx")]
+position = Vector2(912, 944)
+scale = Vector2(2, 2)
+label = "Wild Sparks"
+textSouth = "Sparks appearing in the field are creatures that are beginning to manifest. By making contact with them you will begin a battle with wild creatures that will appear over time.[break]Summon your own familiars to fight with them and protect yourself. If you don't have any active familiars, enemies can attack you directly.[break]If you defeat them, you will be able to accumulate experience for yourself and the familiars you used in battle and collect qualia crystals dropped by the familiars you defeated."
 
 [node name="Chest" parent="YSort" unique_id=1187087599 instance=ExtResource("13_pnsqa")]
 position = Vector2(336, 880)

@@ -69,7 +69,7 @@ public partial class FamiliarCommands : Control
 			
 			bool disabled = false;
 			
-			if (actor.currentEnergy < skill.cost)
+			if (actor.currentEnergy <= skill.cost)
 			{
 				disabled = true;
 			}

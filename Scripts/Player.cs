@@ -7,6 +7,7 @@ public partial class Player : CharacterBody2D
 	public Projector projector {get; set;}
 	
 	public AnimatedSprite2D sprite;
+	public AnimationPlayer animation;
 	public string lastAnim;
 	public Vector2 facing = Vector2.Down;
 	
@@ -18,6 +19,7 @@ public partial class Player : CharacterBody2D
 	public override void _Ready()
 	{
 		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		animation = GetNode<AnimationPlayer>("AnimationPlayer");
 		timer = GetNode<Timer>("Timer");
 		
 		timer.Timeout += OnInvulnerableTimeout;
@@ -124,14 +126,20 @@ public partial class Player : CharacterBody2D
 			GD.Print("Player: Interact with Chest.");
 			chest.Interact(this);
 		}
+		else if (hit.Count > 0 && hit["collider"].AsGodotObject() is Sign sign)
+		{
+			GD.Print("Player: Interact with Sign");
+			sign.Interact(this);
+		}
 		else
 		{
-			GD.Print("Player: No NPC present.");
+			GD.Print("Player: No interactable present.");
 		}
 	}
 	
 	public void OnInvulnerableTimeout()
 	{
+		animation.Stop();
 		noEncounter = false;
 	}
 	
@@ -158,6 +166,7 @@ public partial class Player : CharacterBody2D
 	public void SetInvulnerable()
 	{
 		noEncounter = true;
+		animation.Play("no_encounter");
 		timer.Start();
 	}
 }

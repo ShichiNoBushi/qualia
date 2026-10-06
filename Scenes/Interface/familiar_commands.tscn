@@ -4,6 +4,7 @@
 
 [node name="FamiliarCommands" type="Control" unique_id=1266136363]
 layout_mode = 3
+anchors_preset = 0
 offset_right = 290.0
 offset_bottom = 235.0
 grow_horizontal = 2
