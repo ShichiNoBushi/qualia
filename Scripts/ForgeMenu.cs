@@ -40,6 +40,8 @@ public partial class ForgeMenu : CanvasLayer
 	
 	public Button closeButton;
 	
+	public ConfirmationDialog breakConfirm;
+	
 	public ForgeNPC selectedForge;
 	
 	public override void _Ready()
@@ -81,6 +83,8 @@ public partial class ForgeMenu : CanvasLayer
 		
 		closeButton = GetNode<Button>("Panel/CloseButton");
 		
+		breakConfirm = GetNode<ConfirmationDialog>("BreakConfirm");
+		
 		shopList.ItemSelected += OnShopSelected;
 		buySpin.GuiInput += OnBuySpinGui;
 		buyButton.Pressed += OnBuyPressed;
@@ -104,6 +108,8 @@ public partial class ForgeMenu : CanvasLayer
 		breakPrButton.Pressed += OnBreakPrPressed;
 		
 		closeButton.Pressed += OnClosePressed;
+		
+		breakConfirm.Confirmed += OnBreakConfirmed;
 	}
 	
 	public void UpdateInventory()
@@ -573,6 +579,33 @@ public partial class ForgeMenu : CanvasLayer
 	
 	public void OnBreakPrPressed()
 	{
+		breakConfirm.PopupCentered();
+		
+		/*var selected = breakPrList.GetSelectedItems();
+		
+		if (selected.Length == 0)
+		{
+			return;
+		}
+		
+		int idx = breakPrList.GetItemMetadata(selected[0]).AsInt32();
+		Godot.Collections.Array<RFamiliarInstance> familiars = session.playerProjector?.ownedFamiliars;
+		
+		if (familiars == null || idx < 0 || idx >= familiars.Count)
+		{
+			return;
+		}
+		
+		BreakPrism(familiars[idx]);*/
+	}
+	
+	public void OnClosePressed()
+	{
+		Close();
+	}
+	
+	public void OnBreakConfirmed()
+	{
 		var selected = breakPrList.GetSelectedItems();
 		
 		if (selected.Length == 0)
@@ -589,11 +622,6 @@ public partial class ForgeMenu : CanvasLayer
 		}
 		
 		BreakPrism(familiars[idx]);
-	}
-	
-	public void OnClosePressed()
-	{
-		Close();
 	}
 	
 	public void BuyCrystal(string id)

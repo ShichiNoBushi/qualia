@@ -308,3 +308,6 @@ offset_top = 824.0
 offset_right = 696.0
 offset_bottom = 855.0
 text = "Close"
+
+[node name="BreakConfirm" type="ConfirmationDialog" parent="." unique_id=1249453288]
+dialog_text = "Are you sure you want to break down this prism? It will be lost permanently."
