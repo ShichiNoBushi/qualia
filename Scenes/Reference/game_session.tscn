@@ -6,5 +6,7 @@
 script = ExtResource("1_jq318")
 mapScenes = Dictionary[String, String]({
 "test_world_inn": "Scenes/Maps/test_world_inn.tscn",
+"test_world_merchant": "Scenes/Maps/test_world_merchant.tscn",
+"test_world_smith": "Scenes/Maps/test_world_smith.tscn",
 "world": "Scenes/Maps/world.tscn"
 })

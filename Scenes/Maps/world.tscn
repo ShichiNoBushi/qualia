@@ -8,17 +8,21 @@
 [ext_resource type="Script" uid="uid://c1himha5535u8" path="res://Scripts/EncounterZone.cs" id="6_vi3vx"]
 [ext_resource type="Resource" uid="uid://cptc8in5acupn" path="res://Resources/Encounters/gnome2.tres" id="7_utdyw"]
 [ext_resource type="Resource" uid="uid://7kahqvhasm45" path="res://Resources/Encounters/salamander2.tres" id="8_pll4v"]
-[ext_resource type="PackedScene" uid="uid://bls1fwt0xxap8" path="res://Scenes/Characters/forge_npc.tscn" id="8_vi3vx"]
 [ext_resource type="Resource" uid="uid://kog0drycdr6h" path="res://Resources/Encounters/sylph2.tres" id="9_s0v22"]
 [ext_resource type="Resource" uid="uid://2qpekw05f34s" path="res://Resources/Encounters/undine2.tres" id="10_fgwjc"]
 [ext_resource type="Resource" uid="uid://dp3xd3ejwltlm" path="res://Resources/Encounters/test_encounter.tres" id="11_ov7jo"]
 [ext_resource type="PackedScene" uid="uid://h3qvqlbvbmva" path="res://Scenes/Characters/wild_spark_small.tscn" id="12_jkuiv"]
 [ext_resource type="PackedScene" uid="uid://c7ghumn7n000w" path="res://Scenes/Objects/chest.tscn" id="13_pnsqa"]
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="15_qe4dn"]
-[ext_resource type="PackedScene" uid="uid://e50xasid0gsm" path="res://Scenes/Characters/merchant_npc.tscn" id="16_ngc2t"]
 [ext_resource type="PackedScene" uid="uid://duy000bar45m2" path="res://Scenes/Objects/sign.tscn" id="17_vi3vx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ec203"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3xyhk"]
 size = Vector2(32, 32)
 
 [node name="World" type="Node2D" unique_id=1081555688 node_paths=PackedStringArray("spawnMarkers") groups=["map"]]
@@ -34,7 +38,7 @@ tile_set = ExtResource("1_08va7")
 
 [node name="ObjectsTileMap" type="TileMapLayer" parent="." unique_id=1662334726]
 scale = Vector2(2, 2)
-tile_map_data = PackedByteArray("AAAOAAQAAAAIAAAAAAAOAAUAAAAIAAEAAAAPAAQAAAAJAAAAAAAPAAUAAAAJAAEAAAAQAAQAAAAKAAAAAAAQAAUAAAAKAAEAAAAOAAYAAAAIAAIAAAAPAAYAAAAKAAMAAAAQAAYAAAAKAAIAAAA=")
+tile_map_data = PackedByteArray("AAAOAAQAAAAIAAAAAAAOAAUAAAAIAAEAAAAPAAQAAAAJAAAAAAAPAAUAAAAJAAEAAAAQAAQAAAAKAAAAAAAQAAUAAAAKAAEAAAAOAAYAAAAIAAIAAAAPAAYAAAAKAAMAAAAQAAYAAAAKAAIAAAATAAQAAAACAAAAAAATAAUAAAACAAEAAAATAAYAAAACAAIAAAAUAAQAAAADAAAAAAAUAAUAAAADAAEAAAAUAAYAAAAKAAMAAAAVAAQAAAAEAAAAAAAVAAUAAAAEAAEAAAAVAAYAAAAEAAIAAAAYAAQAAAALAAAAAAAYAAUAAAALAAEAAAAYAAYAAAALAAIAAAAZAAQAAAAMAAAAAAAZAAUAAAAMAAEAAAAZAAYAAAAKAAMAAAAaAAQAAAANAAAAAAAaAAUAAAANAAEAAAAaAAYAAAANAAIAAAA=")
 tile_set = ExtResource("1_08va7")
 
 [node name="YSort" type="Node2D" parent="." unique_id=2010643530]
@@ -54,34 +58,6 @@ isBattleable = true
 name = "Woman"
 dialog = "Testing dialog and battle.[break]Beginning wild familiar encounter."
 
-[node name="MerchantNPC" parent="YSort" unique_id=1612370295 instance=ExtResource("16_ngc2t")]
-position = Vector2(688, 176)
-scale = Vector2(2, 2)
-itemStock = Dictionary[String, int]({
-"mini_bomb": 5,
-"mini_potion": -1
-})
-name = "Merchant"
-dialog = "Welcome![break]I have lots of good things on sale."
-
-[node name="ForgeNPC" parent="YSort" unique_id=1048131569 instance=ExtResource("8_vi3vx")]
-position = Vector2(784, 176)
-scale = Vector2(2, 2)
-itemStock = Dictionary[String, int]({
-"air": -1,
-"earth": -1,
-"ex_gnome": 1,
-"ex_salamander": 1,
-"ex_sylph": 1,
-"ex_undine": 1,
-"fire": -1,
-"water": -1
-})
-compatibleRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
-knownRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
-name = "Forge"
-dialog = "I'm a crystalsmith. I can combine qualia crystals into different types or into familiar prisms.[break]I can also break them down or sell you some."
-
 [node name="InnSign" parent="YSort" unique_id=281475496 instance=ExtResource("17_vi3vx")]
 position = Vector2(432, 208)
 scale = Vector2(2, 2)
@@ -89,13 +65,13 @@ label = "Healers"
 textSouth = "Healers will restore you to full health as well as set a place to return to if you lose a battle."
 
 [node name="MerchantSign" parent="YSort" unique_id=181848659 instance=ExtResource("17_vi3vx")]
-position = Vector2(656, 176)
+position = Vector2(592, 208)
 scale = Vector2(2, 2)
 label = "Merchants"
 textSouth = "Merchants can sell and buy items."
 
 [node name="SmithSign" parent="YSort" unique_id=1392727624 instance=ExtResource("17_vi3vx")]
-position = Vector2(816, 176)
+position = Vector2(752, 208)
 scale = Vector2(2, 2)
 label = "Smiths"
 textSouth = "Crystal smiths can combine crystals into other crystals or prisms to summon familiars. They can also break them into component crystals or trade crystals with you."
@@ -173,6 +149,12 @@ position = Vector2(624, 528)
 [node name="inn_exit" type="Marker2D" parent="Markers" unique_id=1307322999]
 position = Vector2(496, 208)
 
+[node name="merchant_exit" type="Marker2D" parent="Markers" unique_id=1756594997]
+position = Vector2(656, 208)
+
+[node name="smith_exit" type="Marker2D" parent="Markers" unique_id=1710671664]
+position = Vector2(816, 208)
+
 [node name="Transitions" type="Node2D" parent="." unique_id=1097379754]
 
 [node name="InnEntrance" type="Area2D" parent="Transitions" unique_id=357110141 groups=["map_transitions"]]
@@ -182,3 +164,19 @@ warp = "test_world_inn:entrance:up"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/InnEntrance" unique_id=1859466299]
 position = Vector2(496, 208)
 shape = SubResource("RectangleShape2D_ts14v")
+
+[node name="MerchantEntrance" type="Area2D" parent="Transitions" unique_id=1300429315 groups=["map_transitions"]]
+position = Vector2(656, 208)
+script = ExtResource("15_qe4dn")
+warp = "test_world_merchant:entrance:up"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/MerchantEntrance" unique_id=811599488]
+shape = SubResource("RectangleShape2D_ec203")
+
+[node name="SmithEntrance" type="Area2D" parent="Transitions" unique_id=342754688 groups=["map_transitions"]]
+script = ExtResource("15_qe4dn")
+warp = "test_world_smith:entrance:up"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/SmithEntrance" unique_id=1152726631]
+position = Vector2(816, 208)
+shape = SubResource("RectangleShape2D_3xyhk")

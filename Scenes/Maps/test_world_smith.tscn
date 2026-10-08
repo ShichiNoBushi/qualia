@@ -1,0 +1,73 @@
+[gd_scene format=4 uid="uid://46tr6vyyiuwo"]
+
+[ext_resource type="Script" uid="uid://bsb0d7lk34yln" path="res://Scripts/Map.cs" id="1_07npp"]
+[ext_resource type="TileSet" uid="uid://dq20sdjokbl3g" path="res://Resources/Assets/outside_tile_set.tres" id="1_doltr"]
+[ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/Characters/player.tscn" id="2_07npp"]
+[ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="3_8l5td"]
+[ext_resource type="PackedScene" uid="uid://bls1fwt0xxap8" path="res://Scenes/Characters/forge_npc.tscn" id="4_8l5td"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lk3ao"]
+size = Vector2(64, 32)
+
+[node name="TestWorldSmith" type="Node2D" unique_id=1616686241 node_paths=PackedStringArray("spawnMarkers")]
+script = ExtResource("1_07npp")
+id = "test_world_smith"
+name = "Test World Smith"
+spawnMarkers = {
+"entrance": NodePath("Markers/entrance")
+}
+
+[node name="GroundTileMap" type="TileMapLayer" parent="." unique_id=1718393849]
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAAAAAAAAAANAAUAAAABAAAAAAANAAUAAAACAAAAAAANAAUAAAADAAAAAAANAAUAAAAEAAAAAAANAAUAAAAFAAAAAAANAAUAAAAGAAAAAAANAAUAAAAHAAAAAAANAAUAAAAIAAAAAAANAAUAAAAJAAAAAAANAAUAAAAKAAAAAAANAAUAAAAKAAEAAAANAAUAAAAKAAIAAAANAAUAAAAKAAMAAAANAAUAAAAKAAQAAAANAAUAAAAKAAUAAAANAAUAAAAKAAYAAAANAAUAAAAKAAcAAAANAAUAAAAKAAgAAAANAAUAAAAAAAEAAAANAAUAAAAAAAIAAAANAAUAAAAAAAMAAAANAAUAAAAAAAQAAAANAAUAAAAAAAUAAAANAAUAAAAAAAYAAAANAAUAAAAAAAcAAAANAAUAAAAAAAgAAAANAAUAAAABAAEAAAANAAUAAAABAAIAAAANAAUAAAABAAMAAAANAAUAAAABAAQAAAANAAUAAAABAAUAAAANAAUAAAABAAYAAAANAAUAAAABAAcAAAANAAUAAAABAAgAAAANAAUAAAACAAEAAAANAAUAAAACAAIAAAANAAUAAAACAAMAAAANAAUAAAACAAQAAAANAAUAAAACAAUAAAANAAUAAAACAAYAAAANAAUAAAACAAcAAAANAAUAAAACAAgAAAANAAUAAAADAAEAAAANAAUAAAADAAIAAAANAAUAAAADAAMAAAANAAUAAAADAAQAAAANAAUAAAADAAUAAAANAAUAAAADAAYAAAANAAUAAAADAAcAAAANAAUAAAADAAgAAAANAAUAAAAEAAEAAAANAAUAAAAEAAIAAAANAAUAAAAEAAMAAAANAAUAAAAEAAQAAAANAAUAAAAEAAUAAAANAAUAAAAEAAYAAAANAAUAAAAEAAcAAAANAAUAAAAEAAgAAAAMAAUAAAAFAAEAAAANAAUAAAAFAAIAAAANAAUAAAAFAAMAAAANAAUAAAAFAAQAAAANAAUAAAAFAAUAAAANAAUAAAAFAAYAAAANAAUAAAAFAAcAAAANAAUAAAAFAAgAAAAMAAUAAAAGAAEAAAANAAUAAAAGAAIAAAANAAUAAAAGAAMAAAANAAUAAAAGAAQAAAANAAUAAAAGAAUAAAANAAUAAAAGAAYAAAANAAUAAAAGAAcAAAANAAUAAAAGAAgAAAANAAUAAAAHAAEAAAANAAUAAAAHAAIAAAANAAUAAAAHAAMAAAANAAUAAAAHAAQAAAANAAUAAAAHAAUAAAANAAUAAAAHAAYAAAANAAUAAAAHAAcAAAANAAUAAAAHAAgAAAANAAUAAAAIAAEAAAANAAUAAAAIAAIAAAANAAUAAAAIAAMAAAANAAUAAAAIAAQAAAANAAUAAAAIAAUAAAANAAUAAAAIAAYAAAANAAUAAAAIAAcAAAANAAUAAAAIAAgAAAANAAUAAAAJAAEAAAANAAUAAAAJAAIAAAANAAUAAAAJAAMAAAANAAUAAAAJAAQAAAANAAUAAAAJAAUAAAANAAUAAAAJAAYAAAANAAUAAAAJAAcAAAANAAUAAAAJAAgAAAANAAUAAAAAAP//AAAJAAQAAAABAP//AAAJAAQAAAACAP//AAAJAAQAAAADAP//AAAJAAQAAAAEAP//AAAJAAQAAAAFAP//AAAJAAQAAAAGAP//AAAJAAQAAAAHAP//AAAJAAQAAAAIAP//AAAJAAQAAAAJAP//AAAJAAQAAAAKAP//AAAJAAQAAAD//wkAAAAJAAQAAAAAAAkAAAAJAAQAAAABAAkAAAAJAAQAAAACAAkAAAAJAAQAAAADAAkAAAAJAAQAAAAEAAkAAAAJAAQAAAAFAAkAAAAJAAQAAAAGAAkAAAAJAAQAAAAHAAkAAAAJAAQAAAAIAAkAAAAJAAQAAAAJAAkAAAAJAAQAAAAKAAkAAAAJAAQAAAALAAkAAAAJAAQAAAD//wgAAAAMAAEAAAALAAgAAAAMAAEAAAD/////AAAMAAAAAAD//wAAAAAMAAAAAAD//wEAAAAMAAAAAAD//wIAAAAMAAAAAAD//wMAAAAMAAAAAAD//wQAAAAMAAAAAAD//wUAAAAMAAAAAAD//wYAAAAMAAAAAAD//wcAAAAMAAAAAAALAP//AAAMAAAAAAALAAAAAAAMAAAAAAALAAEAAAAMAAAAAAALAAIAAAAMAAAAAAALAAMAAAAMAAAAAAALAAQAAAAMAAAAAAALAAUAAAAMAAAAAAALAAYAAAAMAAAAAAALAAcAAAAMAAAAAAA=")
+tile_set = ExtResource("1_doltr")
+
+[node name="ObjectsTileMap" type="TileMapLayer" parent="." unique_id=1011974361]
+scale = Vector2(2, 2)
+tile_set = ExtResource("1_doltr")
+
+[node name="YSort" type="Node2D" parent="." unique_id=453037]
+y_sort_enabled = true
+
+[node name="Player" parent="YSort" unique_id=838609280 instance=ExtResource("2_07npp")]
+position = Vector2(176, 240)
+scale = Vector2(2, 2)
+
+[node name="ForgeNPC" parent="YSort" unique_id=1612370295 instance=ExtResource("4_8l5td")]
+position = Vector2(176, 80)
+scale = Vector2(2, 2)
+itemStock = Dictionary[String, int]({
+"air": -1,
+"earth": -1,
+"ex_gnome": 1,
+"ex_salamander": 1,
+"ex_sylph": 1,
+"ex_undine": 1,
+"fire": -1,
+"water": -1
+})
+compatibleRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
+knownRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
+name = "Forge"
+dialog = "I'm a crystalsmith. I can combine qualia crystals into different types or into familiar prisms.[break]I can also break them down or sell you some."
+
+[node name="Markers" type="Node2D" parent="." unique_id=1983698944]
+
+[node name="default" type="Marker2D" parent="Markers" unique_id=800411492]
+position = Vector2(176, 240)
+
+[node name="entrance" type="Marker2D" parent="Markers" unique_id=364992792]
+position = Vector2(176, 272)
+
+[node name="Transitions" type="Node2D" parent="." unique_id=525177409]
+
+[node name="Entrance" type="Area2D" parent="Transitions" unique_id=72922358 groups=["map_transitions"]]
+script = ExtResource("3_8l5td")
+warp = "world:smith_exit:down"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Transitions/Entrance" unique_id=1322243516]
+position = Vector2(160, 272)
+shape = SubResource("RectangleShape2D_lk3ao")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1693350011]
+position = Vector2(168, 136)
