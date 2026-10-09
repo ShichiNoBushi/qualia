@@ -51,9 +51,14 @@ public partial class RFamiliarInstance : Resource
 		
 		skills = new();
 		
-		foreach (var skill in data.learnableSkills)
+		for (int i = 1; i <= level; i++)
 		{
-			skills.Add(skill);
+			RSkillData skill = data.SkillAt(i);
+			
+			if (skill != null && !skills.Contains(skill))
+			{
+				skills.Add(skill);
+			}
 		}
 		
 		foreach (var t in data.types)
@@ -98,12 +103,32 @@ public partial class RFamiliarInstance : Resource
 	public void LevelUp()
 	{
 		level++;
+		
+		RSkillData skill = data.SkillAt(level);
+		
+		if (skill != null && !skills.Contains(skill))
+		{
+			skills.Add(skill);
+		}
+		
 		RecalculateStats();
 	}
 	
 	public void SetLevel(int newLevel)
 	{
+		int oldLevel = level;
 		level = Mathf.Max(newLevel, 1);
+		
+		for (int i = oldLevel + 1; i <= level; i++)
+		{
+			RSkillData skill = data.SkillAt(i);
+			
+			if (skill != null && !skills.Contains(skill))
+			{
+				skills.Add(skill);
+			}
+		}
+		
 		RecalculateStats();
 	}
 	

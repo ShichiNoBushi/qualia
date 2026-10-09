@@ -1609,7 +1609,7 @@ public partial class BattleManager : Node
 		
 		foreach (var fam in defeatedFamiliars)
 		{
-			if (fam == null)
+			if (fam?.data == null)
 			{
 				continue;
 			}
@@ -1625,13 +1625,28 @@ public partial class BattleManager : Node
 			
 			foreach (var qc in fam.data.crystalDrops)
 			{
-				if (string.IsNullOrEmpty(qc.Key) || qc.Value <= 0)
+				if (string.IsNullOrEmpty(qc.crystalId) || qc.amount <= 0 || qc.chance <= 0f)
 				{
 					continue;
 				}
 				
-				int amt = qc.Value * Math.Max(fam.level, 1);
-				qualiaCrystals[qc.Key] = (qualiaCrystals.TryGetValue(qc.Key, out int c) ? c : 0) + amt;
+				int max = qc.amount * Math.Max(fam.level, 1);
+				int amt = 0;
+				
+				for (int i = 0; i < max; i++)
+				{
+					if (GD.Randf() < qc.chance)
+					{
+						amt++;
+					}
+				}
+				
+				if (amt <= 0)
+				{
+					continue;
+				}
+				
+				qualiaCrystals[qc.crystalId] = (qualiaCrystals.TryGetValue(qc.crystalId, out int c) ? c : 0) + amt;
 			}
 		}
 		

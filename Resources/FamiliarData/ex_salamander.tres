@@ -1,18 +1,28 @@
 [gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://dd0ycosprdajc"]
 
 [ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_21072"]
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_e7eix"]
 [ext_resource type="Resource" uid="uid://dklaojj8nj1xh" path="res://Resources/Skills/strike.tres" id="2_wnrb3"]
-[ext_resource type="Script" uid="uid://df7vrqh187nx2" path="res://Scripts/RQualiaRequirement.cs" id="3_ydrb1"]
-[ext_resource type="Script" uid="uid://cm64tnf4fly34" path="res://Scripts/RPrismRecipe.cs" id="4_3eicv"]
 [ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="5_lybsm"]
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="6_bwoew"]
 [ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/TypeData/fire.tres" id="7_aiww7"]
 
+[sub_resource type="Resource" id="Resource_vi3vx"]
+script = ExtResource("1_e7eix")
+crystalId = "fire"
+amount = 1
+chance = 0.6
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_utdyw"]
+script = ExtResource("1_e7eix")
+crystalId = "ex_salamander"
+amount = 1
+chance = 0.2
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qedgj"]
 load_path = "res://.godot/imported/crocodile 1.png-c84d5a6a9469afbf128b9b1302ccb5d8.ctex"
-
-[sub_resource type="Resource" id="Resource_21072"]
-script = ExtResource("4_3eicv")
 
 [resource]
 script = ExtResource("5_lybsm")
@@ -24,9 +34,6 @@ baseSpeed = 5
 types = Array[ExtResource("6_bwoew")]([ExtResource("7_aiww7")])
 learnableSkills = Array[ExtResource("1_21072")]([ExtResource("2_wnrb3")])
 crystals = 10
-crystalDrops = Dictionary[String, int]({
-"ex_salamander": 1,
-"fire": 1
-})
+crystalDrops = Array[ExtResource("1_e7eix")]([SubResource("Resource_vi3vx"), SubResource("Resource_utdyw")])
 portrait = SubResource("CompressedTexture2D_qedgj")
 metadata/_custom_type_script = "uid://c6t16g27uf4ia"
