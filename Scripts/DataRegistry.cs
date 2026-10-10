@@ -4,6 +4,7 @@ using System;
 public partial class DataRegistry : Node
 {
 	public Godot.Collections.Dictionary<string, RQualiaCrystal> crystals = new();
+	public Godot.Collections.Dictionary<string, RProjectorData> projectors = new();
 	public Godot.Collections.Dictionary<string, RFamiliarData> familiars = new();
 	public Godot.Collections.Dictionary<string, RSpellData> spells = new();
 	public Godot.Collections.Dictionary<string, RSkillData> skills = new();
@@ -14,6 +15,7 @@ public partial class DataRegistry : Node
 	public override void _Ready()
 	{
 		LoadAll("res://Resources/QualiaCrystals/", crystals);
+		LoadAll("res://Resources/Projectors", projectors);
 		LoadAll("res://Resources/FamiliarData/", familiars);
 		LoadAll("res://Resources/Spells/", spells);
 		LoadAll("res://Resources/Skills/", skills);
@@ -79,6 +81,7 @@ public partial class DataRegistry : Node
 	public string GetId(Resource res) => res switch
 	{
 		RQualiaCrystal crys => crys.id,
+		RProjectorData proj => proj.id,
 		RFamiliarData fam => fam.id,
 		RSpellData spl => spl.id,
 		RSkillData skl => skl.id,
@@ -89,6 +92,7 @@ public partial class DataRegistry : Node
 	};
 	
 	public RQualiaCrystal Crystal(string id) => crystals.TryGetValue(id, out RQualiaCrystal crys) ? crys : null;
+	public RProjectorData Projector(string id) => projectors.TryGetValue(id, out RProjectorData proj) ? proj : null;
 	public RFamiliarData Familiar(string id) => familiars.TryGetValue(id, out RFamiliarData fam) ? fam : null;
 	public RSpellData Spell(string id) => spells.TryGetValue(id, out RSpellData spl) ? spl : null;
 	public RSkillData Skill(string id) => skills.TryGetValue(id, out RSkillData skl) ? skl : null;

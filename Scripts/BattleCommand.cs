@@ -26,7 +26,7 @@ public partial class SummonCommand : BattleCommand
 	
 	public override void Execute(BattleManager battle)
 	{
-		string fName = string.IsNullOrEmpty(familiar?.nickName) ? (string.IsNullOrEmpty(familiar?.data?.name) ? "No name" : familiar.data.name) : familiar.nickName;
+		string fName = string.IsNullOrEmpty(familiar?.nickname) ? (string.IsNullOrEmpty(familiar?.data?.name) ? "No name" : familiar.data.name) : familiar.nickname;
 		battle.AppendBattleText($"Summoning {fName} into slot {slot}.");
 		
 		if (source is not Projector projector)
@@ -67,7 +67,7 @@ public partial class SummonCommand : BattleCommand
 		
 		if (projector.currentEnergy < cost)
 		{
-			//string fName = string.IsNullOrEmpty(familiar.nickName) ? (string.IsNullOrEmpty(familiar.data.name) ? "(no name)" : familiar.data.name) : familiar.nickName;
+			//string fName = string.IsNullOrEmpty(familiar.nickname) ? (string.IsNullOrEmpty(familiar.data.name) ? "(no name)" : familiar.data.name) : familiar.nickname;
 			string text = $"Not enough energy to summon {fName}";
 			battle.AppendBattleText(text);
 			return;

@@ -56,7 +56,7 @@ public partial class Projector : RefCounted
 	
 	public void LearnSpell(RSpellData spell)
 	{
-		if (spell != null || !spells.Contains(spell))
+		if (spell != null && !spells.Contains(spell))
 		{
 			spells.Add(spell);
 		}
@@ -116,5 +116,155 @@ public partial class Projector : RefCounted
 		int baseEnergy = data != null ? data.energy : 100;
 		int growth = data != null ? data.levelEnergy : 10;
 		maxEnergy = baseEnergy + growth * (level - 1);
+	}
+}
+
+public class ProjectorSave
+{
+	public string projId;
+	public string name;
+	public int level;
+	public int experience;
+	public int currentEnergy;
+	public System.Collections.Generic.List<FamiliarSave> ownedFamiliars;
+	public System.Collections.Generic.List<string> spells;
+	
+	public ProjectorSave()
+	{
+		
+	}
+	
+	public ProjectorSave(Projector proj)
+	{
+		RProjectorData data = proj.data;
+		
+		projId = data.id;
+		name = proj.name;
+		level = proj.level;
+		experience = proj.experience;
+		currentEnergy = proj.currentEnergy;
+		
+		ownedFamiliars = new();
+		
+		foreach (var fam in proj.ownedFamiliars)
+		{
+			ownedFamiliars.Add(new FamiliarSave(fam));
+		}
+		
+		spells = new();
+		
+		foreach (var spl in proj.spells)
+		{
+			spells.Add(spl.id);
+		}
+	}
+	
+	public Projector ToProjector(DataRegistry registry)
+	{
+		RProjectorData data = registry.Projector(projId);
+		
+		if (data == null)
+		{
+			return null;
+		}
+		
+		Projector proj = new();
+		
+		proj.data = data;
+		proj.name = name;
+		
+		proj.level = Mathf.Max(level, 1);
+		proj.experience = Mathf.Max(experience, 0);
+		
+		proj.maxEnergy = data.energy + data.levelEnergy * (level - 1);
+		proj.currentEnergy = Mathf.Min(currentEnergy, proj.maxEnergy);
+		
+		proj.ownedFamiliars = new();
+		
+		foreach (var fam in ownedFamiliars)
+		{
+			RFamiliarInstance inst = fam.ToFamiliar(registry);
+			
+			if (inst != null)
+			{
+				proj.ownedFamiliars.Add(inst);
+			}
+		}
+		
+		proj.spells = new();
+		
+		foreach (var id in spells)
+		{
+			RSpellData spell = registry.Spell(id);
+			
+			if (spell != null)
+			{
+				proj.spells.Add(spell);
+			}
+		}
+		
+		return proj;
+	}
+	
+	public Godot.Collections.Dictionary ToDictionary()
+	{
+		Godot.Collections.Array familiars = new();
+		
+		foreach (var fam in ownedFamiliars)
+		{
+			familiars.Add(fam.ToDictionary());
+		}
+		
+		Godot.Collections.Array spellsOut = new();
+		
+		foreach (var id in spells)
+		{
+			spellsOut.Add(id);
+		}
+		
+		return new Godot.Collections.Dictionary
+		{
+			{"projId", projId},
+			{"name", name},
+			{"level", level},
+			{"experience", experience},
+			{"currentEnergy", currentEnergy},
+			{"ownedFamiliars", familiars},
+			{"spells", spellsOut}
+		};
+	}
+	
+	public static ProjectorSave FromDictionary(Godot.Collections.Dictionary dict)
+	{
+		ProjectorSave projector = new();
+		
+		projector.projId = dict.TryGetValue("projId", out Variant pId) ? pId.AsString() : "";
+		projector.name = dict.TryGetValue("name", out Variant nm) ? nm.AsString() : "";
+		
+		projector.level = dict.TryGetValue("level", out Variant lvl) ? lvl.AsInt32() : 1;
+		projector.experience = dict.TryGetValue("experience", out Variant exp) ? exp.AsInt32() : 0;
+		projector.currentEnergy = dict.TryGetValue("currentEnergy", out Variant eng) ? eng.AsInt32() : 50;
+		
+		projector.ownedFamiliars = new();
+		
+		if (dict.TryGetValue("ownedFamiliars", out Variant familiars) && familiars.VariantType == Variant.Type.Array)
+		{
+			foreach (Variant fam in familiars.AsGodotArray())
+			{
+				projector.ownedFamiliars.Add(FamiliarSave.FromDictionary(fam.AsGodotDictionary()));
+			}
+		}
+		
+		projector.spells = new();
+		
+		if (dict.TryGetValue("spells", out Variant spellsOut) && spellsOut.VariantType == Variant.Type.Array)
+		{
+			foreach (Variant id in spellsOut.AsGodotArray())
+			{
+				projector.spells.Add(id.AsString());
+			}
+		}
+		
+		return projector;
 	}
 }

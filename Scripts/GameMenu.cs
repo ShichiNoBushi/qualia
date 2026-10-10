@@ -66,8 +66,12 @@ public partial class GameMenu : CanvasLayer
 	
 	public Label gCrystalsLabel;
 	
+	public Button saveButton;
+	public Button loadButton;
 	public Button quitButton;
 	public ConfirmationDialog quitConfirm;
+	public FileDialog saveDialog;
+	public FileDialog loadDialog;
 	
 	public override void _Ready()
 	{
@@ -140,11 +144,19 @@ public partial class GameMenu : CanvasLayer
 		
 		gCrystalsLabel = GetNode<Label>("Panel/MainTab/Inventory/GCrystalsLabel");
 		
+		saveButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/SaveButton");
+		loadButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/LoadButton");
 		quitButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/QuitButton");
 		quitConfirm = GetNode<ConfirmationDialog>("QuitConfirm");
+		saveDialog = GetNode<FileDialog>("SaveDialog");
+		loadDialog = GetNode<FileDialog>("LoadDialog");
 		
 		closeButton.Pressed += OnClosePressed;
 		
+		saveButton.Pressed += OnSavePressed;
+		loadButton.Pressed += OnLoadPressed;
+		saveDialog.FileSelected += OnSaveSelected;
+		loadDialog.FileSelected += OnLoadSelected;
 		quitButton.Pressed += OnQuitPressed;
 		quitConfirm.Confirmed += OnQuitConfirmed;
 	}
@@ -194,7 +206,7 @@ public partial class GameMenu : CanvasLayer
 		
 		statsPanel.Visible = true;
 		
-		famNameText.Text = selectedFamiliar.nickName ?? "";
+		famNameText.Text = selectedFamiliar.nickname ?? "";
 		famNameText.PlaceholderText = selectedFamiliar.data?.name ?? "(no name)";
 		familiarLabel.Text = string.IsNullOrEmpty(selectedFamiliar.data?.name) ? "(no name)" : selectedFamiliar.data.name;
 		
@@ -383,6 +395,26 @@ public partial class GameMenu : CanvasLayer
 		
 		crystalDescLabel.Clear();
 		crystalDescLabel.AppendText($"{crystal.name}\n\nHeld: {amount}\nValue: {crystal.value}");
+	}
+	
+	public void OnSavePressed()
+	{
+		
+	}
+	
+	public void OnSaveSelected(string path)
+	{
+		
+	}
+	
+	public void OnLoadPressed()
+	{
+		
+	}
+	
+	public void OnLoadSelected(string path)
+	{
+		
 	}
 	
 	public void OnQuitPressed()
@@ -632,7 +664,7 @@ public partial class GameMenu : CanvasLayer
 			return;
 		}
 		
-		selectedFamiliar.nickName = raw.Trim();
+		selectedFamiliar.nickname = raw.Trim();
 		renameButton.Disabled = true;
 		famNameText.ReleaseFocus();
 		UpdateFamiliarList();

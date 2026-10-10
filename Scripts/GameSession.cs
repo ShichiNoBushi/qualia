@@ -269,4 +269,248 @@ public partial class GameSession : Node
 			}
 		}
 	}
+	
+	public void SaveGame(Player player, string path)
+	{
+		GameSave save = new(this, player);
+		
+		var dict = save.ToDictionary();
+		string json = Json.Stringify(dict, "\t");
+		
+		using FileAccess file = FileAccess.Open(path, FileAccess.ModeFlags.Write);
+		
+		if (file == null)
+		{
+			GD.PrintErr(FileAccess.GetOpenError());
+			return;
+		}
+		
+		file.StoreString(json);
+	}
+	
+	public void LoadGame(Player player, string path)
+	{
+		using FileAccess file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
+		
+		if (file == null)
+		{
+			GD.PrintErr(FileAccess.GetOpenError());
+			return;
+		}
+		
+		Variant parsed = Json.ParseString(file.GetAsText());
+		
+		if (parsed.VariantType != Variant.Type.Dictionary)
+		{
+			return;
+		}
+		
+		var dict = parsed.AsGodotDictionary();
+		
+	}
+}
+
+public class GameSave
+{
+	public ProjectorSave playerProjector;
+	public int qualiaGeneric;
+	public Godot.Collections.Dictionary<string, int> qualiaCrystals;
+	public Godot.Collections.Dictionary<string, int> itemStacks;
+	public System.Collections.Generic.List<ItemSave> uniqueItems;
+	
+	public string savePath;
+	public float savePositionX;
+	public float savePositionY;
+	public float saveFacingX;
+	public float saveFacingY;
+	
+	public string returnPath;
+	public float returnPositionX;
+	public float returnPositionY;
+	public float returnFacingX;
+	public float returnFacingY;
+	
+	public string safePath;
+	public string safeMapId;
+	public string safeMarkerId;
+	public float safePositionX;
+	public float safePositionY;
+	public float safeFacingX;
+	public float safeFacingY;
+	
+	public Godot.Collections.Array<string> openedChests;
+	
+	public GameSave()
+	{
+		
+	}
+	
+	public GameSave(GameSession session, Player player)
+	{
+		playerProjector = new(session.playerProjector);
+		qualiaGeneric = session.qualiaGeneric;
+		qualiaCrystals = session.qualiaCrystals.Duplicate();
+		itemStacks = session.itemStacks.Duplicate();
+		
+		uniqueItems = new();
+		
+		foreach (var it in session.uniqueItems)
+		{
+			ItemSave item = new(it);
+			
+			uniqueItems.Add(item);
+		}
+		
+		savePath = player.GetTree().CurrentScene.SceneFilePath;
+		savePositionX = player.GlobalPosition.X;
+		savePositionY = player.GlobalPosition.Y;
+		saveFacingX = player.facing.X;
+		saveFacingY = player.facing.Y;
+		
+		returnPath = session.returnPath;
+		returnPositionX = session.returnPosition.X;
+		returnPositionY = session.returnPosition.Y;
+		returnFacingX = session.returnFacing.X;
+		returnFacingY = session.returnFacing.Y;
+		
+		safePath = session.safePath;
+		safeMapId = session.safeMapId;
+		safeMarkerId = session.safeMarkerId;
+		safePositionX = session.safePosition.X;
+		safePositionY = session.safePosition.Y;
+		safeFacingX = session.safeFacing.X;
+		safeFacingY = session.safeFacing.Y;
+		
+		openedChests = session.openedChests.Duplicate();
+	}
+	
+	public Godot.Collections.Dictionary ToDictionary()
+	{
+		Godot.Collections.Dictionary crystals = new();
+		
+		foreach (var pair in qualiaCrystals)
+		{
+			crystals[pair.Key] = pair.Value;
+		}
+		
+		Godot.Collections.Dictionary stacks = new();
+		
+		foreach (var pair in itemStacks)
+		{
+			stacks[pair.Key] = pair.Value;
+		}
+		
+		Godot.Collections.Array uniques = new();
+		
+		foreach (var item in uniqueItems)
+		{
+			uniques.Add(item.ToDictionary());
+		}
+		
+		Godot.Collections.Array chests = new();
+		
+		foreach (var id in openedChests)
+		{
+			chests.Add(id);
+		}
+		
+		return new Godot.Collections.Dictionary
+		{
+			{"version", 1},
+			{"playerProjector", playerProjector.ToDictionary()},
+			{"qualiaGeneric", qualiaGeneric},
+			{"qualiaCrystals", crystals},
+			{"itemStacks", stacks},
+			{"uniqueItems", uniques},
+			{"savePath", savePath},
+			{"savePositionX", savePositionX}, {"savePositionY", savePositionY},
+			{"saveFacingX", saveFacingX}, {"saveFacingY", saveFacingY},
+			{"returnPath", returnPath},
+			{"returnPositionX", returnPositionX}, {"returnPositionY", returnPositionY},
+			{"returnFacingX", returnFacingX}, {"returnFacingY", returnFacingY},
+			{"safePath", safePath},
+			{"safeMapId", safeMapId},
+			{"safeMarkerId", safeMarkerId},
+			{"safePositionX", safePositionX}, {"safePositionY", safePositionY},
+			{"safeFacingX", safeFacingX}, {"safeFacingY", safeFacingY},
+			{"openedChests", chests}
+		};
+	}
+	
+	public static GameSave FromDictionary(Godot.Collections.Dictionary dict)
+	{
+		GameSave save = new();
+		
+		if (dict.TryGetValue("playerProjector", out Variant proj) && proj.VariantType == Variant.Type.Dictionary)
+		{
+			save.playerProjector = ProjectorSave.FromDictionary(proj.AsGodotDictionary());
+		}
+		
+		save.qualiaGeneric = dict.TryGetValue("qualiaGeneric", out Variant qg) ? qg.AsInt32() : 0;
+		
+		save.qualiaCrystals = new();
+		
+		if (dict.TryGetValue("qualiaCrystals", out Variant crystals) && crystals.VariantType == Variant.Type.Dictionary)
+		{
+			foreach (var pair in crystals.AsGodotDictionary())
+			{
+				save.qualiaCrystals[pair.Key.AsString()] = pair.Value.AsInt32();
+			}
+		}
+		
+		save.itemStacks = new();
+		
+		if (dict.TryGetValue("itemStacks", out Variant stacks) && stacks.VariantType == Variant.Type.Dictionary)
+		{
+			foreach (var pair in stacks.AsGodotDictionary())
+			{
+				save.itemStacks[pair.Key.AsString()] = pair.Value.AsInt32();
+			}
+		}
+		
+		save.uniqueItems = new();
+		
+		if (dict.TryGetValue("uniqueItems", out Variant uniques) && uniques.VariantType == Variant.Type.Array)
+		{
+			foreach (Variant item in uniques.AsGodotArray())
+			{
+				if (item.VariantType == Variant.Type.Dictionary)
+				{
+					save.uniqueItems.Add(ItemSave.FromDictionary(item.AsGodotDictionary()));
+				}
+			}
+		}
+		
+		save.savePath = dict.TryGetValue("savePath", out Variant svp) ? svp.AsString() : "";
+		save.savePositionX = dict.TryGetValue("savePositionX", out Variant svpx) ? svpx.AsSingle() : 0f;
+		save.savePositionY = dict.TryGetValue("savePositionY", out Variant svpy) ? svpy.AsSingle() : 0f;
+		save.saveFacingX = dict.TryGetValue("saveFacingX", out Variant svfx) ? svfx.AsSingle() : 0f;
+		save.saveFacingY = dict.TryGetValue("saveFacingY", out Variant svfy) ? svfy.AsSingle() : 1f;
+		
+		save.returnPath = dict.TryGetValue("returnPath", out Variant rtp) ? rtp.AsString() : "";
+		save.returnPositionX = dict.TryGetValue("returnPositionX", out Variant rtpx) ? rtpx.AsSingle() : 0f;
+		save.returnPositionY = dict.TryGetValue("returnPositionY", out Variant rtpy) ? rtpy.AsSingle() : 0f;
+		save.returnFacingX = dict.TryGetValue("returnFacingX", out Variant rtfx) ? rtfx.AsSingle() : 0f;
+		save.returnFacingY = dict.TryGetValue("returnFacingY", out Variant rtfy) ? rtfy.AsSingle() : 1f;
+		
+		save.safePath = dict.TryGetValue("safePath", out Variant sfp) ? sfp.AsString() : "";
+		save.safeMapId = dict.TryGetValue("safeMapId", out Variant sfmpid) ? sfmpid.AsString() : "";
+		save.safeMarkerId = dict.TryGetValue("safeMarkerId", out Variant sfmkid) ? sfmkid.AsString() : "";
+		save.safePositionX = dict.TryGetValue("safePositionX", out Variant sfpx) ? sfpx.AsSingle() : 0f;
+		save.safePositionY = dict.TryGetValue("safePositionY", out Variant sfpy) ? sfpy.AsSingle() : 0f;
+		save.safeFacingX = dict.TryGetValue("safeFacingX", out Variant sffx) ? sffx.AsSingle() : 0f;
+		save.safeFacingY = dict.TryGetValue("safeFacingY", out Variant sffy) ? sffy.AsSingle() : 1f;
+		
+		save.openedChests = new();
+		
+		if (dict.TryGetValue("openedChests", out Variant chests) && chests.VariantType == Variant.Type.Array)
+		{
+			foreach (Variant id in chests.AsGodotArray())
+			{
+				save.openedChests.Add(id.AsString());
+			}
+		}
+		
+		return save;
+	}
 }
