@@ -1554,6 +1554,7 @@ public partial class BattleManager : Node
 				if (actor != null)
 				{
 					AppendBattleText($"A [b]{actor.name}[/b] manifests.");
+					famDisplaysE[i].PlayAnimation("summon");
 				}
 				else
 				{

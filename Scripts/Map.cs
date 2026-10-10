@@ -14,8 +14,19 @@ public partial class Map : Node2D
 		session.gameMode = GameSession.GameMode.World;
 		
 		Player player = GetNode<Player>("YSort/Player");
+		session.player = player;
 		
-		if (WarpDest.TryParse(session.pendingWarp, out WarpDest dest))
+		if (session.pendingLoadPosition != Vector2.Zero)
+		{
+			player.GlobalPosition = session.pendingLoadPosition;
+			
+			player.facing = session.pendingLoadFacing != Vector2.Zero ? session.pendingLoadFacing : Vector2.Down;
+			player.PlayWalkAnim(player.facing);
+			
+			session.pendingLoadPosition = Vector2.Zero;
+			session.pendingLoadFacing = Vector2.Zero;
+		}
+		else if (WarpDest.TryParse(session.pendingWarp, out WarpDest dest))
 		{
 			player.warping = true;
 			ApplyMarker(player, dest.markerKey, dest.facing);

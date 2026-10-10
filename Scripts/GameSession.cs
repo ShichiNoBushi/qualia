@@ -3,9 +3,12 @@ using System;
 
 public partial class GameSession : Node
 {
+	public DataRegistry registry;
+	
 	[Export] public Godot.Collections.Dictionary<string, string> mapScenes {get; set;}
 	
 	public Projector playerProjector {get; set;}
+	public Player player {get; set;}
 	public int qualiaGeneric {get; set;}
 	public Godot.Collections.Dictionary<string, int> qualiaCrystals {get; set;}
 	public Godot.Collections.Dictionary<string, int> itemStacks {get; set;}
@@ -23,6 +26,9 @@ public partial class GameSession : Node
 	public REncounterData pendingEncounter {get; set;}
 	public string pendingWarp {get; set;}
 	
+	public Vector2 pendingLoadPosition {get; set;}
+	public Vector2 pendingLoadFacing {get; set;}
+	
 	public BattleManager.VictoryResult lastResult {get; set;}
 	
 	public GameMode gameMode {get; set;}
@@ -39,6 +45,8 @@ public partial class GameSession : Node
 	
 	public override void _Ready()
 	{
+		registry = GetNode<DataRegistry>("/root/DataRegistry");
+		
 		qualiaGeneric = 0;
 		itemStacks = new();
 		uniqueItems = new();
@@ -46,7 +54,7 @@ public partial class GameSession : Node
 		
 		openedChests = new();
 		
-		RProjectorData pData = GD.Load<RProjectorData>("res://Resources/test_projector.tres");
+		RProjectorData pData = registry.Projector("player");
 		RFamiliarInstance gnomeInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_gnome.tres");
 		RFamiliarInstance salamanderInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_salamander.tres");
 		RFamiliarInstance sylphInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_sylph.tres");
@@ -270,7 +278,7 @@ public partial class GameSession : Node
 		}
 	}
 	
-	public void SaveGame(Player player, string path)
+	public void SaveGame(string path)
 	{
 		GameSave save = new(this, player);
 		
@@ -288,7 +296,7 @@ public partial class GameSession : Node
 		file.StoreString(json);
 	}
 	
-	public void LoadGame(Player player, string path)
+	public void LoadGame(string path)
 	{
 		using FileAccess file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
 		
@@ -307,6 +315,65 @@ public partial class GameSession : Node
 		
 		var dict = parsed.AsGodotDictionary();
 		
+		GameSave save = GameSave.FromDictionary(dict);
+		
+		Projector proj = save.playerProjector.ToProjector(registry);
+		
+		if (proj == null)
+		{
+			GD.PrintErr("GameSession: failure loading projector");
+			return;
+		}
+		
+		playerProjector = proj;
+		qualiaGeneric = save.qualiaGeneric;
+		qualiaCrystals = save.qualiaCrystals ?? new();
+		itemStacks = save.itemStacks ?? new();
+		
+		uniqueItems = new();
+		
+		foreach (var item in save.uniqueItems)
+		{
+			ItemInstance inst = item.ToItem(registry);
+			
+			if (inst != null)
+			{
+				uniqueItems.Add(inst);
+			}
+		}
+		
+		openedChests = new();
+		
+		foreach (var id in save.openedChests)
+		{
+			openedChests.Add(id);
+		}
+		
+		returnPath = save.returnPath;
+		returnPosition = new Vector2(save.returnPositionX, save.returnPositionY);
+		returnFacing = new Vector2(save.returnFacingX, save.returnFacingY);
+		
+		safePath = save.safePath;
+		safeMapId = save.safeMapId;
+		safeMarkerId = save.safeMarkerId;
+		safePosition = new Vector2(save.safePositionX, save.safePositionY);
+		safeFacing = new Vector2(save.safeFacingX, save.safeFacingY);
+		
+		pendingLoadPosition = new Vector2(save.savePositionX, save.savePositionY);
+		pendingLoadFacing = new Vector2(save.saveFacingX, save.saveFacingY);
+		
+		gameMode = GameMode.World;
+		pendingEncounter = null;
+		pendingWarp = "";
+		
+		if (string.IsNullOrEmpty(save.savePath))
+		{
+			GD.PrintErr("GameSession: no map path");
+			return;
+		}
+		
+		GetTree().Paused = false;
+		GetTree().ChangeSceneToFile(save.savePath);
 	}
 }
 

@@ -399,22 +399,29 @@ public partial class GameMenu : CanvasLayer
 	
 	public void OnSavePressed()
 	{
-		
+		saveDialog.PopupCentered();
 	}
 	
 	public void OnSaveSelected(string path)
 	{
+		if (session.player == null)
+		{
+			GD.PrintErr("GameMenu: No player found");
+			return;
+		}
 		
+		session.SaveGame(path);
 	}
 	
 	public void OnLoadPressed()
 	{
-		
+		loadDialog.PopupCentered();
 	}
 	
 	public void OnLoadSelected(string path)
 	{
-		
+		session.LoadGame(path);
+		Close();
 	}
 	
 	public void OnQuitPressed()

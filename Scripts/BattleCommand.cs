@@ -92,6 +92,7 @@ public partial class SummonCommand : BattleCommand
 			}
 			
 			string text = $"[b]{pName}[/b] summons [b]{aName}[/b]";
+			displays[slot].PlayAnimation("summon");
 			battle.AppendBattleText(text);
 			battle.RefreshAllDisplays();
 		}

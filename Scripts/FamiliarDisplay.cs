@@ -9,6 +9,7 @@ public partial class FamiliarDisplay : Control
 	public Label energyLabel;
 	public ColorRect highlightAllyRect;
 	public ColorRect highlightEnemyRect;
+	public AnimationPlayer animation;
 	
 	public bool isFamiliar {get; private set;} = false;
 	public bool energyVisible {get; private set;} = true;
@@ -28,6 +29,7 @@ public partial class FamiliarDisplay : Control
 		energyLabel = GetNode<Label>("EnergyLabel");
 		highlightAllyRect = GetNode<ColorRect>("HighlightAllyRect");
 		highlightEnemyRect = GetNode<ColorRect>("HighlightEnemyRect");
+		animation = GetNode<AnimationPlayer>("AnimationPlayer");
 		energyLabel.Visible = false;
 		sparkTexture = GD.Load<Texture2D>("res://Resources/Assets/Sprites/sparkle_small.png");
 		
@@ -66,9 +68,14 @@ public partial class FamiliarDisplay : Control
 	
 	public void AssignSpawn(SpawnActor spark)
 	{
+		bool isNew = !ReferenceEquals(actor, spark);
 		actor = spark;
 		isFamiliar = false;
 		
+		if (isNew)
+		{
+			PlayAnimation("summon");
+		}
 		UpdateDisplay();
 	}
 	
@@ -176,5 +183,10 @@ public partial class FamiliarDisplay : Control
 	{
 		highlightAllyRect.Visible = false;
 		highlightEnemyRect.Visible = false;
+	}
+	
+	public void PlayAnimation(string anim)
+	{
+		animation.Play(anim);
 	}
 }
