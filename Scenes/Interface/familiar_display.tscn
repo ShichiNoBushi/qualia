@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bvro6acuxhp5o"]
 
 [ext_resource type="Script" uid="uid://qevtgcuj5cqb" path="res://Scripts/FamiliarDisplay.cs" id="1_05mpo"]
-[ext_resource type="Texture2D" uid="uid://c2n1f3v6bilhe" path="res://Resources/Assets/Sprites/sparkle_small.png" id="2_j0ygk"]
 
 [sub_resource type="Animation" id="Animation_ycgix"]
 length = 0.001
@@ -58,7 +57,6 @@ offset_left = 3.0
 offset_top = 3.0
 offset_right = 183.0
 offset_bottom = 293.0
-texture = ExtResource("2_j0ygk")
 stretch_mode = 5
 
 [node name="NameLabel" type="Label" parent="." unique_id=1820078636]

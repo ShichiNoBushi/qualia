@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://baebeonng7831"]
+
+[ext_resource type="Script" uid="uid://4vwvmi3hipxx" path="res://Scripts/WildSpark.cs" id="1_d2hgf"]
+[ext_resource type="Texture2D" uid="uid://dgd8ofdyx8hls" path="res://Resources/Assets/Sprites/spark_large_anim.png" id="2_ef07u"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5g7tg"]
+radius = 32.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0beqo"]
+atlas = ExtResource("2_ef07u")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3h4fw"]
+atlas = ExtResource("2_ef07u")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_07xy5"]
+atlas = ExtResource("2_ef07u")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fbbt3"]
+atlas = ExtResource("2_ef07u")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8j5id"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0beqo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3h4fw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_07xy5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fbbt3")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 15.0
+}]
+
+[node name="WildSparkLarge" type="Area2D" unique_id=878548883]
+collision_layer = 2
+script = ExtResource("1_d2hgf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1546803799]
+shape = SubResource("CircleShape2D_5g7tg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=747995531]
+sprite_frames = SubResource("SpriteFrames_8j5id")
+autoplay = "default"
+frame_progress = 0.07572625
+
+[node name="Timer" type="Timer" parent="." unique_id=102661194]
+one_shot = true
