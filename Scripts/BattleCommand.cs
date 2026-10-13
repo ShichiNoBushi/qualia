@@ -219,6 +219,7 @@ public partial class AttackCommand : BattleCommand
 			if (slot >= 0 && slot < BattleSide.MAX_SLOTS)
 			{
 				displays[slot].UpdateDisplay();
+				displays[slot].PlayAnimation("damage");
 			}
 			
 			if (!fam2.isAlive)
@@ -686,6 +687,7 @@ public partial class SkillCommand : BattleCommand
 			if (slot >= 0 && slot < BattleSide.MAX_SLOTS)
 			{
 				displays[slot].UpdateDisplay();
+				displays[slot].PlayAnimation("heal");
 			}
 			
 			if (SingleTarget() && splash > 0f)
@@ -702,6 +704,14 @@ public partial class SkillCommand : BattleCommand
 					
 					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
 					battle.AppendBattleText(text, false);
+					
+					int slotL = slot - 1;
+					
+					if (slotL >= 0 && slotL < BattleSide.MAX_SLOTS)
+					{
+						displays[slotL].UpdateDisplay();
+						displays[slotL].PlayAnimation("heal");
+					}
 				}
 				
 				FamiliarActor famRight = targetSide.GetRightFamiliar(slot);
@@ -716,6 +726,14 @@ public partial class SkillCommand : BattleCommand
 					
 					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
 					battle.AppendBattleText(text, false);
+					
+					int slotR = slot + 1;
+					
+					if (slotR >= 0 && slotR < BattleSide.MAX_SLOTS)
+					{
+						displays[slotR].UpdateDisplay();
+						displays[slotR].PlayAnimation("heal");
+					}
 				}
 			}
 		}
@@ -763,6 +781,7 @@ public partial class SkillCommand : BattleCommand
 			if (slot >= 0 && slot < BattleSide.MAX_SLOTS)
 			{
 				displays[slot].UpdateDisplay();
+				displays[slot].PlayAnimation("damage");
 			}
 			
 			if (!fam2.isAlive)
@@ -810,6 +829,7 @@ public partial class SkillCommand : BattleCommand
 					if (slotL >= 0 && slotL < BattleSide.MAX_SLOTS)
 					{
 						displays[slotL].UpdateDisplay();
+						displays[slotL].PlayAnimation("damage");
 					}
 					
 					if (!famLeft.isAlive)
@@ -856,6 +876,7 @@ public partial class SkillCommand : BattleCommand
 					if (slotR >= 0 && slotR < BattleSide.MAX_SLOTS)
 					{
 						displays[slotR].UpdateDisplay();
+						displays[slotR].PlayAnimation("damage");
 					}
 					
 					if (!famRight.isAlive)
@@ -1285,6 +1306,7 @@ public partial class SpellCommand : BattleCommand
 			if (slot >= 0 && slot < BattleSide.MAX_SLOTS)
 			{
 				displays[slot].UpdateDisplay();
+				displays[slot].PlayAnimation("heal");
 			}
 			
 			if (SingleTarget() && splash > 0f)
@@ -1301,6 +1323,14 @@ public partial class SpellCommand : BattleCommand
 					
 					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
 					battle.AppendBattleText(text, false);
+					
+					int slotL = slot - 1;
+					
+					if (slotL >= 0 && slotL < BattleSide.MAX_SLOTS)
+					{
+						displays[slotL].UpdateDisplay();
+						displays[slotL].PlayAnimation("heal");
+					}
 				}
 				
 				FamiliarActor famRight = targetSide.GetRightFamiliar(slot);
@@ -1315,6 +1345,14 @@ public partial class SpellCommand : BattleCommand
 					
 					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
 					battle.AppendBattleText(text, false);
+					
+					int slotR = slot + 1;
+					
+					if (slotR >= 0 && slotR < BattleSide.MAX_SLOTS)
+					{
+						displays[slotR].UpdateDisplay();
+						displays[slotR].PlayAnimation("heal");
+					}
 				}
 			}
 		}
@@ -1360,6 +1398,7 @@ public partial class SpellCommand : BattleCommand
 			if (slot >= 0 && slot < BattleSide.MAX_SLOTS)
 			{
 				displays[slot].UpdateDisplay();
+				displays[slot].PlayAnimation("damage");
 			}
 			
 			if (!fam2.isAlive)
@@ -1407,6 +1446,7 @@ public partial class SpellCommand : BattleCommand
 					if (slotL >= 0 && slotL < BattleSide.MAX_SLOTS)
 					{
 						displays[slotL].UpdateDisplay();
+						displays[slotL].PlayAnimation("damage");
 					}
 					
 					if (!famLeft.isAlive)
@@ -1453,6 +1493,7 @@ public partial class SpellCommand : BattleCommand
 					if (slotR >= 0 && slotR < BattleSide.MAX_SLOTS)
 					{
 						displays[slotR].UpdateDisplay();
+						displays[slotR].PlayAnimation("damage");
 					}
 					
 					if (!famRight.isAlive)
@@ -1876,6 +1917,7 @@ public partial class ItemCommand : BattleCommand
 			if (slot >= 0 && slot < BattleSide.MAX_SLOTS)
 			{
 				displays[slot].UpdateDisplay();
+				displays[slot].PlayAnimation("heal");
 			}
 			
 			if (SingleTarget() && splash > 0f)
@@ -1892,6 +1934,14 @@ public partial class ItemCommand : BattleCommand
 					
 					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
 					battle.AppendBattleText(text, false);
+					
+					int slotL = slot - 1;
+					
+					if (slotL >= 0 && slotL < BattleSide.MAX_SLOTS)
+					{
+						displays[slotL].UpdateDisplay();
+						displays[slotL].PlayAnimation("heal");
+					}
 				}
 				
 				FamiliarActor famRight = targetSide.GetRightFamiliar(slot);
@@ -1906,6 +1956,14 @@ public partial class ItemCommand : BattleCommand
 					
 					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
 					battle.AppendBattleText(text, false);
+					
+					int slotR = slot + 1;
+					
+					if (slotR >= 0 && slotR < BattleSide.MAX_SLOTS)
+					{
+						displays[slotR].UpdateDisplay();
+						displays[slotR].PlayAnimation("heal");
+					}
 				}
 			}
 		}
@@ -1957,6 +2015,7 @@ public partial class ItemCommand : BattleCommand
 			if (slot >= 0 && slot < BattleSide.MAX_SLOTS)
 			{
 				displays[slot].UpdateDisplay();
+				displays[slot].PlayAnimation("damage");
 			}
 			
 			if (!fam2.isAlive)
@@ -2004,6 +2063,7 @@ public partial class ItemCommand : BattleCommand
 					if (slotL >= 0 && slotL < BattleSide.MAX_SLOTS)
 					{
 						displays[slotL].UpdateDisplay();
+						displays[slotL].PlayAnimation("damage");
 					}
 					
 					if (!famLeft.isAlive)
@@ -2050,6 +2110,7 @@ public partial class ItemCommand : BattleCommand
 					if (slotR >= 0 && slotR < BattleSide.MAX_SLOTS)
 					{
 						displays[slotR].UpdateDisplay();
+						displays[slotR].PlayAnimation("damage");
 					}
 					
 					if (!famRight.isAlive)
