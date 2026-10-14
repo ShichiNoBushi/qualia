@@ -17,6 +17,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PortraitRect:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3, 3)]
+}
 
 [sub_resource type="Animation" id="Animation_j0ygk"]
 resource_name = "damage"
@@ -34,6 +46,48 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 0.12156863, 0.12156863, 1), Color(1, 1, 1, 1), Color(1, 0.12156863, 0.12156863, 1), Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_8h507"]
+resource_name = "dismiss"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PortraitRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0, 3.4187925, 4.415934, 1), Color(0, 3.4187925, 4.415934, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_1ed58"]
+resource_name = "eliminate"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PortraitRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.24705882, 0.24705882, 0.24705882, 1), Color(0.24705882, 0.24705882, 0.24705882, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PortraitRect:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(3, 3), Vector2(3, 3), Vector2(3, 148)]
+}
+
 [sub_resource type="Animation" id="Animation_tu477"]
 resource_name = "heal"
 length = 0.5
@@ -44,10 +98,10 @@ tracks/0/path = NodePath("PortraitRect:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(0.12156863, 1, 0.12156863, 1), Color(1, 1, 1, 1), Color(0.12156863, 1, 0.12156863, 1), Color(1, 1, 1, 1)]
+"values": [Color(1, 1, 1, 1), Color(0.12156863, 1, 0.12156863, 1), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_475pd"]
@@ -62,13 +116,15 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5, 1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0), Color(0, 14.666419, 18.892157, 1), Color(1, 1, 1, 1)]
+"values": [Color(0, 3.4187925, 4.415934, 0), Color(0, 3.4187925, 4.415934, 1), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tu477"]
 _data = {
 &"RESET": SubResource("Animation_ycgix"),
 &"damage": SubResource("Animation_j0ygk"),
+&"dismiss": SubResource("Animation_8h507"),
+&"eliminate": SubResource("Animation_1ed58"),
 &"heal": SubResource("Animation_tu477"),
 &"summon": SubResource("Animation_475pd")
 }

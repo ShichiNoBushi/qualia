@@ -138,7 +138,7 @@ public partial class DismissCommand : BattleCommand
 		
 		if (slot >= 0 && slot < displays.Length)
 		{
-			displays[slot].Clear();
+			displays[slot].PlayExit("dismiss");
 		}
 		
 		string aName = string.IsNullOrEmpty(actor.name) ? "(No name)" : actor.name;
@@ -146,7 +146,7 @@ public partial class DismissCommand : BattleCommand
 		
 		battle.AppendBattleText($"[b]{pName}[/b] dismisses [b]{aName}[/b] and recovers [b]{refund}[/b] energy.");
 		
-		battle.RefreshAllDisplays();
+		//battle.RefreshAllDisplays();
 		
 		GD.Print($"Execute {GetType().Name} source=projector {(source as Projector).name}");
 	}
@@ -229,7 +229,7 @@ public partial class AttackCommand : BattleCommand
 					enemySide.ClearSlot(slot);
 					
 					FamiliarDisplay[] famDisplays = enemySide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
-					famDisplays[slot].Clear();
+					famDisplays[slot].PlayExit("eliminate");
 					
 					string fEnemyPrefix2 = enemySide == battle.enemySide ? "Enemy " : "";
 					text = $"{fEnemyPrefix2}[b]{fam2.name}[/b] was eliminated";
@@ -254,7 +254,7 @@ public partial class AttackCommand : BattleCommand
 			}
 		}
 		
-		battle.RefreshAllDisplays();
+		//battle.RefreshAllDisplays();
 		
 		GD.Print($"Execute {GetType().Name} source={(source as FamiliarActor)?.slot} {(source as FamiliarActor).name}");
 	}
@@ -545,7 +545,7 @@ public partial class SkillCommand : BattleCommand
 				
 				if (slot < displays.Length)
 				{
-					displays[slot].Clear();
+					displays[slot].PlayExit("eliminate");
 				}
 			}
 			
@@ -559,7 +559,7 @@ public partial class SkillCommand : BattleCommand
 			}
 		}
 		
-		battle.RefreshAllDisplays();
+		//battle.RefreshAllDisplays();
 		
 		GD.Print($"Execute {GetType().Name} source={(source as FamiliarActor)?.slot} {(source as FamiliarActor).name}");
 	}
@@ -792,6 +792,7 @@ public partial class SkillCommand : BattleCommand
 					battle.InvalidateFamiliarCommands(fam2, this);
 					
 					FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
+					famDisplays[slot].PlayAnimation("elminate");
 					famDisplays[slot].Clear();
 					
 					string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
@@ -840,7 +841,7 @@ public partial class SkillCommand : BattleCommand
 							battle.InvalidateFamiliarCommands(famLeft, this);
 							
 							FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
-							famDisplays[slotL].Clear();
+							famDisplays[slotL].PlayExit("eliminate");
 							
 							string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
 							text = $"{fEnemyPrefix2}[b]{famLeft.name}[/b] was eliminated";
@@ -887,7 +888,7 @@ public partial class SkillCommand : BattleCommand
 							battle.InvalidateFamiliarCommands(famRight, this);
 							
 							FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
-							famDisplays[slotR].Clear();
+							famDisplays[slotR].PlayExit("eliminate");
 							
 							string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
 							text = $"{fEnemyPrefix2}[b]{famRight.name}[/b] was eliminated";
@@ -1409,7 +1410,7 @@ public partial class SpellCommand : BattleCommand
 					battle.InvalidateFamiliarCommands(fam2, this);
 					
 					FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
-					famDisplays[slot].Clear();
+					famDisplays[slot].PlayExit("eliminate");
 					
 					string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
 					text = $"{fEnemyPrefix2}[b]{fam2.name}[/b] was eliminated";
@@ -1457,7 +1458,7 @@ public partial class SpellCommand : BattleCommand
 							battle.InvalidateFamiliarCommands(famLeft, this);
 							
 							FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
-							famDisplays[slotL].Clear();
+							famDisplays[slotL].PlayExit("eliminate");
 							
 							string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
 							text = $"{fEnemyPrefix2}[b]{famLeft.name}[/b] was eliminated";
@@ -1504,7 +1505,7 @@ public partial class SpellCommand : BattleCommand
 							battle.InvalidateFamiliarCommands(famRight, this);
 							
 							FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
-							famDisplays[slotR].Clear();
+							famDisplays[slotR].PlayExit("eliminate");
 							
 							string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
 							text = $"{fEnemyPrefix2}[b]{famRight.name}[/b] was eliminated";
@@ -2026,7 +2027,7 @@ public partial class ItemCommand : BattleCommand
 					battle.InvalidateFamiliarCommands(fam2, this);
 					
 					FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
-					famDisplays[slot].Clear();
+					famDisplays[slot].PlayExit("eliminate");
 					
 					string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
 					text = $"{fEnemyPrefix2}[b]{fam2.name}[/b] was eliminated";
@@ -2074,7 +2075,7 @@ public partial class ItemCommand : BattleCommand
 							battle.InvalidateFamiliarCommands(famLeft, this);
 							
 							FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
-							famDisplays[slotL].Clear();
+							famDisplays[slotL].PlayExit("eliminate");
 							
 							string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
 							text = $"{fEnemyPrefix2}[b]{famLeft.name}[/b] was eliminated";
@@ -2121,7 +2122,7 @@ public partial class ItemCommand : BattleCommand
 							battle.InvalidateFamiliarCommands(famRight, this);
 							
 							FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
-							famDisplays[slotR].Clear();
+							famDisplays[slotR].PlayExit("eliminate");
 							
 							string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
 							text = $"{fEnemyPrefix2}[b]{famRight.name}[/b] was eliminated";

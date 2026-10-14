@@ -12,6 +12,7 @@ public partial class FamiliarDisplay : Control
 	public AnimationPlayer animation;
 	
 	public bool isFamiliar {get; private set;} = false;
+	public bool isExiting {get; private set;} = false;
 	public bool energyVisible {get; private set;} = true;
 	public IBattleActor actor {get; private set;}
 	
@@ -188,5 +189,20 @@ public partial class FamiliarDisplay : Control
 	public void PlayAnimation(string anim)
 	{
 		animation.Play(anim);
+	}
+	
+	public void PlayExit(string anim)
+	{
+		isExiting = true;
+		animation.Play(anim);
+		animation.AnimationFinished += OnExitFinished;
+	}
+	
+	public void OnExitFinished(StringName animName)
+	{
+		animation.AnimationFinished -= OnExitFinished;
+		isExiting = false;
+		Clear();
+		UpdateDisplay();
 	}
 }
