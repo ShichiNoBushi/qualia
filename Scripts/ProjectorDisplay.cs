@@ -8,6 +8,7 @@ public partial class ProjectorDisplay : Control
 	public ProgressBar energyProgress;
 	public Label energyLabel;
 	public ColorRect highlightRect;
+	public AnimationPlayer animation;
 	
 	public Projector projector;
 	public bool energyVisible;
@@ -22,6 +23,7 @@ public partial class ProjectorDisplay : Control
 		energyProgress = GetNode<ProgressBar>("EnergyProgress");
 		energyLabel = GetNode<Label>("EnergyLabel");
 		highlightRect = GetNode<ColorRect>("HighlightRect");
+		animation = GetNode<AnimationPlayer>("AnimationPlayer");
 		energyVisible = false;
 		
 		highlightRect.GuiInput += OnGuiInput;
@@ -105,5 +107,10 @@ public partial class ProjectorDisplay : Control
 	public void Highlight(bool toggle)
 	{
 		highlightRect.Visible = toggle;
+	}
+	
+	public void PlayAnimation(string anim)
+	{
+		animation.Play(anim);
 	}
 }

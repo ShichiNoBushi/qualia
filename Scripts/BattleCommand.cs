@@ -245,6 +245,7 @@ public partial class AttackCommand : BattleCommand
 		else if (target is Projector proj)
 		{
 			ProjectorDisplay display = sourceSide == battle.playerSide ? battle.projectorDisplayE : battle.projectorDisplayP;
+			display.PlayAnimation("damage");
 			display.UpdateDisplay();
 			
 			if (proj.currentEnergy <= 0)
@@ -395,7 +396,12 @@ public partial class FocusCommand : BattleCommand
 			projector.currentEnergy = Mathf.Min(projector.maxEnergy, projector.currentEnergy + amount);
 		}
 		
-		battle.RefreshAllDisplays();
+		ProjectorDisplay display = sourceSide == battle.playerSide ? battle.projectorDisplayP : battle.projectorDisplayE;
+		
+		display.PlayAnimation("focus");
+		display.UpdateDisplay();
+		
+		//battle.RefreshAllDisplays();
 		
 		GD.Print($"Execute {GetType().Name} source=projector {(source as Projector).name}");
 	}
@@ -906,6 +912,7 @@ public partial class SkillCommand : BattleCommand
 		else if (target is Projector proj)
 		{
 			ProjectorDisplay display = sourceSide == battle.playerSide ? battle.projectorDisplayE : battle.projectorDisplayP;
+			display.PlayAnimation("damage");
 			display.UpdateDisplay();
 			
 			if (proj.currentEnergy <= 0)
@@ -1025,6 +1032,8 @@ public partial class SkillCommand : BattleCommand
 				if (overflow > 0)
 				{
 					fam.side.projector.Damage(overflow);
+					ProjectorDisplay projDisplay = fam.side == battle.playerSide ? battle.projectorDisplayP : battle.projectorDisplayE;
+					projDisplay.PlayAnimation("damage");
 					Projector proj = fam.side.projector;
 					string pName = string.IsNullOrEmpty(proj.name) ? "(no name)" : proj.name;
 					battle.AppendBattleText($"Overflow damaged [b]{pName}[/b] for {overflow}.", false);
@@ -1523,6 +1532,7 @@ public partial class SpellCommand : BattleCommand
 		else if (target is Projector tProj)
 		{
 			ProjectorDisplay display = sourceSide == battle.playerSide ? battle.projectorDisplayE : battle.projectorDisplayP;
+			display.PlayAnimation("damage");
 			display.UpdateDisplay();
 			
 			if (tProj.currentEnergy <= 0)
@@ -1971,7 +1981,7 @@ public partial class ItemCommand : BattleCommand
 		else if (target is Projector tProj)
 		{
 			ProjectorDisplay display = ReferenceEquals(tProj, battle.playerSide.projector) ? battle.projectorDisplayP : battle.projectorDisplayE;
-			
+			display.PlayAnimation("heal");
 			display.UpdateDisplay();
 		}
 	}
@@ -2140,6 +2150,7 @@ public partial class ItemCommand : BattleCommand
 		else if (target is Projector tProj)
 		{
 			ProjectorDisplay display = sourceSide == battle.playerSide ? battle.projectorDisplayE : battle.projectorDisplayP;
+			display.PlayAnimation("damage");
 			display.UpdateDisplay();
 			
 			if (tProj.currentEnergy <= 0)

@@ -201,6 +201,7 @@ public partial class FamiliarDisplay : Control
 	public void OnExitFinished(StringName animName)
 	{
 		animation.AnimationFinished -= OnExitFinished;
+		animation.Play("RESET");
 		isExiting = false;
 		Clear();
 		UpdateDisplay();
