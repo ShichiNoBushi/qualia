@@ -100,3 +100,18 @@ public partial class DataRegistry : Node
 	public RItemData Item(string id) => items.TryGetValue(id, out RItemData it) ? it : null;
 	public RForgeRecipe Recipe(string id) => recipes.TryGetValue(id, out RForgeRecipe rec) ? rec : null;
 }
+
+public enum StatEffect
+{
+	None,
+	PAttack,
+	MAttack,
+	PDefense,
+	MDefense,
+	Speed,
+	AllAttack,
+	AllDefense,
+	AllPhysical,
+	AllMagical,
+	AllStats
+}

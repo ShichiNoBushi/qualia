@@ -427,6 +427,10 @@ public partial class SkillCommand : BattleCommand
 	public bool isMagicAttack {get; set;} = false;
 	public bool isMagicTarget {get; set;} = false;
 	
+	public StatEffect statEffect {get; set;} = StatEffect.None;
+	public int statMod {get; set;} = 0;
+	public float modChance {get; set;} = 0f;
+	
 	public override void Execute(BattleManager battle)
 	{
 		if (source is not FamiliarActor srcFam || !srcFam.isAlive)
@@ -457,7 +461,24 @@ public partial class SkillCommand : BattleCommand
 		
 		srcFam.currentEnergy -= cost;
 		
-		if (SingleTarget())
+		if (targetPattern == RSkillData.TargetPattern.Self)
+		{
+			if (heal > 0)
+			{
+				HealTarget(srcFam, srcFam, battle);
+			}
+			
+			if (defenseSelf != 1f)
+			{
+				DefendTarget(srcFam, defenseSelf, battle);
+			}
+			
+			if (statEffect != StatEffect.None && statMod != 0 && modChance > 0f)
+			{
+				ModifyTarget(srcFam, statEffect, statMod, modChance, battle);
+			}
+		}
+		else if (SingleTarget())
 		{
 			if (power > 0)
 			{
@@ -477,6 +498,11 @@ public partial class SkillCommand : BattleCommand
 			if (defenseTarget != 1f)
 			{
 				DefendTarget(target, defenseTarget, battle);
+			}
+			
+			if (statEffect != StatEffect.None && statMod != 0 && modChance > 0f)
+			{
+				ModifyTarget(target, statEffect, statMod, modChance, battle);
 			}
 		}
 		else if (MultiTarget())
@@ -534,6 +560,14 @@ public partial class SkillCommand : BattleCommand
 					{
 						DefendTarget(t, defenseTarget, battle);
 					}
+				}
+			}
+			
+			if (statEffect != StatEffect.None && statMod != 0 && modChance > 0f)
+			{
+				foreach (var t in targets)
+				{
+					ModifyTarget(t, statEffect, statMod, modChance, battle);
 				}
 			}
 		}
@@ -997,6 +1031,99 @@ public partial class SkillCommand : BattleCommand
 		}
 	}
 	
+	public void ModifyTarget(object target, StatEffect effect, int bonus, float chance, BattleManager battle)
+	{
+		if (target is not FamiliarActor fam)
+		{
+			return;
+		}
+		
+		string enemyPrefix = fam.side == battle.enemySide ? "Enemy " : "";
+		string name = string.IsNullOrEmpty(fam.name) ? "(no name)" : fam.name;
+		string dir = bonus > 0 ? "raised" : "lowered";
+		
+		if (chance < 1f && GD.Randf() > chance)
+		{
+			battle.AppendBattleText($"Skill failed to modify {enemyPrefix}[b]{name}[/b]'s stats.", false);
+			return;
+		}
+		
+		if (effect == StatEffect.PAttack || effect == StatEffect.AllAttack || effect == StatEffect.AllPhysical || effect == StatEffect.AllStats)
+		{
+			int original = fam.pAttackBonus;
+			fam.pAttackBonus = Mathf.Clamp(fam.pAttackBonus + bonus, -5, 5);
+			
+			if (original != fam.pAttackBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical attack {dir} by {Mathf.Abs(fam.pAttackBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical attack was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.MAttack || effect == StatEffect.AllAttack || effect == StatEffect.AllMagical || effect == StatEffect.AllStats)
+		{
+			int original = fam.mAttackBonus;
+			fam.mAttackBonus = Mathf.Clamp(fam.mAttackBonus + bonus, -5, 5);
+			
+			if (original != fam.mAttackBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical attack {dir} by {Mathf.Abs(fam.mAttackBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical attack was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.PDefense || effect == StatEffect.AllDefense || effect == StatEffect.AllPhysical || effect == StatEffect.AllStats)
+		{
+			int original = fam.pDefenseBonus;
+			fam.pDefenseBonus = Mathf.Clamp(fam.pDefenseBonus + bonus, -5, 5);
+			
+			if (original != fam.pDefenseBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical defense {dir} by {Mathf.Abs(fam.pDefenseBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical defense was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.MDefense || effect == StatEffect.AllDefense || effect == StatEffect.AllMagical || effect == StatEffect.AllStats)
+		{
+			int original = fam.mDefenseBonus;
+			fam.mDefenseBonus = Mathf.Clamp(fam.mDefenseBonus + bonus, -5, 5);
+			
+			if (original != fam.mDefenseBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical defense {dir} by {Mathf.Abs(fam.mDefenseBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical defense was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.Speed || effect == StatEffect.AllStats)
+		{
+			int original = fam.speedBonus;
+			fam.speedBonus = Mathf.Clamp(fam.speedBonus + bonus, -5, 5);
+			
+			if (original != fam.speedBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s speed {dir} by {Mathf.Abs(fam.speedBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s speed was unchanged.", false);
+			}
+		}
+	}
+	
 	public void ApplyHealing(object target, int amount)
 	{
 		if (amount <= 0)
@@ -1067,6 +1194,10 @@ public partial class SkillCommand : BattleCommand
 		
 		defenseSelf = skill.defenseFactorOnUser;
 		defenseTarget = skill.defenseFactorOnTarget;
+		
+		statEffect = skill.statEffect;
+		statMod = skill.statMod;
+		modChance = skill.modChance;
 	}
 	
 	public bool SingleTarget()

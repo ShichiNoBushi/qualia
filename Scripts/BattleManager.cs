@@ -2058,6 +2058,9 @@ public interface IBattleActor
 
 public partial class FamiliarActor : RefCounted, IBattleActor
 {
+	public const float BONUS_PER_POINT = 0.1f;
+	public const float MAX_BONUS = 0.5f;
+	
 	public RFamiliarInstance familiar {get; private set;}
 	public string name {get; private set;}
 	
@@ -2115,29 +2118,17 @@ public partial class FamiliarActor : RefCounted, IBattleActor
 		defenseFactor = 1f;
 	}
 	
-	public int ModPAttack()
-	{
-		return pAttack + pAttackBonus;
-	}
+	public int ModPAttack() => ApplyBonus(pAttack, pAttackBonus);
+	public int ModMAttack() => ApplyBonus(mAttack, mAttackBonus);
+	public int ModPDefense() => ApplyBonus(pDefense, pDefenseBonus);
+	public int ModMDefense() => ApplyBonus(mDefense, mDefenseBonus);
+	public int ModSpeed() => ApplyBonus(speed, speedBonus);
 	
-	public int ModMAttack()
+	public int ApplyBonus(int baseStat, int bonus)
 	{
-		return mAttack + mAttackBonus;
-	}
-	
-	public int ModPDefense()
-	{
-		return pDefense + pDefenseBonus;
-	}
-	
-	public int ModMDefense()
-	{
-		return mDefense + mDefenseBonus;
-	}
-	
-	public int ModSpeed()
-	{
-		return speed + speedBonus;
+		float mult = 1f + Mathf.Clamp(BONUS_PER_POINT * bonus, -1f * MAX_BONUS, MAX_BONUS);
+		
+		return Mathf.Max(Mathf.RoundToInt(baseStat * mult), 1);
 	}
 	
 	public BattleCommand GenerateCommand(BattleManager battle)

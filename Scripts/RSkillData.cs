@@ -23,6 +23,10 @@ public partial class RSkillData : Resource
 	[Export] public float defenseFactorOnUser {get; set;} = 1f;
 	[Export] public float defenseFactorOnTarget {get; set;} = 1f;
 	
+	[Export] public StatEffect statEffect {get; set;} = StatEffect.None;
+	[Export] public int statMod {get; set;} = 0;
+	[Export] public float modChance {get; set;} = 0f;
+	
 	public enum TargetPattern {
 		None,
 		Self,
@@ -108,6 +112,16 @@ public partial class RSkillData : Resource
 			lines.Add(string.Join("\n", sublines));
 		}
 		
+		if (statEffect != StatEffect.None)
+		{
+			System.Collections.Generic.List<string> sublines = new();
+			
+			sublines.Add($"Stat bonuses to {StatLabel()}");
+			sublines.Add($"Bonus factor: {statMod}");
+			
+			lines.Add(string.Join("\n", sublines));
+		}
+		
 		if (!string.IsNullOrEmpty(description))
 		{
 			lines.Add(description);
@@ -124,6 +138,21 @@ public partial class RSkillData : Resource
 		TargetPattern.AllAllies => "All Allies",
 		TargetPattern.AllEnemies => "All Enemies",
 		TargetPattern.AllUnits => "All Units",
+		_ => "None"
+	};
+	
+	string StatLabel() => statEffect switch
+	{
+		StatEffect.PAttack => "Physical Attack",
+		StatEffect.MAttack => "Magical Attack",
+		StatEffect.PDefense => "Physical Defense",
+		StatEffect.MDefense => "Magical Defense",
+		StatEffect.Speed => "Speed",
+		StatEffect.AllAttack => "Attack Stats",
+		StatEffect.AllDefense => "Defense Stats",
+		StatEffect.AllPhysical => "Physical Stats",
+		StatEffect.AllMagical => "Magical Stats",
+		StatEffect.AllStats => "All Stats",
 		_ => "None"
 	};
 }
