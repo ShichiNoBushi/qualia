@@ -411,7 +411,7 @@ public partial class SkillCommand : BattleCommand
 {
 	public RSkillData skill {get; set;}
 	
-	public RSkillData.TargetPattern targetPattern {get; set;}
+	public TargetPattern targetPattern {get; set;}
 	
 	public int cost {get; set;} = 0;
 	
@@ -461,7 +461,7 @@ public partial class SkillCommand : BattleCommand
 		
 		srcFam.currentEnergy -= cost;
 		
-		if (targetPattern == RSkillData.TargetPattern.Self)
+		if (targetPattern == TargetPattern.Self)
 		{
 			if (heal > 0)
 			{
@@ -509,7 +509,7 @@ public partial class SkillCommand : BattleCommand
 		{
 			Godot.Collections.Array<RefCounted> targets = new();
 			
-			if (targetPattern == RSkillData.TargetPattern.AllAllies || targetPattern == RSkillData.TargetPattern.AllUnits)
+			if (targetPattern == TargetPattern.AllAllies || targetPattern == TargetPattern.AllUnits)
 			{
 				foreach (var fam in sourceSide.GetFamiliarList())
 				{
@@ -517,7 +517,7 @@ public partial class SkillCommand : BattleCommand
 				}
 			}
 			
-			if (targetPattern == RSkillData.TargetPattern.AllEnemies || targetPattern == RSkillData.TargetPattern.AllUnits)
+			if (targetPattern == TargetPattern.AllEnemies || targetPattern == TargetPattern.AllUnits)
 			{
 				BattleSide enemySide = sourceSide == battle.playerSide ? battle.enemySide : battle.playerSide;
 				
@@ -611,7 +611,7 @@ public partial class SkillCommand : BattleCommand
 			return;
 		}
 		
-		if (targetPattern == RSkillData.TargetPattern.OneAlly)
+		if (targetPattern == TargetPattern.OneAlly)
 		{
 			if (sourceSide.CountActiveFamiliars() > 0)
 			{
@@ -626,7 +626,7 @@ public partial class SkillCommand : BattleCommand
 				isValid = false;
 			}
 		}
-		else if (targetPattern == RSkillData.TargetPattern.OneEnemy)
+		else if (targetPattern == TargetPattern.OneEnemy)
 		{
 			BattleSide enemySide = sourceSide == battle.playerSide ? battle.enemySide : battle.playerSide;
 			
@@ -832,8 +832,7 @@ public partial class SkillCommand : BattleCommand
 					battle.InvalidateFamiliarCommands(fam2, this);
 					
 					FamiliarDisplay[] famDisplays = targetSide == battle.playerSide ? battle.famDisplaysP : battle.famDisplaysE;
-					famDisplays[slot].PlayAnimation("elminate");
-					famDisplays[slot].Clear();
+					famDisplays[slot].PlayExit("eliminate");
 					
 					string fEnemyPrefix2 = targetSide == battle.enemySide ? "Enemy " : "";
 					text = $"{fEnemyPrefix2}[b]{fam2.name}[/b] was eliminated";
@@ -1044,7 +1043,7 @@ public partial class SkillCommand : BattleCommand
 		
 		if (chance < 1f && GD.Randf() > chance)
 		{
-			battle.AppendBattleText($"Skill failed to modify {enemyPrefix}[b]{name}[/b]'s stats.", false);
+			battle.AppendBattleText($"Item failed to modify {enemyPrefix}[b]{name}[/b]'s stats.", false);
 			return;
 		}
 		
@@ -1202,17 +1201,17 @@ public partial class SkillCommand : BattleCommand
 	
 	public bool SingleTarget()
 	{
-		return targetPattern == RSkillData.TargetPattern.OneAlly || targetPattern == RSkillData.TargetPattern.OneEnemy;
+		return targetPattern == TargetPattern.OneAlly || targetPattern == TargetPattern.OneEnemy;
 	}
 	
 	public bool MultiTarget()
 	{
-		return targetPattern == RSkillData.TargetPattern.AllAllies || targetPattern == RSkillData.TargetPattern.AllEnemies || targetPattern == RSkillData.TargetPattern.AllUnits;
+		return targetPattern == TargetPattern.AllAllies || targetPattern == TargetPattern.AllEnemies || targetPattern == TargetPattern.AllUnits;
 	}
 	
 	public bool OpenTarget()
 	{
-		return targetPattern != RSkillData.TargetPattern.OneAlly && targetPattern != RSkillData.TargetPattern.OneEnemy;
+		return targetPattern != TargetPattern.OneAlly && targetPattern != TargetPattern.OneEnemy;
 	}
 }
 
@@ -1220,7 +1219,7 @@ public partial class SpellCommand : BattleCommand
 {
 	public RSpellData spell {get; set;}
 	
-	public RSpellData.SpellPattern spellPattern {get; set;}
+	public TargetPattern spellPattern {get; set;}
 	
 	public int cost {get; set;} = 0;
 	
@@ -1232,6 +1231,10 @@ public partial class SpellCommand : BattleCommand
 	public float defenseTarget {get; set;} = 1f;
 	
 	public bool isMagicTarget {get; set;} = false;
+	
+	public StatEffect statEffect {get; set;} = StatEffect.None;
+	public int statMod {get; set;} = 0;
+	public float modChance {get; set;} = 0f;
 	
 	public override void Execute(BattleManager battle)
 	{
@@ -1279,12 +1282,17 @@ public partial class SpellCommand : BattleCommand
 			{
 				DefendTarget(target, defenseTarget, battle);
 			}
+			
+			if (statEffect != StatEffect.None && statMod != 0 && modChance > 0f)
+			{
+				ModifyTarget(target, statEffect, statMod, modChance, battle);
+			}
 		}
 		else if (MultiTarget())
 		{
 			Godot.Collections.Array<RefCounted> targets = new();
 			
-			if (spellPattern == RSpellData.SpellPattern.AllAllies || spellPattern == RSpellData.SpellPattern.AllUnits)
+			if (spellPattern == TargetPattern.AllAllies || spellPattern == TargetPattern.AllUnits)
 			{
 				foreach (var fam in sourceSide.GetFamiliarList())
 				{
@@ -1292,7 +1300,7 @@ public partial class SpellCommand : BattleCommand
 				}
 			}
 			
-			if (spellPattern == RSpellData.SpellPattern.AllEnemies || spellPattern == RSpellData.SpellPattern.AllUnits)
+			if (spellPattern == TargetPattern.AllEnemies || spellPattern == TargetPattern.AllUnits)
 			{
 				BattleSide enemySide = sourceSide == battle.playerSide ? battle.enemySide : battle.playerSide;
 				
@@ -1330,6 +1338,14 @@ public partial class SpellCommand : BattleCommand
 					DefendTarget(t, defenseTarget, battle);
 				}
 			}
+			
+			if (statEffect != StatEffect.None && statMod != 0 && modChance > 0f)
+			{
+				foreach (var t in targets)
+				{
+					ModifyTarget(t, statEffect, statMod, modChance, battle);
+				}
+			}
 		}
 		
 		battle.RefreshAllDisplays();
@@ -1344,7 +1360,7 @@ public partial class SpellCommand : BattleCommand
 			return;
 		}
 		
-		if (spellPattern == RSpellData.SpellPattern.OneAlly)
+		if (spellPattern == TargetPattern.OneAlly)
 		{
 			if (sourceSide.CountActiveFamiliars() > 0)
 			{
@@ -1359,7 +1375,7 @@ public partial class SpellCommand : BattleCommand
 				isValid = false;
 			}
 		}
-		else if (spellPattern == RSpellData.SpellPattern.OneEnemy)
+		else if (spellPattern == TargetPattern.OneEnemy)
 		{
 			BattleSide enemySide = sourceSide == battle.playerSide ? battle.enemySide : battle.playerSide;
 			
@@ -1745,6 +1761,99 @@ public partial class SpellCommand : BattleCommand
 		}
 	}
 	
+	public void ModifyTarget(object target, StatEffect effect, int bonus, float chance, BattleManager battle)
+	{
+		if (target is not FamiliarActor fam)
+		{
+			return;
+		}
+		
+		string enemyPrefix = fam.side == battle.enemySide ? "Enemy " : "";
+		string name = string.IsNullOrEmpty(fam.name) ? "(no name)" : fam.name;
+		string dir = bonus > 0 ? "raised" : "lowered";
+		
+		if (chance < 1f && GD.Randf() > chance)
+		{
+			battle.AppendBattleText($"Spell failed to modify {enemyPrefix}[b]{name}[/b]'s stats.", false);
+			return;
+		}
+		
+		if (effect == StatEffect.PAttack || effect == StatEffect.AllAttack || effect == StatEffect.AllPhysical || effect == StatEffect.AllStats)
+		{
+			int original = fam.pAttackBonus;
+			fam.pAttackBonus = Mathf.Clamp(fam.pAttackBonus + bonus, -5, 5);
+			
+			if (original != fam.pAttackBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical attack {dir} by {Mathf.Abs(fam.pAttackBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical attack was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.MAttack || effect == StatEffect.AllAttack || effect == StatEffect.AllMagical || effect == StatEffect.AllStats)
+		{
+			int original = fam.mAttackBonus;
+			fam.mAttackBonus = Mathf.Clamp(fam.mAttackBonus + bonus, -5, 5);
+			
+			if (original != fam.mAttackBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical attack {dir} by {Mathf.Abs(fam.mAttackBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical attack was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.PDefense || effect == StatEffect.AllDefense || effect == StatEffect.AllPhysical || effect == StatEffect.AllStats)
+		{
+			int original = fam.pDefenseBonus;
+			fam.pDefenseBonus = Mathf.Clamp(fam.pDefenseBonus + bonus, -5, 5);
+			
+			if (original != fam.pDefenseBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical defense {dir} by {Mathf.Abs(fam.pDefenseBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical defense was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.MDefense || effect == StatEffect.AllDefense || effect == StatEffect.AllMagical || effect == StatEffect.AllStats)
+		{
+			int original = fam.mDefenseBonus;
+			fam.mDefenseBonus = Mathf.Clamp(fam.mDefenseBonus + bonus, -5, 5);
+			
+			if (original != fam.mDefenseBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical defense {dir} by {Mathf.Abs(fam.mDefenseBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical defense was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.Speed || effect == StatEffect.AllStats)
+		{
+			int original = fam.speedBonus;
+			fam.speedBonus = Mathf.Clamp(fam.speedBonus + bonus, -5, 5);
+			
+			if (original != fam.speedBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s speed {dir} by {Mathf.Abs(fam.speedBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s speed was unchanged.", false);
+			}
+		}
+	}
+	
 	public void ApplyHealing(object target, int amount)
 	{
 		if (amount <= 0)
@@ -1793,21 +1902,25 @@ public partial class SpellCommand : BattleCommand
 		heal = spell.healPower;
 		
 		defenseTarget = spell.defenseFactorOnTarget;
+		
+		statEffect = spl.statEffect;
+		statMod = spl.statMod;
+		modChance = spl.modChance;
 	}
 	
 	public bool SingleTarget()
 	{
-		return spellPattern == RSpellData.SpellPattern.OneAlly || spellPattern == RSpellData.SpellPattern.OneEnemy;
+		return spellPattern == TargetPattern.OneAlly || spellPattern == TargetPattern.OneEnemy;
 	}
 	
 	public bool MultiTarget()
 	{
-		return spellPattern == RSpellData.SpellPattern.AllAllies || spellPattern == RSpellData.SpellPattern.AllEnemies || spellPattern == RSpellData.SpellPattern.AllUnits;
+		return spellPattern == TargetPattern.AllAllies || spellPattern == TargetPattern.AllEnemies || spellPattern == TargetPattern.AllUnits;
 	}
 	
 	public bool OpenTarget()
 	{
-		return spellPattern != RSpellData.SpellPattern.OneAlly && spellPattern != RSpellData.SpellPattern.OneEnemy;
+		return spellPattern != TargetPattern.OneAlly && spellPattern != TargetPattern.OneEnemy;
 	}
 }
 
@@ -1816,7 +1929,7 @@ public partial class ItemCommand : BattleCommand
 	public RItemData item {get; set;}
 	public ItemInstance unique {get; set;}
 	
-	public RItemData.ItemPattern itemPattern {get; set;}
+	public TargetPattern itemPattern {get; set;}
 	
 	public int power {get; set;} = 0;
 	public float splash {get; set;} = 0f;
@@ -1826,6 +1939,10 @@ public partial class ItemCommand : BattleCommand
 	public float defenseTarget {get; set;} = 1f;
 	
 	public bool isMagicTarget {get; set;} = false;
+	
+	public StatEffect statEffect {get; set;} = StatEffect.None;
+	public int statMod {get; set;} = 0;
+	public float modChance {get; set;} = 0f;
 	
 	public override void Execute(BattleManager battle)
 	{
@@ -1871,12 +1988,17 @@ public partial class ItemCommand : BattleCommand
 			{
 				DefendTarget(target, defenseTarget, battle);
 			}
+			
+			if (statEffect != StatEffect.None && statMod != 0 && modChance > 0f)
+			{
+				ModifyTarget(target, statEffect, statMod, modChance, battle);
+			}
 		}
 		else if (MultiTarget())
 		{
 			Godot.Collections.Array<RefCounted> targets = new();
 			
-			if (itemPattern == RItemData.ItemPattern.AllAllies || itemPattern == RItemData.ItemPattern.AllUnits)
+			if (itemPattern == TargetPattern.AllAllies || itemPattern == TargetPattern.AllUnits)
 			{
 				if (item.familiarUsable)
 				{
@@ -1892,7 +2014,7 @@ public partial class ItemCommand : BattleCommand
 				}
 			}
 			
-			if (itemPattern == RItemData.ItemPattern.AllEnemies || itemPattern == RItemData.ItemPattern.AllUnits)
+			if (itemPattern == TargetPattern.AllEnemies || itemPattern == TargetPattern.AllUnits)
 			{
 				BattleSide enemySide = sourceSide == battle.playerSide ? battle.enemySide : battle.playerSide;
 				
@@ -1933,6 +2055,14 @@ public partial class ItemCommand : BattleCommand
 					DefendTarget(t, defenseTarget, battle);
 				}
 			}
+			
+			if (statEffect != StatEffect.None && statMod != 0 && modChance > 0f)
+			{
+				foreach (var t in targets)
+				{
+					ModifyTarget(t, statEffect, statMod, modChance, battle);
+				}
+			}
 		}
 		
 		battle.RefreshAllDisplays();
@@ -1947,7 +2077,7 @@ public partial class ItemCommand : BattleCommand
 			return;
 		}
 		
-		if (itemPattern == RItemData.ItemPattern.OneAlly)
+		if (itemPattern == TargetPattern.OneAlly)
 		{
 			if (item.familiarUsable && sourceSide.CountActiveFamiliars() > 0)
 			{
@@ -1966,7 +2096,7 @@ public partial class ItemCommand : BattleCommand
 				isValid = false;
 			}
 		}
-		else if (itemPattern == RItemData.ItemPattern.OneEnemy)
+		else if (itemPattern == TargetPattern.OneEnemy)
 		{
 			BattleSide enemySide = sourceSide == battle.playerSide ? battle.enemySide : battle.playerSide;
 			
@@ -2363,6 +2493,99 @@ public partial class ItemCommand : BattleCommand
 		}
 	}
 	
+	public void ModifyTarget(object target, StatEffect effect, int bonus, float chance, BattleManager battle)
+	{
+		if (target is not FamiliarActor fam)
+		{
+			return;
+		}
+		
+		string enemyPrefix = fam.side == battle.enemySide ? "Enemy " : "";
+		string name = string.IsNullOrEmpty(fam.name) ? "(no name)" : fam.name;
+		string dir = bonus > 0 ? "raised" : "lowered";
+		
+		if (chance < 1f && GD.Randf() > chance)
+		{
+			battle.AppendBattleText($"Skill failed to modify {enemyPrefix}[b]{name}[/b]'s stats.", false);
+			return;
+		}
+		
+		if (effect == StatEffect.PAttack || effect == StatEffect.AllAttack || effect == StatEffect.AllPhysical || effect == StatEffect.AllStats)
+		{
+			int original = fam.pAttackBonus;
+			fam.pAttackBonus = Mathf.Clamp(fam.pAttackBonus + bonus, -5, 5);
+			
+			if (original != fam.pAttackBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical attack {dir} by {Mathf.Abs(fam.pAttackBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical attack was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.MAttack || effect == StatEffect.AllAttack || effect == StatEffect.AllMagical || effect == StatEffect.AllStats)
+		{
+			int original = fam.mAttackBonus;
+			fam.mAttackBonus = Mathf.Clamp(fam.mAttackBonus + bonus, -5, 5);
+			
+			if (original != fam.mAttackBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical attack {dir} by {Mathf.Abs(fam.mAttackBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical attack was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.PDefense || effect == StatEffect.AllDefense || effect == StatEffect.AllPhysical || effect == StatEffect.AllStats)
+		{
+			int original = fam.pDefenseBonus;
+			fam.pDefenseBonus = Mathf.Clamp(fam.pDefenseBonus + bonus, -5, 5);
+			
+			if (original != fam.pDefenseBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical defense {dir} by {Mathf.Abs(fam.pDefenseBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s physical defense was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.MDefense || effect == StatEffect.AllDefense || effect == StatEffect.AllMagical || effect == StatEffect.AllStats)
+		{
+			int original = fam.mDefenseBonus;
+			fam.mDefenseBonus = Mathf.Clamp(fam.mDefenseBonus + bonus, -5, 5);
+			
+			if (original != fam.mDefenseBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical defense {dir} by {Mathf.Abs(fam.mDefenseBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s magical defense was unchanged.", false);
+			}
+		}
+		
+		if (effect == StatEffect.Speed || effect == StatEffect.AllStats)
+		{
+			int original = fam.speedBonus;
+			fam.speedBonus = Mathf.Clamp(fam.speedBonus + bonus, -5, 5);
+			
+			if (original != fam.speedBonus)
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s speed {dir} by {Mathf.Abs(fam.speedBonus - original)}", false);
+			}
+			else
+			{
+				battle.AppendBattleText($"{enemyPrefix}[b]{name}[/b]'s speed was unchanged.", false);
+			}
+		}
+	}
+	
 	public void ApplyHealing(object target, int amount)
 	{
 		if (amount <= 0)
@@ -2412,21 +2635,25 @@ public partial class ItemCommand : BattleCommand
 		heal = item.healPower;
 		
 		defenseTarget = item.defenseFactorOnTarget;
+		
+		statEffect = it.statEffect;
+		statMod = it.statMod;
+		modChance = it.modChance;
 	}
 	
 	public bool SingleTarget()
 	{
-		return itemPattern == RItemData.ItemPattern.OneAlly || itemPattern == RItemData.ItemPattern.OneEnemy;
+		return itemPattern == TargetPattern.OneAlly || itemPattern == TargetPattern.OneEnemy;
 	}
 	
 	public bool MultiTarget()
 	{
-		return itemPattern == RItemData.ItemPattern.AllAllies || itemPattern == RItemData.ItemPattern.AllEnemies || itemPattern == RItemData.ItemPattern.AllUnits;
+		return itemPattern == TargetPattern.AllAllies || itemPattern == TargetPattern.AllEnemies || itemPattern == TargetPattern.AllUnits;
 	}
 	
 	public bool OpenTarget()
 	{
-		return itemPattern != RItemData.ItemPattern.OneAlly && itemPattern != RItemData.ItemPattern.OneEnemy;
+		return itemPattern != TargetPattern.OneAlly && itemPattern != TargetPattern.OneEnemy;
 	}
 	
 	public bool SufficientQuantity(GameSession session)

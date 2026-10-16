@@ -6,7 +6,7 @@
 script = ExtResource("1_2t03k")
 id = "recover"
 name = "Recover"
-spellPattern = 1
+spellPattern = 2
 cost = 5
 healPower = 5
 metadata/_custom_type_script = "uid://woseyfbovo6l"

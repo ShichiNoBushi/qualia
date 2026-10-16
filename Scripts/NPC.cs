@@ -3,6 +3,9 @@ using System;
 
 public partial class NPC : CharacterBody2D
 {
+	[Export] public Godot.Collections.Array<string> requireFlags {get; set;} = new();
+	[Export] public Godot.Collections.Array<string> hideFlags {get; set;} = new();
+	
 	[Export] public REncounterData encounter {get; set;}
 	[Export] public bool isBattleable {get; set;} = false;
 
@@ -16,6 +19,35 @@ public partial class NPC : CharacterBody2D
 	public override void _Ready()
 	{
 		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		
+		GameSession session = GetNode<GameSession>("/root/GameSession");
+		
+		bool show = true;
+		
+		foreach (var flag in requireFlags)
+		{
+			if (!session.HasFlag(flag))
+			{
+				show = false;
+				break;
+			}
+		}
+		
+		foreach (var flag in hideFlags)
+		{
+			if (session.HasFlag(flag))
+			{
+				show = false;
+				break;
+			}
+		}
+		
+		Visible = show;
+		
+		if (!show)
+		{
+			ProcessMode = ProcessModeEnum.Disabled;
+		}
 		
 		sprite.Play("walk_front");
 	}

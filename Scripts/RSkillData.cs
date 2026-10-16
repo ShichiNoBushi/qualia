@@ -27,16 +27,6 @@ public partial class RSkillData : Resource
 	[Export] public int statMod {get; set;} = 0;
 	[Export] public float modChance {get; set;} = 0f;
 	
-	public enum TargetPattern {
-		None,
-		Self,
-		OneAlly,
-		OneEnemy,
-		AllAllies,
-		AllEnemies,
-		AllUnits
-	}
-	
 	public string FormatDescription()
 	{
 		System.Collections.Generic.List<string> lines = new();

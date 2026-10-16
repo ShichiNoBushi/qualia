@@ -128,11 +128,11 @@ public partial class ProjectorCommands : Control
 		{
 			bool validTargets = true;
 			
-			if (spell.spellPattern == RSpellData.SpellPattern.OneAlly && battle.playerSide.CountActiveFamiliars() == 0)
+			if (spell.spellPattern == TargetPattern.OneAlly && battle.playerSide.CountActiveFamiliars() == 0)
 			{
 				validTargets = false;
 			}
-			else if (spell.spellPattern == RSpellData.SpellPattern.OneEnemy && battle.enemySide.CountActiveFamiliars() == 0 && battle.enemySide.projector == null)
+			else if (spell.spellPattern == TargetPattern.OneEnemy && battle.enemySide.CountActiveFamiliars() == 0 && battle.enemySide.projector == null)
 			{
 				validTargets = false;
 			}
@@ -225,10 +225,10 @@ public partial class ProjectorCommands : Control
 			
 			bool validTargets = item.itemPattern switch
 			{
-				RItemData.ItemPattern.OneAlly => canAllyFam || canAllyProj,
-				RItemData.ItemPattern.OneEnemy => canEnemyFam || canEnemyProj,
-				RItemData.ItemPattern.AllAllies => canAllyFam || canAllyProj,
-				RItemData.ItemPattern.AllEnemies => canEnemyFam || canEnemyProj,
+				TargetPattern.OneAlly => canAllyFam || canAllyProj,
+				TargetPattern.OneEnemy => canEnemyFam || canEnemyProj,
+				TargetPattern.AllAllies => canAllyFam || canAllyProj,
+				TargetPattern.AllEnemies => canEnemyFam || canEnemyProj,
 				_ => true
 			};
 			
@@ -356,12 +356,12 @@ public partial class ProjectorCommands : Control
 			GD.PrintErr($"ProjectorCommands: failed to identify spell - {e}");
 		}
 		
-		if (spell.spellPattern == RSpellData.SpellPattern.OneAlly)
+		if (spell.spellPattern == TargetPattern.OneAlly)
 		{
 			battle.HighlightAllies();
 			battle.SetCommandState(BattleManager.CommandState.SelectAllySpell);
 		}
-		else if (spell.spellPattern == RSpellData.SpellPattern.OneEnemy)
+		else if (spell.spellPattern == TargetPattern.OneEnemy)
 		{
 			if (battle.enemySide.CountActiveFamiliars() > 0)
 			{
@@ -422,7 +422,7 @@ public partial class ProjectorCommands : Control
 			GD.PrintErr($"ProjectorCommands: failed to identify item - {e}");
 		}
 		
-		if (item.itemPattern == RItemData.ItemPattern.OneAlly)
+		if (item.itemPattern == TargetPattern.OneAlly)
 		{
 			if (item.familiarUsable && battle.playerSide.CountActiveFamiliars() > 0)
 			{
@@ -436,7 +436,7 @@ public partial class ProjectorCommands : Control
 			
 			battle.SetCommandState(BattleManager.CommandState.SelectAllyItem);
 		}
-		else if (item.itemPattern == RItemData.ItemPattern.OneEnemy)
+		else if (item.itemPattern == TargetPattern.OneEnemy)
 		{
 			if (item.familiarUsable && battle.enemySide.CountActiveFamiliars() > 0)
 			{

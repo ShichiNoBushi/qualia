@@ -626,12 +626,12 @@ public partial class BattleManager : Node
 			return;
 		}
 		
-		if (pendingSpell.spellPattern == RSpellData.SpellPattern.OneEnemy && display.isPlayerSide)
+		if (pendingSpell.spellPattern == TargetPattern.OneEnemy && display.isPlayerSide)
 		{
 			return;
 		}
 		
-		if (pendingSpell.spellPattern == RSpellData.SpellPattern.OneAlly && !display.isPlayerSide)
+		if (pendingSpell.spellPattern == TargetPattern.OneAlly && !display.isPlayerSide)
 		{
 			return;
 		}
@@ -680,7 +680,7 @@ public partial class BattleManager : Node
 			return;
 		}
 		
-		if (pendingSpell.spellPattern == RSpellData.SpellPattern.OneEnemy)
+		if (pendingSpell.spellPattern == TargetPattern.OneEnemy)
 		{
 			if (display == projectorDisplayP)
 			{
@@ -693,7 +693,7 @@ public partial class BattleManager : Node
 			}
 		}
 		
-		if (pendingSpell.spellPattern == RSpellData.SpellPattern.OneAlly)
+		if (pendingSpell.spellPattern == TargetPattern.OneAlly)
 		{
 			return;
 		}
@@ -752,12 +752,12 @@ public partial class BattleManager : Node
 			return;
 		}
 		
-		if (pendingItem.itemPattern == RItemData.ItemPattern.OneEnemy && display.isPlayerSide)
+		if (pendingItem.itemPattern == TargetPattern.OneEnemy && display.isPlayerSide)
 		{
 			return;
 		}
 		
-		if (pendingItem.itemPattern == RItemData.ItemPattern.OneAlly && !display.isPlayerSide)
+		if (pendingItem.itemPattern == TargetPattern.OneAlly && !display.isPlayerSide)
 		{
 			return;
 		}
@@ -821,7 +821,7 @@ public partial class BattleManager : Node
 			return;
 		}
 		
-		if (pendingItem.itemPattern == RItemData.ItemPattern.OneEnemy)
+		if (pendingItem.itemPattern == TargetPattern.OneEnemy)
 		{
 			if (display == projectorDisplayP)
 			{
@@ -834,7 +834,7 @@ public partial class BattleManager : Node
 			}
 		}
 		
-		if (pendingItem.itemPattern == RItemData.ItemPattern.OneAlly && display == projectorDisplayE)
+		if (pendingItem.itemPattern == TargetPattern.OneAlly && display == projectorDisplayE)
 		{
 			return;
 		}
@@ -974,12 +974,12 @@ public partial class BattleManager : Node
 			return;
 		}
 		
-		if (pendingSkill.targetPattern == RSkillData.TargetPattern.OneEnemy && display.isPlayerSide)
+		if (pendingSkill.targetPattern == TargetPattern.OneEnemy && display.isPlayerSide)
 		{
 			return;
 		}
 		
-		if (pendingSkill.targetPattern == RSkillData.TargetPattern.OneAlly && !display.isPlayerSide)
+		if (pendingSkill.targetPattern == TargetPattern.OneAlly && !display.isPlayerSide)
 		{
 			return;
 		}
@@ -1035,7 +1035,7 @@ public partial class BattleManager : Node
 			return;
 		}
 		
-		if (pendingSkill.targetPattern == RSkillData.TargetPattern.OneEnemy)
+		if (pendingSkill.targetPattern == TargetPattern.OneEnemy)
 		{
 			if (display == projectorDisplayP)
 			{
@@ -1048,7 +1048,7 @@ public partial class BattleManager : Node
 			}
 		}
 		
-		if (pendingSkill.targetPattern == RSkillData.TargetPattern.OneAlly)
+		if (pendingSkill.targetPattern == TargetPattern.OneAlly)
 		{
 			return;
 		}
@@ -2380,8 +2380,8 @@ public class CommandFactory
 			{
 				bool ok = spell.spellPattern switch
 				{
-					RSpellData.SpellPattern.OneAlly => side.CountActiveFamiliars() > 0,
-					RSpellData.SpellPattern.OneEnemy => enemySide.CountActiveFamiliars() > 0 || (enemySide.projector != null && enemySide.projector.currentEnergy > 0),
+					TargetPattern.OneAlly => side.CountActiveFamiliars() > 0,
+					TargetPattern.OneEnemy => enemySide.CountActiveFamiliars() > 0 || (enemySide.projector != null && enemySide.projector.currentEnergy > 0),
 					_ => true
 				};
 				
@@ -2409,7 +2409,7 @@ public class CommandFactory
 		
 		cmd.AssignSpell(selectedSpell);
 		
-		if (selectedSpell.spellPattern == RSpellData.SpellPattern.OneAlly)
+		if (selectedSpell.spellPattern == TargetPattern.OneAlly)
 		{
 			Godot.Collections.Array<FamiliarActor> allies = side.GetFamiliarList();
 			
@@ -2417,7 +2417,7 @@ public class CommandFactory
 			
 			cmd.target = allies[roll];
 		}
-		else if (selectedSpell.spellPattern == RSpellData.SpellPattern.OneEnemy)
+		else if (selectedSpell.spellPattern == TargetPattern.OneEnemy)
 		{
 			if (enemySide.CountActiveFamiliars() > 0)
 			{
@@ -2519,9 +2519,9 @@ public class CommandFactory
 			
 			bool ok = skl.targetPattern switch
 			{
-				RSkillData.TargetPattern.OneAlly =>
+				TargetPattern.OneAlly =>
 					fam.side.CountActiveFamiliars() > 0,
-				RSkillData.TargetPattern.OneEnemy =>
+				TargetPattern.OneEnemy =>
 					otherSide.CountActiveFamiliars() > 0 || (otherSide.projector != null && otherSide.projector.currentEnergy > 0),
 				_ => true
 			};
@@ -2548,13 +2548,13 @@ public class CommandFactory
 		
 		cmd.target = skill.targetPattern switch
 		{
-			RSkillData.TargetPattern.Self or RSkillData.TargetPattern.None => fam,
-			RSkillData.TargetPattern.OneAlly => PickFriendlyTarget(fam.side),
-			RSkillData.TargetPattern.OneEnemy => PickHostileTarget(otherSide),
+			TargetPattern.Self or TargetPattern.None => fam,
+			TargetPattern.OneAlly => PickFriendlyTarget(fam.side),
+			TargetPattern.OneEnemy => PickHostileTarget(otherSide),
 			_ => null
 		};
 		
-		if (skill.targetPattern is RSkillData.TargetPattern.OneAlly or RSkillData.TargetPattern.OneEnemy && cmd.target == null)
+		if (skill.targetPattern is TargetPattern.OneAlly or TargetPattern.OneEnemy && cmd.target == null)
 		{
 			GD.Print("  single target with null target");
 			return null;

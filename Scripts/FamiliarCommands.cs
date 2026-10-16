@@ -74,7 +74,7 @@ public partial class FamiliarCommands : Control
 				disabled = true;
 			}
 			
-			if (skill.targetPattern == RSkillData.TargetPattern.OneEnemy && battle.enemySide.CountActiveFamiliars() == 0 && !battle.isProjectorEncounter)
+			if (skill.targetPattern == TargetPattern.OneEnemy && battle.enemySide.CountActiveFamiliars() == 0 && !battle.isProjectorEncounter)
 			{
 				disabled = true;
 			}
@@ -160,7 +160,7 @@ public partial class FamiliarCommands : Control
 	
 	public void OnSkillPressed(RSkillData skill)
 	{
-		if (skill.targetPattern == RSkillData.TargetPattern.OneEnemy)
+		if (skill.targetPattern == TargetPattern.OneEnemy)
 		{
 			if (battle.enemySide.CountActiveFamiliars() == 0 && !battle.isProjectorEncounter)
 			{
@@ -204,7 +204,7 @@ public partial class FamiliarCommands : Control
 			battle.BlockCommands();
 			battle.RefreshNextButton();
 		}
-		else if (skill.targetPattern == RSkillData.TargetPattern.OneAlly)
+		else if (skill.targetPattern == TargetPattern.OneAlly)
 		{
 			if (battle.playerSide.CountActiveFamiliars() == 0)
 			{
@@ -227,7 +227,7 @@ public partial class FamiliarCommands : Control
 			{
 				sourceSide = familiar.side,
 				source = familiar,
-				target = (skill.targetPattern == RSkillData.TargetPattern.Self || skill.targetPattern == RSkillData.TargetPattern.None) ? familiar : null
+				target = (skill.targetPattern == TargetPattern.Self || skill.targetPattern == TargetPattern.None) ? familiar : null
 			};
 			
 			cmd.AssignSkill(skill);
@@ -281,7 +281,7 @@ public partial class FamiliarCommands : Control
 				disabled = true;
 			}
 			
-			if (skill.targetPattern == RSkillData.TargetPattern.OneEnemy && disableAttack)
+			if (skill.targetPattern == TargetPattern.OneEnemy && disableAttack)
 			{
 				disabled = true;
 			}

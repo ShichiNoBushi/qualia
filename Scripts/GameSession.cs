@@ -33,6 +33,7 @@ public partial class GameSession : Node
 	
 	public GameMode gameMode {get; set;}
 	
+	public System.Collections.Generic.HashSet<string> storyFlags {get; set;}
 	public Godot.Collections.Array<string> openedChests {get; set;}
 	
 	public enum GameMode
@@ -52,6 +53,7 @@ public partial class GameSession : Node
 		uniqueItems = new();
 		qualiaCrystals = new();
 		
+		storyFlags = new();
 		openedChests = new();
 		
 		RProjectorData pData = registry.Projector("player");
@@ -237,6 +239,21 @@ public partial class GameSession : Node
 		return true;
 	}
 	
+	public bool HasFlag(string id) => !string.IsNullOrEmpty(id) && storyFlags.Contains(id);
+	
+	public void SetFlag(string id)
+	{
+		if (!string.IsNullOrEmpty(id))
+		{
+			storyFlags.Add(id);
+		}
+	}
+	
+	public void ClearFlag(string id)
+	{
+		storyFlags.Remove(id);
+	}
+	
 	public bool IsChestOpened(string chestId) => !string.IsNullOrEmpty(chestId) && openedChests.Contains(chestId);
 	
 	public void MarkChestOpened(string chestId)
@@ -342,6 +359,13 @@ public partial class GameSession : Node
 			}
 		}
 		
+		storyFlags = new();
+		
+		foreach (var id in save.storyFlags)
+		{
+			SetFlag(id);
+		}
+		
 		openedChests = new();
 		
 		foreach (var id in save.openedChests)
@@ -405,6 +429,7 @@ public class GameSave
 	public float safeFacingX;
 	public float safeFacingY;
 	
+	public Godot.Collections.Array<string> storyFlags;
 	public Godot.Collections.Array<string> openedChests;
 	
 	public GameSave()
@@ -448,6 +473,13 @@ public class GameSave
 		safeFacingX = session.safeFacing.X;
 		safeFacingY = session.safeFacing.Y;
 		
+		storyFlags = new();
+		
+		foreach (var id in session.storyFlags)
+		{
+			storyFlags.Add(id);
+		}
+		
 		openedChests = session.openedChests.Duplicate();
 	}
 	
@@ -472,6 +504,13 @@ public class GameSave
 		foreach (var item in uniqueItems)
 		{
 			uniques.Add(item.ToDictionary());
+		}
+		
+		Godot.Collections.Array story = new();
+		
+		foreach (var id in storyFlags)
+		{
+			story.Add(id);
 		}
 		
 		Godot.Collections.Array chests = new();
@@ -500,6 +539,7 @@ public class GameSave
 			{"safeMarkerId", safeMarkerId},
 			{"safePositionX", safePositionX}, {"safePositionY", safePositionY},
 			{"safeFacingX", safeFacingX}, {"safeFacingY", safeFacingY},
+			{"storyFlags", story},
 			{"openedChests", chests}
 		};
 	}
@@ -567,6 +607,16 @@ public class GameSave
 		save.safePositionY = dict.TryGetValue("safePositionY", out Variant sfpy) ? sfpy.AsSingle() : 0f;
 		save.safeFacingX = dict.TryGetValue("safeFacingX", out Variant sffx) ? sffx.AsSingle() : 0f;
 		save.safeFacingY = dict.TryGetValue("safeFacingY", out Variant sffy) ? sffy.AsSingle() : 1f;
+		
+		save.storyFlags = new();
+		
+		if (dict.TryGetValue("storyFlags", out Variant story) && story.VariantType == Variant.Type.Array)
+		{
+			foreach (Variant id in story.AsGodotArray())
+			{
+				save.storyFlags.Add(id.AsString());
+			}
+		}
 		
 		save.openedChests = new();
 		

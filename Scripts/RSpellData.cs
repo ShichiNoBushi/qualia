@@ -9,7 +9,7 @@ public partial class RSpellData : Resource
 	[Export] public RTypeData type {get; set;}
 	[Export] public string description {get; set;} = "";
 	
-	[Export] public SpellPattern spellPattern {get; set;} = SpellPattern.OneEnemy;
+	[Export] public TargetPattern spellPattern {get; set;} = TargetPattern.OneEnemy;
 	[Export] public int cost {get; set;} = 0;
 	
 	[Export] public bool isMagicalDefense {get; set;} = false;
@@ -19,14 +19,9 @@ public partial class RSpellData : Resource
 	[Export] public int healPower {get; set;} = 0;
 	[Export] public float defenseFactorOnTarget {get; set;} = 1f;
 	
-	public enum SpellPattern {
-		None,
-		OneAlly,
-		OneEnemy,
-		AllAllies,
-		AllEnemies,
-		AllUnits
-	}
+	[Export] public StatEffect statEffect {get; set;} = StatEffect.None;
+	[Export] public int statMod {get; set;} = 0;
+	[Export] public float modChance {get; set;} = 0f;
 	
 	public string FormatDescription()
 	{
@@ -44,7 +39,7 @@ public partial class RSpellData : Resource
 		
 		lines.Add($"Cost: {cost}\n");
 		
-		if (spellPattern != SpellPattern.None)
+		if (spellPattern != TargetPattern.None)
 		{
 			lines.Add($"Target: {TargetLabel()}");
 		}
@@ -77,6 +72,16 @@ public partial class RSpellData : Resource
 			lines.Add($"Target Defense: {defenseFactorOnTarget:0.0}");
 		}
 		
+		if (statEffect != StatEffect.None)
+		{
+			System.Collections.Generic.List<string> sublines = new();
+			
+			sublines.Add($"Stat bonuses to {StatLabel()}");
+			sublines.Add($"Bonus factor: {statMod}");
+			
+			lines.Add(string.Join("\n", sublines));
+		}
+		
 		if (!string.IsNullOrEmpty(description))
 		{
 			lines.Add(description);
@@ -87,11 +92,26 @@ public partial class RSpellData : Resource
 	
 	string TargetLabel() => spellPattern switch
 	{
-		SpellPattern.OneAlly => "Ally",
-		SpellPattern.OneEnemy => "Enemy",
-		SpellPattern.AllAllies => "All Allies",
-		SpellPattern.AllEnemies => "All Enemies",
-		SpellPattern.AllUnits => "All Units",
+		TargetPattern.OneAlly => "Ally",
+		TargetPattern.OneEnemy => "Enemy",
+		TargetPattern.AllAllies => "All Allies",
+		TargetPattern.AllEnemies => "All Enemies",
+		TargetPattern.AllUnits => "All Units",
+		_ => "None"
+	};
+	
+	string StatLabel() => statEffect switch
+	{
+		StatEffect.PAttack => "Physical Attack",
+		StatEffect.MAttack => "Magical Attack",
+		StatEffect.PDefense => "Physical Defense",
+		StatEffect.MDefense => "Magical Defense",
+		StatEffect.Speed => "Speed",
+		StatEffect.AllAttack => "Attack Stats",
+		StatEffect.AllDefense => "Defense Stats",
+		StatEffect.AllPhysical => "Physical Stats",
+		StatEffect.AllMagical => "Magical Stats",
+		StatEffect.AllStats => "All Stats",
 		_ => "None"
 	};
 }

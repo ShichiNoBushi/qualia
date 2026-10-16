@@ -101,6 +101,17 @@ public partial class DataRegistry : Node
 	public RForgeRecipe Recipe(string id) => recipes.TryGetValue(id, out RForgeRecipe rec) ? rec : null;
 }
 
+public enum TargetPattern
+{
+	None,
+	Self,
+	OneAlly,
+	OneEnemy,
+	AllAllies,
+	AllEnemies,
+	AllUnits
+}
+
 public enum StatEffect
 {
 	None,
