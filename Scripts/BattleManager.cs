@@ -43,6 +43,9 @@ public partial class BattleManager : Node
 	
 	public int battleTextIndex = 0;
 	
+	public string victoryFlag;
+	public string defeatFlag;
+	
 	public enum BattleState
 	{
 		Setup,
@@ -275,6 +278,19 @@ public partial class BattleManager : Node
 			}
 			
 			SpawnSpark();
+		}
+		
+		victoryFlag = "";
+		defeatFlag = "";
+		
+		if (!string.IsNullOrEmpty(encounter.victoryFlag))
+		{
+			victoryFlag = encounter.victoryFlag;
+		}
+		
+		if (!string.IsNullOrEmpty(encounter.defeatFlag))
+		{
+			defeatFlag = encounter.defeatFlag;
 		}
 		
 		RefreshAllDisplays();
@@ -1186,12 +1202,22 @@ public partial class BattleManager : Node
 	{
 		DismissAllAndRefund(playerSide);
 		
+		if (!string.IsNullOrEmpty(victoryFlag))
+		{
+			session.SetFlag(victoryFlag);
+		}
+		
 		ReturnToField(VictoryResult.PlayerWin);
 	}
 	
 	public void FinishDefeat()
 	{
 		playerSide.projector.Recover();
+		
+		if (!string.IsNullOrEmpty(defeatFlag))
+		{
+			session.SetFlag(defeatFlag);
+		}
 		
 		ReturnToField(VictoryResult.PlayerLose);
 	}

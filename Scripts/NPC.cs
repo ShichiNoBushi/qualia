@@ -12,6 +12,8 @@ public partial class NPC : CharacterBody2D
 	[Export] public string name {get; set;} = "";
 	[Export] public string dialog {get; set;} = "";
 	
+	[Export] public RStoryEvent dialogEvent {get; set;}
+	
 	[Export] public PackedScene battleScene {get; set;}
 
 	public AnimatedSprite2D sprite;

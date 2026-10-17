@@ -7,6 +7,9 @@ public partial class REncounterData : Resource
 	[Export] public string id {get; set;} = "";
 	[Export] public string name {get; set;} = "";
 	
+	[Export] public string victoryFlag {get; set;} = "";
+	[Export] public string defeatFlag {get; set;} = "";
+	
 	[Export] public bool isProjectorEncounter {get; set;} = false;
 	[Export] public RProjectorData enemyProjector {get; set;}
 	[Export] public Godot.Collections.Array<RFamiliarSpawn> familiarList {get; set;} = new();
