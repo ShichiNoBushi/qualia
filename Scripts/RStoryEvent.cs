@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+[GlobalClass]
 public partial class RStoryEvent : Resource
 {
 	[Export] public Godot.Collections.Array<string> requireFlags {get; set;} = new();

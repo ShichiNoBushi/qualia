@@ -10,7 +10,8 @@ public partial class NPC : CharacterBody2D
 	[Export] public bool isBattleable {get; set;} = false;
 
 	[Export] public string name {get; set;} = "";
-	[Export] public string dialog {get; set;} = "";
+	[Export] public Godot.Collections.Dictionary<string, RDialog> dialogs {get; set;}
+	[Export] public string startDialogId {get; set;} = "";
 	
 	[Export] public RStoryEvent dialogEvent {get; set;}
 	
@@ -65,7 +66,7 @@ public partial class NPC : CharacterBody2D
 			return;
 		}
 		
-		box.Play(name, dialog, () => AfterDialog(player));
+		box.Play(dialogs, startDialogId, () => AfterDialog(player));
 	}
 	
 	public void FaceToward(Vector2 target)

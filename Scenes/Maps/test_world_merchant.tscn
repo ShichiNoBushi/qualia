@@ -5,6 +5,16 @@
 [ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/Characters/player.tscn" id="3_gukg7"]
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="4_fd7ip"]
 [ext_resource type="PackedScene" uid="uid://e50xasid0gsm" path="res://Scenes/Characters/merchant_npc.tscn" id="4_lor7e"]
+[ext_resource type="Script" uid="uid://mlrtfv1dc86w" path="res://Scripts/RDialog.cs" id="5_gukg7"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_pll4v"]
+
+[sub_resource type="Resource" id="Resource_bh5it"]
+script = ExtResource("5_gukg7")
+id = "start"
+speaker = "Merchant"
+text = "Welcome![break]I have lots of good things on sale."
+metadata/_custom_type_script = "uid://mlrtfv1dc86w"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l4ony"]
 size = Vector2(64, 32)
@@ -41,7 +51,10 @@ itemStock = Dictionary[String, int]({
 "mini_potion": -1
 })
 name = "Merchant"
-dialog = "Welcome![break]I have lots of good things on sale."
+dialogs = Dictionary[String, Object]({
+"start": SubResource("Resource_bh5it")
+})
+startDialogId = "start"
 
 [node name="Markers" type="Node2D" parent="." unique_id=976956777]
 

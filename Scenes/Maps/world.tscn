@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/Characters/player.tscn" id="2_pnsqa"]
 [ext_resource type="PackedScene" uid="uid://by86ymrructfl" path="res://Scenes/Characters/npc.tscn" id="3_gjrm8"]
 [ext_resource type="Resource" uid="uid://cyp4vnvhjl3hk" path="res://Resources/Encounters/vs_rand_proj.tres" id="4_qe4dn"]
+[ext_resource type="Script" uid="uid://mlrtfv1dc86w" path="res://Scripts/RDialog.cs" id="6_utdyw"]
 [ext_resource type="Script" uid="uid://c1himha5535u8" path="res://Scripts/EncounterZone.cs" id="6_vi3vx"]
 [ext_resource type="Resource" uid="uid://cptc8in5acupn" path="res://Resources/Encounters/gnome2.tres" id="7_utdyw"]
 [ext_resource type="Resource" uid="uid://7kahqvhasm45" path="res://Resources/Encounters/salamander2.tres" id="8_pll4v"]
@@ -16,6 +17,15 @@
 [ext_resource type="PackedScene" uid="uid://baebeonng7831" path="res://Scenes/Maps/wild_spark_large.tscn" id="15_ngc2t"]
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="15_qe4dn"]
 [ext_resource type="PackedScene" uid="uid://duy000bar45m2" path="res://Scenes/Objects/sign.tscn" id="17_vi3vx"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_pll4v"]
+
+[sub_resource type="Resource" id="Resource_4d6cb"]
+script = ExtResource("6_utdyw")
+id = "start"
+speaker = "NPC"
+text = "Testing dialog and battle.[break]Beginning wild familiar encounter."
+metadata/_custom_type_script = "uid://mlrtfv1dc86w"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
 size = Vector2(32, 32)
@@ -57,7 +67,10 @@ scale = Vector2(2, 2)
 encounter = ExtResource("4_qe4dn")
 isBattleable = true
 name = "Woman"
-dialog = "Testing dialog and battle.[break]Beginning wild familiar encounter."
+dialogs = Dictionary[String, Object]({
+"start": SubResource("Resource_4d6cb")
+})
+startDialogId = "start"
 
 [node name="InnSign" parent="YSort" unique_id=281475496 instance=ExtResource("17_vi3vx")]
 position = Vector2(432, 208)

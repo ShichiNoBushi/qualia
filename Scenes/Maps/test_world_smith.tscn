@@ -5,6 +5,16 @@
 [ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/Characters/player.tscn" id="2_07npp"]
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="3_8l5td"]
 [ext_resource type="PackedScene" uid="uid://bls1fwt0xxap8" path="res://Scenes/Characters/forge_npc.tscn" id="4_8l5td"]
+[ext_resource type="Script" uid="uid://mlrtfv1dc86w" path="res://Scripts/RDialog.cs" id="5_lk3ao"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_pll4v"]
+
+[sub_resource type="Resource" id="Resource_qbswe"]
+script = ExtResource("5_lk3ao")
+id = "start"
+speaker = "Forge"
+text = "I'm a crystalsmith. I can combine qualia crystals into different types or into familiar prisms.[break]I can also break them down or sell you some."
+metadata/_custom_type_script = "uid://mlrtfv1dc86w"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lk3ao"]
 size = Vector2(64, 32)
@@ -49,7 +59,10 @@ itemStock = Dictionary[String, int]({
 compatibleRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
 knownRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
 name = "Forge"
-dialog = "I'm a crystalsmith. I can combine qualia crystals into different types or into familiar prisms.[break]I can also break them down or sell you some."
+dialogs = Dictionary[String, Object]({
+"start": SubResource("Resource_qbswe")
+})
+startDialogId = "start"
 
 [node name="Markers" type="Node2D" parent="." unique_id=1983698944]
 

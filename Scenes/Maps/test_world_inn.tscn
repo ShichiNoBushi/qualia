@@ -5,6 +5,16 @@
 [ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/Characters/player.tscn" id="3_qbswe"]
 [ext_resource type="PackedScene" uid="uid://d1wgptwxtbgi3" path="res://Scenes/Characters/inn_npc.tscn" id="3_w2cb1"]
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="5_bh5it"]
+[ext_resource type="Script" uid="uid://mlrtfv1dc86w" path="res://Scripts/RDialog.cs" id="5_qbswe"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_pll4v"]
+
+[sub_resource type="Resource" id="Resource_s0v22"]
+script = ExtResource("5_qbswe")
+id = "start"
+speaker = "Healer"
+text = "I will restore your energy and provide a safe place to return to.[break]Hold still."
+metadata/_custom_type_script = "uid://mlrtfv1dc86w"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
 size = Vector2(64, 32)
@@ -39,7 +49,10 @@ scale = Vector2(2, 2)
 safeMarker = NodePath("../../Markers/safe")
 safeKey = "safe"
 name = "Healer"
-dialog = "I will restore your energy and provide a safe place to return to.[break]Hold still."
+dialogs = Dictionary[String, Object]({
+"start": SubResource("Resource_s0v22")
+})
+startDialogId = "start"
 
 [node name="Markers" type="Node2D" parent="." unique_id=2123063079]
 

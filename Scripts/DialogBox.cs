@@ -14,6 +14,8 @@ public partial class DialogBox : CanvasLayer
 	
 	public Action onFinished;
 	
+	public RDialog dialog;
+	public Godot.Collections.Dictionary<string, RDialog> dialogTree;
 	public string[] pages;
 	public int pageIndex;
 	public bool waiting;
@@ -84,10 +86,34 @@ public partial class DialogBox : CanvasLayer
 	public void Play(string speaker, string raw, Action finished)
 	{
 		onFinished = finished;
+		dialogTree = null;
+		dialog = null;
+		speakerLabel.Text = SpeakerName(speaker);
 		pages = SplitPages(raw ?? "");
 		pageIndex = 0;
 		GetTree().Paused = true;
-		session.gameMode = GameSession.GameMode.Dialog; //before this line was added, it displayed first page but didn't respond to input
+		session.gameMode = GameSession.GameMode.Dialog;
+		Visible = true;
+		openedOnFrame = (int)Engine.GetProcessFrames();
+		bodyLabel.Clear();
+		UpdateBodyText();
+	}
+	
+	public void Play(Godot.Collections.Dictionary<string, RDialog> tree, string start, Action finished)
+	{
+		if (tree == null || !tree.ContainsKey(start))
+		{
+			return;
+		}
+		
+		onFinished = finished;
+		dialogTree = tree;
+		dialog = dialogTree[start];
+		speakerLabel.Text = SpeakerName(dialog.speaker ?? "");
+		pages = SplitPages(dialog.text ?? "");
+		pageIndex = 0;
+		GetTree().Paused = true;
+		session.gameMode = GameSession.GameMode.Dialog;
 		Visible = true;
 		openedOnFrame = (int)Engine.GetProcessFrames();
 		bodyLabel.Clear();
@@ -100,6 +126,37 @@ public partial class DialogBox : CanvasLayer
 		
 		if (pageIndex >= pages.Length)
 		{
+			if (dialog != null && dialog.choices != null && dialog.choices.Count > 0)
+			{
+				//show choices; will add panel populated with buttons later
+				
+				Visible = false;
+				GetTree().Paused = false;
+				session.gameMode = GameSession.GameMode.World;
+				
+				if (onFinished != null)
+				{
+					Action done = onFinished;
+					onFinished = null;
+					done.Invoke();
+				}
+				
+				return;
+			}
+			
+			dialog?.onFinish?.Execute(session);
+			
+			if (dialog != null && !string.IsNullOrEmpty(dialog.nextId) && dialogTree != null && dialogTree.ContainsKey(dialog.nextId))
+			{
+				dialog = dialogTree[dialog.nextId];
+				pages = SplitPages(dialog.text ?? "");
+				pageIndex = 0;
+				speakerLabel.Text = SpeakerName(dialog.speaker ?? "");
+				bodyLabel.Clear();
+				UpdateBodyText();
+				return;
+			}
+			
 			Visible = false;
 			GetTree().Paused = false;
 			session.gameMode = GameSession.GameMode.World;
@@ -181,4 +238,6 @@ public partial class DialogBox : CanvasLayer
 		
 		return pageList.ToArray();
 	}
+	
+	public string SpeakerName(string speaker) => speaker == "[player]" ? session.playerProjector.name : speaker;
 }
