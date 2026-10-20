@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class DialogBox : CanvasLayer
 {
@@ -11,6 +12,10 @@ public partial class DialogBox : CanvasLayer
 	public Label speakerLabel;
 	public RichTextLabel bodyLabel;
 	public Label promptLabel;
+	
+	public Panel choicesPanel;
+	public HBoxContainer choicesHBox;
+	public List<Button> choiceButtons;
 	
 	public Action onFinished;
 	
@@ -33,6 +38,10 @@ public partial class DialogBox : CanvasLayer
 		bodyLabel = GetNode<RichTextLabel>("DialogPanel/BodyLabel");
 		promptLabel = GetNode<Label>("DialogPanel/PromptLabel");
 		
+		choicesPanel = GetNode<Panel>("DialogPanel/ChoicesPanel");
+		choicesHBox = GetNode<HBoxContainer>("DialogPanel/ChoicesPanel/CenterContainer/ChoicesHBox");
+		choiceButtons = new();
+		
 		dialogPanel.GuiInput += OnDialogClicked;
 	}
 	
@@ -49,6 +58,11 @@ public partial class DialogBox : CanvasLayer
 		}
 		
 		if ((int)Engine.GetProcessFrames() <= openedOnFrame)
+		{
+			return;
+		}
+		
+		if (choicesPanel.Visible)
 		{
 			return;
 		}
@@ -75,6 +89,11 @@ public partial class DialogBox : CanvasLayer
 		}
 		
 		if ((int)Engine.GetProcessFrames() <= openedOnFrame)
+		{
+			return;
+		}
+		
+		if (choicesPanel.Visible)
 		{
 			return;
 		}
@@ -120,6 +139,83 @@ public partial class DialogBox : CanvasLayer
 		UpdateBodyText();
 	}
 	
+	public void ShowChoices(Godot.Collections.Array<RDialogChoice> choices)
+	{
+		choicesPanel.Visible = true;
+		
+		choiceButtons.Clear();
+		
+		foreach (var child in choicesHBox.GetChildren())
+		{
+			child.QueueFree();
+		}
+		
+		foreach (var ch in choices)
+		{
+			bool choiceDisabled = false;
+			
+			foreach (var flag in ch.requireFlags)
+			{
+				if (!session.HasFlag(flag))
+				{
+					choiceDisabled = true;
+					break;
+				}
+			}
+			
+			foreach (var flag in ch.forbidFlags)
+			{
+				if (session.HasFlag(flag))
+				{
+					choiceDisabled = true;
+					break;
+				}
+			}
+			
+			Button btn = new()
+			{
+				Text = ch.label,
+				Disabled = choiceDisabled
+			};
+			
+			btn.Pressed += () => OnChoiceSelected(ch);
+			
+			choicesHBox.AddChild(btn);
+			choiceButtons.Add(btn);
+		}
+	}
+	
+	public void OnChoiceSelected(RDialogChoice choice)
+	{
+		choicesPanel.Visible = false;
+		
+		choice.onSelect?.Execute(session);
+		
+		if (!string.IsNullOrEmpty(choice.nextId) && dialogTree != null && dialogTree.ContainsKey(choice.nextId))
+		{
+			dialog = dialogTree[choice.nextId];
+			pages = SplitPages(dialog.text ?? "");
+			pageIndex = 0;
+			speakerLabel.Text = SpeakerName(dialog.speaker ?? "");
+			bodyLabel.Clear();
+			UpdateBodyText();
+			return;
+		}
+		
+		dialog?.onFinish?.Execute(session);
+		
+		Visible = false;
+		GetTree().Paused = false;
+		session.gameMode = GameSession.GameMode.World;
+		
+		if (onFinished != null)
+		{
+			Action done = onFinished;
+			onFinished = null;
+			done.Invoke();
+		}
+	}
+	
 	public void Advance()
 	{
 		pageIndex++;
@@ -128,19 +224,7 @@ public partial class DialogBox : CanvasLayer
 		{
 			if (dialog != null && dialog.choices != null && dialog.choices.Count > 0)
 			{
-				//show choices; will add panel populated with buttons later
-				
-				Visible = false;
-				GetTree().Paused = false;
-				session.gameMode = GameSession.GameMode.World;
-				
-				if (onFinished != null)
-				{
-					Action done = onFinished;
-					onFinished = null;
-					done.Invoke();
-				}
-				
+				ShowChoices(dialog.choices);
 				return;
 			}
 			

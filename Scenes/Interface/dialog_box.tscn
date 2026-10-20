@@ -5,14 +5,13 @@
 [node name="DialogBox" type="CanvasLayer" unique_id=1153933886]
 process_mode = 3
 process_priority = 10
-visible = false
 script = ExtResource("1_twcdb")
 
 [node name="DialogPanel" type="Panel" parent="." unique_id=1772620940]
 offset_left = 312.0
-offset_top = 709.0
+offset_top = 712.0
 offset_right = 1643.0
-offset_bottom = 1026.0
+offset_bottom = 1029.0
 
 [node name="SpeakerLabel" type="Label" parent="DialogPanel" unique_id=521201805]
 layout_mode = 0
@@ -45,3 +44,18 @@ offset_bottom = 311.0
 theme_override_font_sizes/font_size = 32
 text = ">>>"
 horizontal_alignment = 2
+
+[node name="ChoicesPanel" type="Panel" parent="DialogPanel" unique_id=2025556496]
+visible = false
+layout_mode = 0
+offset_top = 317.0
+offset_right = 1331.0
+offset_bottom = 360.0
+
+[node name="CenterContainer" type="CenterContainer" parent="DialogPanel/ChoicesPanel" unique_id=600659625]
+layout_mode = 0
+offset_right = 1331.0
+offset_bottom = 43.0
+
+[node name="ChoicesHBox" type="HBoxContainer" parent="DialogPanel/ChoicesPanel/CenterContainer" unique_id=972922563]
+layout_mode = 2
