@@ -5,9 +5,12 @@
 [ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/Characters/player.tscn" id="2_pnsqa"]
 [ext_resource type="PackedScene" uid="uid://by86ymrructfl" path="res://Scenes/Characters/npc.tscn" id="3_gjrm8"]
 [ext_resource type="Resource" uid="uid://cyp4vnvhjl3hk" path="res://Resources/Encounters/vs_rand_proj.tres" id="4_qe4dn"]
+[ext_resource type="Script" uid="uid://h3nu4rdppjc5" path="res://Scripts/RDialogChoice.cs" id="6_s0v22"]
 [ext_resource type="Script" uid="uid://mlrtfv1dc86w" path="res://Scripts/RDialog.cs" id="6_utdyw"]
 [ext_resource type="Script" uid="uid://c1himha5535u8" path="res://Scripts/EncounterZone.cs" id="6_vi3vx"]
+[ext_resource type="Script" uid="uid://482mjwvdetpu" path="res://Scripts/RFamiliarInstance.cs" id="7_fgwjc"]
 [ext_resource type="Resource" uid="uid://cptc8in5acupn" path="res://Resources/Encounters/gnome2.tres" id="7_utdyw"]
+[ext_resource type="Script" uid="uid://c3k54ydv5bycp" path="res://Scripts/RStoryEvent.cs" id="8_ov7jo"]
 [ext_resource type="Resource" uid="uid://7kahqvhasm45" path="res://Resources/Encounters/salamander2.tres" id="8_pll4v"]
 [ext_resource type="Resource" uid="uid://kog0drycdr6h" path="res://Resources/Encounters/sylph2.tres" id="9_s0v22"]
 [ext_resource type="Resource" uid="uid://2qpekw05f34s" path="res://Resources/Encounters/undine2.tres" id="10_fgwjc"]
@@ -18,13 +21,44 @@
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="15_qe4dn"]
 [ext_resource type="PackedScene" uid="uid://duy000bar45m2" path="res://Scenes/Objects/sign.tscn" id="17_vi3vx"]
 
-[sub_resource type="CSharpScript" id="CSharpScript_pll4v"]
+[sub_resource type="Resource" id="Resource_pll4v"]
+script = ExtResource("8_ov7jo")
+setFlags = Array[String](["start.npc.battle"])
+metadata/_custom_type_script = "uid://c3k54ydv5bycp"
+
+[sub_resource type="Resource" id="Resource_utdyw"]
+script = ExtResource("6_s0v22")
+label = "Fight me!"
+nextId = "start.battle"
+onSelect = SubResource("Resource_pll4v")
+metadata/_custom_type_script = "uid://h3nu4rdppjc5"
+
+[sub_resource type="Resource" id="Resource_fgwjc"]
+script = ExtResource("6_s0v22")
+label = "No thanks."
+nextId = "decline.battle"
+metadata/_custom_type_script = "uid://h3nu4rdppjc5"
 
 [sub_resource type="Resource" id="Resource_4d6cb"]
 script = ExtResource("6_utdyw")
 id = "start"
-speaker = "NPC"
-text = "Testing dialog and battle.[break]Beginning wild familiar encounter."
+speaker = "Woman"
+text = "I'm a projector like yourself.[break]if you are ready, we can test our skills against each other."
+choices = Array[ExtResource("6_s0v22")]([SubResource("Resource_utdyw"), SubResource("Resource_fgwjc")])
+metadata/_custom_type_script = "uid://mlrtfv1dc86w"
+
+[sub_resource type="Resource" id="Resource_s0v22"]
+script = ExtResource("6_utdyw")
+id = "start.battle"
+speaker = "Woman"
+text = "Alright. Get ready."
+metadata/_custom_type_script = "uid://mlrtfv1dc86w"
+
+[sub_resource type="Resource" id="Resource_ov7jo"]
+script = ExtResource("6_utdyw")
+id = "decline.battle"
+speaker = "Woman"
+text = "Okay. Talk to me again when you are ready."
 metadata/_custom_type_script = "uid://mlrtfv1dc86w"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
@@ -66,9 +100,12 @@ position = Vector2(848, 496)
 scale = Vector2(2, 2)
 encounter = ExtResource("4_qe4dn")
 isBattleable = true
+battleFlag = "start.npc.battle"
 name = "Woman"
 dialogs = Dictionary[String, Object]({
-"start": SubResource("Resource_4d6cb")
+"decline.battle": SubResource("Resource_ov7jo"),
+"start": SubResource("Resource_4d6cb"),
+"start.battle": SubResource("Resource_s0v22")
 })
 startDialogId = "start"
 

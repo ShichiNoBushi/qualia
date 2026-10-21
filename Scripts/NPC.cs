@@ -8,6 +8,7 @@ public partial class NPC : CharacterBody2D
 	
 	[Export] public REncounterData encounter {get; set;}
 	[Export] public bool isBattleable {get; set;} = false;
+	[Export] public string battleFlag {get; set;} = "";
 
 	[Export] public string name {get; set;} = "";
 	[Export] public Godot.Collections.Dictionary<string, RDialog> dialogs {get; set;}
@@ -80,12 +81,13 @@ public partial class NPC : CharacterBody2D
 	
 	public virtual void AfterDialog(Player player)
 	{
-		if (!isBattleable || encounter == null)
-		{
-			return;
-		}
+		GameSession session = GetNode<GameSession>("/root/GameSession");
 		
-		StartBattle(player);
+		if (isBattleable && encounter != null && (string.IsNullOrEmpty(battleFlag) || session.HasFlag(battleFlag)))
+		{
+			session.ClearFlag(battleFlag);
+			StartBattle(player);
+		}
 	}
 	
 	public void StartBattle(Player player)
