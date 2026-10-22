@@ -66,6 +66,10 @@ public partial class GameMenu : CanvasLayer
 	
 	public Label gCrystalsLabel;
 	
+	public ItemList activeQuestList;
+	public ItemList completedQuestList;
+	public RichTextLabel questDescriptionLabel;
+	
 	public Button saveButton;
 	public Button loadButton;
 	public Button quitButton;
@@ -143,6 +147,10 @@ public partial class GameMenu : CanvasLayer
 		crystalsList.ItemSelected += OnCrystalSelect;
 		
 		gCrystalsLabel = GetNode<Label>("Panel/MainTab/Inventory/GCrystalsLabel");
+		
+		activeQuestList = GetNode<ItemList>("Panel/MainTab/Journal/JournalTab/Quests/ActiveQuestList");
+		completedQuestList = GetNode<ItemList>("Panel/MainTab/Journal/JournalTab/Quests/CompletedQuestList");
+		questDescriptionLabel = GetNode<RichTextLabel>("Panel/MainTab/Journal/JournalTab/Quests/QuestDescriptionLabel");
 		
 		saveButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/SaveButton");
 		loadButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/LoadButton");

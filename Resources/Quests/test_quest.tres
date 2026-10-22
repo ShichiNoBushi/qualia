@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RQuestData" format=3 uid="uid://cp7dl3ak7wu7k"]
+
+[ext_resource type="Script" uid="uid://ce0rjb81espdf" path="res://Scripts/RQuestData.cs" id="1_owux1"]
+
+[resource]
+script = ExtResource("1_owux1")
+id = "test_quest"
+name = "Test"
+objectives = Array[Object]([])
+metadata/_custom_type_script = "uid://ce0rjb81espdf"

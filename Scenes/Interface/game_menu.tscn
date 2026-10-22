@@ -423,10 +423,66 @@ offset_bottom = 789.0
 text = "0000000"
 horizontal_alignment = 2
 
-[node name="Options" type="Control" parent="Panel/MainTab" unique_id=1560943313]
+[node name="Journal" type="Control" parent="Panel/MainTab" unique_id=196267430]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 3
+
+[node name="JournalTab" type="TabContainer" parent="Panel/MainTab/Journal" unique_id=2025064054]
+layout_mode = 0
+offset_right = 1144.0
+offset_bottom = 798.0
+tab_alignment = 1
+current_tab = 0
+
+[node name="Quests" type="Control" parent="Panel/MainTab/Journal/JournalTab" unique_id=2027488572]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="ActiveTextLabel" type="Label" parent="Panel/MainTab/Journal/JournalTab/Quests" unique_id=1998885808]
+layout_mode = 0
+offset_left = 4.0
+offset_top = -1.0
+offset_right = 110.0
+offset_bottom = 22.0
+text = "Active Quests"
+
+[node name="ActiveQuestList" type="ItemList" parent="Panel/MainTab/Journal/JournalTab/Quests" unique_id=773789990]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 370.0
+offset_bottom = 383.0
+
+[node name="CompletedTextLabel" type="Label" parent="Panel/MainTab/Journal/JournalTab/Quests" unique_id=1282538996]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 383.0
+offset_right = 147.0
+offset_bottom = 406.0
+text = "Completed Quests"
+
+[node name="ItemList" type="ItemList" parent="Panel/MainTab/Journal/JournalTab/Quests" unique_id=216217186]
+layout_mode = 0
+offset_top = 408.0
+offset_right = 370.0
+offset_bottom = 768.0
+
+[node name="QuestDescriptionLabel" type="RichTextLabel" parent="Panel/MainTab/Journal/JournalTab/Quests" unique_id=1104925116]
+layout_mode = 0
+offset_left = 376.0
+offset_top = 4.0
+offset_right = 1144.0
+offset_bottom = 767.0
+
+[node name="Familiars" type="Control" parent="Panel/MainTab/Journal/JournalTab" unique_id=1867249592]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Options" type="Control" parent="Panel/MainTab" unique_id=1560943313]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 4
 
 [node name="CenterContainer" type="CenterContainer" parent="Panel/MainTab/Options" unique_id=1227069406]
 layout_mode = 0

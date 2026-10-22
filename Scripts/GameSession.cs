@@ -35,6 +35,7 @@ public partial class GameSession : Node
 	
 	public System.Collections.Generic.HashSet<string> storyFlags {get; set;}
 	public Godot.Collections.Array<string> openedChests {get; set;}
+	public Godot.Collections.Dictionary<string, int> counters {get; set;}
 	
 	public enum GameMode
 	{
@@ -293,6 +294,11 @@ public partial class GameSession : Node
 				AddItem(item, l.Value);
 			}
 		}
+	}
+	
+	public int GetCounter(string key)
+	{
+		return counters.TryGetValue(key, out int n) ? n : 0;
 	}
 	
 	public void SaveGame(string path)
