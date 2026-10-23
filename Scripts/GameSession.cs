@@ -14,6 +14,9 @@ public partial class GameSession : Node
 	public Godot.Collections.Dictionary<string, int> itemStacks {get; set;}
 	public Godot.Collections.Array<ItemInstance> uniqueItems {get; set;}
 	
+	public Godot.Collections.Dictionary<string, RQuestData> activeQuests {get; set;}
+	public Godot.Collections.Dictionary<string, RQuestData> completedQuests {get; set;}
+	
 	public string returnPath {get; set;}
 	public Vector2 returnPosition {get; set;}
 	public Vector2 returnFacing {get; set;}
@@ -56,6 +59,9 @@ public partial class GameSession : Node
 		
 		storyFlags = new();
 		openedChests = new();
+		
+		activeQuests = new();
+		completedQuests = new();
 		
 		RProjectorData pData = registry.Projector("player");
 		RFamiliarInstance gnomeInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_gnome.tres");
@@ -265,6 +271,40 @@ public partial class GameSession : Node
 		}
 		
 		openedChests.Add(chestId);
+	}
+	
+	public void GiveQuest(string id)
+	{
+		if (activeQuests.ContainsKey(id) || completedQuests.ContainsKey(id))
+		{
+			return;
+		}
+		
+		RQuestData data = registry.Quest(id);
+		
+		if (data == null)
+		{
+			return;
+		}
+		
+		activeQuests[id] = data;
+		
+		if (data.Check(this))
+		{
+			activeQuests.Remove(id);
+			completedQuests[id] = data;
+		}
+	}
+	
+	public void CompleteQuest(string id)
+	{
+		if (completedQuests.ContainsKey(id) || !activeQuests.TryGetValue(id, out RQuestData data))
+		{
+			return;
+		}
+		
+		activeQuests.Remove(id);
+		completedQuests[id] = data;
 	}
 	
 	public void GiveLoot(Godot.Collections.Dictionary<string, int> loot)

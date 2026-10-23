@@ -152,6 +152,9 @@ public partial class GameMenu : CanvasLayer
 		completedQuestList = GetNode<ItemList>("Panel/MainTab/Journal/JournalTab/Quests/CompletedQuestList");
 		questDescriptionLabel = GetNode<RichTextLabel>("Panel/MainTab/Journal/JournalTab/Quests/QuestDescriptionLabel");
 		
+		activeQuestList.ItemSelected += OnActiveSelect;
+		completedQuestList.ItemSelected += OnCompletedSelect;
+		
 		saveButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/SaveButton");
 		loadButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/LoadButton");
 		quitButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/QuitButton");
@@ -405,6 +408,40 @@ public partial class GameMenu : CanvasLayer
 		crystalDescLabel.AppendText($"{crystal.name}\n\nHeld: {amount}\nValue: {crystal.value}");
 	}
 	
+	public void OnActiveSelect(long index)
+	{
+		completedQuestList.DeselectAll();
+		
+		string id = activeQuestList.GetItemMetadata((int)index).AsString();
+		
+		RQuestData data = session.activeQuests.TryGetValue(id, out RQuestData q) ? q : null;
+		
+		if (data == null)
+		{
+			questDescriptionLabel.Clear();
+			return;
+		}
+		
+		questDescriptionLabel.Text = data.FormatDescription(session);
+	}
+	
+	public void OnCompletedSelect(long index)
+	{
+		activeQuestList.DeselectAll();
+		
+		string id = completedQuestList.GetItemMetadata((int)index).AsString();
+		
+		RQuestData data = session.completedQuests.TryGetValue(id, out RQuestData q) ? q : null;
+		
+		if (data == null)
+		{
+			questDescriptionLabel.Clear();
+			return;
+		}
+		
+		questDescriptionLabel.Text = data.FormatDescription(session);
+	}
+	
 	public void OnSavePressed()
 	{
 		saveDialog.PopupCentered();
@@ -652,6 +689,28 @@ public partial class GameMenu : CanvasLayer
 		gCrystalsLabel.Text = $"{session.qualiaGeneric}";
 	}
 	
+	public void UpdateQuests()
+	{
+		activeQuestList.Clear();
+		completedQuestList.Clear();
+		
+		foreach (var aqst in session.activeQuests)
+		{
+			activeQuestList.AddItem(aqst.Value.name);
+			int idx = activeQuestList.ItemCount - 1;
+			activeQuestList.SetItemMetadata(idx, aqst.Key);
+		}
+		
+		foreach (var cqst in session.completedQuests)
+		{
+			completedQuestList.AddItem(cqst.Value.name);
+			int idx = completedQuestList.ItemCount - 1;
+			completedQuestList.SetItemMetadata(idx, cqst.Key);
+		}
+		
+		questDescriptionLabel.Clear();
+	}
+	
 	public void RefreshUseButton()
 	{
 		if (string.IsNullOrEmpty(selectedItemId))
@@ -691,6 +750,7 @@ public partial class GameMenu : CanvasLayer
 		UpdateProjectorLabels();
 		UpdateFamiliarList();
 		UpdateInventory();
+		UpdateQuests();
 		GetTree().Paused = true;
 	}
 	
