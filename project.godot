@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Qualia"
-run/main_scene="uid://bteolrjj8n7c0"
+run/main_scene="uid://bli8oi5n3i5ia"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

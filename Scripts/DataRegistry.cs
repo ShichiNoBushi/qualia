@@ -103,6 +103,14 @@ public partial class DataRegistry : Node
 	public RItemData Item(string id) => items.TryGetValue(id, out RItemData it) ? it : null;
 	public RForgeRecipe Recipe(string id) => recipes.TryGetValue(id, out RForgeRecipe rec) ? rec : null;
 	public RQuestData Quest(string id) => quests.TryGetValue(id, out RQuestData qst) ? qst : null;
+	
+	public void ResetQuests()
+	{
+		foreach (var qst in quests.Values)
+		{
+			qst.completed = false;
+		}
+	}
 }
 
 public enum TargetPattern

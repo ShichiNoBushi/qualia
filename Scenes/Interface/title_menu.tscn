@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://bli8oi5n3i5ia"]
+
+[ext_resource type="Script" uid="uid://bjxfijhw7wecj" path="res://Scripts/TitleMenu.cs" id="1_5ssbv"]
+
+[node name="TitleMenu" type="Control" unique_id=154639469]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5ssbv")
+
+[node name="BackgroundRect" type="TextureRect" parent="." unique_id=1638335537]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="TitlePanel" type="Panel" parent="." unique_id=1521855728]
+layout_mode = 0
+offset_left = 591.0
+offset_top = 261.0
+offset_right = 1336.0
+offset_bottom = 818.0
+
+[node name="TitleLabel" type="Label" parent="TitlePanel" unique_id=1029831614]
+layout_mode = 0
+offset_left = 270.0
+offset_right = 471.0
+offset_bottom = 88.0
+theme_override_font_sizes/font_size = 64
+text = "Qualia"
+
+[node name="CenterContainer" type="CenterContainer" parent="TitlePanel" unique_id=826938299]
+layout_mode = 0
+offset_top = 88.0
+offset_right = 745.0
+offset_bottom = 557.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TitlePanel/CenterContainer" unique_id=838035866]
+layout_mode = 2
+
+[node name="NewButton" type="Button" parent="TitlePanel/CenterContainer/VBoxContainer" unique_id=419407554]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "New Game"
+
+[node name="LoadButton" type="Button" parent="TitlePanel/CenterContainer/VBoxContainer" unique_id=1753157241]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Load Game"
+
+[node name="QuitButton" type="Button" parent="TitlePanel/CenterContainer/VBoxContainer" unique_id=2103610901]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Quit Game"
+
+[node name="NewCharacterPanel" type="Panel" parent="." unique_id=883298624]
+visible = false
+layout_mode = 0
+offset_left = 200.0
+offset_top = 67.0
+offset_right = 1779.0
+offset_bottom = 997.0
+
+[node name="NameTextLabel" type="Label" parent="NewCharacterPanel" unique_id=175751983]
+layout_mode = 0
+offset_left = 67.0
+offset_top = 33.0
+offset_right = 107.0
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 32
+text = "Name:"
+
+[node name="NameEdit" type="LineEdit" parent="NewCharacterPanel" unique_id=841499389]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 33.0
+offset_right = 489.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Nanashi"
+max_length = 15
+
+[node name="FamiliarList" type="ItemList" parent="NewCharacterPanel" unique_id=593599786]
+layout_mode = 0
+offset_left = 67.0
+offset_top = 194.0
+offset_right = 489.0
+offset_bottom = 751.0
+theme_override_font_sizes/font_size = 32
+
+[node name="BackButton" type="Button" parent="NewCharacterPanel" unique_id=206933821]
+layout_mode = 0
+offset_left = 661.0
+offset_top = 848.0
+offset_right = 824.0
+offset_bottom = 901.0
+theme_override_font_sizes/font_size = 32
+text = "Back"
+
+[node name="ConfirmButton" type="Button" parent="NewCharacterPanel" unique_id=17216618]
+layout_mode = 0
+offset_left = 849.0
+offset_top = 848.0
+offset_right = 1012.0
+offset_bottom = 901.0
+theme_override_font_sizes/font_size = 32
+text = "Confirm"
+
+[node name="LoadDialog" type="FileDialog" parent="." unique_id=344359846]
+title = "Open a File"
+file_mode = 0
+access = 1
+filters = PackedStringArray("*.json")
+
+[node name="QuitConfirm" type="ConfirmationDialog" parent="." unique_id=15398475]
+ok_button_text = "Quit"
+dialog_text = "Quit the game?"
+
+[node name="CreateConfirm" type="ConfirmationDialog" parent="." unique_id=391616333]
+ok_button_text = "Create"
+dialog_text = "Start with this character?"

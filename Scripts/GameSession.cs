@@ -59,11 +59,12 @@ public partial class GameSession : Node
 		
 		storyFlags = new();
 		openedChests = new();
+		counters = new();
 		
 		activeQuests = new();
 		completedQuests = new();
 		
-		RProjectorData pData = registry.Projector("player");
+		/*RProjectorData pData = registry.Projector("player");
 		RFamiliarInstance gnomeInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_gnome.tres");
 		RFamiliarInstance salamanderInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_salamander.tres");
 		RFamiliarInstance sylphInst = GD.Load<RFamiliarInstance>("res://Resources/FamiliarInstance/ex_sylph.tres");
@@ -92,7 +93,7 @@ public partial class GameSession : Node
 		playerProjector.GiveFamiliar(undineInst);
 		
 		playerProjector.LearnSpell(boltSpell);
-		playerProjector.LearnSpell(recoverSpell);
+		playerProjector.LearnSpell(recoverSpell);*/
 		
 		gameMode = GameMode.World;
 	}
@@ -419,6 +420,31 @@ public partial class GameSession : Node
 			openedChests.Add(id);
 		}
 		
+		counters = save.counters ?? new();
+		
+		activeQuests = new();
+		completedQuests = new();
+		
+		registry.ResetQuests();
+		
+		foreach (var id in save.completedQuests)
+		{
+			RQuestData data = registry.Quest(id);
+			
+			if (data == null)
+			{
+				continue;
+			}
+			
+			data.completed = true;
+			completedQuests[id] = data;
+		}
+		
+		foreach (var id in save.activeQuests)
+		{
+			GiveQuest(id);
+		}
+		
 		returnPath = save.returnPath;
 		returnPosition = new Vector2(save.returnPositionX, save.returnPositionY);
 		returnFacing = new Vector2(save.returnFacingX, save.returnFacingY);
@@ -477,6 +503,10 @@ public class GameSave
 	
 	public Godot.Collections.Array<string> storyFlags;
 	public Godot.Collections.Array<string> openedChests;
+	public Godot.Collections.Dictionary<string, int> counters;
+	
+	public Godot.Collections.Array<string> activeQuests;
+	public Godot.Collections.Array<string> completedQuests;
 	
 	public GameSave()
 	{
@@ -527,6 +557,20 @@ public class GameSave
 		}
 		
 		openedChests = session.openedChests.Duplicate();
+		counters = session.counters.Duplicate();
+		
+		activeQuests = new();
+		completedQuests = new();
+		
+		foreach (var aqst in session.activeQuests.Keys)
+		{
+			activeQuests.Add(aqst);
+		}
+		
+		foreach (var cqst in session.completedQuests.Keys)
+		{
+			completedQuests.Add(cqst);
+		}
 	}
 	
 	public Godot.Collections.Dictionary ToDictionary()
@@ -586,7 +630,10 @@ public class GameSave
 			{"safePositionX", safePositionX}, {"safePositionY", safePositionY},
 			{"safeFacingX", safeFacingX}, {"safeFacingY", safeFacingY},
 			{"storyFlags", story},
-			{"openedChests", chests}
+			{"openedChests", chests},
+			{"counters", counters},
+			{"activeQuests", activeQuests},
+			{"completedQuests", completedQuests}
 		};
 	}
 	
@@ -671,6 +718,35 @@ public class GameSave
 			foreach (Variant id in chests.AsGodotArray())
 			{
 				save.openedChests.Add(id.AsString());
+			}
+		}
+		
+		save.counters = new();
+		
+		if (dict.TryGetValue("counters", out Variant cnt) && cnt.VariantType == Variant.Type.Dictionary)
+		{
+			foreach (var pair in cnt.AsGodotDictionary())
+			{
+				save.counters[pair.Key.AsString()] = pair.Value.AsInt32();
+			}
+		}
+		
+		save.activeQuests = new();
+		save.completedQuests = new();
+		
+		if (dict.TryGetValue("activeQuests", out Variant aqst) && aqst.VariantType == Variant.Type.Array)
+		{
+			foreach (Variant qst in aqst.AsGodotArray())
+			{
+				save.activeQuests.Add(qst.AsString());
+			}
+		}
+		
+		if (dict.TryGetValue("completedQuests", out Variant cqst) && cqst.VariantType == Variant.Type.Array)
+		{
+			foreach (Variant qst in cqst.AsGodotArray())
+			{
+				save.completedQuests.Add(qst.AsString());
 			}
 		}
 		

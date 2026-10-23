@@ -14,6 +14,8 @@ public partial class GameMenu : CanvasLayer
 	
 	public Button closeButton;
 	
+	public TabContainer mainTab;
+	
 	public Label projNameLabel;
 	
 	public Label projLevelLabel;
@@ -58,6 +60,8 @@ public partial class GameMenu : CanvasLayer
 	
 	public RichTextLabel skillDescLabel;
 	
+	public TabContainer inventoryTab;
+	
 	public ItemList itemList;
 	public RichTextLabel itemDescLabel;
 	public Button useButton;
@@ -66,13 +70,17 @@ public partial class GameMenu : CanvasLayer
 	
 	public Label gCrystalsLabel;
 	
+	public TabContainer journalTab;
+	
 	public ItemList activeQuestList;
 	public ItemList completedQuestList;
 	public RichTextLabel questDescriptionLabel;
 	
 	public Button saveButton;
 	public Button loadButton;
+	public Button titleButton;
 	public Button quitButton;
+	public ConfirmationDialog titleConfirm;
 	public ConfirmationDialog quitConfirm;
 	public FileDialog saveDialog;
 	public FileDialog loadDialog;
@@ -83,6 +91,8 @@ public partial class GameMenu : CanvasLayer
 		registry = GetNode<DataRegistry>("/root/DataRegistry");
 		
 		closeButton = GetNode<Button>("Panel/CloseButton");
+		
+		mainTab = GetNode<TabContainer>("Panel/MainTab");
 		
 		projNameLabel = GetNode<Label>("Panel/MainTab/Projector/ProjNameLabel");
 		
@@ -136,6 +146,8 @@ public partial class GameMenu : CanvasLayer
 		
 		skillsList.ItemSelected += OnSkillSelect;
 		
+		inventoryTab = GetNode<TabContainer>("Panel/MainTab/Inventory/InventoryTab");
+		
 		itemList = GetNode<ItemList>("Panel/MainTab/Inventory/InventoryTab/Items/ItemList");
 		itemDescLabel = GetNode<RichTextLabel>("Panel/MainTab/Inventory/InventoryTab/Items/ItemDescLabel");
 		useButton = GetNode<Button>("Panel/MainTab/Inventory/InventoryTab/Items/UseButton");
@@ -148,6 +160,8 @@ public partial class GameMenu : CanvasLayer
 		
 		gCrystalsLabel = GetNode<Label>("Panel/MainTab/Inventory/GCrystalsLabel");
 		
+		journalTab = GetNode<TabContainer>("Panel/MainTab/Journal/JournalTab");
+		
 		activeQuestList = GetNode<ItemList>("Panel/MainTab/Journal/JournalTab/Quests/ActiveQuestList");
 		completedQuestList = GetNode<ItemList>("Panel/MainTab/Journal/JournalTab/Quests/CompletedQuestList");
 		questDescriptionLabel = GetNode<RichTextLabel>("Panel/MainTab/Journal/JournalTab/Quests/QuestDescriptionLabel");
@@ -157,7 +171,9 @@ public partial class GameMenu : CanvasLayer
 		
 		saveButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/SaveButton");
 		loadButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/LoadButton");
+		titleButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/TitleButton");
 		quitButton = GetNode<Button>("Panel/MainTab/Options/CenterContainer/VBoxContainer/QuitButton");
+		titleConfirm = GetNode<ConfirmationDialog>("TitleConfirm");
 		quitConfirm = GetNode<ConfirmationDialog>("QuitConfirm");
 		saveDialog = GetNode<FileDialog>("SaveDialog");
 		loadDialog = GetNode<FileDialog>("LoadDialog");
@@ -168,7 +184,9 @@ public partial class GameMenu : CanvasLayer
 		loadButton.Pressed += OnLoadPressed;
 		saveDialog.FileSelected += OnSaveSelected;
 		loadDialog.FileSelected += OnLoadSelected;
+		titleButton.Pressed += OnTitlePressed;
 		quitButton.Pressed += OnQuitPressed;
+		titleConfirm.Confirmed += OnTitleConfirmed;
 		quitConfirm.Confirmed += OnQuitConfirmed;
 	}
 	
@@ -469,9 +487,20 @@ public partial class GameMenu : CanvasLayer
 		Close();
 	}
 	
+	public void OnTitlePressed()
+	{
+		titleConfirm.PopupCentered();
+	}
+	
 	public void OnQuitPressed()
 	{
 		quitConfirm.PopupCentered();
+	}
+	
+	public void OnTitleConfirmed()
+	{
+		GetTree().ChangeSceneToFile("res://Scenes/Interface/title_menu.tscn");
+		Close();
 	}
 	
 	public void OnQuitConfirmed()
@@ -747,6 +776,7 @@ public partial class GameMenu : CanvasLayer
 	public void Open()
 	{
 		Visible = true;
+		ResetTabs();
 		UpdateProjectorLabels();
 		UpdateFamiliarList();
 		UpdateInventory();
@@ -758,5 +788,12 @@ public partial class GameMenu : CanvasLayer
 	{
 		Visible = false;
 		GetTree().Paused = false;
+	}
+	
+	public void ResetTabs()
+	{
+		mainTab.CurrentTab = 0;
+		inventoryTab.CurrentTab = 0;
+		journalTab.CurrentTab = 0;
 	}
 }
