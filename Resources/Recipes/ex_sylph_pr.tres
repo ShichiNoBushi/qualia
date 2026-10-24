@@ -6,5 +6,8 @@
 script = ExtResource("1_sttcu")
 id = "ex_sylph_pr"
 resultId = "ex_sylph"
+ingredients = Dictionary[String, int]({
+"ex_sylph": 5
+})
 cost = 100
 metadata/_custom_type_script = "uid://bl50jm24c2jcp"

@@ -16,7 +16,9 @@ public partial class BattleManager : Node
 	public FamiliarDisplay[] famDisplaysP;
 	
 	public RichTextLabel battleLogLabel;
+	public HScrollBar autoBattleScroll;
 	public Button nextButton;
+	public Timer autoBattleTimer;
 	
 	public ProjectorCommands projCommandPanel;
 	public FamiliarCommands[] famCommandPanels = new FamiliarCommands[4];
@@ -138,9 +140,12 @@ public partial class BattleManager : Node
 		}
 		
 		battleLogLabel = GetNode<RichTextLabel>("BattleLogLabel");
+		autoBattleScroll = GetNode<HScrollBar>("AutoBattleScroll");
 		nextButton = GetNode<Button>("NextButton");
+		autoBattleTimer = GetNode<Timer>("AutoBattleTimer");
 		
 		nextButton.Pressed += OnNextPressed;
+		autoBattleTimer.Timeout += OnBattleTimer;
 		
 		projCommandPanel = GetNode<ProjectorCommands>("ProjectorCommands");
 		famCommandPanels[0] = GetNode<FamiliarCommands>("FamiliarCommands0");
@@ -331,6 +336,14 @@ public partial class BattleManager : Node
 		CommitTurn();
 	}
 	
+	public void OnBattleTimer()
+	{
+		if (batState == BattleState.Resolution)
+		{
+			AdvanceTurn();
+		}
+	}
+	
 	public void FamiliarSlotClicked(FamiliarDisplay display)
 	{
 		GD.Print($"BattleManager: battle state {batState}, command state {comState}");
@@ -481,6 +494,16 @@ public partial class BattleManager : Node
 			famCommandPanels[i].CheckValidCommands();
 			famCommandDisabled[i] = !alive;
 		}
+	}
+	
+	public void RestartBattleTimer()
+	{
+		if (autoBattleScroll.Value == 0)
+		{
+			return;
+		}
+		
+		autoBattleTimer.Start(1 / autoBattleScroll.Value);
 	}
 	
 	public void SetBattleState(BattleState newState)
@@ -1249,7 +1272,6 @@ public partial class BattleManager : Node
 			
 			AssignComCommands();
 			BuildTurnOrder();
-			//ResolveTurn();
 			AdvanceTurn();
 		}
 		catch (Exception e)
@@ -1401,7 +1423,9 @@ public partial class BattleManager : Node
 					srcName = proj.name;
 				}
 				
-				AppendBattleText($"{srcName}'s {cmd.GetType().Name} is invalid and skipped");
+				string typeName = cmd == null ? "null" : cmd.GetType().Name;
+				
+				AppendBattleText($"{srcName}'s {typeName} is invalid and skipped");
 				continue;
 			}
 			
@@ -1429,6 +1453,7 @@ public partial class BattleManager : Node
 			}
 			
 			RefreshNextButton();
+			RestartBattleTimer();
 			return;
 		}
 		

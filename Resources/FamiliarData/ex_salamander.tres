@@ -33,6 +33,9 @@ baseMDefense = 4
 baseSpeed = 5
 types = Array[ExtResource("6_bwoew")]([ExtResource("7_aiww7")])
 learnableSkills = Array[ExtResource("1_21072")]([ExtResource("2_wnrb3")])
+levelUpSkills = Dictionary[int, ExtResource("1_21072")]({
+1: ExtResource("2_wnrb3")
+})
 crystals = 10
 crystalDrops = Array[ExtResource("1_e7eix")]([SubResource("Resource_vi3vx"), SubResource("Resource_utdyw")])
 portrait = SubResource("CompressedTexture2D_qedgj")

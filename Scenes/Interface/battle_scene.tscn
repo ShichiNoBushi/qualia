@@ -75,6 +75,14 @@ offset_bottom = 564.0
 bbcode_enabled = true
 scroll_following = true
 
+[node name="AutoBattleScroll" type="HScrollBar" parent="BattleManager" unique_id=263182283]
+offset_left = 1424.0
+offset_top = 584.0
+offset_right = 1682.0
+offset_bottom = 592.0
+max_value = 5.0
+step = 0.5
+
 [node name="NextButton" type="Button" parent="BattleManager" unique_id=1635563629]
 offset_left = 1786.0
 offset_top = 570.0
@@ -92,7 +100,6 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [node name="FamiliarCommands0" parent="BattleManager" unique_id=2026761448 instance=ExtResource("6_20f6w")]
-anchors_preset = 0
 offset_left = 1332.0
 offset_top = 605.78
 offset_right = 1622.0
@@ -101,7 +108,6 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [node name="FamiliarCommands1" parent="BattleManager" unique_id=53158086 instance=ExtResource("6_20f6w")]
-anchors_preset = 0
 offset_left = 1626.8081
 offset_top = 605.78
 offset_right = 1916.8081
@@ -110,7 +116,6 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [node name="FamiliarCommands2" parent="BattleManager" unique_id=1445952443 instance=ExtResource("6_20f6w")]
-anchors_preset = 0
 offset_left = 1332.8081
 offset_top = 843.28
 offset_right = 1622.8081
@@ -119,7 +124,6 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [node name="FamiliarCommands3" parent="BattleManager" unique_id=154433813 instance=ExtResource("6_20f6w")]
-anchors_preset = 0
 offset_left = 1626.8081
 offset_top = 843.28
 offset_right = 1916.8081
@@ -133,3 +137,5 @@ offset_left = 1156.0
 offset_top = 653.0
 offset_right = -60.0
 offset_bottom = -35.0
+
+[node name="AutoBattleTimer" type="Timer" parent="BattleManager" unique_id=191716273]
