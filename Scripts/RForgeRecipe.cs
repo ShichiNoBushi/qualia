@@ -10,7 +10,7 @@ public partial class RForgeRecipe : Resource
 	[Export] public Godot.Collections.Dictionary<string, int> ingredients {get; set;} = new();
 	[Export] public int cost {get; set;} = 0;
 	
-	public string FormatDescription(DataRegistry registry)
+	public string FormatDescription(GameSession session, DataRegistry registry)
 	{
 		System.Collections.Generic.List<string> lines = new();
 		
@@ -30,7 +30,9 @@ public partial class RForgeRecipe : Resource
 		{
 			RQualiaCrystal cData = registry.Crystal(ing.Key);
 			
-			ingSubstring.Add($"{cData.name} x{ing.Value}");
+			int have = session.qualiaCrystals.TryGetValue(ing.Key, out int n) ? n : 0;
+			
+			ingSubstring.Add($"{cData.name} x{ing.Value} (have {have})");
 		}
 		
 		lines.Add(string.Join("\n", ingSubstring));

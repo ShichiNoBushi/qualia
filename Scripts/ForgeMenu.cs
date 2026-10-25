@@ -401,7 +401,7 @@ public partial class ForgeMenu : CanvasLayer
 			return;
 		}
 		
-		craftCrResultLabel.Text = data.FormatDescription(registry);
+		craftCrResultLabel.Text = data.FormatDescription(session, registry);
 		
 		if (session.qualiaCrystals != null)
 		{
@@ -464,7 +464,7 @@ public partial class ForgeMenu : CanvasLayer
 			return;
 		}
 		
-		craftPrResultLabel.Text = data.FormatDescription(registry);
+		craftPrResultLabel.Text = data.FormatDescription(session, registry);
 		
 		if (session.qualiaCrystals != null)
 		{
