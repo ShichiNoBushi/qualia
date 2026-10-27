@@ -18,6 +18,8 @@ public partial class TitleMenu : Control
 	
 	public LineEdit nameEdit;
 	public ItemList familiarList;
+	public RichTextLabel famDescLabel;
+	public TextureRect famPortraitRect;
 	
 	public Button backButton;
 	public Button confirmButton;
@@ -45,8 +47,9 @@ public partial class TitleMenu : Control
 		newCharacterPanel = GetNode<Panel>("NewCharacterPanel");
 		
 		nameEdit = GetNode<LineEdit>("NewCharacterPanel/NameEdit");
-		
 		familiarList = GetNode<ItemList>("NewCharacterPanel/FamiliarList");
+		famDescLabel = GetNode<RichTextLabel>("NewCharacterPanel/FamDescLabel");
+		famPortraitRect = GetNode<TextureRect>("NewCharacterPanel/FamPortraitRect");
 		
 		familiarList.AddItem("Gnome");
 		familiarList.AddItem("Salamander");
@@ -117,6 +120,9 @@ public partial class TitleMenu : Control
 		{
 			GD.Print($"TitleMenu: selected familiar (id {id}) is null");
 		}
+		
+		famDescLabel.Text = selectedFamiliar?.FormatDescription() ?? "";
+		famPortraitRect.Texture = selectedFamiliar?.portrait;
 	}
 	
 	public void OnBackPressed()

@@ -109,6 +109,22 @@ offset_bottom = 901.0
 theme_override_font_sizes/font_size = 32
 text = "Confirm"
 
+[node name="FamDescLabel" type="RichTextLabel" parent="NewCharacterPanel" unique_id=2109029108]
+layout_mode = 0
+offset_left = 528.0
+offset_top = 198.0
+offset_right = 1202.0
+offset_bottom = 747.0
+bbcode_enabled = true
+
+[node name="FamPortraitRect" type="TextureRect" parent="NewCharacterPanel" unique_id=933115495]
+layout_mode = 0
+offset_left = 1202.0
+offset_top = 194.0
+offset_right = 1382.0
+offset_bottom = 484.0
+stretch_mode = 5
+
 [node name="LoadDialog" type="FileDialog" parent="." unique_id=344359846]
 title = "Open a File"
 file_mode = 0
