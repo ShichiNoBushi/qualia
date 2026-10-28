@@ -100,6 +100,16 @@ public partial class RFamiliarInstance : Resource
 		return Math.Max(1, Mathf.RoundToInt(level * 1000f * data.expGrowthFactor));
 	}
 	
+	public int MaxBonusTotal()
+	{
+		return level * 5;
+	}
+	
+	public int MaxStatBonus()
+	{
+		return level * 2;
+	}
+	
 	public void LevelUp()
 	{
 		level++;

@@ -38,6 +38,18 @@ public partial class ForgeMenu : CanvasLayer
 	public Button breakPrButton;
 	public RichTextLabel breakPrResultLabel;
 	
+	public ItemList fortInvFamList;
+	public Label fortNickNameLabel;
+	public Label fortFamNameLabel;
+	public RichTextLabel fortTypesLabel;
+	public Label fortLevelLabel;
+	public ProgressBar fortExperienceProgress;
+	public Label fortExperienceLabel;
+	public Label fortExperienceNextLabel;
+	public RichTextLabel fortCostLabel;
+	public SpinBox fortifySpin;
+	public Button fortifyButton;
+	
 	public Button closeButton;
 	
 	public ConfirmationDialog breakConfirm;
@@ -80,6 +92,18 @@ public partial class ForgeMenu : CanvasLayer
 		breakPrList = GetNode<ItemList>("Panel/MainTab/Refine/RefineTab/Prisms/BreakPrList");
 		breakPrButton = GetNode<Button>("Panel/MainTab/Refine/RefineTab/Prisms/BreakPrButton");
 		breakPrResultLabel = GetNode<RichTextLabel>("Panel/MainTab/Refine/RefineTab/Prisms/BreakPrResultLabel");
+		
+		fortInvFamList = GetNode<ItemList>("Panel/MainTab/Modify/ModifyTab/Fortify/FortFamTab/Inventory/FortInvFamList");
+		fortNickNameLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortNickNameLabel");
+		fortFamNameLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortFamNameLabel");
+		fortTypesLabel = GetNode<RichTextLabel>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortTypesLabel");
+		fortLevelLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortLevelLabel");
+		fortExperienceProgress = GetNode<ProgressBar>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortExperienceProgress");
+		fortExperienceLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortExperienceLabel");
+		fortExperienceNextLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortExperienceNextLabel");
+		fortCostLabel = GetNode<RichTextLabel>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortCostLabel");
+		fortifySpin = GetNode<SpinBox>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortifySpin");
+		fortifyButton = GetNode<Button>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortifyButton");
 		
 		closeButton = GetNode<Button>("Panel/CloseButton");
 		
