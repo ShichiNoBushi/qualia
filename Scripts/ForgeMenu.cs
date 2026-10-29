@@ -39,16 +39,30 @@ public partial class ForgeMenu : CanvasLayer
 	public RichTextLabel breakPrResultLabel;
 	
 	public ItemList fortInvFamList;
+	
+	public Panel fortStatsPanel;
+	
 	public Label fortNickNameLabel;
 	public Label fortFamNameLabel;
+	
 	public RichTextLabel fortTypesLabel;
+	
 	public Label fortLevelLabel;
 	public ProgressBar fortExperienceProgress;
 	public Label fortExperienceLabel;
 	public Label fortExperienceNextLabel;
+	
+	public Label fortEnergyLabel;
+	public Label fortPhysAttackLabel;
+	public Label fortMagAttackLabel;
+	public Label fortPhysDefenseLabel;
+	public Label fortMagDefenseLabel;
+	public Label fortSpeedLabel;
+	
 	public RichTextLabel fortCostLabel;
 	public SpinBox fortifySpin;
 	public Button fortifyButton;
+	public TextureRect fortFamPortraitRect;
 	
 	public Button closeButton;
 	
@@ -94,16 +108,30 @@ public partial class ForgeMenu : CanvasLayer
 		breakPrResultLabel = GetNode<RichTextLabel>("Panel/MainTab/Refine/RefineTab/Prisms/BreakPrResultLabel");
 		
 		fortInvFamList = GetNode<ItemList>("Panel/MainTab/Modify/ModifyTab/Fortify/FortFamTab/Inventory/FortInvFamList");
+		
+		fortStatsPanel = GetNode<Panel>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel");
+		
 		fortNickNameLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortNickNameLabel");
 		fortFamNameLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortFamNameLabel");
+		
 		fortTypesLabel = GetNode<RichTextLabel>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortTypesLabel");
+		
 		fortLevelLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortLevelLabel");
 		fortExperienceProgress = GetNode<ProgressBar>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortExperienceProgress");
 		fortExperienceLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortExperienceLabel");
 		fortExperienceNextLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortExperienceNextLabel");
+		
+		fortEnergyLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortGridContainer/FortEnergyLabel");
+		fortPhysAttackLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortGridContainer/FortPhysAttackLabel");
+		fortMagAttackLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortGridContainer/FortMagAttackLabel");
+		fortPhysDefenseLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortGridContainer/FortPhysDefenseLabel");
+		fortMagDefenseLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortGridContainer/FortMagDefenseLabel");
+		fortSpeedLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortGridContainer/FortSpeedLabel");
+		
 		fortCostLabel = GetNode<RichTextLabel>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortCostLabel");
 		fortifySpin = GetNode<SpinBox>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortifySpin");
 		fortifyButton = GetNode<Button>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortifyButton");
+		fortFamPortraitRect = GetNode<TextureRect>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortFamPortraitRect");
 		
 		closeButton = GetNode<Button>("Panel/CloseButton");
 		
@@ -131,6 +159,10 @@ public partial class ForgeMenu : CanvasLayer
 		breakPrList.ItemSelected += OnBreakPrSelected;
 		breakPrButton.Pressed += OnBreakPrPressed;
 		
+		fortInvFamList.ItemSelected += OnFortInvFamSelected;
+		fortifySpin.GuiInput += OnFortifySpinGui;
+		fortifyButton.Pressed += OnFortifyPressed;
+		
 		closeButton.Pressed += OnClosePressed;
 		
 		breakConfirm.Confirmed += OnBreakConfirmed;
@@ -144,6 +176,7 @@ public partial class ForgeMenu : CanvasLayer
 		recipePrList.Clear();
 		breakCrList.Clear();
 		breakPrList.Clear();
+		fortInvFamList.Clear();
 		
 		foreach (var crystal in session.qualiaCrystals)
 		{
@@ -251,6 +284,22 @@ public partial class ForgeMenu : CanvasLayer
 			}
 		}
 		
+		Godot.Collections.Array<RFamiliarInstance> oFamiliars = session.playerProjector.ownedFamiliars;
+		
+		for (int i = 0; i < oFamiliars.Count; i++)
+		{
+			RFamiliarInstance fam = oFamiliars[i];
+			
+			if (fam == null)
+			{
+				continue;
+			}
+			
+			fortInvFamList.AddItem(fam.GetPreferredName());
+			int idx = fortInvFamList.ItemCount - 1;
+			fortInvFamList.SetItemMetadata(idx, fam);
+		}
+		
 		buySpin.Value = 0f;
 		buySpin.MaxValue = 0f;
 		buyButton.Disabled = true;
@@ -271,10 +320,98 @@ public partial class ForgeMenu : CanvasLayer
 		
 		breakPrButton.Disabled = true;
 		
+		fortStatsPanel.Visible = false;
+		fortifySpin.Value = 0f;
+		fortifySpin.MaxValue = 0f;
+		fortifyButton.Disabled = true;
+		
 		shopItemLabel.Text = "";
 		inventoryItemLabel.Text = "";
 		craftCrResultLabel.Text = "";
 		craftPrResultLabel.Text = "";
+	}
+	
+	public void UpdateFortifyRecipe()
+	{
+		int idx = -1;
+		
+		var selectedInv = fortInvFamList.GetSelectedItems();
+		
+		if (selectedInv.Length > 0)
+		{
+			idx = selectedInv[0];
+		}
+		
+		if (idx < 0)
+		{
+			fortCostLabel.Text = "";
+			fortifySpin.Value = 0f;
+			fortifySpin.MaxValue = 0f;
+			fortifyButton.Disabled = true;
+			return;
+		}
+		
+		RFamiliarInstance selectedFamiliar = fortInvFamList.GetItemMetadata(idx).As<RFamiliarInstance>();
+		
+		if (selectedFamiliar == null)
+		{
+			fortCostLabel.Text = "";
+			fortifySpin.Value = 0f;
+			fortifySpin.MaxValue = 0f;
+			fortifyButton.Disabled = true;
+			return;
+		}
+		
+		Godot.Collections.Dictionary<string, int> fortRec = selectedFamiliar.data?.fortifyRecipe;
+		
+		if (fortRec == null || fortRec.Count == 0)
+		{
+			fortCostLabel.Text = "";
+			fortifySpin.Value = 0f;
+			fortifySpin.MaxValue = 0f;
+			fortifyButton.Disabled = true;
+			return;
+		}
+		
+		Godot.Collections.Array<string> recText = new();
+		
+		foreach (var rec in fortRec)
+		{
+			RQualiaCrystal crystal = registry.Crystal(rec.Key);
+			
+			int have = session.qualiaCrystals.TryGetValue(rec.Key, out int n) ? n : 0;
+			
+			string text = "";
+			
+			if (fortifySpin.Value > 0f)
+			{
+				text = $"{crystal.name}: x{rec.Value * (int)fortifySpin.Value} (have: {have})";
+			}
+			else
+			{
+				text = $"{crystal.name}: x{rec.Value} (have: {have})";
+			}
+			
+			recText.Add(text);
+		}
+		
+		int fortCost = selectedFamiliar.data?.fortifyCost ?? 0;
+		
+		if (fortCost > 0 && fortifySpin.Value > 0f)
+		{
+			recText.Add($"Generic Qualia: {fortCost * (int)fortifySpin.Value}");
+		}
+		else if (fortCost > 0)
+		{
+			recText.Add($"Generic Qualia: {fortCost}");
+		}
+		
+		fortCostLabel.Text = string.Join("\n", recText);
+		
+		int maxFort = TimesFortifiable(selectedFamiliar.data);
+		
+		fortifySpin.MaxValue = maxFort;
+		fortifyButton.Disabled = maxFort == 0;
 	}
 	
 	public void OnShopSelected(long index)
@@ -623,6 +760,80 @@ public partial class ForgeMenu : CanvasLayer
 		BreakPrism(familiars[idx]);*/
 	}
 	
+	public void OnFortInvFamSelected(long index)
+	{
+		RFamiliarInstance selectedFamiliar = fortInvFamList.GetItemMetadata((int)index).As<RFamiliarInstance>();
+		//deselect on storage list
+		
+		if (selectedFamiliar == null)
+		{
+			fortStatsPanel.Visible = false;
+			return;
+		}
+		
+		fortStatsPanel.Visible = true;
+		
+		fortNickNameLabel.Text = selectedFamiliar.GetPreferredName();
+		fortFamNameLabel.Text = string.IsNullOrEmpty(selectedFamiliar.data?.name) ? "(no name)" : selectedFamiliar.data.name;
+		
+		Godot.Collections.Array<RTypeData> types = selectedFamiliar.types != null && selectedFamiliar.types.Count > 0 ? selectedFamiliar.types : selectedFamiliar.data?.types;
+		
+		if (types != null && types.Count > 0)
+		{
+			System.Collections.Generic.List<string> typeTexts = new();
+			
+			foreach (var t in types)
+			{
+				if (t == null)
+				{
+					continue;
+				}
+				
+				string name = string.IsNullOrEmpty(t.name) ? "(type)" : t.name;
+				string fill = t.color.ToHtml(false);
+				string edge = t.outline.A > 0 ? t.outline.ToHtml(false) : t.ContrastColor().ToHtml(false);
+				
+				typeTexts.Add($"[outline_size=4][outline_color=#{edge}][color=#{fill}]{name}[/color][/outline_color][/outline_size]");
+			}
+			
+			string typeFull = string.Join("\n", typeTexts);
+			fortTypesLabel.Text = typeFull;
+		}
+		else
+		{
+			fortTypesLabel.Text = "(untyped)";
+		}
+		
+		fortLevelLabel.Text = $"{selectedFamiliar.level}";
+		
+		int next = selectedFamiliar.ExpToNextLevel();
+		fortExperienceProgress.Value = selectedFamiliar.experience;
+		fortExperienceProgress.MaxValue = next;
+		fortExperienceLabel.Text = $"{selectedFamiliar.experience}";
+		fortExperienceNextLabel.Text = $"{next}";
+		
+		fortEnergyLabel.Text = $"{selectedFamiliar.energy}";
+		fortPhysAttackLabel.Text = $"{selectedFamiliar.pAttack}";
+		fortMagAttackLabel.Text = $"{selectedFamiliar.mAttack}";
+		fortPhysDefenseLabel.Text = $"{selectedFamiliar.pDefense}";
+		fortMagDefenseLabel.Text = $"{selectedFamiliar.mDefense}";
+		fortSpeedLabel.Text = $"{selectedFamiliar.speed}";
+		
+		UpdateFortifyRecipe();
+		
+		fortFamPortraitRect.Texture = selectedFamiliar.data.portrait;
+	}
+	
+	public void OnFortifySpinGui(InputEvent e)
+	{
+		
+	}
+	
+	public void OnFortifyPressed()
+	{
+		
+	}
+	
 	public void OnClosePressed()
 	{
 		Close();
@@ -955,6 +1166,40 @@ public partial class ForgeMenu : CanvasLayer
 		if (recipe.cost > 0)
 		{
 			max = Mathf.Min(session.qualiaGeneric / recipe.cost, max);
+		}
+		
+		return max == int.MaxValue ? 0 : max;
+	}
+	
+	public int TimesFortifiable(RFamiliarData data)
+	{
+		if (data == null)
+		{
+			return 0;
+		}
+		
+		if ((data.fortifyRecipe == null || data.fortifyRecipe.Count == 0) && data.fortifyCost == 0)
+		{
+			return 0;
+		}
+		
+		int max = int.MaxValue;
+		
+		foreach (var ing in data.fortifyRecipe)
+		{
+			if (ing.Value <= 0)
+			{
+				return 0;
+			}
+			
+			int have = session.qualiaCrystals.TryGetValue(ing.Key, out int n) ? n : 0;
+			
+			max = Mathf.Min(have / ing.Value, max);
+		}
+		
+		if (data.fortifyCost > 0)
+		{
+			max = Mathf.Min(session.qualiaGeneric / data.fortifyCost, max);
 		}
 		
 		return max == int.MaxValue ? 0 : max;

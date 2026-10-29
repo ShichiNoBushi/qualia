@@ -370,6 +370,7 @@ offset_left = 72.0
 offset_top = 72.0
 offset_right = 168.0
 offset_bottom = 144.0
+bbcode_enabled = true
 text = "Type1
 Type2
 Type3"
@@ -447,6 +448,7 @@ offset_left = 240.0
 offset_top = 95.0
 offset_right = 496.0
 offset_bottom = 187.0
+bbcode_enabled = true
 text = "Crystal1 x5 (have 0)
 Crystal2
 Crystal3
@@ -531,10 +533,10 @@ horizontal_alignment = 2
 
 [node name="FortFamPortraitRect" type="TextureRect" parent="Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel" unique_id=1154896135]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 394.0
-offset_right = 117.0
-offset_bottom = 394.0
+offset_left = 664.0
+offset_top = 16.0
+offset_right = 844.0
+offset_bottom = 306.0
 stretch_mode = 5
 
 [node name="Enhance" type="Control" parent="Panel/MainTab/Modify/ModifyTab" unique_id=2107387912]

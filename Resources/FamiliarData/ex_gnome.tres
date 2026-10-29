@@ -34,6 +34,10 @@ learnableSkills = Array[ExtResource("1_7l8ww")]([ExtResource("2_x8qlk")])
 levelUpSkills = Dictionary[int, ExtResource("1_7l8ww")]({
 1: ExtResource("2_x8qlk")
 })
+fortifyRecipe = Dictionary[String, int]({
+"ex_gnome": 2
+})
+fortifyCost = 10
 crystals = 10
 crystalDrops = Array[ExtResource("1_3ff1v")]([SubResource("Resource_qe4dn"), SubResource("Resource_ngc2t")])
 portrait = ExtResource("3_22aus")
