@@ -161,6 +161,7 @@ public partial class ForgeMenu : CanvasLayer
 		
 		fortInvFamList.ItemSelected += OnFortInvFamSelected;
 		fortifySpin.GuiInput += OnFortifySpinGui;
+		fortifySpin.ValueChanged += OnFortifyChanged;
 		fortifyButton.Pressed += OnFortifyPressed;
 		
 		closeButton.Pressed += OnClosePressed;
@@ -553,7 +554,7 @@ public partial class ForgeMenu : CanvasLayer
 		
 		if (data == null || data.makesPrism)
 		{
-			inventoryItemLabel.Text = "Invalid recipe data.";
+			craftCrResultLabel.Text = "Invalid recipe data.";
 			
 			craftCrSpin.Value = 0f;
 			craftCrSpin.MaxValue = 0f;
@@ -618,9 +619,9 @@ public partial class ForgeMenu : CanvasLayer
 		
 		if (data == null || !data.makesPrism)
 		{
-			inventoryItemLabel.Text = "Invalid recipe data.";
+			craftPrResultLabel.Text = "Invalid recipe data.";
 			
-			craftCrButton.Disabled = true;
+			craftPrButton.Disabled = true;
 			
 			return;
 		}
@@ -726,9 +727,9 @@ public partial class ForgeMenu : CanvasLayer
 		
 		if (familiar == null || data == null)
 		{
-			breakCrResultLabel.Text = "Invalid familiar data.";
+			breakPrResultLabel.Text = "Invalid familiar data.";
 			
-			breakCrButton.Disabled = true;
+			breakPrButton.Disabled = true;
 			
 			return;
 		}
@@ -826,12 +827,56 @@ public partial class ForgeMenu : CanvasLayer
 	
 	public void OnFortifySpinGui(InputEvent e)
 	{
-		
+		if (e.IsActionPressed("ui_accept"))
+		{
+			var selected = fortInvFamList.GetSelectedItems();
+			
+			if (selected.Length == 0)
+			{
+				return;
+			}
+			
+			RFamiliarInstance fam = fortInvFamList.GetItemMetadata(selected[0]).As<RFamiliarInstance>();
+			
+			if (fam?.data == null)
+			{
+				return;
+			}
+			
+			int times = (int)fortifySpin.Value;
+			
+			FortifyFamiliar(fam, times);
+			
+			OnFortInvFamSelected(selected[0]);
+		}
+	}
+	
+	public void OnFortifyChanged(double value)
+	{
+		UpdateFortifyRecipe();
 	}
 	
 	public void OnFortifyPressed()
 	{
+		var selected = fortInvFamList.GetSelectedItems();
 		
+		if (selected.Length == 0)
+		{
+			return;
+		}
+		
+		RFamiliarInstance fam = fortInvFamList.GetItemMetadata(selected[0]).As<RFamiliarInstance>();
+		
+		if (fam?.data == null)
+		{
+			return;
+		}
+		
+		int times = (int)fortifySpin.Value;
+		
+		FortifyFamiliar(fam, times);
+		
+		OnFortInvFamSelected(selected[0]);
 	}
 	
 	public void OnClosePressed()
@@ -1142,6 +1187,37 @@ public partial class ForgeMenu : CanvasLayer
 		UpdateInventory();
 	}
 	
+	public void FortifyFamiliar(RFamiliarInstance fam, int times)
+	{
+		if (fam == null || times <= 0 || times > TimesFortifiable(fam.data))
+		{
+			return;
+		}
+		
+		Godot.Collections.Dictionary<string, int> fortRecipe = fam.data.fortifyRecipe;
+		
+		foreach (var ing in fortRecipe)
+		{
+			RQualiaCrystal crystal = registry.Crystal(ing.Key);
+			
+			if (crystal == null || !session.RemoveCrystal(crystal, ing.Value * times))
+			{
+				return;
+			}
+		}
+		
+		if (fam.data.fortifyCost > 0)
+		{
+			session.qualiaGeneric -= fam.data.fortifyCost * times;
+		}
+		
+		int expGain = times * 100;
+		
+		fam.GiveExperience(expGain);
+		
+		UpdateInventory();
+	}
+	
 	public int TimesCraftable(RForgeRecipe recipe)
 	{
 		if (recipe.ingredients == null || recipe.ingredients.Count == 0)
@@ -1185,16 +1261,19 @@ public partial class ForgeMenu : CanvasLayer
 		
 		int max = int.MaxValue;
 		
-		foreach (var ing in data.fortifyRecipe)
+		if (data.fortifyRecipe != null)
 		{
-			if (ing.Value <= 0)
+			foreach (var ing in data.fortifyRecipe)
 			{
-				return 0;
+				if (ing.Value <= 0)
+				{
+					return 0;
+				}
+				
+				int have = session.qualiaCrystals.TryGetValue(ing.Key, out int n) ? n : 0;
+				
+				max = Mathf.Min(have / ing.Value, max);
 			}
-			
-			int have = session.qualiaCrystals.TryGetValue(ing.Key, out int n) ? n : 0;
-			
-			max = Mathf.Min(have / ing.Value, max);
 		}
 		
 		if (data.fortifyCost > 0)
