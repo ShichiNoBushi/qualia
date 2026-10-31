@@ -19,6 +19,9 @@ public partial class RItemData : Resource
 	[Export] public bool fieldUsable {get; set;} = true;
 	[Export] public bool battleUsable {get; set;} = true;
 	
+	[Export] public bool restoreOnRest {get; set;} = true;
+	[Export] public bool breakWhenEmpty {get; set;} = false;
+	
 	[Export] public TargetPattern itemPattern {get; set;} = TargetPattern.OneAlly;
 	
 	[Export] public bool isMagicalDefense {get; set;} = false;

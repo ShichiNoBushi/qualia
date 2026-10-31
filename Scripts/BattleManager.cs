@@ -1222,7 +1222,8 @@ public partial class BattleManager : Node
 	
 	public void FinishDefeat()
 	{
-		playerSide.projector.Recover();
+		//playerSide.projector.Recover();
+		session.Rest();
 		
 		defeatEvent?.Execute(session);
 		
@@ -1414,7 +1415,11 @@ public partial class BattleManager : Node
 			{
 				string srcName = "(no name)";
 				
-				if (cmd.source is FamiliarActor fam)
+				if (cmd == null)
+				{
+					srcName = "(null command)";
+				}
+				else if (cmd.source is FamiliarActor fam)
 				{
 					srcName = fam.name;
 				}

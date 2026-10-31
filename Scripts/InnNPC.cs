@@ -14,9 +14,11 @@ public partial class InnNPC : NPC
 	
 	public override void AfterDialog(Player player)
 	{
-		player.projector?.Recover();
+		//player.projector?.Recover();
 		
 		GameSession session = GetNode<GameSession>("/root/GameSession");
+		
+		session.Rest();
 		
 		session.safePath = GetTree().CurrentScene.SceneFilePath;
 		session.safeMapId = (GetTree().GetFirstNodeInGroup("map") as Map)?.id ?? "";

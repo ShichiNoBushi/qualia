@@ -967,8 +967,8 @@ public partial class SkillCommand : BattleCommand
 		
 		if (target is Projector proj)
 		{
-			GD.Print($"BattleCommand: invalid defense target ({proj.name})");
-			battle.AppendBattleText($"Skill Error: invalid defense target ({proj.name})", false);
+			//GD.Print($"BattleCommand: invalid defense target ({proj.name})");
+			//battle.AppendBattleText($"Skill Error: invalid defense target ({proj.name})", false);
 			return;
 		}
 		
@@ -1043,7 +1043,7 @@ public partial class SkillCommand : BattleCommand
 		
 		if (chance < 1f && GD.Randf() > chance)
 		{
-			battle.AppendBattleText($"Item failed to modify {enemyPrefix}[b]{name}[/b]'s stats.", false);
+			battle.AppendBattleText($"Skill failed to modify {enemyPrefix}[b]{name}[/b]'s stats.", false);
 			return;
 		}
 		
@@ -2506,7 +2506,7 @@ public partial class ItemCommand : BattleCommand
 		
 		if (chance < 1f && GD.Randf() > chance)
 		{
-			battle.AppendBattleText($"Skill failed to modify {enemyPrefix}[b]{name}[/b]'s stats.", false);
+			battle.AppendBattleText($"Item failed to modify {enemyPrefix}[b]{name}[/b]'s stats.", false);
 			return;
 		}
 		

@@ -5,9 +5,9 @@ using System;
 public partial class RFamiliarInstance : Resource
 {
 	[Export] public RFamiliarData data {get; set;}
-	[Export] public string nickname {get; set;}
+	[Export] public string nickname {get; set;} = "";
 	
-	[Export] public Godot.Collections.Array<RTypeData> types {get; set;}
+	[Export] public Godot.Collections.Array<RTypeData> types {get; set;} = new();
 	
 	[Export] public int level {get; set;} = 1;
 	public int experience {get; set;} = 0;
@@ -19,23 +19,26 @@ public partial class RFamiliarInstance : Resource
 	public int mDefense {get; private set;}
 	public int speed {get; private set;}
 	
-	[Export] public int pAttackBonus {get; set;}
-	[Export] public int mAttackBonus {get; set;}
-	[Export] public int pDefenseBonus {get; set;}
-	[Export] public int mDefenseBonus {get; set;}
-	[Export] public int speedBonus {get; set;}
+	[Export] public int pAttackBonus {get; set;} = 0;
+	[Export] public int mAttackBonus {get; set;} = 0;
+	[Export] public int pDefenseBonus {get; set;} = 0;
+	[Export] public int mDefenseBonus {get; set;} = 0;
+	[Export] public int speedBonus {get; set;} = 0;
 	
-	[Export] public Godot.Collections.Array<RSkillData> skills {get; set;}
+	[Export] public Godot.Collections.Array<RSkillData> skills {get; set;} = new();
 	
 	public void Initialize()
 	{
 		RecalculateStats();
 		
-		foreach (var t in data.types)
+		if (data?.types != null)
 		{
-			if (!types.Contains(t))
+			foreach (var t in data.types)
 			{
-				types.Add(t);
+				if (!types.Contains(t))
+				{
+					types.Add(t);
+				}
 			}
 		}
 	}
@@ -98,6 +101,11 @@ public partial class RFamiliarInstance : Resource
 		}
 		
 		return Math.Max(1, Mathf.RoundToInt(level * 1000f * data.expGrowthFactor));
+	}
+	
+	public int TotalBonus()
+	{
+		return pAttackBonus + mAttackBonus + pDefenseBonus + mDefenseBonus + speedBonus;
 	}
 	
 	public int MaxBonusTotal()
@@ -315,7 +323,7 @@ public class FamiliarSave
 		
 		foreach (Variant tId in typesIn)
 		{
-			familiar.types.Add(id.AsString());
+			familiar.types.Add(tId.AsString());
 		}
 		
 		familiar.level = dict.TryGetValue("level", out Variant lvl) ? lvl.AsInt32() : 1;
@@ -333,7 +341,7 @@ public class FamiliarSave
 		
 		foreach (Variant sId in skillsIn)
 		{
-			familiar.skills.Add(id.AsString());
+			familiar.skills.Add(sId.AsString());
 		}
 		
 		return familiar;

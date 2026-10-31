@@ -101,6 +101,19 @@ public partial class GameSession : Node
 	public string SceneForMap(string mapId) =>
 		mapScenes != null && mapScenes.TryGetValue(mapId, out string p) ? p : null;
 	
+	public void Rest()
+	{
+		playerProjector.Recover();
+		
+		foreach (var unique in uniqueItems)
+		{
+			if (unique.data != null && unique.data.restoreOnRest)
+			{
+				unique.usesLeft = unique.maxUses;
+			}
+		}
+	}
+	
 	public void AddCrystal(RQualiaCrystal crystal, int amount = 1)
 	{
 		if (crystal == null || amount <= 0 || string.IsNullOrEmpty(crystal.id))
@@ -211,10 +224,24 @@ public partial class GameSession : Node
 			return;
 		}
 		
-		for (int i = 0; i < amount; i++)
+		for (int i = uniqueItems.Count; i >= 0 && amount > 0; i--)
 		{
-			//remove instance of item from uniqueItems
+			if (uniqueItems[i]?.data?.id == id)
+			{
+				uniqueItems.RemoveAt(i);
+				amount--;
+			}
 		}
+	}
+	
+	public void RemoveItem(ItemInstance instance)
+	{
+		if (instance == null || uniqueItems == null)
+		{
+			return;
+		}
+		
+		uniqueItems.Remove(instance);
 	}
 	
 	public bool TryUseItem(RItemData item, ItemInstance unique = null)
@@ -244,6 +271,12 @@ public partial class GameSession : Node
 		}
 		
 		unique.usesLeft--;
+		
+		if (unique.usesLeft <= 0 && unique.data != null && unique.data.breakWhenEmpty)
+		{
+			RemoveItem(unique);
+		}
+		
 		return true;
 	}
 	
@@ -380,6 +413,12 @@ public partial class GameSession : Node
 		var dict = parsed.AsGodotDictionary();
 		
 		GameSave save = GameSave.FromDictionary(dict);
+		
+		if (save.playerProjector == null)
+		{
+			GD.PrintErr("GameSession: failure loading projector");
+			return;
+		}
 		
 		Projector proj = save.playerProjector.ToProjector(registry);
 		

@@ -64,6 +64,45 @@ public partial class ForgeMenu : CanvasLayer
 	public Button fortifyButton;
 	public TextureRect fortFamPortraitRect;
 	
+	public ItemList enhInvFamList;
+	
+	public Panel enhStatsPanel;
+	
+	public Label enhNickNameLabel;
+	public Label enhFamNameLabel;
+	
+	public RichTextLabel enhTypesLabel;
+	
+	public Label enhLevelLabel;
+	
+	public ProgressBar totalBonusProgress;
+	public Label totalBonusLabel;
+	public Label totalBonusMaxLabel;
+	
+	public Label enhEnergyLabel;
+	public Label enhPhysAttackLabel;
+	public Label enhPhysAttackBonusLabel;
+	public ProgressBar enhPhysAttackProgress;
+	public Label enhMagAttackLabel;
+	public Label enhMagAttackBonusLabel;
+	public ProgressBar enhMagAttackProgress;
+	public Label enhPhysDefenseLabel;
+	public Label enhPhysDefenseBonusLabel;
+	public ProgressBar enhPhysDefenseProgress;
+	public Label enhMagDefenseLabel;
+	public Label enhMagDefenseBonusLabel;
+	public ProgressBar enhMagDefenseProgress;
+	public Label enhSpeedLabel;
+	public Label enhSpeedBonusLabel;
+	public ProgressBar enhSpeedProgress;
+	
+	public OptionButton enhCrystalMenu;
+	public SpinBox enhanceSpin;
+	public OptionButton enhStatMenu;
+	public Button enhanceButton;
+	
+	public TextureRect enhFamPortraitRect;
+	
 	public Button closeButton;
 	
 	public ConfirmationDialog breakConfirm;
@@ -133,6 +172,45 @@ public partial class ForgeMenu : CanvasLayer
 		fortifyButton = GetNode<Button>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortifyButton");
 		fortFamPortraitRect = GetNode<TextureRect>("Panel/MainTab/Modify/ModifyTab/Fortify/FortStatsPanel/FortFamPortraitRect");
 		
+		enhInvFamList = GetNode<ItemList>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhFamTab/Inventory/EnhInvFamList");
+		
+		enhStatsPanel = GetNode<Panel>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel");
+		
+		enhNickNameLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhNickNameLabel");
+		enhFamNameLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhFamNameLabel");
+		
+		enhTypesLabel = GetNode<RichTextLabel>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhTypesLabel");
+		
+		enhLevelLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhLevelLabel");
+		
+		totalBonusProgress = GetNode<ProgressBar>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/TotalBonusProgress");
+		totalBonusLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/TotalBonusLabel");
+		totalBonusMaxLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/TotalBonusMaxLabel");
+		
+		enhEnergyLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhEnergyLabel");
+		enhPhysAttackLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhPhysAttackLabel");
+		enhPhysAttackBonusLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhPhysAttackBonusLabel");
+		enhPhysAttackProgress = GetNode<ProgressBar>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhPhysAttackProgress");
+		enhMagAttackLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhMagAttackLabel");
+		enhMagAttackBonusLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhMagAttackBonusLabel");
+		enhMagAttackProgress = GetNode<ProgressBar>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhMagAttackProgress");
+		enhPhysDefenseLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhPhysDefenseLabel");
+		enhPhysDefenseBonusLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhPhysDefenseBonusLabel");
+		enhPhysDefenseProgress = GetNode<ProgressBar>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhPhysDefenseProgress");
+		enhMagDefenseLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhMagDefenseLabel");
+		enhMagDefenseBonusLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhMagDefenseBonusLabel");
+		enhMagDefenseProgress = GetNode<ProgressBar>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhMagDefenseProgress");
+		enhSpeedLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhSpeedLabel");
+		enhSpeedBonusLabel = GetNode<Label>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhSpeedBonusLabel");
+		enhSpeedProgress = GetNode<ProgressBar>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer/EnhSpeedProgress");
+		
+		enhCrystalMenu = GetNode<OptionButton>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhCrystalMenu");
+		enhanceSpin = GetNode<SpinBox>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhanceSpin");
+		enhStatMenu = GetNode<OptionButton>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhStatMenu");
+		enhanceButton = GetNode<Button>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhanceButton");
+		
+		enhFamPortraitRect = GetNode<TextureRect>("Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhFamPortraitRect");
+		
 		closeButton = GetNode<Button>("Panel/CloseButton");
 		
 		breakConfirm = GetNode<ConfirmationDialog>("BreakConfirm");
@@ -164,6 +242,11 @@ public partial class ForgeMenu : CanvasLayer
 		fortifySpin.ValueChanged += OnFortifyChanged;
 		fortifyButton.Pressed += OnFortifyPressed;
 		
+		enhInvFamList.ItemSelected += OnEnhInvFamSelected;
+		enhCrystalMenu.ItemSelected += OnEnhCrystalSelected;
+		enhStatMenu.ItemSelected += OnEnhStatSelected;
+		enhanceButton.Pressed += OnEnhancePressed;
+		
 		closeButton.Pressed += OnClosePressed;
 		
 		breakConfirm.Confirmed += OnBreakConfirmed;
@@ -178,6 +261,7 @@ public partial class ForgeMenu : CanvasLayer
 		breakCrList.Clear();
 		breakPrList.Clear();
 		fortInvFamList.Clear();
+		enhInvFamList.Clear();
 		
 		foreach (var crystal in session.qualiaCrystals)
 		{
@@ -299,6 +383,10 @@ public partial class ForgeMenu : CanvasLayer
 			fortInvFamList.AddItem(fam.GetPreferredName());
 			int idx = fortInvFamList.ItemCount - 1;
 			fortInvFamList.SetItemMetadata(idx, fam);
+			
+			enhInvFamList.AddItem(fam.GetPreferredName());
+			idx = enhInvFamList.ItemCount - 1;
+			enhInvFamList.SetItemMetadata(idx, fam);
 		}
 		
 		buySpin.Value = 0f;
@@ -325,6 +413,13 @@ public partial class ForgeMenu : CanvasLayer
 		fortifySpin.Value = 0f;
 		fortifySpin.MaxValue = 0f;
 		fortifyButton.Disabled = true;
+		
+		enhStatsPanel.Visible = false;
+		enhCrystalMenu.Clear();
+		enhCrystalMenu.AddItem("(No Crystal)");
+		enhCrystalMenu.Select(0);
+		enhCrystalMenu.Disabled = true;
+		enhStatMenu.Select(0);
 		
 		shopItemLabel.Text = "";
 		inventoryItemLabel.Text = "";
@@ -413,6 +508,47 @@ public partial class ForgeMenu : CanvasLayer
 		
 		fortifySpin.MaxValue = maxFort;
 		fortifyButton.Disabled = maxFort == 0;
+	}
+	
+	public void UpdateEnhanceRecipe()
+	{
+		int idx = -1;
+		
+		var selectedInv = enhInvFamList.GetSelectedItems();
+		
+		if (selectedInv.Length > 0)
+		{
+			idx = selectedInv[0];
+		}
+		
+		if (idx < 0)
+		{
+			enhCrystalMenu.AddItem("(No crystal)");
+			enhCrystalMenu.Select(0);
+			enhCrystalMenu.Disabled = true;
+			enhanceSpin.Value = 0f;
+			enhanceSpin.MaxValue = 0f;
+			enhanceButton.Disabled = true;
+			return;
+		}
+		
+		RFamiliarInstance selectedFamiliar = enhInvFamList.GetItemMetadata(idx).As<RFamiliarInstance>();
+		
+		if (selectedFamiliar == null)
+		{
+			enhCrystalMenu.AddItem("(No crystal)");
+			enhCrystalMenu.Select(0);
+			enhCrystalMenu.Disabled = true;
+			enhanceSpin.Value = 0f;
+			enhanceSpin.MaxValue = 0f;
+			enhanceButton.Disabled = true;
+			return;
+		}
+		
+		int maxRec = TimesEnhanceable(selectedFamiliar);
+		
+		enhanceSpin.MaxValue = maxRec;
+		enhanceButton.Disabled = maxRec == 0;
 	}
 	
 	public void OnShopSelected(long index)
@@ -879,6 +1015,181 @@ public partial class ForgeMenu : CanvasLayer
 		OnFortInvFamSelected(selected[0]);
 	}
 	
+	public void OnEnhInvFamSelected(long index)
+	{
+		RFamiliarInstance selectedFamiliar = enhInvFamList.GetItemMetadata((int)index).As<RFamiliarInstance>();
+		//deselect on storage list
+		
+		if (selectedFamiliar == null)
+		{
+			enhStatsPanel.Visible = false;
+			return;
+		}
+		
+		enhStatsPanel.Visible = true;
+		
+		enhNickNameLabel.Text = selectedFamiliar.GetPreferredName();
+		enhFamNameLabel.Text = string.IsNullOrEmpty(selectedFamiliar.data?.name) ? "(no name)" : selectedFamiliar.data.name;
+		
+		Godot.Collections.Array<RTypeData> types = selectedFamiliar.types != null && selectedFamiliar.types.Count > 0 ? selectedFamiliar.types : selectedFamiliar.data?.types;
+		
+		if (types != null && types.Count > 0)
+		{
+			System.Collections.Generic.List<string> typeTexts = new();
+			
+			foreach (var t in types)
+			{
+				if (t == null)
+				{
+					continue;
+				}
+				
+				string name = string.IsNullOrEmpty(t.name) ? "(type)" : t.name;
+				string fill = t.color.ToHtml(false);
+				string edge = t.outline.A > 0 ? t.outline.ToHtml(false) : t.ContrastColor().ToHtml(false);
+				
+				typeTexts.Add($"[outline_size=4][outline_color=#{edge}][color=#{fill}]{name}[/color][/outline_color][/outline_size]");
+			}
+			
+			string typeFull = string.Join("\n", typeTexts);
+			enhTypesLabel.Text = typeFull;
+		}
+		else
+		{
+			enhTypesLabel.Text = "(untyped)";
+		}
+		
+		enhLevelLabel.Text = $"{selectedFamiliar.level}";
+		
+		int maxTotal = selectedFamiliar.MaxBonusTotal();
+		int maxStat = selectedFamiliar.MaxStatBonus();
+		
+		totalBonusProgress.Value = selectedFamiliar.TotalBonus();
+		totalBonusProgress.MaxValue = maxTotal;
+		totalBonusLabel.Text = $"{selectedFamiliar.TotalBonus()}";
+		totalBonusMaxLabel.Text = $"{maxTotal}";
+		
+		enhEnergyLabel.Text = $"{selectedFamiliar.energy}";
+		enhPhysAttackLabel.Text = $"{selectedFamiliar.pAttack - selectedFamiliar.pAttackBonus}";
+		enhPhysAttackBonusLabel.Text = $"+{selectedFamiliar.pAttackBonus}";
+		enhPhysAttackProgress.Value = selectedFamiliar.pAttackBonus;
+		enhPhysAttackProgress.MaxValue = maxStat;
+		enhMagAttackLabel.Text = $"{selectedFamiliar.mAttack - selectedFamiliar.mAttackBonus}";
+		enhMagAttackBonusLabel.Text = $"+{selectedFamiliar.mAttackBonus}";
+		enhMagAttackProgress.Value = selectedFamiliar.mAttackBonus;
+		enhMagAttackProgress.MaxValue = maxStat;
+		enhPhysDefenseLabel.Text = $"{selectedFamiliar.pDefense - selectedFamiliar.pDefenseBonus}";
+		enhPhysDefenseBonusLabel.Text = $"+{selectedFamiliar.pDefenseBonus}";
+		enhPhysDefenseProgress.Value = selectedFamiliar.pDefenseBonus;
+		enhPhysDefenseProgress.MaxValue = maxStat;
+		enhMagDefenseLabel.Text = $"{selectedFamiliar.mDefense - selectedFamiliar.mDefenseBonus}";
+		enhMagDefenseBonusLabel.Text = $"+{selectedFamiliar.mDefenseBonus}";
+		enhMagDefenseProgress.Value = selectedFamiliar.mDefenseBonus;
+		enhMagDefenseProgress.MaxValue = maxStat;
+		enhSpeedLabel.Text = $"{selectedFamiliar.speed - selectedFamiliar.speedBonus}";
+		enhSpeedBonusLabel.Text = $"+{selectedFamiliar.speedBonus}";
+		enhSpeedProgress.Value = selectedFamiliar.speedBonus;
+		enhSpeedProgress.MaxValue = maxStat;
+		
+		enhCrystalMenu.Clear();
+		
+		if (selectedFamiliar.data?.enhanceCrystals != null && selectedFamiliar.data.enhanceCrystals.Count > 0)
+		{
+			foreach (var id in selectedFamiliar.data.enhanceCrystals)
+			{
+				RQualiaCrystal crystal = registry.Crystal(id);
+				
+				if (crystal == null)
+				{
+					continue;
+				}
+				
+				enhCrystalMenu.AddItem(crystal.name);
+				int idx = enhCrystalMenu.ItemCount - 1;
+				enhCrystalMenu.SetItemMetadata(idx, id);
+			}
+			
+			enhCrystalMenu.Select(0);
+			OnEnhCrystalSelected(0);
+			enhCrystalMenu.Disabled = false;
+		}
+		else
+		{
+			enhCrystalMenu.AddItem("(No crystal)");
+			enhCrystalMenu.Select(0);
+			enhCrystalMenu.Disabled = true;
+		}
+		
+		UpdateEnhanceRecipe();
+		
+		enhFamPortraitRect.Texture = selectedFamiliar.data.portrait;
+	}
+	
+	public void OnEnhCrystalSelected(long index)
+	{
+		string id = enhCrystalMenu.GetItemMetadata((int)index).AsString();
+		
+		RQualiaCrystal crystal = registry.Crystal(id);
+		
+		if (crystal == null)
+		{
+			enhanceSpin.Value = 0f;
+			enhanceSpin.MaxValue = 0f;
+			enhanceButton.Disabled = true;
+			return;
+		}
+		
+		var selected = enhInvFamList.GetSelectedItems();
+		
+		if (selected.Length == 0)
+		{
+			enhanceSpin.Value = 0f;
+			enhanceSpin.MaxValue = 0f;
+			enhanceButton.Disabled = true;
+			return;
+		}
+		
+		RFamiliarInstance selectedFamiliar = enhInvFamList.GetItemMetadata(selected[0]).As<RFamiliarInstance>();
+		
+		UpdateEnhanceRecipe();
+	}
+	
+	public void OnEnhStatSelected(long index)
+	{
+		UpdateEnhanceRecipe();
+	}
+	
+	public void OnEnhanceSpinGui(InputEvent e)
+	{
+		if (e.IsActionPressed("ui_accept"))
+		{
+			
+		}
+	}
+	
+	public void OnEnhancePressed()
+	{
+		var selected = enhInvFamList.GetSelectedItems();
+		
+		if (selected.Length == 0)
+		{
+			return;
+		}
+		
+		RFamiliarInstance fam = enhInvFamList.GetItemMetadata(selected[0]).As<RFamiliarInstance>();
+		
+		if (fam?.data == null)
+		{
+			return;
+		}
+		
+		int times = (int)enhanceSpin.Value;
+		
+		EnhanceFamiliar(fam, times);
+		
+		OnEnhInvFamSelected(selected[0]);
+	}
+	
 	public void OnClosePressed()
 	{
 		Close();
@@ -1216,6 +1527,45 @@ public partial class ForgeMenu : CanvasLayer
 		fam.GiveExperience(expGain);
 		
 		UpdateInventory();
+		UpdateFortifyRecipe();
+	}
+	
+	public void EnhanceFamiliar(RFamiliarInstance fam, int times)
+	{
+		if (fam == null || times <= 0 || TimesEnhanceable(fam) < times)
+		{
+			return;
+		}
+		
+		string crysId = enhCrystalMenu.GetItemMetadata(enhCrystalMenu.Selected).AsString();
+		RQualiaCrystal crystal = registry.Crystal(crysId);
+		
+		if (crystal == null || !session.RemoveCrystal(crystal, times))
+		{
+			return;
+		}
+		
+		switch (enhStatMenu.Selected)
+		{
+			case 0:
+				fam.pAttackBonus += times;
+				break;
+			case 1:
+				fam.mAttackBonus += times;
+				break;
+			case 2:
+				fam.pDefenseBonus += times;
+				break;
+			case 3:
+				fam.mDefenseBonus += times;
+				break;
+			case 4:
+				fam.speedBonus += times;
+				break;
+		}
+		
+		UpdateInventory();
+		UpdateEnhanceRecipe();
 	}
 	
 	public int TimesCraftable(RForgeRecipe recipe)
@@ -1279,6 +1629,54 @@ public partial class ForgeMenu : CanvasLayer
 		if (data.fortifyCost > 0)
 		{
 			max = Mathf.Min(session.qualiaGeneric / data.fortifyCost, max);
+		}
+		
+		return max == int.MaxValue ? 0 : max;
+	}
+	
+	public int TimesEnhanceable(RFamiliarInstance fam)
+	{
+		if (fam == null)
+		{
+			return 0;
+		}
+		
+		string crysId = enhCrystalMenu.GetItemMetadata(enhCrystalMenu.Selected).AsString();
+		RQualiaCrystal crystal = registry.Crystal(crysId);
+		
+		if (crystal == null)
+		{
+			return 0;
+		}
+		
+		int max = int.MaxValue;
+		
+		int have = session.qualiaCrystals.TryGetValue(crysId, out int n) ? n : 0;
+		
+		max = Mathf.Min(have, max);
+		
+		max = Mathf.Min(fam.MaxBonusTotal() - fam.TotalBonus(), max);
+		
+		switch (enhStatMenu.Selected)
+		{
+			case 0:
+				max = Mathf.Min(fam.MaxStatBonus() - fam.pAttackBonus, max);
+				break;
+			case 1:
+				max = Mathf.Min(fam.MaxStatBonus() - fam.mAttackBonus, max);
+				break;
+			case 2:
+				max = Mathf.Min(fam.MaxStatBonus() - fam.pDefenseBonus, max);
+				break;
+			case 3:
+				max = Mathf.Min(fam.MaxStatBonus() - fam.mDefenseBonus, max);
+				break;
+			case 4:
+				max = Mathf.Min(fam.MaxStatBonus() - fam.speedBonus, max);
+				break;
+			default:
+				max = 0;
+				break;
 		}
 		
 		return max == int.MaxValue ? 0 : max;

@@ -544,6 +544,313 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
+[node name="EnhFamTab" type="TabContainer" parent="Panel/MainTab/Modify/ModifyTab/Enhance" unique_id=1518342097]
+layout_mode = 0
+offset_right = 328.0
+offset_bottom = 754.0
+current_tab = 0
+
+[node name="Inventory" type="Control" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhFamTab" unique_id=7257596]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="EnhInvFamList" type="ItemList" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhFamTab/Inventory" unique_id=46938870]
+layout_mode = 0
+offset_top = 3.0
+offset_right = 332.0
+offset_bottom = 723.0
+theme_override_font_sizes/font_size = 32
+
+[node name="EnhStatsPanel" type="Panel" parent="Panel/MainTab/Modify/ModifyTab/Enhance" unique_id=1811455683]
+layout_mode = 0
+offset_left = 368.0
+offset_top = 34.0
+offset_right = 1304.0
+offset_bottom = 737.0
+
+[node name="EnhNickNameLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=1259036927]
+layout_mode = 0
+offset_left = 10.0
+offset_right = 150.0
+offset_bottom = 23.0
+text = "Nickname"
+
+[node name="EnhFamNameLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=722768919]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 24.0
+offset_right = 150.0
+offset_bottom = 47.0
+text = "Fam Name"
+
+[node name="EnhTypesTextLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=937199235]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 72.0
+offset_right = 50.0
+offset_bottom = 95.0
+text = "Types:"
+
+[node name="EnhTypesLabel" type="RichTextLabel" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=768071119]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 72.0
+offset_right = 168.0
+offset_bottom = 144.0
+bbcode_enabled = true
+text = "Type1
+Type2
+Type3"
+
+[node name="EnhLevelTextLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=1360640357]
+layout_mode = 0
+offset_left = 256.0
+offset_right = 296.0
+offset_bottom = 23.0
+text = "Level"
+
+[node name="EnhLevelLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=1081445730]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 24.0
+offset_right = 352.0
+offset_bottom = 47.0
+text = "0"
+horizontal_alignment = 2
+
+[node name="TotalBonusTextLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=588876195]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 168.0
+offset_right = 48.0
+offset_bottom = 191.0
+text = "Total Bonus:"
+
+[node name="TotalBonusProgress" type="ProgressBar" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=1287443067]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 192.0
+offset_right = 200.0
+offset_bottom = 200.0
+step = 1.0
+value = 50.0
+show_percentage = false
+
+[node name="TotalBonusLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=1375059305]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 200.0
+offset_right = 50.0
+offset_bottom = 223.0
+text = "0000"
+horizontal_alignment = 2
+
+[node name="TotalBonusDividerLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=496011585]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 200.0
+offset_right = 72.0
+offset_bottom = 223.0
+text = "/"
+horizontal_alignment = 1
+
+[node name="TotalBonusMaxLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=814197763]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 200.0
+offset_right = 112.0
+offset_bottom = 223.0
+text = "0000"
+horizontal_alignment = 2
+
+[node name="EnhGridContainer" type="GridContainer" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=1168107856]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 232.0
+offset_right = 264.0
+offset_bottom = 390.0
+columns = 4
+
+[node name="EnhEnergyTextLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=610396607]
+layout_mode = 2
+text = "Energy"
+
+[node name="EnhEnergyLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=1636276960]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="Spacer" type="Control" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=1525775555]
+layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=536425507]
+layout_mode = 2
+
+[node name="EnhPhysAttackTextLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=1481148947]
+layout_mode = 2
+text = "Phys. Attack"
+
+[node name="EnhPhysAttackLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=622605117]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="EnhPhysAttackBonusLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=967927334]
+layout_mode = 2
+text = "+000"
+horizontal_alignment = 2
+
+[node name="EnhPhysAttackProgress" type="ProgressBar" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=2036817213]
+custom_minimum_size = Vector2(60, 10)
+layout_mode = 2
+size_flags_vertical = 4
+step = 1.0
+value = 50.0
+show_percentage = false
+
+[node name="EnhMagAttackTextLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=1088323739]
+layout_mode = 2
+text = "Mag. Attack"
+
+[node name="EnhMagAttackLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=1248113179]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="EnhMagAttackBonusLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=1224218794]
+layout_mode = 2
+text = "+000"
+horizontal_alignment = 2
+
+[node name="EnhMagAttackProgress" type="ProgressBar" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=405141942]
+custom_minimum_size = Vector2(60, 10)
+layout_mode = 2
+size_flags_vertical = 4
+step = 1.0
+value = 50.0
+show_percentage = false
+
+[node name="EnhPhysDefenseTextLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=1819989069]
+layout_mode = 2
+text = "Phys. Defense"
+
+[node name="EnhPhysDefenseLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=1160507715]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="EnhPhysDefenseBonusLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=183301234]
+layout_mode = 2
+text = "+000"
+horizontal_alignment = 2
+
+[node name="EnhPhysDefenseProgress" type="ProgressBar" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=1028018095]
+custom_minimum_size = Vector2(60, 10)
+layout_mode = 2
+size_flags_vertical = 4
+step = 1.0
+value = 50.0
+show_percentage = false
+
+[node name="EnhMagDefenseTextLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=722120382]
+layout_mode = 2
+text = "Mag. Defense"
+
+[node name="EnhMagDefenseLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=2134905456]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="EnhMagDefenseBonusLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=153346104]
+layout_mode = 2
+text = "+000"
+horizontal_alignment = 2
+
+[node name="EnhMagDefenseProgress" type="ProgressBar" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=2134193681]
+custom_minimum_size = Vector2(60, 10)
+layout_mode = 2
+size_flags_vertical = 4
+step = 1.0
+value = 50.0
+show_percentage = false
+
+[node name="EnhSpeedTextLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=2104719625]
+layout_mode = 2
+text = "Speed"
+
+[node name="EnhSpeedLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=1767044004]
+layout_mode = 2
+text = "0000"
+horizontal_alignment = 2
+
+[node name="EnhSpeedBonusLabel" type="Label" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=815278722]
+layout_mode = 2
+text = "+000"
+horizontal_alignment = 2
+
+[node name="EnhSpeedProgress" type="ProgressBar" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel/EnhGridContainer" unique_id=2062554061]
+custom_minimum_size = Vector2(60, 10)
+layout_mode = 2
+size_flags_vertical = 4
+step = 1.0
+value = 50.0
+show_percentage = false
+
+[node name="EnhCrystalMenu" type="OptionButton" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=1933106165]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 72.0
+offset_right = 424.0
+offset_bottom = 92.0
+selected = 0
+fit_to_longest_item = false
+item_count = 1
+popup/item_0/text = "(No crystals)"
+popup/item_0/id = 0
+
+[node name="EnhanceSpin" type="SpinBox" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=293777933]
+layout_mode = 0
+offset_left = 448.0
+offset_top = 72.0
+offset_right = 534.5
+offset_bottom = 103.0
+max_value = 0.0
+
+[node name="EnhStatMenu" type="OptionButton" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=1351150497]
+layout_mode = 0
+offset_left = 296.0
+offset_top = 259.0
+offset_right = 440.0
+offset_bottom = 279.0
+selected = 0
+item_count = 5
+popup/item_0/text = "Phys. Attack"
+popup/item_0/id = 0
+popup/item_1/text = "Mag. Attack"
+popup/item_1/id = 1
+popup/item_2/text = "Phys. Defense"
+popup/item_2/id = 2
+popup/item_3/text = "Mag. Defense"
+popup/item_3/id = 3
+popup/item_4/text = "Speed"
+popup/item_4/id = 4
+
+[node name="EnhanceButton" type="Button" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=132443693]
+layout_mode = 0
+offset_left = 304.0
+offset_top = 302.0
+offset_right = 424.0
+offset_bottom = 333.0
+text = "Enhance"
+
+[node name="EnhFamPortraitRect" type="TextureRect" parent="Panel/MainTab/Modify/ModifyTab/Enhance/EnhStatsPanel" unique_id=1148827153]
+layout_mode = 0
+offset_left = 664.0
+offset_top = 16.0
+offset_right = 844.0
+offset_bottom = 306.0
+stretch_mode = 5
+
 [node name="CloseButton" type="Button" parent="Panel" unique_id=245035053]
 layout_mode = 0
 offset_left = 608.0

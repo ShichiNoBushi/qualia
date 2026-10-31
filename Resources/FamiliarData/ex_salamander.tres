@@ -40,6 +40,7 @@ fortifyRecipe = Dictionary[String, int]({
 "ex_salamander": 2
 })
 fortifyCost = 10
+enhanceCrystals = Array[String](["fire"])
 crystals = 10
 crystalDrops = Array[ExtResource("1_e7eix")]([SubResource("Resource_vi3vx"), SubResource("Resource_utdyw")])
 portrait = SubResource("CompressedTexture2D_qedgj")

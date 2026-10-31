@@ -136,15 +136,15 @@ public partial class RFamiliarData : Resource
 	{
 		if (expGrowthFactor <= 0.25f)
 		{
-			return "Very Slow";
+			return "Very Fast";
 		}
 		else if (expGrowthFactor > 0.25f && expGrowthFactor <= 0.5f)
 		{
-			return "Slow";
+			return "Fast";
 		}
 		else if (expGrowthFactor > 0.5f && expGrowthFactor <= 0.85f)
 		{
-			return "Somewhat Slow";
+			return "Somewhat Fast";
 		}
 		else if (expGrowthFactor > 0.85f && expGrowthFactor < 1.15f)
 		{
@@ -152,15 +152,15 @@ public partial class RFamiliarData : Resource
 		}
 		else if (expGrowthFactor >= 1.15f && expGrowthFactor < 1.5f)
 		{
-			return "Somewhat Fast";
+			return "Somewhat Slow";
 		}
 		else if (expGrowthFactor >= 1.5f && expGrowthFactor < 1.75f)
 		{
-			return "Fast";
+			return "Slow";
 		}
 		else
 		{
-			return "Very Fast";
+			return "Very Slow";
 		}
 	}
 }
