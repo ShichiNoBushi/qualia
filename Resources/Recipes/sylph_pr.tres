@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://di2lo6545wl8c"]
 
-[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_sttcu"]
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_2uyye"]
 
 [resource]
-script = ExtResource("1_sttcu")
-id = "ex_sylph_pr"
-resultId = "ex_sylph"
+script = ExtResource("1_2uyye")
+id = "sylph_pr"
+resultId = "sylph"
 ingredients = Dictionary[String, int]({
-"ex_sylph": 5
+"sylph": 5
 })
 cost = 100
 metadata/_custom_type_script = "uid://bl50jm24c2jcp"

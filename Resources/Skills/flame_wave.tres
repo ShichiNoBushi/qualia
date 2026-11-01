@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://bjurv3e0h7a2h"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_voh1c"]
+[ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/TypeData/fire.tres" id="2_fobwr"]
+
+[resource]
+script = ExtResource("1_voh1c")
+id = "flame_wave"
+name = "Flame Wave"
+type = ExtResource("2_fobwr")
+description = "Attack with a wave of intense heat to damage all enemies."
+targetPattern = 5
+cost = 5
+isMagicalAttack = true
+isMagicalDefense = true
+power = 7
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

@@ -5,9 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://lu8efndp1odm" path="res://Scenes/Characters/player.tscn" id="2_07npp"]
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="3_8l5td"]
 [ext_resource type="PackedScene" uid="uid://bls1fwt0xxap8" path="res://Scenes/Characters/forge_npc.tscn" id="4_8l5td"]
+[ext_resource type="Script" uid="uid://h3nu4rdppjc5" path="res://Scripts/RDialogChoice.cs" id="5_8k7hp"]
 [ext_resource type="Script" uid="uid://mlrtfv1dc86w" path="res://Scripts/RDialog.cs" id="5_lk3ao"]
-
-[sub_resource type="CSharpScript" id="CSharpScript_pll4v"]
 
 [sub_resource type="Resource" id="Resource_qbswe"]
 script = ExtResource("5_lk3ao")
@@ -49,15 +48,15 @@ scale = Vector2(2, 2)
 itemStock = Dictionary[String, int]({
 "air": -1,
 "earth": -1,
-"ex_gnome": 1,
-"ex_salamander": 1,
-"ex_sylph": 1,
-"ex_undine": 1,
 "fire": -1,
+"gnome": 1,
+"salamander": 1,
+"sylph": 1,
+"undine": 1,
 "water": -1
 })
-compatibleRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
-knownRecipes = Array[String](["ex_gnome_cr", "ex_salamander_cr", "ex_sylph_cr", "ex_undine_cr", "ex_gnome_pr", "ex_salamander_pr", "ex_sylph_pr", "ex_undine_pr"])
+compatibleRecipes = Array[String](["gnome_cr", "salamander_cr", "sylph_cr", "undine_cr", "gnome_pr", "salamander_pr", "sylph_pr", "undine_pr"])
+knownRecipes = Array[String](["gnome_cr", "salamander_cr", "sylph_cr", "undine_cr", "gnome_pr", "salamander_pr", "sylph_pr", "undine_pr"])
 name = "Forge"
 dialogs = Dictionary[String, Object]({
 "start": SubResource("Resource_qbswe")

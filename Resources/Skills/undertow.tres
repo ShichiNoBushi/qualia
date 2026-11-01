@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://jore2xwijimq"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_n21ck"]
+[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="2_335ct"]
+
+[resource]
+script = ExtResource("1_n21ck")
+id = "undertow"
+name = "Undertow"
+type = ExtResource("2_335ct")
+description = "Flood the arena to slow down opponents."
+targetPattern = 5
+cost = 4
+statEffect = 5
+statMod = 1
+modChance = 0.5
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

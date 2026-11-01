@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://b6yvewnuqmjhq"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_r2qah"]
+[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="2_3fuwl"]
+
+[resource]
+script = ExtResource("1_r2qah")
+id = "rainfall"
+name = "Rainfal"
+type = ExtResource("2_3fuwl")
+description = "Rain mends allies' wounds."
+targetPattern = 4
+cost = 6
+isMagicalAttack = true
+healPower = 2
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

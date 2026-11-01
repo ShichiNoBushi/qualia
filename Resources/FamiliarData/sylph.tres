@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://cph17bvgufjx3"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_qk5wv"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_hmoos"]
+[ext_resource type="Resource" uid="uid://cnjd2436ya4ob" path="res://Resources/Skills/gust.tres" id="3_my86r"]
+[ext_resource type="Resource" uid="uid://vpnfl3k7phsj" path="res://Resources/Skills/tailwind.tres" id="4_lbfs8"]
+[ext_resource type="Resource" uid="uid://b4m8ihs2ppvka" path="res://Resources/Skills/cutting_wind.tres" id="5_k1hk7"]
+[ext_resource type="Resource" uid="uid://d33jbub3n6sui" path="res://Resources/Skills/lull.tres" id="6_8o2qb"]
+[ext_resource type="Resource" uid="uid://3br1rmkli3ri" path="res://Resources/Skills/tempest.tres" id="7_1crj0"]
+[ext_resource type="Texture2D" uid="uid://b5ij4vht0pj04" path="res://Resources/Assets/Retro Monsters (111)/fairy.png" id="8_0m027"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="9_3u0xy"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="10_nktsc"]
+[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/TypeData/air.tres" id="11_vckqq"]
+
+[sub_resource type="Resource" id="Resource_pll4v"]
+script = ExtResource("1_qk5wv")
+crystalId = "air"
+amount = 1
+chance = 0.6
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_s0v22"]
+script = ExtResource("1_qk5wv")
+crystalId = "sylph"
+amount = 1
+chance = 0.2
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("9_3u0xy")
+id = "sylph"
+name = "Sylph"
+description = "A standard air elemental. Free as the wind."
+baseMAttack = 5
+basePDefense = 2
+baseMDefense = 4
+baseSpeed = 5
+levelEnergy = 2.0
+levelMAttack = 0.75
+levelMDefense = 0.75
+levelSpeed = 1.0
+types = Array[ExtResource("10_nktsc")]([ExtResource("11_vckqq")])
+learnableSkills = Array[ExtResource("2_hmoos")]([ExtResource("3_my86r"), ExtResource("4_lbfs8"), ExtResource("5_k1hk7"), ExtResource("6_8o2qb"), ExtResource("7_1crj0")])
+levelUpSkills = Dictionary[int, ExtResource("2_hmoos")]({
+1: ExtResource("3_my86r"),
+3: ExtResource("4_lbfs8"),
+6: ExtResource("5_k1hk7"),
+10: ExtResource("6_8o2qb"),
+15: ExtResource("7_1crj0")
+})
+fortifyRecipe = Dictionary[String, int]({
+"sylph": 2
+})
+fortifyCost = 10
+enhanceCrystals = Array[String](["air"])
+crystals = 10
+crystalDrops = Array[ExtResource("1_qk5wv")]([SubResource("Resource_pll4v"), SubResource("Resource_s0v22")])
+portrait = ExtResource("8_0m027")
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"

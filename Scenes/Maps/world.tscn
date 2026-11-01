@@ -21,6 +21,13 @@
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="15_qe4dn"]
 [ext_resource type="PackedScene" uid="uid://duy000bar45m2" path="res://Scenes/Objects/sign.tscn" id="17_vi3vx"]
 
+[sub_resource type="Resource" id="Resource_ov7jo"]
+script = ExtResource("6_utdyw")
+id = "decline.battle"
+speaker = "Woman"
+text = "Okay. Talk to me again when you are ready."
+metadata/_custom_type_script = "uid://mlrtfv1dc86w"
+
 [sub_resource type="Resource" id="Resource_pll4v"]
 script = ExtResource("8_ov7jo")
 setFlags = Array[String](["start.npc.battle"])
@@ -52,13 +59,6 @@ script = ExtResource("6_utdyw")
 id = "start.battle"
 speaker = "Woman"
 text = "Alright. Get ready."
-metadata/_custom_type_script = "uid://mlrtfv1dc86w"
-
-[sub_resource type="Resource" id="Resource_ov7jo"]
-script = ExtResource("6_utdyw")
-id = "decline.battle"
-speaker = "Woman"
-text = "Okay. Talk to me again when you are ready."
 metadata/_custom_type_script = "uid://mlrtfv1dc86w"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ts14v"]
@@ -161,8 +161,8 @@ position = Vector2(464, 880)
 scale = Vector2(2, 2)
 id = "test_attuned_cryst"
 loot = Dictionary[String, int]({
-"q_crystal:ex_gnome": 3,
-"q_crystal:ex_undine": 3
+"q_crystal:gnome": 3,
+"q_crystal:undine": 3
 })
 
 [node name="Chest4" parent="YSort" unique_id=512784631 instance=ExtResource("13_pnsqa")]

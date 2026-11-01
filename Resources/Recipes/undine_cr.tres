@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://crn67sdxbxshu"]
 
-[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_3x6oq"]
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_oklj0"]
 
 [resource]
-script = ExtResource("1_3x6oq")
-id = "ex_undine_cr"
-resultId = "ex_undine"
+script = ExtResource("1_oklj0")
+id = "undine_cr"
+resultId = "undine"
 makesPrism = false
 ingredients = Dictionary[String, int]({
 "water": 3

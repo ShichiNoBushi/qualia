@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://b4m8ihs2ppvka"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_m06gm"]
+[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/TypeData/air.tres" id="2_bpumx"]
+
+[resource]
+script = ExtResource("1_m06gm")
+id = "cutting_wind"
+name = "Cutting Wind"
+type = ExtResource("2_bpumx")
+description = "Cast a wide blade of wind to slice all enemies."
+targetPattern = 5
+cost = 5
+isMagicalAttack = true
+isMagicalDefense = true
+power = 7
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

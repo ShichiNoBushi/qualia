@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://3br1rmkli3ri"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_0hyoq"]
+[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/TypeData/air.tres" id="2_svy0c"]
+
+[resource]
+script = ExtResource("1_0hyoq")
+id = "tempest"
+name = "Tempest"
+type = ExtResource("2_svy0c")
+description = "A violent storm thrashes all enemies."
+targetPattern = 5
+cost = 6
+isMagicalAttack = true
+isMagicalDefense = true
+power = 9
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

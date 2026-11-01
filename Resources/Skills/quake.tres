@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://btr6ul1we7shm"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_3np3k"]
+[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="2_1gmku"]
+
+[resource]
+script = ExtResource("1_3np3k")
+id = "quake"
+name = "Quake"
+type = ExtResource("2_1gmku")
+description = "Create a tremor to harm all enemies."
+targetPattern = 5
+cost = 5
+power = 7
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

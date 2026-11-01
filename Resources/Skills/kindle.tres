@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://dno3a613pgngv"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_jy4io"]
+
+[resource]
+script = ExtResource("1_jy4io")
+id = "kindle"
+name = "Kindle"
+description = "Use the familiar's inner fire to boost attack."
+targetPattern = 1
+cost = 2
+speedFactor = 1.5
+statEffect = 6
+statMod = 1
+modChance = 1.0
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

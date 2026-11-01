@@ -56,10 +56,10 @@ public partial class TitleMenu : Control
 		familiarList.AddItem("Sylph");
 		familiarList.AddItem("Undine");
 		
-		familiarList.SetItemMetadata(0, "ex_gnome");
-		familiarList.SetItemMetadata(1, "ex_salamander");
-		familiarList.SetItemMetadata(2, "ex_sylph");
-		familiarList.SetItemMetadata(3, "ex_undine");
+		familiarList.SetItemMetadata(0, "gnome");
+		familiarList.SetItemMetadata(1, "salamander");
+		familiarList.SetItemMetadata(2, "sylph");
+		familiarList.SetItemMetadata(3, "undine");
 		
 		backButton = GetNode<Button>("NewCharacterPanel/BackButton");
 		confirmButton = GetNode<Button>("NewCharacterPanel/ConfirmButton");

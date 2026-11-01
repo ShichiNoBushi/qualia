@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://d33jbub3n6sui"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_t8ne6"]
+[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/TypeData/air.tres" id="2_f3qk5"]
+
+[resource]
+script = ExtResource("1_t8ne6")
+id = "lull"
+name = "Lull"
+type = ExtResource("2_f3qk5")
+description = "Use a gentle breeze to hinder the lower the enemy's aggression."
+targetPattern = 5
+cost = 4
+speedFactor = 1.5
+statEffect = 6
+statMod = 1
+modChance = 0.5
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

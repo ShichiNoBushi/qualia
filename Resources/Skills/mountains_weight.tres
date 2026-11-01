@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://dbtntense6xdg"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_45fgt"]
+[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="2_m0vl3"]
+
+[resource]
+script = ExtResource("1_45fgt")
+id = "mountains_weight"
+name = "Mountain's Weight"
+type = ExtResource("2_m0vl3")
+description = "Use the unyielding might of the mountains to deal heavy damage."
+cost = 6
+speedFactor = 0.5
+power = 15
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

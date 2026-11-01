@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://chkgu8q8pff4y"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_ynv6j"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_p3umb"]
+[ext_resource type="Resource" uid="uid://bm75s420je7fg" path="res://Resources/Skills/mend.tres" id="3_2ujin"]
+[ext_resource type="Resource" uid="uid://csnfipb4218ah" path="res://Resources/Skills/tidal_jet.tres" id="4_0jdtb"]
+[ext_resource type="Resource" uid="uid://chhuw25ymeeyj" path="res://Resources/Skills/tide_wash.tres" id="5_ywmsj"]
+[ext_resource type="Resource" uid="uid://jore2xwijimq" path="res://Resources/Skills/undertow.tres" id="6_elnne"]
+[ext_resource type="Resource" uid="uid://b6yvewnuqmjhq" path="res://Resources/Skills/rainfall.tres" id="7_40uju"]
+[ext_resource type="Texture2D" uid="uid://dox7wt8huyy0o" path="res://Resources/Assets/Retro Monsters (111)/ugly fish 1.png" id="8_uh6r1"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="9_lqtgh"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="10_m2bhq"]
+[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="11_q6rko"]
+
+[sub_resource type="Resource" id="Resource_fgwjc"]
+script = ExtResource("1_ynv6j")
+crystalId = "water"
+amount = 1
+chance = 0.6
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_ov7jo"]
+script = ExtResource("1_ynv6j")
+crystalId = "undine"
+amount = 1
+chance = 0.2
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("9_lqtgh")
+id = "undine"
+name = "Undine"
+description = "A standard water elemental. Nurturing like a spring."
+baseMAttack = 4
+baseMDefense = 5
+levelEnergy = 2.0
+levelMAttack = 0.75
+levelMDefense = 1.0
+types = Array[ExtResource("10_m2bhq")]([ExtResource("11_q6rko")])
+learnableSkills = Array[ExtResource("2_p3umb")]([ExtResource("3_2ujin"), ExtResource("4_0jdtb"), ExtResource("5_ywmsj"), ExtResource("6_elnne"), ExtResource("7_40uju")])
+levelUpSkills = Dictionary[int, ExtResource("2_p3umb")]({
+1: ExtResource("3_2ujin"),
+3: ExtResource("4_0jdtb"),
+6: ExtResource("5_ywmsj"),
+10: ExtResource("6_elnne"),
+15: ExtResource("7_40uju")
+})
+fortifyRecipe = Dictionary[String, int]({
+"undine": 2
+})
+fortifyCost = 10
+enhanceCrystals = Array[String](["water"])
+crystals = 10
+crystalDrops = Array[ExtResource("1_ynv6j")]([SubResource("Resource_fgwjc"), SubResource("Resource_ov7jo")])
+portrait = ExtResource("8_uh6r1")
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"
