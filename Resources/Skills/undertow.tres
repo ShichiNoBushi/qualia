@@ -12,6 +12,6 @@ description = "Flood the arena to slow down opponents."
 targetPattern = 5
 cost = 4
 statEffect = 5
-statMod = 1
+statMod = -1
 modChance = 0.5
 metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

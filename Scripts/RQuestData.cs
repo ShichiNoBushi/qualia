@@ -14,6 +14,14 @@ public partial class RQuestData : Resource
 	
 	public bool completed {get; set;} = false;
 	
+	public void Initialize(GameSession session)
+	{
+		foreach (var obj in objectives)
+		{
+			obj.Initialize(session);
+		}
+	}
+	
 	public bool Check(GameSession session)
 	{
 		if (completed)

@@ -322,6 +322,7 @@ public partial class GameSession : Node
 		}
 		
 		activeQuests[id] = data;
+		activeQuests[id].Initialize(this);
 		
 		if (data.Check(this))
 		{
@@ -373,6 +374,36 @@ public partial class GameSession : Node
 	public int GetCounter(string key)
 	{
 		return counters.TryGetValue(key, out int n) ? n : 0;
+	}
+	
+	public void SetCounter(string key, int value)
+	{
+		if (string.IsNullOrEmpty(key))
+		{
+			return;
+		}
+		
+		counters[key] = Mathf.Max(value, 0);
+	}
+	
+	public void IncrementCounter(string key, int value = 1)
+	{
+		if (string.IsNullOrEmpty(key) || !counters.ContainsKey(key) || value == 0)
+		{
+			return;
+		}
+		
+		counters[key] = GetCounter(key) + value;
+	}
+	
+	public void RemoveCounter(string key)
+	{
+		if (string.IsNullOrEmpty(key))
+		{
+			return;
+		}
+		
+		counters.Remove(key);
 	}
 	
 	public void SaveGame(string path)

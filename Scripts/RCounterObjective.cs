@@ -10,6 +10,14 @@ public partial class RCounterObjective : RQuestObjective
 	
 	public override bool IsSatisfied(GameSession session) => session.GetCounter(key) >= target;
 	
+	public override void Initialize(GameSession session)
+	{
+		if (!session.counters.ContainsKey(key))
+		{
+			session.SetCounter(key, 0);
+		}
+	}
+	
 	public override string Status(GameSession session)
 	{
 		if (isBool)

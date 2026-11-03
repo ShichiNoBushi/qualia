@@ -1644,51 +1644,63 @@ public partial class BattleManager : Node
 	
 	public void GrantRewards()
 	{
+		DataRegistry registry = GetNode<DataRegistry>("/root/DataRegistry");
+		GameSession session = GetNode<GameSession>("/root/GameSession");
+		
 		int totalExp = 0;
 		int totalCrystals = 0;
 		Godot.Collections.Dictionary<string, int> qualiaCrystals = new();
 		
-		foreach (var fam in defeatedFamiliars)
+		if (!isProjectorEncounter)
 		{
-			if (fam?.data == null)
+			foreach (var fam in defeatedFamiliars)
 			{
-				continue;
-			}
-			
-			float growthFactor = fam.data != null ? fam.data.expGrowthFactor : 1f;
-			totalExp += Mathf.RoundToInt(fam.level * 100 * growthFactor);
-			totalCrystals += fam.level * fam.data.crystals;
-			
-			if (fam.data.crystalDrops == null)
-			{
-				continue;
-			}
-			
-			foreach (var qc in fam.data.crystalDrops)
-			{
-				if (string.IsNullOrEmpty(qc.crystalId) || qc.amount <= 0 || qc.chance <= 0f)
+				if (fam?.data == null)
 				{
 					continue;
 				}
 				
-				int max = qc.amount * Math.Max(fam.level, 1);
-				int amt = 0;
+				float growthFactor = fam.data != null ? fam.data.expGrowthFactor : 1f;
+				totalExp += Mathf.RoundToInt(fam.level * 100 * growthFactor);
+				totalCrystals += fam.level * fam.data.crystals;
 				
-				for (int i = 0; i < max; i++)
+				if (fam.data.crystalDrops == null)
 				{
-					if (GD.Randf() < qc.chance)
+					continue;
+				}
+				
+				foreach (var qc in fam.data.crystalDrops)
+				{
+					if (string.IsNullOrEmpty(qc.crystalId) || qc.amount <= 0 || qc.chance <= 0f)
 					{
-						amt++;
+						continue;
 					}
+					
+					int max = qc.amount * Math.Max(fam.level, 1);
+					int amt = 0;
+					
+					for (int i = 0; i < max; i++)
+					{
+						if (GD.Randf() < qc.chance)
+						{
+							amt++;
+						}
+					}
+					
+					if (amt <= 0)
+					{
+						continue;
+					}
+					
+					qualiaCrystals[qc.crystalId] = (qualiaCrystals.TryGetValue(qc.crystalId, out int c) ? c : 0) + amt;
 				}
 				
-				if (amt <= 0)
-				{
-					continue;
-				}
-				
-				qualiaCrystals[qc.crystalId] = (qualiaCrystals.TryGetValue(qc.crystalId, out int c) ? c : 0) + amt;
+				session.IncrementCounter($"defeated:{fam.data.id}");
 			}
+		}
+		else
+		{
+			totalExp = enemySide.projector.level * 500;
 		}
 		
 		int sharedExp = Math.Max(totalExp / Math.Max(summonedFamiliars.Count, 1), 1);
@@ -1720,9 +1732,6 @@ public partial class BattleManager : Node
 				AppendBattleText($"[b]{fam.GetPreferredName()}[/b] gained {levelIncrease} levels!", true);
 			}
 		}
-		
-		DataRegistry registry = GetNode<DataRegistry>("/root/DataRegistry");
-		GameSession session = GetNode<GameSession>("/root/GameSession");
 		
 		bool firstLine = true;
 		

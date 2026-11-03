@@ -10,6 +10,6 @@ name = "Stone Fist"
 type = ExtResource("2_keoii")
 description = "Strike with a solid fist of rock."
 cost = 3
+speedFactor = 0.8
 power = 11
-splashFactor = 0.8
 metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

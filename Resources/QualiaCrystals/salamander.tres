@@ -6,7 +6,7 @@
 script = ExtResource("1_j8ly4")
 id = "salamander"
 name = "Salamander"
-description = "Crystal apsected to salamanders."
+description = "Crystal aspected to salamanders."
 recipe = null
 value = 20
 metadata/_custom_type_script = "uid://drrp5ejurlp51"

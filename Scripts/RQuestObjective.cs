@@ -9,4 +9,9 @@ public partial class RQuestObjective : Resource
 	
 	public virtual bool IsSatisfied(GameSession session) => false;
 	public virtual string Status(GameSession session) => IsSatisfied(session) ? "Completed" : "Incomplete";
+	
+	public virtual void Initialize(GameSession session)
+	{
+		
+	}
 }

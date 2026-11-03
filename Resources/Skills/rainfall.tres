@@ -6,11 +6,11 @@
 [resource]
 script = ExtResource("1_r2qah")
 id = "rainfall"
-name = "Rainfal"
+name = "Rainfall"
 type = ExtResource("2_3fuwl")
 description = "Rain mends allies' wounds."
 targetPattern = 4
-cost = 6
+cost = 8
 isMagicalAttack = true
 healPower = 2
 metadata/_custom_type_script = "uid://b6eq1t25pw5wq"
