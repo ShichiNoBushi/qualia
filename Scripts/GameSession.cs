@@ -340,6 +340,39 @@ public partial class GameSession : Node
 		
 		activeQuests.Remove(id);
 		completedQuests[id] = data;
+		
+		foreach (var obj in data.objectives)
+		{
+			if (obj is not RCounterObjective cntObjA)
+			{
+				continue;
+			}
+			
+			string counterFlag = cntObjA.key;
+			bool tracked = false;
+			
+			foreach (var other in activeQuests.Values)
+			{
+				foreach (var otherObj in other.objectives)
+				{
+					if (otherObj is RCounterObjective otherCnt && otherCnt.key == counterFlag)
+					{
+						tracked = true;
+						break;
+					}
+				}
+				
+				if (tracked)
+				{
+					break;
+				}
+			}
+			
+			if (!tracked)
+			{
+				RemoveCounter(counterFlag);
+			}
+		}
 	}
 	
 	public void GiveLoot(Godot.Collections.Dictionary<string, int> loot)
