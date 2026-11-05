@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://cevsd8uydl41p"]
+
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_84apk"]
+
+[resource]
+script = ExtResource("1_84apk")
+id = "electricity"
+name = "Electircity"
+color = Color(0.92156863, 0.92156863, 0, 1)
+metadata/_custom_type_script = "uid://3uin7wh74kon"

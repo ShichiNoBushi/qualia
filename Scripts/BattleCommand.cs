@@ -700,17 +700,27 @@ public partial class SkillCommand : BattleCommand
 		string tName = "(no name)";
 		string tEnemyPrefix = "";
 		
+		float healMult = 1f;
+		
 		if (target is FamiliarActor tFam)
 		{
 			tName = string.IsNullOrEmpty(tFam.name) ? "(no name)" : tFam.name;
 			tEnemyPrefix = tFam.side == battle.enemySide ? "Enemy " : "";
+			
+			if (skill.type != null)
+			{
+				foreach (var tgtType in tFam.familiar.types)
+				{
+					healMult *= skill.type.HealMultiplier(tgtType);
+				}
+			}
 		}
 		else if (target is Projector tProj)
 		{
 			tName = string.IsNullOrEmpty(tProj.name) ? "(no name)" : tProj.name;
 		}
 		
-		int healing = healStat * heal;
+		int healing = (int)(healStat * heal * healMult);
 		
 		ApplyHealing(target, healing);
 		
@@ -792,11 +802,21 @@ public partial class SkillCommand : BattleCommand
 		string tName = "(no name)";
 		string tEnemyPrefix = "";
 		
+		float dmgMult = 1f;
+		
 		if (target is FamiliarActor tFam)
 		{
 			defFactor = tFam.defenseFactor;
 			tName = string.IsNullOrEmpty(tFam.name) ? "(no name)" : tFam.name;
 			tEnemyPrefix = tFam.side == battle.enemySide ? "Enemy " : "";
+			
+			if (skill.type != null)
+			{
+				foreach (var tgtType in tFam.familiar.types)
+				{
+					dmgMult *= skill.type.DamageMultiplier(tgtType);
+				}
+			}
 		}
 		else if (target is Projector tProj)
 		{
@@ -804,7 +824,7 @@ public partial class SkillCommand : BattleCommand
 		}
 		
 		float raw = (float)(attackStat * power) / Mathf.Max(defenseStat, 1);
-		int damage = Mathf.Max(1, Mathf.RoundToInt(raw / defFactor));
+		int damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 		
 		ApplyDamage(target, damage, overwhelming, battle);
 		
@@ -1436,17 +1456,27 @@ public partial class SpellCommand : BattleCommand
 		string tName = "(no name)";
 		string tEnemyPrefix = "";
 		
+		float healMult = 1f;
+		
 		if (target is FamiliarActor tFam)
 		{
 			tName = string.IsNullOrEmpty(tFam.name) ? "(no name)" : tFam.name;
 			tEnemyPrefix = tFam.side == battle.enemySide ? "Enemy " : "";
+			
+			if (spell.type != null)
+			{
+				foreach (var tgtType in tFam.familiar.types)
+				{
+					healMult *= spell.type.HealMultiplier(tgtType);
+				}
+			}
 		}
 		else if (target is Projector tProj)
 		{
 			tName = string.IsNullOrEmpty(tProj.name) ? "(no name)" : tProj.name;
 		}
 		
-		int healing = heal;
+		int healing = (int)(heal * healMult);
 		
 		ApplyHealing(target, healing);
 		
@@ -1526,11 +1556,21 @@ public partial class SpellCommand : BattleCommand
 		string tName = "(no name)";
 		string tEnemyPrefix = "";
 		
+		float dmgMult = 1f;
+		
 		if (target is FamiliarActor tFam)
 		{
 			defFactor = tFam.defenseFactor;
 			tName = string.IsNullOrEmpty(tFam.name) ? "(no name)" : tFam.name;
 			tEnemyPrefix = tFam.side == battle.enemySide ? "Enemy " : "";
+			
+			if (spell.type != null)
+			{
+				foreach (var tgtType in tFam.familiar.types)
+				{
+					dmgMult *= spell.type.DamageMultiplier(tgtType);
+				}
+			}
 		}
 		else if (target is Projector tProj)
 		{
@@ -1538,7 +1578,7 @@ public partial class SpellCommand : BattleCommand
 		}
 		
 		float raw = (float)(power) / Mathf.Max(defenseStat, 1);
-		int damage = Mathf.Max(1, Mathf.RoundToInt(raw / defFactor));
+		int damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 		
 		ApplyDamage(target, damage, battle);
 		

@@ -39,6 +39,7 @@ public partial class RQuestData : Resource
 		
 		completed = true;
 		completionEvent?.Execute(session);
+		session.CompleteQuest(id);
 		return true;
 	}
 	
