@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://ko1ju5iliqbr"]
+
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_lwmu7"]
+
+[resource]
+script = ExtResource("1_lwmu7")
+id = "light"
+name = "Light"
+color = Color(1, 1, 0.75686276, 1)
+strongAgainst = Array[Object]([])
+weakAgainst = Array[Object]([])
+noEffect = Array[Object]([])
+compatibleWith = Array[Object]([])
+incompatibleWith = Array[Object]([])
+metadata/_custom_type_script = "uid://3uin7wh74kon"

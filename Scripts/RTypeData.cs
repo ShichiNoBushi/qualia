@@ -9,11 +9,11 @@ public partial class RTypeData : Resource
 	[Export] public Color color {get; set;} = Colors.White;
 	[Export] public Color outline {get; set;}
 	
-	[Export] public Godot.Collections.Array<RTypeData> strongAgainst {get; set;}
-	[Export] public Godot.Collections.Array<RTypeData> weakAgainst {get; set;}
-	[Export] public Godot.Collections.Array<RTypeData> noEffect {get; set;}
-	[Export] public Godot.Collections.Array<RTypeData> compatibleWith {get; set;}
-	[Export] public Godot.Collections.Array<RTypeData> incompatibleWith {get; set;}
+	[Export] public Godot.Collections.Array<RTypeData> strongAgainst {get; set;} = new();
+	[Export] public Godot.Collections.Array<RTypeData> weakAgainst {get; set;} = new();
+	[Export] public Godot.Collections.Array<RTypeData> noEffect {get; set;} = new();
+	[Export] public Godot.Collections.Array<RTypeData> compatibleWith {get; set;} = new();
+	[Export] public Godot.Collections.Array<RTypeData> incompatibleWith {get; set;} = new();
 	
 	public float DamageMultiplier(RTypeData other)
 	{
@@ -32,7 +32,7 @@ public partial class RTypeData : Resource
 		}
 		else if (weakAgainst.Contains(other))
 		{
-			return 0.75f;
+			return 0.8f;
 		}
 		else
 		{
@@ -53,7 +53,7 @@ public partial class RTypeData : Resource
 		}
 		else if (incompatibleWith.Contains(other))
 		{
-			return 0.75f;
+			return 0.8f;
 		}
 		else
 		{

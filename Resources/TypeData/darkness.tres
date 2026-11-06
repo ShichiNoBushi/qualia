@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://drpcf1uhwtc7m"]
+
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_wh3sa"]
+
+[resource]
+script = ExtResource("1_wh3sa")
+id = "darkness"
+name = "Darkness"
+color = Color(0.1254902, 0, 0.11372549, 1)
+strongAgainst = null
+weakAgainst = null
+noEffect = null
+compatibleWith = null
+incompatibleWith = null
+metadata/_custom_type_script = "uid://3uin7wh74kon"

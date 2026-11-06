@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://c06jtodtc2iin"]
+
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_qmjgv"]
+[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="1_xo5ak"]
+[ext_resource type="Resource" uid="uid://dkunwqmny4hfi" path="res://Resources/TypeData/death.tres" id="2_2fvpg"]
+[ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/TypeData/fire.tres" id="3_3v7fg"]
+[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="4_rfh2i"]
+[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="6_4eaqu"]
+[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/TypeData/air.tres" id="7_3blgf"]
+[ext_resource type="Resource" uid="uid://dddyhi1m7v67r" path="res://Resources/TypeData/metal.tres" id="8_dkd32"]
+[ext_resource type="Resource" uid="uid://hei42k7iex64" path="res://Resources/TypeData/machine.tres" id="9_riwq2"]
+
+[resource]
+script = ExtResource("1_qmjgv")
+id = "ice"
+name = "Ice"
+color = Color(0.5058824, 1, 1, 1)
+strongAgainst = Array[Object]([ExtResource("6_4eaqu"), ExtResource("7_3blgf"), ExtResource("4_rfh2i")])
+weakAgainst = Array[Object]([ExtResource("3_3v7fg"), null, ExtResource("8_dkd32"), ExtResource("9_riwq2")])
+noEffect = null
+compatibleWith = Array[Object]([ExtResource("1_xo5ak"), null, ExtResource("2_2fvpg")])
+incompatibleWith = Array[Object]([ExtResource("3_3v7fg"), ExtResource("4_rfh2i")])
+metadata/_custom_type_script = "uid://3uin7wh74kon"

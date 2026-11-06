@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://somctte4h3g3"]
+
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_j4a62"]
+
+[resource]
+script = ExtResource("1_j4a62")
+id = "gravity"
+name = "Gravity"
+color = Color(0.22745098, 0.22745098, 0.87058824, 1)
+strongAgainst = null
+weakAgainst = null
+noEffect = null
+compatibleWith = null
+incompatibleWith = null
+metadata/_custom_type_script = "uid://3uin7wh74kon"
