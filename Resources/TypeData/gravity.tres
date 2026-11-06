@@ -1,15 +1,21 @@
 [gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://somctte4h3g3"]
 
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_j4a62"]
+[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="2_umjte"]
+[ext_resource type="Resource" uid="uid://dddyhi1m7v67r" path="res://Resources/TypeData/metal.tres" id="3_jq71x"]
+[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/TypeData/air.tres" id="4_sebaf"]
+[ext_resource type="Resource" uid="uid://8eyicnkeabau" path="res://Resources/TypeData/sound.tres" id="5_e72lo"]
+[ext_resource type="Resource" uid="uid://ds4ujr2athhpd" path="res://Resources/TypeData/space.tres" id="6_xg0fo"]
+[ext_resource type="Resource" uid="uid://bm3wn73wi50mo" path="res://Resources/TypeData/beast.tres" id="7_wgx24"]
+[ext_resource type="Resource" uid="uid://x3fumqdibheo" path="res://Resources/TypeData/time.tres" id="8_nnorh"]
 
 [resource]
 script = ExtResource("1_j4a62")
 id = "gravity"
 name = "Gravity"
 color = Color(0.22745098, 0.22745098, 0.87058824, 1)
-strongAgainst = null
-weakAgainst = null
-noEffect = null
-compatibleWith = null
-incompatibleWith = null
+strongAgainst = Array[ExtResource("1_j4a62")]([ExtResource("4_sebaf"), ExtResource("6_xg0fo"), ExtResource("7_wgx24")])
+weakAgainst = Array[ExtResource("1_j4a62")]([ExtResource("8_nnorh"), null])
+compatibleWith = Array[ExtResource("1_j4a62")]([ExtResource("2_umjte"), null, ExtResource("3_jq71x")])
+incompatibleWith = Array[ExtResource("1_j4a62")]([ExtResource("4_sebaf"), ExtResource("5_e72lo")])
 metadata/_custom_type_script = "uid://3uin7wh74kon"

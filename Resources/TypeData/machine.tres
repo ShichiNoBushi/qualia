@@ -1,15 +1,21 @@
 [gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://hei42k7iex64"]
 
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_kj01c"]
+[ext_resource type="Resource" uid="uid://dddyhi1m7v67r" path="res://Resources/TypeData/metal.tres" id="2_pnpjt"]
+[ext_resource type="Resource" uid="uid://bqx13g6cgck3j" path="res://Resources/TypeData/digital.tres" id="3_pxq0p"]
+[ext_resource type="Resource" uid="uid://bm3wn73wi50mo" path="res://Resources/TypeData/beast.tres" id="4_6jbvj"]
+[ext_resource type="Resource" uid="uid://dkunwqmny4hfi" path="res://Resources/TypeData/death.tres" id="5_dhwv4"]
+[ext_resource type="Resource" uid="uid://c06jtodtc2iin" path="res://Resources/TypeData/ice.tres" id="6_fbec6"]
+[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="7_2u0aj"]
+[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="8_ri6jj"]
 
 [resource]
 script = ExtResource("1_kj01c")
 id = "machine"
 name = "Machine"
 color = Color(0.85490197, 0.5294118, 0.039215688, 1)
-strongAgainst = null
-weakAgainst = null
-noEffect = null
-compatibleWith = null
-incompatibleWith = null
+strongAgainst = Array[ExtResource("1_kj01c")]([ExtResource("6_fbec6"), ExtResource("5_dhwv4")])
+weakAgainst = Array[ExtResource("1_kj01c")]([ExtResource("7_2u0aj"), ExtResource("8_ri6jj"), null, ExtResource("3_pxq0p")])
+compatibleWith = Array[ExtResource("1_kj01c")]([ExtResource("2_pnpjt"), null, ExtResource("3_pxq0p")])
+incompatibleWith = Array[ExtResource("1_kj01c")]([ExtResource("4_6jbvj"), ExtResource("5_dhwv4")])
 metadata/_custom_type_script = "uid://3uin7wh74kon"

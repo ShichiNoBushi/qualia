@@ -15,7 +15,6 @@ name = "Fire"
 color = Color(1, 0.14509805, 0.003921569, 1)
 strongAgainst = Array[Object]([ExtResource("6_sia36"), ExtResource("4_6qhha"), ExtResource("1_ku47l")])
 weakAgainst = Array[Object]([null, ExtResource("7_1j7bh"), ExtResource("3_xr1im")])
-noEffect = null
 compatibleWith = Array[Object]([null, ExtResource("1_ku47l"), ExtResource("2_esr6k")])
 incompatibleWith = Array[Object]([ExtResource("3_xr1im"), ExtResource("4_6qhha")])
 metadata/_custom_type_script = "uid://3uin7wh74kon"

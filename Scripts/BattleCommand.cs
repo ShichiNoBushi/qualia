@@ -724,6 +724,38 @@ public partial class SkillCommand : BattleCommand
 		
 		ApplyHealing(target, healing);
 		
+		if (healMult != 1f)
+		{
+			string potentText;
+			
+			if (healMult < 0.6f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily discordant[/b].";
+			}
+			else if (healMult < 0.8f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]discordant[/b].";
+			}
+			else if (healMult < 1f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat discordant[/b].";
+			}
+			else if (healMult <= 1.3f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat resonant[/b].";
+			}
+			else if (healMult < 1.6f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]resonant[/b].";
+			}
+			else
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily resonant[/b].";
+			}
+			
+			battle.AppendBattleText(potentText, false);
+		}
+		
 		string text = $"{fEnemyPrefix}[b]{fName}[/b] heals {healing} energy for {tEnemyPrefix}[b]{tName}[/b]";
 		battle.AppendBattleText(text, false);
 		
@@ -746,11 +778,53 @@ public partial class SkillCommand : BattleCommand
 				
 				if (famLeft != null)
 				{
-					healing = (int)(healStat * heal * splash);
+					healMult = 1f;
+					
+					if (skill.type != null)
+					{
+						foreach (var tgtType in famLeft.familiar.types)
+						{
+							healMult *= skill.type.HealMultiplier(tgtType);
+						}
+					}
+					
+					healing = (int)(healStat * heal * healMult * splash);
 					
 					ApplyHealing(famLeft, healing);
 					
 					tName = string.IsNullOrEmpty(famLeft.name) ? "(no name)" : famLeft.name;
+					
+					if (healMult != 1f)
+					{
+						string potentText;
+						
+						if (healMult < 0.6f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily discordant[/b].";
+						}
+						else if (healMult < 0.8f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]discordant[/b].";
+						}
+						else if (healMult < 1f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat discordant[/b].";
+						}
+						else if (healMult <= 1.3f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat resonant[/b].";
+						}
+						else if (healMult < 1.6f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]resonant[/b].";
+						}
+						else
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily resonant[/b].";
+						}
+						
+						battle.AppendBattleText(potentText, false);
+					}
 					
 					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
 					battle.AppendBattleText(text, false);
@@ -768,11 +842,53 @@ public partial class SkillCommand : BattleCommand
 				
 				if (famRight != null)
 				{
-					healing = (int)(healStat * heal * splash);
+					healMult = 1f;
+					
+					if (skill.type != null)
+					{
+						foreach (var tgtType in famRight.familiar.types)
+						{
+							healMult *= skill.type.HealMultiplier(tgtType);
+						}
+					}
+					
+					healing = (int)(healStat * heal * healMult * splash);
 					
 					ApplyHealing(famRight, healing);
 					
 					tName = string.IsNullOrEmpty(famRight.name) ? "(no name)" : famRight.name;
+					
+					if (healMult != 1f)
+					{
+						string potentText;
+						
+						if (healMult < 0.6f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily discordant[/b].";
+						}
+						else if (healMult < 0.8f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]discordant[/b].";
+						}
+						else if (healMult < 1f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat discordant[/b].";
+						}
+						else if (healMult <= 1.3f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat resonant[/b].";
+						}
+						else if (healMult < 1.6f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]resonant[/b].";
+						}
+						else
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily resonant[/b].";
+						}
+						
+						battle.AppendBattleText(potentText, false);
+					}
 					
 					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
 					battle.AppendBattleText(text, false);
@@ -828,6 +944,42 @@ public partial class SkillCommand : BattleCommand
 		
 		ApplyDamage(target, damage, overwhelming, battle);
 		
+		if (dmgMult != 1f)
+		{
+			string potentText;
+			
+			if (dmgMult == 0f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]immune[/b].";
+			}
+			else if (dmgMult < 0.6f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily resistant[/b].";
+			}
+			else if (dmgMult < 0.8f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]resistant[/b].";
+			}
+			else if (dmgMult < 1f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat resistant[/b].";
+			}
+			else if (dmgMult <= 1.3f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat vulnerable[/b].";
+			}
+			else if (dmgMult < 1.6f)
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]vulnerable[/b].";
+			}
+			else
+			{
+				potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily vulnerable[/b].";
+			}
+			
+			battle.AppendBattleText(potentText, false);
+		}
+		
 		string text = $"{fEnemyPrefix}[b]{fName}[/b] deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 		battle.AppendBattleText(text, false);
 		
@@ -874,12 +1026,58 @@ public partial class SkillCommand : BattleCommand
 					int defenseStatLeft = GetDefenseStat(famLeft);
 					defFactor = famLeft.defenseFactor;
 					
+					dmgMult = 1f;
+					
+					if (skill.type != null)
+					{
+						foreach (var tgtType in famLeft.familiar.types)
+						{
+							dmgMult *= skill.type.DamageMultiplier(tgtType);
+						}
+					}
+					
 					raw = (float)(attackStat * power * splash) / Mathf.Max(defenseStatLeft, 1);
-					damage = Mathf.Max(1, Mathf.RoundToInt(raw / defFactor));
+					damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 					
 					ApplyDamage(famLeft, damage, false, battle);
 					
 					tName = string.IsNullOrEmpty(famLeft.name) ? "(no name)" : famLeft.name;
+					
+					if (dmgMult != 1f)
+					{
+						string potentText;
+						
+						if (dmgMult == 0f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]immune[/b].";
+						}
+						else if (dmgMult < 0.6f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily resistant[/b].";
+						}
+						else if (dmgMult < 0.8f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]resistant[/b].";
+						}
+						else if (dmgMult < 1f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat resistant[/b].";
+						}
+						else if (dmgMult <= 1.3f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat vulnerable[/b].";
+						}
+						else if (dmgMult < 1.6f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]vulnerable[/b].";
+						}
+						else
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily vulnerable[/b].";
+						}
+						
+						battle.AppendBattleText(potentText, false);
+					}
 					
 					text = $"Attack's splash deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 					battle.AppendBattleText(text, false);
@@ -921,12 +1119,58 @@ public partial class SkillCommand : BattleCommand
 					int defenseStatRight = GetDefenseStat(famRight);
 					defFactor = famRight.defenseFactor;
 					
+					dmgMult = 1f;
+					
+					if (skill.type != null)
+					{
+						foreach (var tgtType in famRight.familiar.types)
+						{
+							dmgMult *= skill.type.DamageMultiplier(tgtType);
+						}
+					}
+					
 					raw = (float)(attackStat * power * splash) / Mathf.Max(defenseStatRight, 1);
-					damage = Mathf.Max(1, Mathf.RoundToInt(raw / defFactor));
+					damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 					
 					ApplyDamage(famRight, damage, false, battle);
 					
 					tName = string.IsNullOrEmpty(famRight.name) ? "(no name)" : famRight.name;
+					
+					if (dmgMult != 1f)
+					{
+						string potentText;
+						
+						if (dmgMult == 0f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]immune[/b].";
+						}
+						else if (dmgMult < 0.6f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily resistant[/b].";
+						}
+						else if (dmgMult < 0.8f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]resistant[/b].";
+						}
+						else if (dmgMult < 1f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat resistant[/b].";
+						}
+						else if (dmgMult <= 1.3f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]somewhat vulnerable[/b].";
+						}
+						else if (dmgMult < 1.6f)
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]vulnerable[/b].";
+						}
+						else
+						{
+							potentText = $"{fEnemyPrefix}[b]{fName}[/b] was [b]heavily vulnerable[/b].";
+						}
+						
+						battle.AppendBattleText(potentText, false);
+					}
 					
 					text = $"Attack's splash deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 					battle.AppendBattleText(text, false);
@@ -1480,6 +1724,38 @@ public partial class SpellCommand : BattleCommand
 		
 		ApplyHealing(target, healing);
 		
+		if (healMult != 1f)
+		{
+			string potentText;
+			
+			if (healMult < 0.6f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily discordant[/b].";
+			}
+			else if (healMult < 0.8f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]discordant[/b].";
+			}
+			else if (healMult < 1f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat discordant[/b].";
+			}
+			else if (healMult <= 1.3f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat resonant[/b].";
+			}
+			else if (healMult < 1.6f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]resonant[/b].";
+			}
+			else
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily resonant[/b].";
+			}
+			
+			battle.AppendBattleText(potentText, false);
+		}
+		
 		string text = $"[b]{pName}[/b] heals {healing} energy for {tEnemyPrefix}[b]{tName}[/b]";
 		battle.AppendBattleText(text, false);
 		
@@ -1502,11 +1778,53 @@ public partial class SpellCommand : BattleCommand
 				
 				if (famLeft != null)
 				{
-					healing = (int)(heal * splash);
+					healMult = 1f;
+					
+					if (spell.type != null)
+					{
+						foreach (var tgtType in famLeft.familiar.types)
+						{
+							healMult *= spell.type.HealMultiplier(tgtType);
+						}
+					}
+					
+					healing = (int)(heal * healMult * splash);
 					
 					ApplyHealing(famLeft, healing);
 					
 					tName = string.IsNullOrEmpty(famLeft.name) ? "(no name)" : famLeft.name;
+					
+					if (healMult != 1f)
+					{
+						string potentText;
+						
+						if (healMult < 0.6f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily discordant[/b].";
+						}
+						else if (healMult < 0.8f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]discordant[/b].";
+						}
+						else if (healMult < 1f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat discordant[/b].";
+						}
+						else if (healMult <= 1.3f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat resonant[/b].";
+						}
+						else if (healMult < 1.6f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]resonant[/b].";
+						}
+						else
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily resonant[/b].";
+						}
+						
+						battle.AppendBattleText(potentText, false);
+					}
 					
 					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
 					battle.AppendBattleText(text, false);
@@ -1524,11 +1842,53 @@ public partial class SpellCommand : BattleCommand
 				
 				if (famRight != null)
 				{
-					healing = (int)(heal * splash);
+					healMult = 1f;
+					
+					if (spell.type != null)
+					{
+						foreach (var tgtType in famRight.familiar.types)
+						{
+							healMult *= spell.type.HealMultiplier(tgtType);
+						}
+					}
+					
+					healing = (int)(heal * healMult * splash);
 					
 					ApplyHealing(famRight, healing);
 					
 					tName = string.IsNullOrEmpty(famRight.name) ? "(no name)" : famRight.name;
+					
+					if (healMult != 1f)
+					{
+						string potentText;
+						
+						if (healMult < 0.6f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily discordant[/b].";
+						}
+						else if (healMult < 0.8f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]discordant[/b].";
+						}
+						else if (healMult < 1f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat discordant[/b].";
+						}
+						else if (healMult <= 1.3f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat resonant[/b].";
+						}
+						else if (healMult < 1.6f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]resonant[/b].";
+						}
+						else
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily resonant[/b].";
+						}
+						
+						battle.AppendBattleText(potentText, false);
+					}
 					
 					text = $"Healing's splash heals {healing} energy for [b]{tName}[/b]";
 					battle.AppendBattleText(text, false);
@@ -1582,6 +1942,42 @@ public partial class SpellCommand : BattleCommand
 		
 		ApplyDamage(target, damage, battle);
 		
+		if (dmgMult != 1f)
+		{
+			string potentText;
+			
+			if (dmgMult == 0f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]immune[/b].";
+			}
+			else if (dmgMult < 0.6f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily resistant[/b].";
+			}
+			else if (dmgMult < 0.8f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]resistant[/b].";
+			}
+			else if (dmgMult < 1f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat resistant[/b].";
+			}
+			else if (dmgMult <= 1.3f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat vulnerable[/b].";
+			}
+			else if (dmgMult < 1.6f)
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]vulnerable[/b].";
+			}
+			else
+			{
+				potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily vulnerable[/b].";
+			}
+			
+			battle.AppendBattleText(potentText, false);
+		}
+		
 		string text = $"[b]{pName}[/b] deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 		battle.AppendBattleText(text, false);
 		
@@ -1628,12 +2024,58 @@ public partial class SpellCommand : BattleCommand
 					int defenseStatLeft = GetDefenseStat(famLeft);
 					defFactor = famLeft.defenseFactor;
 					
+					dmgMult = 1f;
+					
+					if (spell.type != null)
+					{
+						foreach (var tgtType in famLeft.familiar.types)
+						{
+							dmgMult *= spell.type.DamageMultiplier(tgtType);
+						}
+					}
+					
 					raw = (float)(power * splash) / Mathf.Max(defenseStatLeft, 1);
-					damage = Mathf.Max(1, Mathf.RoundToInt(raw / defFactor));
+					damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 					
 					ApplyDamage(famLeft, damage, battle);
 					
 					tName = string.IsNullOrEmpty(famLeft.name) ? "(no name)" : famLeft.name;
+					
+					if (dmgMult != 1f)
+					{
+						string potentText;
+						
+						if (dmgMult == 0f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]immune[/b].";
+						}
+						else if (dmgMult < 0.6f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily resistant[/b].";
+						}
+						else if (dmgMult < 0.8f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]resistant[/b].";
+						}
+						else if (dmgMult < 1f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat resistant[/b].";
+						}
+						else if (dmgMult <= 1.3f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat vulnerable[/b].";
+						}
+						else if (dmgMult < 1.6f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]vulnerable[/b].";
+						}
+						else
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily vulnerable[/b].";
+						}
+						
+						battle.AppendBattleText(potentText, false);
+					}
 					
 					text = $"Attack's splash deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 					battle.AppendBattleText(text, false);
@@ -1675,12 +2117,58 @@ public partial class SpellCommand : BattleCommand
 					int defenseStatRight = GetDefenseStat(famRight);
 					defFactor = famRight.defenseFactor;
 					
+					dmgMult = 1f;
+					
+					if (spell.type != null)
+					{
+						foreach (var tgtType in famRight.familiar.types)
+						{
+							dmgMult *= spell.type.DamageMultiplier(tgtType);
+						}
+					}
+					
 					raw = (float)(power * splash) / Mathf.Max(defenseStatRight, 1);
-					damage = Mathf.Max(1, Mathf.RoundToInt(raw / defFactor));
+					damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 					
 					ApplyDamage(famRight, damage, battle);
 					
 					tName = string.IsNullOrEmpty(famRight.name) ? "(no name)" : famRight.name;
+					
+					if (dmgMult != 1f)
+					{
+						string potentText;
+						
+						if (dmgMult == 0f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]immune[/b].";
+						}
+						else if (dmgMult < 0.6f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily resistant[/b].";
+						}
+						else if (dmgMult < 0.8f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]resistant[/b].";
+						}
+						else if (dmgMult < 1f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat resistant[/b].";
+						}
+						else if (dmgMult <= 1.3f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]somewhat vulnerable[/b].";
+						}
+						else if (dmgMult < 1.6f)
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]vulnerable[/b].";
+						}
+						else
+						{
+							potentText = $"{tEnemyPrefix}[b]{tName}[/b] was [b]heavily vulnerable[/b].";
+						}
+						
+						battle.AppendBattleText(potentText, false);
+					}
 					
 					text = $"Attack's splash deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 					battle.AppendBattleText(text, false);

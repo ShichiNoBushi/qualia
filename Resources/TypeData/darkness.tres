@@ -1,15 +1,20 @@
 [gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://drpcf1uhwtc7m"]
 
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_wh3sa"]
+[ext_resource type="Resource" uid="uid://dkunwqmny4hfi" path="res://Resources/TypeData/death.tres" id="2_04y0e"]
+[ext_resource type="Resource" uid="uid://ds4ujr2athhpd" path="res://Resources/TypeData/space.tres" id="3_e2b4l"]
+[ext_resource type="Resource" uid="uid://ko1ju5iliqbr" path="res://Resources/TypeData/light.tres" id="4_dxoav"]
+[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="5_1wi2h"]
+[ext_resource type="Resource" uid="uid://8eyicnkeabau" path="res://Resources/TypeData/sound.tres" id="6_b32dv"]
+[ext_resource type="Resource" uid="uid://bqx13g6cgck3j" path="res://Resources/TypeData/digital.tres" id="7_b48vo"]
 
 [resource]
 script = ExtResource("1_wh3sa")
 id = "darkness"
 name = "Darkness"
 color = Color(0.1254902, 0, 0.11372549, 1)
-strongAgainst = null
-weakAgainst = null
-noEffect = null
-compatibleWith = null
-incompatibleWith = null
+strongAgainst = Array[ExtResource("1_wh3sa")]([ExtResource("4_dxoav"), ExtResource("3_e2b4l")])
+weakAgainst = Array[ExtResource("1_wh3sa")]([null, ExtResource("6_b32dv"), ExtResource("7_b48vo")])
+compatibleWith = Array[ExtResource("1_wh3sa")]([null, ExtResource("2_04y0e"), ExtResource("3_e2b4l")])
+incompatibleWith = Array[ExtResource("1_wh3sa")]([ExtResource("4_dxoav"), ExtResource("5_1wi2h")])
 metadata/_custom_type_script = "uid://3uin7wh74kon"

@@ -1,15 +1,22 @@
 [gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://dddyhi1m7v67r"]
 
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_js14u"]
+[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="2_dme2n"]
+[ext_resource type="Resource" uid="uid://hei42k7iex64" path="res://Resources/TypeData/machine.tres" id="3_8fwl1"]
+[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="4_1mvx5"]
+[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="5_ggsto"]
+[ext_resource type="Resource" uid="uid://c06jtodtc2iin" path="res://Resources/TypeData/ice.tres" id="6_rs1sn"]
+[ext_resource type="Resource" uid="uid://bm3wn73wi50mo" path="res://Resources/TypeData/beast.tres" id="7_m325h"]
+[ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/TypeData/fire.tres" id="8_27sxy"]
+[ext_resource type="Resource" uid="uid://8eyicnkeabau" path="res://Resources/TypeData/sound.tres" id="9_atqk6"]
 
 [resource]
 script = ExtResource("1_js14u")
 id = "metal"
 name = "Metal"
 color = Color(0.7490196, 0.827451, 0.9529412, 1)
-strongAgainst = null
-weakAgainst = null
-noEffect = null
-compatibleWith = null
-incompatibleWith = null
+strongAgainst = Array[ExtResource("1_js14u")]([ExtResource("2_dme2n"), ExtResource("6_rs1sn"), ExtResource("7_m325h"), ExtResource("5_ggsto")])
+weakAgainst = Array[ExtResource("1_js14u")]([ExtResource("8_27sxy"), ExtResource("9_atqk6"), null])
+compatibleWith = Array[ExtResource("1_js14u")]([ExtResource("2_dme2n"), null, ExtResource("3_8fwl1")])
+incompatibleWith = Array[ExtResource("1_js14u")]([ExtResource("4_1mvx5"), ExtResource("5_ggsto")])
 metadata/_custom_type_script = "uid://3uin7wh74kon"
