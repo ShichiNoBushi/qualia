@@ -1,21 +1,14 @@
 [gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://8eyicnkeabau"]
 
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_4h4sp"]
-[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="2_shseu"]
-[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/TypeData/air.tres" id="3_j5mio"]
-[ext_resource type="Resource" uid="uid://c06jtodtc2iin" path="res://Resources/TypeData/ice.tres" id="4_dxvlk"]
-[ext_resource type="Resource" uid="uid://ds4ujr2athhpd" path="res://Resources/TypeData/space.tres" id="5_ymk0m"]
-[ext_resource type="Resource" uid="uid://drpcf1uhwtc7m" path="res://Resources/TypeData/darkness.tres" id="6_d3f55"]
-[ext_resource type="Resource" uid="uid://dddyhi1m7v67r" path="res://Resources/TypeData/metal.tres" id="7_721ip"]
-[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="8_gklof"]
 
 [resource]
 script = ExtResource("1_4h4sp")
 id = "sound"
 name = "Sound"
 color = Color(0.8862745, 0.24313726, 1, 1)
-strongAgainst = Array[ExtResource("1_4h4sp")]([ExtResource("4_dxvlk"), ExtResource("6_d3f55"), ExtResource("7_721ip")])
-weakAgainst = Array[ExtResource("1_4h4sp")]([null, ExtResource("5_ymk0m"), ExtResource("8_gklof")])
-compatibleWith = Array[ExtResource("1_4h4sp")]([ExtResource("2_shseu"), ExtResource("3_j5mio"), null])
-incompatibleWith = Array[ExtResource("1_4h4sp")]([ExtResource("4_dxvlk"), ExtResource("5_ymk0m")])
+strongAgainst = Array[String](["ice", "darkness", "metal"])
+weakAgainst = Array[String](["sound", "space", "plant"])
+compatibleWith = Array[String](["water", "air", "sound"])
+incompatibleWith = Array[String](["ice", "space"])
 metadata/_custom_type_script = "uid://3uin7wh74kon"

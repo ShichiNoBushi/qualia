@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://d0jcxepf2p41t"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_yt0hk"]
+[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="2_xcacq"]
+
+[resource]
+script = ExtResource("1_yt0hk")
+id = "straw_jab"
+name = "Straw Jab"
+type = ExtResource("2_xcacq")
+description = "An attack with a limb made of straw."
+cost = 1
+power = 7
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

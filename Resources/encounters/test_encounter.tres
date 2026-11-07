@@ -10,21 +10,25 @@
 [sub_resource type="Resource" id="Resource_srir7"]
 script = ExtResource("1_3smgd")
 familiar = ExtResource("2_6c7pb")
+maxLevel = 2
 metadata/_custom_type_script = "uid://dki63xii04tcd"
 
 [sub_resource type="Resource" id="Resource_6c7pb"]
 script = ExtResource("1_3smgd")
 familiar = ExtResource("3_dshhv")
+maxLevel = 2
 metadata/_custom_type_script = "uid://dki63xii04tcd"
 
 [sub_resource type="Resource" id="Resource_dshhv"]
 script = ExtResource("1_3smgd")
 familiar = ExtResource("4_ey4ac")
+maxLevel = 2
 metadata/_custom_type_script = "uid://dki63xii04tcd"
 
 [sub_resource type="Resource" id="Resource_ey4ac"]
 script = ExtResource("1_3smgd")
 familiar = ExtResource("5_0lwns")
+maxLevel = 2
 metadata/_custom_type_script = "uid://dki63xii04tcd"
 
 [resource]

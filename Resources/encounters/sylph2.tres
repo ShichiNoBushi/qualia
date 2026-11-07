@@ -7,11 +7,13 @@
 [sub_resource type="Resource" id="Resource_qqrw4"]
 script = ExtResource("1_x5len")
 familiar = ExtResource("2_qqrw4")
+maxLevel = 2
 metadata/_custom_type_script = "uid://dki63xii04tcd"
 
 [sub_resource type="Resource" id="Resource_ckliy"]
 script = ExtResource("1_x5len")
 familiar = ExtResource("2_qqrw4")
+maxLevel = 2
 metadata/_custom_type_script = "uid://dki63xii04tcd"
 
 [resource]

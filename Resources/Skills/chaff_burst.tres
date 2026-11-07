@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://4gvg6ahwc475"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_1doef"]
+[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="2_bc413"]
+
+[resource]
+script = ExtResource("1_1doef")
+id = "chaff_burst"
+name = "Chaff Burst"
+type = ExtResource("2_bc413")
+description = "Attack with fibers that burst and hit nearby enemies."
+cost = 3
+power = 9
+splashFactor = 0.5
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

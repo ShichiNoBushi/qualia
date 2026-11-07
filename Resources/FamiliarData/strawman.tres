@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://dymr0f1knu21f"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_gtxmu"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_ok4vb"]
+[ext_resource type="Resource" uid="uid://d0jcxepf2p41t" path="res://Resources/Skills/straw_jab.tres" id="3_1e8go"]
+[ext_resource type="Texture2D" uid="uid://je4s5gx02s6d" path="res://Resources/Assets/Retro Monsters (111)/dummy.png" id="3_oljot"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="3_qtixy"]
+[ext_resource type="Resource" uid="uid://355306yaeck4" path="res://Resources/Skills/frighten.tres" id="4_c8hkn"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="4_oljot"]
+[ext_resource type="Resource" uid="uid://xq1ysnku8gnx" path="res://Resources/Skills/harden.tres" id="5_ofcoq"]
+[ext_resource type="Resource" uid="uid://bjc3sb856vv3t" path="res://Resources/Skills/cover.tres" id="6_4e8nv"]
+[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="6_byd7i"]
+[ext_resource type="Resource" uid="uid://b7q6c504f5k7r" path="res://Resources/Skills/patchwork.tres" id="7_1i8af"]
+[ext_resource type="Resource" uid="uid://4gvg6ahwc475" path="res://Resources/Skills/chaff_burst.tres" id="8_3jm3r"]
+[ext_resource type="Resource" uid="uid://bqy6da0avoi5x" path="res://Resources/Skills/stone_fist.tres" id="9_r88tw"]
+[ext_resource type="Resource" uid="uid://d33jbub3n6sui" path="res://Resources/Skills/lull.tres" id="10_ww4b6"]
+
+[sub_resource type="Resource" id="Resource_13gal"]
+script = ExtResource("1_gtxmu")
+crystalId = "plant"
+amount = 1
+chance = 0.5
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_igguw"]
+script = ExtResource("1_gtxmu")
+crystalId = "strawman"
+amount = 1
+chance = 0.15
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("3_qtixy")
+id = "strawman"
+name = "Strawman"
+description = "An animate man made of straw. It is remarkably weak as if designed to be easily defeated."
+baseEnergy = 8
+baseMAttack = 2
+basePDefense = 4
+baseMDefense = 2
+levelEnergy = 1.5
+levelPAttack = 0.75
+levelPDefense = 0.75
+levelSpeed = 0.75
+expGrowthFactor = 0.75
+types = Array[ExtResource("4_oljot")]([ExtResource("6_byd7i")])
+learnableSkills = Array[ExtResource("2_ok4vb")]([ExtResource("3_1e8go"), ExtResource("4_c8hkn"), ExtResource("5_ofcoq"), ExtResource("6_4e8nv"), ExtResource("7_1i8af"), ExtResource("8_3jm3r"), ExtResource("9_r88tw"), ExtResource("10_ww4b6")])
+levelUpSkills = Dictionary[int, ExtResource("2_ok4vb")]({
+1: ExtResource("3_1e8go"),
+2: ExtResource("4_c8hkn"),
+4: ExtResource("5_ofcoq"),
+6: ExtResource("6_4e8nv"),
+9: ExtResource("7_1i8af"),
+12: ExtResource("8_3jm3r")
+})
+fortifyRecipe = Dictionary[String, int]({
+"strawman": 2
+})
+fortifyCost = 20
+enhanceCrystals = Array[String](["plant"])
+crystals = 10
+crystalDrops = Array[ExtResource("1_gtxmu")]([SubResource("Resource_13gal"), SubResource("Resource_igguw")])
+portrait = ExtResource("3_oljot")
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"

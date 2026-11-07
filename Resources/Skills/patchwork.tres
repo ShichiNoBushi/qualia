@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://b7q6c504f5k7r"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_d1dj0"]
+
+[resource]
+script = ExtResource("1_d1dj0")
+id = "patchwork"
+name = "Patchwork"
+description = "Stitch oneself together using nearby materials."
+targetPattern = 1
+cost = 2
+healPower = 1
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

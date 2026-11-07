@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="RQualiaCrystal" format=3 uid="uid://cqcugwkw73ovq"]
+
+[ext_resource type="Script" uid="uid://drrp5ejurlp51" path="res://Scripts/RQualiaCrystal.cs" id="1_ujara"]
+[ext_resource type="Script" uid="uid://df7vrqh187nx2" path="res://Scripts/RQualiaRequirement.cs" id="1_uyhtt"]
+
+[sub_resource type="Resource" id="Resource_uyhtt"]
+script = ExtResource("1_uyhtt")
+id = "earth"
+metadata/_custom_type_script = "uid://df7vrqh187nx2"
+
+[sub_resource type="Resource" id="Resource_qkwtn"]
+script = ExtResource("1_uyhtt")
+id = "water"
+metadata/_custom_type_script = "uid://df7vrqh187nx2"
+
+[resource]
+script = ExtResource("1_ujara")
+id = "plant"
+name = "Plant"
+recipe = Array[Object]([SubResource("Resource_uyhtt"), SubResource("Resource_qkwtn")])
+metadata/_custom_type_script = "uid://drrp5ejurlp51"

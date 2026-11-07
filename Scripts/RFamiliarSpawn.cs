@@ -5,7 +5,8 @@ using System;
 public partial class RFamiliarSpawn : Resource
 {
 	[Export] public RFamiliarData familiar {get; set;}
-	[Export] public int level {get; set;} = 1;
+	[Export] public int minLevel {get; set;} = 1;
+	[Export] public int maxLevel {get; set;} = 1;
 	
 	public RFamiliarInstance CreateInstance()
 	{
@@ -16,6 +17,8 @@ public partial class RFamiliarSpawn : Resource
 		}
 		
 		RFamiliarInstance instance = new();
+		
+		int level = maxLevel > minLevel ? (int)(GD.Randi() % (maxLevel - minLevel + 1) + minLevel) : minLevel;
 		instance.Initialize(familiar, level);
 		
 		return instance;

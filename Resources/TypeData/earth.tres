@@ -1,21 +1,14 @@
 [gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://7tf0g0q3yixl"]
 
-[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="1_32sor"]
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_yyq53"]
-[ext_resource type="Resource" uid="uid://hei42k7iex64" path="res://Resources/TypeData/machine.tres" id="2_kr66f"]
-[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/TypeData/air.tres" id="3_pw4yq"]
-[ext_resource type="Resource" uid="uid://cevsd8uydl41p" path="res://Resources/TypeData/electricity.tres" id="4_1uy2o"]
-[ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/TypeData/fire.tres" id="6_5ts4h"]
-[ext_resource type="Resource" uid="uid://dybdk0uy6wxs2" path="res://Resources/TypeData/water.tres" id="7_2jkcs"]
 
 [resource]
 script = ExtResource("1_yyq53")
 id = "earth"
 name = "Earth"
 color = Color(1, 0.84313726, 0, 1)
-strongAgainst = Array[Object]([ExtResource("6_5ts4h"), ExtResource("4_1uy2o"), ExtResource("2_kr66f")])
-weakAgainst = Array[Object]([null, ExtResource("7_2jkcs"), ExtResource("3_pw4yq"), ExtResource("1_32sor")])
-noEffect = Array[Object]([])
-compatibleWith = Array[Object]([null, ExtResource("1_32sor"), ExtResource("2_kr66f")])
-incompatibleWith = Array[Object]([ExtResource("3_pw4yq"), ExtResource("4_1uy2o")])
+strongAgainst = Array[String](["fire", "electricity", "machine"])
+weakAgainst = Array[String](["earth", "water", "air", "plant"])
+compatibleWith = Array[String](["earth", "plant", "machine"])
+incompatibleWith = Array[String](["air", "electricity"])
 metadata/_custom_type_script = "uid://3uin7wh74kon"

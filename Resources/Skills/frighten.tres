@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://355306yaeck4"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_0itfp"]
+
+[resource]
+script = ExtResource("1_0itfp")
+id = "frighten"
+name = "Frighten"
+description = "Quickly startle the enemy to lower physical attack."
+cost = 2
+speedFactor = 1.25
+statEffect = 1
+statMod = -1
+modChance = 1.0
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

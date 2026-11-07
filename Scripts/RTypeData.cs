@@ -9,28 +9,28 @@ public partial class RTypeData : Resource
 	[Export] public Color color {get; set;} = Colors.White;
 	[Export] public Color outline {get; set;}
 	
-	[Export] public Godot.Collections.Array<RTypeData> strongAgainst {get; set;} = new();
-	[Export] public Godot.Collections.Array<RTypeData> weakAgainst {get; set;} = new();
-	[Export] public Godot.Collections.Array<RTypeData> noEffect {get; set;} = new();
-	[Export] public Godot.Collections.Array<RTypeData> compatibleWith {get; set;} = new();
-	[Export] public Godot.Collections.Array<RTypeData> incompatibleWith {get; set;} = new();
+	[Export] public Godot.Collections.Array<string> strongAgainst {get; set;} = new();
+	[Export] public Godot.Collections.Array<string> weakAgainst {get; set;} = new();
+	[Export] public Godot.Collections.Array<string> noEffect {get; set;} = new();
+	[Export] public Godot.Collections.Array<string> compatibleWith {get; set;} = new();
+	[Export] public Godot.Collections.Array<string> incompatibleWith {get; set;} = new();
 	
 	public float DamageMultiplier(RTypeData other)
 	{
-		if (other == null)
+		if (other == null || string.IsNullOrEmpty(other.id))
 		{
 			return 1f;
 		}
 		
-		if (noEffect.Contains(other))
+		if (noEffect.Contains(other.id))
 		{
 			return 0f;
 		}
-		else if (strongAgainst.Contains(other))
+		else if (strongAgainst.Contains(other.id))
 		{
 			return 1.25f;
 		}
-		else if (weakAgainst.Contains(other))
+		else if (weakAgainst.Contains(other.id))
 		{
 			return 0.8f;
 		}
@@ -42,16 +42,16 @@ public partial class RTypeData : Resource
 	
 	public float HealMultiplier(RTypeData other)
 	{
-		if (other == null)
+		if (other == null || string.IsNullOrEmpty(other.id))
 		{
 			return 1f;
 		}
 		
-		if (compatibleWith.Contains(other))
+		if (compatibleWith.Contains(other.id))
 		{
 			return 1.25f;
 		}
-		else if (incompatibleWith.Contains(other))
+		else if (incompatibleWith.Contains(other.id))
 		{
 			return 0.8f;
 		}

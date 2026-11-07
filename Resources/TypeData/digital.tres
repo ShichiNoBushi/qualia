@@ -1,20 +1,14 @@
 [gd_resource type="Resource" script_class="RTypeData" format=3 uid="uid://bqx13g6cgck3j"]
 
 [ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="1_rx57i"]
-[ext_resource type="Resource" uid="uid://cevsd8uydl41p" path="res://Resources/TypeData/electricity.tres" id="2_jqnpj"]
-[ext_resource type="Resource" uid="uid://hei42k7iex64" path="res://Resources/TypeData/machine.tres" id="3_j6ned"]
-[ext_resource type="Resource" uid="uid://bm3wn73wi50mo" path="res://Resources/TypeData/beast.tres" id="4_awggb"]
-[ext_resource type="Resource" uid="uid://dkunwqmny4hfi" path="res://Resources/TypeData/death.tres" id="5_3o4c2"]
-[ext_resource type="Resource" uid="uid://drpcf1uhwtc7m" path="res://Resources/TypeData/darkness.tres" id="6_mmck3"]
-[ext_resource type="Resource" uid="uid://x3fumqdibheo" path="res://Resources/TypeData/time.tres" id="7_5nprr"]
 
 [resource]
 script = ExtResource("1_rx57i")
 id = "digital"
 name = "Digital"
 color = Color(0.2784314, 0.7058824, 0.47843137, 1)
-strongAgainst = Array[ExtResource("1_rx57i")]([ExtResource("6_mmck3"), ExtResource("3_j6ned"), null])
-weakAgainst = Array[ExtResource("1_rx57i")]([ExtResource("2_jqnpj"), ExtResource("7_5nprr"), ExtResource("4_awggb")])
-compatibleWith = Array[ExtResource("1_rx57i")]([ExtResource("2_jqnpj"), ExtResource("3_j6ned"), null])
-incompatibleWith = Array[ExtResource("1_rx57i")]([ExtResource("4_awggb"), ExtResource("5_3o4c2")])
+strongAgainst = Array[String](["darkness", "machine", "digital"])
+weakAgainst = Array[String](["electricity", "time", "beast"])
+compatibleWith = Array[String](["electricity", "machine", "digital"])
+incompatibleWith = Array[String](["beast", "death"])
 metadata/_custom_type_script = "uid://3uin7wh74kon"
