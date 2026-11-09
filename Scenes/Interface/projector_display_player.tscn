@@ -110,6 +110,14 @@ offset_left = 302.0
 offset_right = 468.0
 offset_bottom = 23.0
 
+[node name="LevelLabel" type="Label" parent="." unique_id=293633242]
+layout_mode = 0
+offset_left = 302.0
+offset_top = 23.0
+offset_right = 383.0
+offset_bottom = 46.0
+text = "Level: 000"
+
 [node name="EnergyLabel" type="Label" parent="." unique_id=1894082908]
 layout_mode = 0
 offset_left = 302.0

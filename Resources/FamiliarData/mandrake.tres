@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://bggkysngt3cje"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_23l8e"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_iyrc4"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="3_k6dma"]
+[ext_resource type="Resource" uid="uid://bm75s420je7fg" path="res://Resources/Skills/mend.tres" id="3_p3xde"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="4_4bcfj"]
+[ext_resource type="Resource" uid="uid://3xyuvpddr455" path="res://Resources/Skills/root_snare.tres" id="4_yhija"]
+[ext_resource type="Resource" uid="uid://b6yvewnuqmjhq" path="res://Resources/Skills/rainfall.tres" id="5_jiajd"]
+[ext_resource type="Resource" uid="uid://5hnkuw8h81ak" path="res://Resources/Skills/shriek.tres" id="6_i5yjp"]
+[ext_resource type="Resource" uid="uid://18jtnpxp4xau" path="res://Resources/Skills/panacea.tres" id="7_vj8u1"]
+[ext_resource type="Resource" uid="uid://355306yaeck4" path="res://Resources/Skills/frighten.tres" id="8_a374h"]
+[ext_resource type="Resource" uid="uid://d0jcxepf2p41t" path="res://Resources/Skills/straw_jab.tres" id="9_rh6gh"]
+[ext_resource type="Resource" uid="uid://4gvg6ahwc475" path="res://Resources/Skills/chaff_burst.tres" id="10_fc1eo"]
+[ext_resource type="Texture2D" uid="uid://qrukq46alyox" path="res://Resources/Assets/Retro Monsters (111)/onion 1.png" id="11_yfgi7"]
+[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="14_xc13d"]
+[ext_resource type="Resource" uid="uid://8eyicnkeabau" path="res://Resources/TypeData/sound.tres" id="15_s04mr"]
+
+[sub_resource type="Resource" id="Resource_i7e7t"]
+script = ExtResource("1_23l8e")
+crystalId = "plant"
+amount = 1
+chance = 0.3
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_yxl7c"]
+script = ExtResource("1_23l8e")
+crystalId = "sound"
+amount = 1
+chance = 0.3
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_1q6jq"]
+script = ExtResource("1_23l8e")
+crystalId = "mandrake"
+amount = 1
+chance = 0.25
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("3_k6dma")
+id = "mandrake"
+name = "Mandrake"
+description = "An eerily humanoid root. It produces a horrible scream when uprooted but can be made into a potent medicine."
+baseEnergy = 8
+basePAttack = 2
+baseMAttack = 4
+baseMDefense = 4
+baseSpeed = 2
+levelEnergy = 1.5
+levelMAttack = 0.75
+levelMDefense = 0.75
+expGrowthFactor = 0.75
+types = Array[ExtResource("4_4bcfj")]([ExtResource("14_xc13d"), ExtResource("15_s04mr")])
+learnableSkills = Array[ExtResource("2_iyrc4")]([ExtResource("3_p3xde"), ExtResource("4_yhija"), ExtResource("5_jiajd"), ExtResource("6_i5yjp"), ExtResource("7_vj8u1"), ExtResource("8_a374h"), ExtResource("9_rh6gh"), ExtResource("10_fc1eo")])
+levelUpSkills = Dictionary[int, ExtResource("2_iyrc4")]({
+1: ExtResource("3_p3xde"),
+2: ExtResource("4_yhija"),
+4: ExtResource("5_jiajd"),
+6: ExtResource("6_i5yjp"),
+9: ExtResource("7_vj8u1")
+})
+fortifyRecipe = Dictionary[String, int]({
+"mandrake": 1
+})
+fortifyCost = 10
+enhanceCrystals = Array[String](["plant", "sount"])
+crystals = 10
+crystalDrops = Array[ExtResource("1_23l8e")]([SubResource("Resource_i7e7t"), SubResource("Resource_yxl7c"), SubResource("Resource_1q6jq")])
+portrait = ExtResource("11_yfgi7")
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"

@@ -147,8 +147,8 @@ modulate = Color(1, 1, 1, 0)
 layout_mode = 0
 offset_left = 3.0
 offset_top = 3.0
-offset_right = 183.0
-offset_bottom = 293.0
+offset_right = 171.0
+offset_bottom = 285.0
 texture = ExtResource("2_j0ygk")
 stretch_mode = 5
 
@@ -170,9 +170,17 @@ step = 1.0
 fill_mode = 3
 show_percentage = false
 
+[node name="LevelLabel" type="Label" parent="." unique_id=920066636]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 322.0
+offset_right = 104.0
+offset_bottom = 345.0
+text = "Level: 000"
+
 [node name="EnergyLabel" type="Label" parent="." unique_id=355263010]
 layout_mode = 0
-offset_left = 5.0
+offset_left = 104.0
 offset_top = 322.0
 offset_right = 183.0
 offset_bottom = 345.0

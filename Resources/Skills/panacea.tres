@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://18jtnpxp4xau"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_6haq1"]
+
+[resource]
+script = ExtResource("1_6haq1")
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

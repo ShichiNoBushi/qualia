@@ -5,6 +5,7 @@ public partial class ProjectorDisplay : Control
 {
 	public TextureRect portraitRect;
 	public Label nameLabel;
+	public Label levelLabel;
 	public ProgressBar energyProgress;
 	public Label energyLabel;
 	public ColorRect highlightRect;
@@ -20,11 +21,14 @@ public partial class ProjectorDisplay : Control
 	{
 		portraitRect = GetNode<TextureRect>("PortraitRect");
 		nameLabel = GetNode<Label>("NameLabel");
+		levelLabel = GetNode<Label>("LevelLabel");
 		energyProgress = GetNode<ProgressBar>("EnergyProgress");
 		energyLabel = GetNode<Label>("EnergyLabel");
 		highlightRect = GetNode<ColorRect>("HighlightRect");
 		animation = GetNode<AnimationPlayer>("AnimationPlayer");
 		energyVisible = false;
+		
+		levelLabel.Text = "";
 		
 		highlightRect.GuiInput += OnGuiInput;
 	}
@@ -54,12 +58,16 @@ public partial class ProjectorDisplay : Control
 	{
 		projector = proj;
 		
+		levelLabel.Text = $"Level: {proj.level}";
+		
 		UpdateDisplay();
 	}
 	
 	public void Clear()
 	{
 		projector = null;
+		
+		levelLabel.Text = "";
 		
 		UpdateDisplay();
 	}

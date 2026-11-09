@@ -6,6 +6,7 @@ public partial class FamiliarDisplay : Control
 	public TextureRect portraitRect;
 	public Label nameLabel;
 	public ProgressBar energyProgress;
+	public Label levelLabel;
 	public Label energyLabel;
 	public ColorRect highlightAllyRect;
 	public ColorRect highlightEnemyRect;
@@ -27,12 +28,15 @@ public partial class FamiliarDisplay : Control
 		portraitRect = GetNode<TextureRect>("PortraitRect");
 		nameLabel = GetNode<Label>("NameLabel");
 		energyProgress = GetNode<ProgressBar>("EnergyProgress");
+		levelLabel = GetNode<Label>("LevelLabel");
 		energyLabel = GetNode<Label>("EnergyLabel");
 		highlightAllyRect = GetNode<ColorRect>("HighlightAllyRect");
 		highlightEnemyRect = GetNode<ColorRect>("HighlightEnemyRect");
 		animation = GetNode<AnimationPlayer>("AnimationPlayer");
 		energyLabel.Visible = false;
 		sparkTexture = GD.Load<Texture2D>("res://Resources/Assets/Sprites/sparkle_small.png");
+		
+		levelLabel.Text = "";
 		
 		highlightAllyRect.GuiInput += OnGuiInput;
 		highlightEnemyRect.GuiInput += OnGuiInput;
@@ -64,6 +68,8 @@ public partial class FamiliarDisplay : Control
 		actor = fam;
 		isFamiliar = true;
 		
+		levelLabel.Text = $"Level: {fam.familiar.level}";
+		
 		UpdateDisplay();
 	}
 	
@@ -72,6 +78,8 @@ public partial class FamiliarDisplay : Control
 		bool isNew = !ReferenceEquals(actor, spark);
 		actor = spark;
 		isFamiliar = false;
+		
+		levelLabel.Text = "";
 		
 		if (isNew)
 		{
@@ -88,6 +96,8 @@ public partial class FamiliarDisplay : Control
 	public void Clear()
 	{
 		actor = null;
+		
+		levelLabel.Text = "";
 	}
 	
 	public void SetVisibleEnergy(bool toggle)
