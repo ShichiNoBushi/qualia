@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://bq06kup57o1cx"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_10bt8"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_bojvg"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="3_g1flv"]
+[ext_resource type="Resource" uid="uid://c42fkg2d4j504" path="res://Resources/Skills/ember.tres" id="3_qcrc1"]
+[ext_resource type="Resource" uid="uid://co5mpbpqpm3bg" path="res://Resources/Skills/beguile.tres" id="4_2lm77"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="4_4xtrt"]
+[ext_resource type="Resource" uid="uid://dno3a613pgngv" path="res://Resources/Skills/kindle.tres" id="5_u4xlj"]
+[ext_resource type="Resource" uid="uid://dwpi0ax2205ul" path="res://Resources/Skills/marshlight.tres" id="6_8m0ke"]
+[ext_resource type="Resource" uid="uid://devq86hlsfp01" path="res://Resources/Skills/lead_astray.tres" id="7_foi4o"]
+[ext_resource type="Resource" uid="uid://355306yaeck4" path="res://Resources/Skills/frighten.tres" id="8_foi4o"]
+[ext_resource type="Texture2D" uid="uid://edfvm7eixt8c" path="res://Resources/Assets/Retro Monsters (111)/bacterium.png" id="8_iytd5"]
+[ext_resource type="Resource" uid="uid://d33jbub3n6sui" path="res://Resources/Skills/lull.tres" id="9_iytd5"]
+[ext_resource type="Resource" uid="uid://vpnfl3k7phsj" path="res://Resources/Skills/tailwind.tres" id="10_4w7rj"]
+[ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/TypeData/fire.tres" id="11_4w7rj"]
+[ext_resource type="Resource" uid="uid://bjurv3e0h7a2h" path="res://Resources/Skills/flame_wave.tres" id="11_f5l86"]
+[ext_resource type="Resource" uid="uid://ko1ju5iliqbr" path="res://Resources/TypeData/light.tres" id="12_f5l86"]
+
+[sub_resource type="Resource" id="Resource_mi1jq"]
+script = ExtResource("1_10bt8")
+crystalId = "fire"
+amount = 1
+chance = 0.5
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_fvolq"]
+script = ExtResource("1_10bt8")
+crystalId = "light"
+amount = 1
+chance = 0.5
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_cfalh"]
+script = ExtResource("1_10bt8")
+crystalId = "will_o_wisp"
+amount = 1
+chance = 0.15
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("3_g1flv")
+id = "will_o_wisp"
+name = "Will O' Wisp"
+description = "A mysterious ball of light. Following it may be dangerous."
+baseEnergy = 8
+basePAttack = 2
+baseMAttack = 4
+basePDefense = 2
+baseSpeed = 4
+levelEnergy = 1.5
+levelMAttack = 0.75
+levelSpeed = 0.75
+expGrowthFactor = 0.75
+types = Array[ExtResource("4_4xtrt")]([ExtResource("11_4w7rj"), ExtResource("12_f5l86")])
+learnableSkills = Array[ExtResource("2_bojvg")]([ExtResource("3_qcrc1"), ExtResource("4_2lm77"), ExtResource("5_u4xlj"), ExtResource("6_8m0ke"), ExtResource("7_foi4o"), ExtResource("8_foi4o"), ExtResource("9_iytd5"), ExtResource("10_4w7rj"), ExtResource("11_f5l86")])
+levelUpSkills = Dictionary[int, ExtResource("2_bojvg")]({
+1: ExtResource("3_qcrc1"),
+2: ExtResource("4_2lm77"),
+4: ExtResource("5_u4xlj"),
+6: ExtResource("6_8m0ke"),
+9: ExtResource("7_foi4o")
+})
+fortifyRecipe = Dictionary[String, int]({
+"will_o_wisp": 1
+})
+fortifyCost = 10
+enhanceCrystals = Array[String](["fire", "light"])
+crystals = 10
+crystalDrops = Array[ExtResource("1_10bt8")]([SubResource("Resource_mi1jq"), SubResource("Resource_fvolq"), SubResource("Resource_cfalh")])
+portrait = ExtResource("8_iytd5")
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"

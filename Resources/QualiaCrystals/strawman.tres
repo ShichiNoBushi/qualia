@@ -13,6 +13,6 @@ metadata/_custom_type_script = "uid://df7vrqh187nx2"
 script = ExtResource("1_kjaaa")
 id = "strawman"
 name = "Strawman"
-type = 0
 recipe = Array[Object]([SubResource("Resource_wic1i")])
+value = 10
 metadata/_custom_type_script = "uid://drrp5ejurlp51"

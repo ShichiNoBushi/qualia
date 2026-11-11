@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://co5mpbpqpm3bg"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_8b16w"]
+[ext_resource type="Resource" uid="uid://ko1ju5iliqbr" path="res://Resources/TypeData/light.tres" id="2_ith2k"]
+
+[resource]
+script = ExtResource("1_8b16w")
+id = "beguile"
+name = "Beguile"
+type = ExtResource("2_ith2k")
+cost = 3
+statEffect = 2
+statMod = -1
+modChance = 0.7
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

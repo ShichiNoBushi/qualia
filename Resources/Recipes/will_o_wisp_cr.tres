@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://bmvt2hfwuk86d"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_o1ah8"]
+
+[resource]
+script = ExtResource("1_o1ah8")
+id = "will_o_wisp_cr"
+resultId = "will_o_wisp"
+makesPrism = false
+ingredients = Dictionary[String, int]({
+"fire": 2,
+"light": 2
+})
+cost = 20
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://bnb54pa1lyl2v"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_ota5b"]
+
+[resource]
+script = ExtResource("1_ota5b")
+id = "puckling_pr"
+resultId = "puckling"
+ingredients = Dictionary[String, int]({
+"puckling": 5
+})
+cost = 100
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

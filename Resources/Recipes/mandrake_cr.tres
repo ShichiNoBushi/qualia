@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://dt3oocbcpl0wy"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_1xdbi"]
+
+[resource]
+script = ExtResource("1_1xdbi")
+id = "mandrake_cr"
+resultId = "mandrake"
+makesPrism = false
+ingredients = Dictionary[String, int]({
+"plant": 2,
+"sound": 2
+})
+cost = 20
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

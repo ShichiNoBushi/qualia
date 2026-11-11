@@ -11,5 +11,6 @@ type = ExtResource("2_u5cnv")
 description = "Heal minor wounds."
 targetPattern = 2
 cost = 4
+isMagicalAttack = true
 healPower = 2
 metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

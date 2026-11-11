@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://bc8lfkbmxbd07"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_vgrg8"]
+
+[resource]
+script = ExtResource("1_vgrg8")
+id = "sound_cr"
+resultId = "sound"
+makesPrism = false
+ingredients = Dictionary[String, int]({
+"air": 1,
+"water": 1
+})
+cost = 20
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

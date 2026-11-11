@@ -17,5 +17,6 @@ metadata/_custom_type_script = "uid://df7vrqh187nx2"
 script = ExtResource("1_ujara")
 id = "plant"
 name = "Plant"
+type = 0
 recipe = Array[Object]([SubResource("Resource_uyhtt"), SubResource("Resource_qkwtn")])
 metadata/_custom_type_script = "uid://drrp5ejurlp51"

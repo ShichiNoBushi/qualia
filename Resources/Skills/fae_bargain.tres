@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://bjvh5n7kh648e"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_vd3pg"]
+[ext_resource type="Resource" uid="uid://drpcf1uhwtc7m" path="res://Resources/TypeData/darkness.tres" id="2_im83s"]
+
+[resource]
+script = ExtResource("1_vd3pg")
+id = "fae_bargain"
+name = "Fae Bargain"
+type = ExtResource("2_im83s")
+targetPattern = 2
+cost = 5
+defenseFactorOnTarget = 0.8
+statEffect = 10
+statMod = 1
+modChance = 0.75
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

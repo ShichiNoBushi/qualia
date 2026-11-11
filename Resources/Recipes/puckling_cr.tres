@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://cnisltqo7no1m"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_0dxnk"]
+
+[resource]
+script = ExtResource("1_0dxnk")
+id = "puckling_cr"
+resultId = "puckling"
+makesPrism = false
+ingredients = Dictionary[String, int]({
+"air": 2,
+"darkness": 2
+})
+cost = 20
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

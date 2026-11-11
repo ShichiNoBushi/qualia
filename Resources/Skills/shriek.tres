@@ -1,7 +1,16 @@
 [gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://5hnkuw8h81ak"]
 
 [ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_w1cne"]
+[ext_resource type="Resource" uid="uid://8eyicnkeabau" path="res://Resources/TypeData/sound.tres" id="2_mi1jq"]
 
 [resource]
 script = ExtResource("1_w1cne")
+id = "shriek"
+name = "Shriek"
+type = ExtResource("2_mi1jq")
+targetPattern = 5
+cost = 5
+isMagicalAttack = true
+isMagicalDefense = true
+power = 7
 metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

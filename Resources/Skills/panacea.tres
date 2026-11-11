@@ -1,7 +1,15 @@
 [gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://18jtnpxp4xau"]
 
-[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_6haq1"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_sxgka"]
+[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="2_chig4"]
 
 [resource]
-script = ExtResource("1_6haq1")
+script = ExtResource("1_sxgka")
+id = "panacea"
+name = "Panacea"
+type = ExtResource("2_chig4")
+targetPattern = 4
+cost = 10
+isMagicalAttack = true
+healPower = 3
 metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

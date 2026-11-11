@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://c53u42wlrqpx8"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_50p7s"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_j8a8d"]
+[ext_resource type="Resource" uid="uid://cnjd2436ya4ob" path="res://Resources/Skills/gust.tres" id="3_3ilqj"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="3_jdks6"]
+[ext_resource type="Resource" uid="uid://d1vfmu66yh0r8" path="res://Resources/Skills/pinch_n_swap.tres" id="4_d8s3h"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="4_rl3fd"]
+[ext_resource type="Resource" uid="uid://d33jbub3n6sui" path="res://Resources/Skills/lull.tres" id="5_fjtjw"]
+[ext_resource type="Resource" uid="uid://bjvh5n7kh648e" path="res://Resources/Skills/fae_bargain.tres" id="6_ml7s0"]
+[ext_resource type="Resource" uid="uid://jk335i7u1p03" path="res://Resources/Skills/changeling_glamour.tres" id="7_dtafn"]
+[ext_resource type="Resource" uid="uid://co5mpbpqpm3bg" path="res://Resources/Skills/beguile.tres" id="8_2iyqv"]
+[ext_resource type="Resource" uid="uid://b4m8ihs2ppvka" path="res://Resources/Skills/cutting_wind.tres" id="9_hn0d8"]
+[ext_resource type="Resource" uid="uid://3br1rmkli3ri" path="res://Resources/Skills/tempest.tres" id="10_0gmfy"]
+[ext_resource type="Texture2D" uid="uid://lv01st73p1hx" path="res://Resources/Assets/Retro Monsters (111)/alien 1.png" id="11_7su5l"]
+[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/TypeData/air.tres" id="14_dxyo1"]
+[ext_resource type="Resource" uid="uid://drpcf1uhwtc7m" path="res://Resources/TypeData/darkness.tres" id="15_ksbw8"]
+
+[sub_resource type="Resource" id="Resource_j1end"]
+script = ExtResource("1_50p7s")
+crystalId = "air"
+amount = 1
+chance = 0.5
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_e5ujp"]
+script = ExtResource("1_50p7s")
+crystalId = "darkness"
+amount = 1
+chance = 0.5
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_qbo74"]
+script = ExtResource("1_50p7s")
+crystalId = "puckling"
+amount = 1
+chance = 0.15
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("3_jdks6")
+id = "puckling"
+name = "Puckling"
+description = "A trickster fae. It likes to play pranks, so be careful if it offers you a deal."
+baseEnergy = 8
+basePAttack = 2
+baseMAttack = 4
+basePDefense = 2
+baseSpeed = 5
+levelEnergy = 1.5
+levelMAttack = 0.75
+levelSpeed = 0.75
+expGrowthFactor = 0.75
+types = Array[ExtResource("4_rl3fd")]([ExtResource("14_dxyo1"), ExtResource("15_ksbw8")])
+learnableSkills = Array[ExtResource("2_j8a8d")]([ExtResource("3_3ilqj"), ExtResource("4_d8s3h"), ExtResource("5_fjtjw"), ExtResource("6_ml7s0"), ExtResource("7_dtafn"), ExtResource("8_2iyqv"), ExtResource("9_hn0d8"), ExtResource("10_0gmfy")])
+levelUpSkills = Dictionary[int, ExtResource("2_j8a8d")]({
+1: ExtResource("3_3ilqj"),
+2: ExtResource("4_d8s3h"),
+4: ExtResource("5_fjtjw"),
+6: ExtResource("6_ml7s0"),
+9: ExtResource("7_dtafn")
+})
+fortifyRecipe = Dictionary[String, int]({
+"puckling": 1
+})
+fortifyCost = 10
+enhanceCrystals = Array[String](["air", "darkness"])
+crystals = 10
+crystalDrops = Array[ExtResource("1_50p7s")]([SubResource("Resource_j1end"), SubResource("Resource_e5ujp"), SubResource("Resource_qbo74")])
+portrait = ExtResource("11_7su5l")
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"

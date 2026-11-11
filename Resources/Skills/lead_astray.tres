@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://devq86hlsfp01"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_lox65"]
+[ext_resource type="Resource" uid="uid://ko1ju5iliqbr" path="res://Resources/TypeData/light.tres" id="2_uq2fy"]
+
+[resource]
+script = ExtResource("1_lox65")
+id = "lead_astray"
+name = "Lead Astray"
+type = ExtResource("2_uq2fy")
+targetPattern = 5
+cost = 7
+statEffect = 7
+statMod = -1
+modChance = 0.5
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

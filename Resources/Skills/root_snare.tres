@@ -1,7 +1,16 @@
 [gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://3xyuvpddr455"]
 
 [ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_0pmhn"]
+[ext_resource type="Resource" uid="uid://dp8efvfgso2va" path="res://Resources/TypeData/plant.tres" id="2_52ue8"]
 
 [resource]
 script = ExtResource("1_0pmhn")
+id = "root_snare"
+name = "Root Snare"
+type = ExtResource("2_52ue8")
+cost = 2
+speedFactor = 1.25
+statEffect = 5
+statMod = -1
+modChance = 0.7
 metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://b07kcbgj725ko"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_q1oxh"]
+
+[resource]
+script = ExtResource("1_q1oxh")
+id = "strawman_pr"
+resultId = "strawman"
+ingredients = Dictionary[String, int]({
+"strawman": 5
+})
+cost = 50
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

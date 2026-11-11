@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="RQualiaCrystal" format=3 uid="uid://cwwi2eq42swki"]
+
+[ext_resource type="Script" uid="uid://df7vrqh187nx2" path="res://Scripts/RQualiaRequirement.cs" id="1_a2y7o"]
+[ext_resource type="Script" uid="uid://drrp5ejurlp51" path="res://Scripts/RQualiaCrystal.cs" id="1_noqu8"]
+
+[sub_resource type="Resource" id="Resource_a2y7o"]
+script = ExtResource("1_a2y7o")
+id = "air"
+metadata/_custom_type_script = "uid://df7vrqh187nx2"
+
+[sub_resource type="Resource" id="Resource_n6e3v"]
+script = ExtResource("1_a2y7o")
+id = "water"
+metadata/_custom_type_script = "uid://df7vrqh187nx2"
+
+[resource]
+script = ExtResource("1_noqu8")
+id = "sound"
+name = "Sound"
+type = 0
+recipe = Array[Object]([SubResource("Resource_a2y7o"), SubResource("Resource_n6e3v")])
+metadata/_custom_type_script = "uid://drrp5ejurlp51"

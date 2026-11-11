@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://dwpi0ax2205ul"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_tnxfp"]
+[ext_resource type="Resource" uid="uid://dk4ledvumjlao" path="res://Resources/TypeData/fire.tres" id="2_x0t4h"]
+
+[resource]
+script = ExtResource("1_tnxfp")
+id = "marshlight"
+name = "Marshlight"
+type = ExtResource("2_x0t4h")
+cost = 5
+isMagicalAttack = true
+isMagicalDefense = true
+power = 9
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"
