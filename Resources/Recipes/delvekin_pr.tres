@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://deqb55wm44eah"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_8j861"]
+
+[resource]
+script = ExtResource("1_8j861")
+id = "delvekin_pr"
+resultId = "delvekin"
+ingredients = Dictionary[String, int]({
+"delvekin": 5
+})
+cost = 100
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://dl50a6t6kithj"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_ns0qq"]
+[ext_resource type="Resource" uid="uid://bm3wn73wi50mo" path="res://Resources/TypeData/beast.tres" id="2_ro4u8"]
+
+[resource]
+script = ExtResource("1_ns0qq")
+id = "devour_hoard"
+name = "Devour Hoard"
+type = ExtResource("2_ro4u8")
+cost = 8
+power = 18
+overwhelming = true
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://c6mh0t0gcd5pl"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_c1esd"]
+
+[resource]
+script = ExtResource("1_c1esd")
+id = "snap_lid"
+name = "Snap Lid"
+cost = 3
+speedFactor = 0.75
+power = 12
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

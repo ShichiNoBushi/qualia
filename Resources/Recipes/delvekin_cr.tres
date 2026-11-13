@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://dnkx0se8pfx5e"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_gfvyj"]
+
+[resource]
+script = ExtResource("1_gfvyj")
+id = "delvekin_cr"
+resultId = "delvekin"
+makesPrism = false
+ingredients = Dictionary[String, int]({
+"earth": 3
+})
+cost = 20
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

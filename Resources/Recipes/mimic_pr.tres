@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://b30wkak4vxs6c"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_prqyg"]
+
+[resource]
+script = ExtResource("1_prqyg")
+id = "mimic_pr"
+resultId = "mimic"
+ingredients = Dictionary[String, int]({
+"mimic": 5
+})
+cost = 100
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

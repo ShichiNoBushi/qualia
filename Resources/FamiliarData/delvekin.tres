@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://b0nt5w110i7xv"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_lldhm"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_cqutl"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="3_2daly"]
+[ext_resource type="Resource" uid="uid://bqy6da0avoi5x" path="res://Resources/Skills/stone_fist.tres" id="3_ghdoe"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="4_erdma"]
+[ext_resource type="Resource" uid="uid://xq1ysnku8gnx" path="res://Resources/Skills/harden.tres" id="4_mqga2"]
+[ext_resource type="Resource" uid="uid://ch62hq0opoxja" path="res://Resources/Skills/pickaxe_toll.tres" id="5_b4abe"]
+[ext_resource type="Resource" uid="uid://btr6ul1we7shm" path="res://Resources/Skills/quake.tres" id="6_bedal"]
+[ext_resource type="Resource" uid="uid://dbtntense6xdg" path="res://Resources/Skills/mountains_weight.tres" id="7_xmawj"]
+[ext_resource type="Resource" uid="uid://dklaojj8nj1xh" path="res://Resources/Skills/strike.tres" id="8_otjd2"]
+[ext_resource type="Resource" uid="uid://d1vfmu66yh0r8" path="res://Resources/Skills/pinch_n_swap.tres" id="9_uwwsa"]
+[ext_resource type="Resource" uid="uid://dmxl514vvi3cu" path="res://Resources/Skills/false_gold.tres" id="10_5avt3"]
+[ext_resource type="Texture2D" uid="uid://dafdyxhwe6fj5" path="res://Resources/Assets/Retro Monsters (111)/ant soldier.png" id="11_x6wkj"]
+[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="14_3w2rg"]
+
+[sub_resource type="Resource" id="Resource_7iqat"]
+script = ExtResource("1_lldhm")
+crystalId = "earth"
+amount = 1
+chance = 0.6
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_avv2l"]
+script = ExtResource("1_lldhm")
+crystalId = "delvekin"
+amount = 1
+chance = 0.15
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("3_2daly")
+id = "delvekin"
+name = "Delvekin"
+description = "A small creature that toils digging the earth in search of riches."
+baseEnergy = 8
+basePAttack = 5
+baseMAttack = 2
+baseMDefense = 2
+baseSpeed = 4
+levelEnergy = 1.5
+levelPAttack = 0.75
+levelSpeed = 0.75
+expGrowthFactor = 0.75
+types = Array[ExtResource("4_erdma")]([ExtResource("14_3w2rg")])
+learnableSkills = Array[ExtResource("2_cqutl")]([ExtResource("3_ghdoe"), ExtResource("4_mqga2"), ExtResource("5_b4abe"), ExtResource("6_bedal"), ExtResource("7_xmawj"), ExtResource("8_otjd2"), ExtResource("9_uwwsa"), ExtResource("10_5avt3")])
+levelUpSkills = Dictionary[int, ExtResource("2_cqutl")]({
+1: ExtResource("3_ghdoe"),
+2: ExtResource("4_mqga2"),
+4: ExtResource("5_b4abe"),
+6: ExtResource("6_bedal"),
+9: ExtResource("7_xmawj")
+})
+fortifyRecipe = Dictionary[String, int]({
+"delvekin": 1
+})
+fortifyCost = 10
+enhanceCrystals = Array[String](["earth"])
+crystals = 10
+crystalDrops = Array[ExtResource("1_lldhm")]([SubResource("Resource_7iqat"), SubResource("Resource_avv2l")])
+portrait = ExtResource("11_x6wkj")
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"

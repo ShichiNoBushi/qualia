@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://dg8cav5c227pj"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_r0run"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_dka58"]
+[ext_resource type="Resource" uid="uid://c6mh0t0gcd5pl" path="res://Resources/Skills/snap_lid.tres" id="3_j5k24"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="3_sm8al"]
+[ext_resource type="Resource" uid="uid://xq1ysnku8gnx" path="res://Resources/Skills/harden.tres" id="4_o327h"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="4_x6u87"]
+[ext_resource type="Resource" uid="uid://dmxl514vvi3cu" path="res://Resources/Skills/false_gold.tres" id="5_22iv5"]
+[ext_resource type="Resource" uid="uid://dbtntense6xdg" path="res://Resources/Skills/mountains_weight.tres" id="6_xw6ne"]
+[ext_resource type="Resource" uid="uid://dl50a6t6kithj" path="res://Resources/Skills/devour_hoard.tres" id="7_wtnia"]
+[ext_resource type="Resource" uid="uid://bjc3sb856vv3t" path="res://Resources/Skills/cover.tres" id="8_qogg7"]
+[ext_resource type="Resource" uid="uid://bqy6da0avoi5x" path="res://Resources/Skills/stone_fist.tres" id="9_kqv8g"]
+[ext_resource type="Resource" uid="uid://d1vfmu66yh0r8" path="res://Resources/Skills/pinch_n_swap.tres" id="10_y1vl6"]
+[ext_resource type="Texture2D" uid="uid://cu25sovje8i10" path="res://Resources/Assets/Retro Monsters (111)/mimic.png" id="11_jivv6"]
+[ext_resource type="Resource" uid="uid://bm3wn73wi50mo" path="res://Resources/TypeData/beast.tres" id="14_d8xiq"]
+[ext_resource type="Resource" uid="uid://7tf0g0q3yixl" path="res://Resources/TypeData/earth.tres" id="15_4r1xd"]
+
+[sub_resource type="Resource" id="Resource_ysvrs"]
+script = ExtResource("1_r0run")
+crystalId = "beast"
+amount = 1
+chance = 0.7
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_jissm"]
+script = ExtResource("1_r0run")
+crystalId = "earth"
+amount = 1
+chance = 0.7
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_3tx51"]
+script = ExtResource("1_r0run")
+crystalId = "mimic"
+amount = 1
+chance = 0.15
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("3_sm8al")
+id = "mimic"
+name = "Mimic"
+description = "A very devious creature that is able to disguise itself and wait for prey. It typically appears as treasure chests to capture its favorite meal."
+baseEnergy = 12
+basePAttack = 5
+basePDefense = 7
+baseSpeed = 2
+levelEnergy = 2.0
+levelPAttack = 0.75
+levelPDefense = 1.0
+levelMDefense = 0.75
+expGrowthFactor = 1.2
+types = Array[ExtResource("4_x6u87")]([ExtResource("14_d8xiq"), ExtResource("15_4r1xd")])
+learnableSkills = Array[ExtResource("2_dka58")]([ExtResource("3_j5k24"), ExtResource("4_o327h"), ExtResource("5_22iv5"), ExtResource("6_xw6ne"), ExtResource("7_wtnia"), ExtResource("8_qogg7"), ExtResource("9_kqv8g"), ExtResource("10_y1vl6")])
+levelUpSkills = Dictionary[int, ExtResource("2_dka58")]({
+1: ExtResource("3_j5k24"),
+4: ExtResource("4_o327h"),
+8: ExtResource("5_22iv5"),
+13: ExtResource("6_xw6ne"),
+20: ExtResource("7_wtnia")
+})
+fortifyRecipe = Dictionary[String, int]({
+"mimic": 1
+})
+fortifyCost = 20
+enhanceCrystals = Array[String](["beast", "earth"])
+crystals = 20
+crystalDrops = Array[ExtResource("1_r0run")]([SubResource("Resource_ysvrs"), SubResource("Resource_jissm"), SubResource("Resource_3tx51")])
+portrait = ExtResource("11_jivv6")
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"

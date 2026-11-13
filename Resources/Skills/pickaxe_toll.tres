@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://ch62hq0opoxja"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_lidx1"]
+[ext_resource type="Resource" uid="uid://dddyhi1m7v67r" path="res://Resources/TypeData/metal.tres" id="2_ayi3e"]
+
+[resource]
+script = ExtResource("1_lidx1")
+id = "pickaxe_toll"
+name = "Pickaxe Toll"
+type = ExtResource("2_ayi3e")
+cost = 5
+power = 12
+defenseFactorOnTarget = 0.8
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

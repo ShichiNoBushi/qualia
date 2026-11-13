@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://dmxl514vvi3cu"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_wrnja"]
+
+[resource]
+script = ExtResource("1_wrnja")
+id = "false_gold"
+name = "False Gold"
+cost = 2
+statEffect = 2
+statMod = -1
+modChance = 0.9
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"
