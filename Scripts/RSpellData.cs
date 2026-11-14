@@ -15,6 +15,7 @@ public partial class RSpellData : Resource
 	[Export] public bool isMagicalDefense {get; set;} = false;
 	[Export] public int power {get; set;} = 0;
 	[Export] public float splashFactor {get; set;} = 0f;
+	[Export] public float drain {get; set;} = 0f;
 	
 	[Export] public int healPower {get; set;} = 0;
 	[Export] public float defenseFactorOnTarget {get; set;} = 1f;
@@ -57,6 +58,11 @@ public partial class RSpellData : Resource
 			if (splashFactor > 0f)
 			{
 				sublines.Add($"Splash: {splashFactor:0.0}");
+			}
+			
+			if (drain > 0f)
+			{
+				sublines.Add($"Drain: {drain * 100f:0}%");
 			}
 			
 			lines.Add(string.Join("\n", sublines));

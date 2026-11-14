@@ -6,6 +6,6 @@
 script = ExtResource("1_lj5py")
 id = "will_o_wisp"
 name = "Will O' Wisp"
-recipe = null
+recipe = Array[Object]([])
 value = 10
 metadata/_custom_type_script = "uid://drrp5ejurlp51"

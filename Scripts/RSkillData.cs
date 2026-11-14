@@ -18,6 +18,7 @@ public partial class RSkillData : Resource
 	[Export] public int power {get; set;} = 0;
 	[Export] public float splashFactor {get; set;} = 0f;
 	[Export] public bool overwhelming {get; set;} = false;
+	[Export] public float drain {get; set;} = 0f;
 	
 	[Export] public int healPower {get; set;} = 0;
 	[Export] public float defenseFactorOnUser {get; set;} = 1f;
@@ -69,6 +70,11 @@ public partial class RSkillData : Resource
 			if (overwhelming)
 			{
 				sublines.Add("Overwhelming");
+			}
+			
+			if (drain > 0f)
+			{
+				sublines.Add($"Drain: {drain * 100f:0}%");
 			}
 			
 			lines.Add(string.Join("\n", sublines));

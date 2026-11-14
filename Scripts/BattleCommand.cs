@@ -418,6 +418,7 @@ public partial class SkillCommand : BattleCommand
 	public int power {get; set;} = 0;
 	public float splash {get; set;} = 0f;
 	public bool overwhelming {get; set;} = false;
+	public float drain {get; set;} = 0f;
 	
 	public int heal {get; set;} = 0;
 	
@@ -942,6 +943,17 @@ public partial class SkillCommand : BattleCommand
 		float raw = (float)(attackStat * power) / Mathf.Max(defenseStat, 1);
 		int damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 		
+		int energyBefore = 0;
+		
+		if (target is FamiliarActor famBefore)
+		{
+			energyBefore = famBefore.currentEnergy;
+		}
+		else if (target is Projector projBefore)
+		{
+			energyBefore = projBefore.currentEnergy;
+		}
+		
 		ApplyDamage(target, damage, overwhelming, battle);
 		
 		if (dmgMult != 1f)
@@ -982,6 +994,20 @@ public partial class SkillCommand : BattleCommand
 		
 		string text = $"{fEnemyPrefix}[b]{fName}[/b] deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 		battle.AppendBattleText(text, false);
+		
+		if (drain > 0f)
+		{
+			int actual = Mathf.Min(damage, energyBefore);
+			int drainHeal = Mathf.RoundToInt(actual * drain);
+			
+			if (drainHeal > 0)
+			{
+				ApplyHealing(source, drainHeal);
+				
+				text = $"{fEnemyPrefix}[b]{fName}[/b] drains {drainHeal} energy from {tEnemyPrefix}[b]{tName}[/b].";
+				battle.AppendBattleText(text, false);
+			}
+		}
 		
 		if (target is FamiliarActor fam2)
 		{
@@ -1039,6 +1065,8 @@ public partial class SkillCommand : BattleCommand
 					raw = (float)(attackStat * power * splash) / Mathf.Max(defenseStatLeft, 1);
 					damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 					
+					energyBefore = famLeft.currentEnergy;
+					
 					ApplyDamage(famLeft, damage, false, battle);
 					
 					tName = string.IsNullOrEmpty(famLeft.name) ? "(no name)" : famLeft.name;
@@ -1081,6 +1109,20 @@ public partial class SkillCommand : BattleCommand
 					
 					text = $"Attack's splash deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 					battle.AppendBattleText(text, false);
+					
+					if (drain > 0f)
+					{
+						int actual = Mathf.Min(damage, energyBefore);
+						int drainHeal = Mathf.RoundToInt(actual * drain);
+						
+						if (drainHeal > 0)
+						{
+							ApplyHealing(source, drainHeal);
+							
+							text = $"{fEnemyPrefix}[b]{fName}[/b] drains {drainHeal} energy from {tEnemyPrefix}[b]{tName}[/b].";
+							battle.AppendBattleText(text, false);
+						}
+					}
 					
 					int slotL = slot - 1;
 					
@@ -1132,6 +1174,8 @@ public partial class SkillCommand : BattleCommand
 					raw = (float)(attackStat * power * splash) / Mathf.Max(defenseStatRight, 1);
 					damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 					
+					energyBefore = famRight.currentEnergy;
+					
 					ApplyDamage(famRight, damage, false, battle);
 					
 					tName = string.IsNullOrEmpty(famRight.name) ? "(no name)" : famRight.name;
@@ -1174,6 +1218,20 @@ public partial class SkillCommand : BattleCommand
 					
 					text = $"Attack's splash deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 					battle.AppendBattleText(text, false);
+					
+					if (drain > 0f)
+					{
+						int actual = Mathf.Min(damage, energyBefore);
+						int drainHeal = Mathf.RoundToInt(actual * drain);
+						
+						if (drainHeal > 0)
+						{
+							ApplyHealing(source, drainHeal);
+							
+							text = $"{fEnemyPrefix}[b]{fName}[/b] drains {drainHeal} energy from {tEnemyPrefix}[b]{tName}[/b].";
+							battle.AppendBattleText(text, false);
+						}
+					}
 					
 					int slotR = slot + 1;
 					
@@ -1452,6 +1510,7 @@ public partial class SkillCommand : BattleCommand
 		power = skill.power;
 		splash = skill.splashFactor;
 		overwhelming = skill.overwhelming;
+		drain = skill.drain;
 		
 		heal = skill.healPower;
 		
@@ -1489,6 +1548,7 @@ public partial class SpellCommand : BattleCommand
 	
 	public int power {get; set;} = 0;
 	public float splash {get; set;} = 0f;
+	public float drain {get; set;} = 0f;
 	
 	public int heal {get; set;} = 0;
 	
@@ -1940,6 +2000,17 @@ public partial class SpellCommand : BattleCommand
 		float raw = (float)(power) / Mathf.Max(defenseStat, 1);
 		int damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 		
+		int energyBefore = 0;
+		
+		if (target is FamiliarActor famBefore)
+		{
+			energyBefore = famBefore.currentEnergy;
+		}
+		else if (target is Projector projBefore)
+		{
+			energyBefore = projBefore.currentEnergy;
+		}
+		
 		ApplyDamage(target, damage, battle);
 		
 		if (dmgMult != 1f)
@@ -1980,6 +2051,20 @@ public partial class SpellCommand : BattleCommand
 		
 		string text = $"[b]{pName}[/b] deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 		battle.AppendBattleText(text, false);
+		
+		if (drain > 0f)
+		{
+			int actual = Mathf.Min(damage, energyBefore);
+			int drainHeal = Mathf.RoundToInt(actual * drain);
+			
+			if (drainHeal > 0)
+			{
+				proj.currentEnergy = Mathf.Min(proj.currentEnergy + drainHeal, proj.maxEnergy);
+				
+				text = $"[b]{pName}[/b] drains {drainHeal} energy from {tEnemyPrefix}[b]{tName}[/b].";
+				battle.AppendBattleText(text, false);
+			}
+		}
 		
 		if (target is FamiliarActor fam2)
 		{
@@ -2037,6 +2122,8 @@ public partial class SpellCommand : BattleCommand
 					raw = (float)(power * splash) / Mathf.Max(defenseStatLeft, 1);
 					damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 					
+					energyBefore = famLeft.currentEnergy;
+					
 					ApplyDamage(famLeft, damage, battle);
 					
 					tName = string.IsNullOrEmpty(famLeft.name) ? "(no name)" : famLeft.name;
@@ -2079,6 +2166,20 @@ public partial class SpellCommand : BattleCommand
 					
 					text = $"Attack's splash deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 					battle.AppendBattleText(text, false);
+					
+					if (drain > 0f)
+					{
+						int actual = Mathf.Min(damage, energyBefore);
+						int drainHeal = Mathf.RoundToInt(actual * drain);
+						
+						if (drainHeal > 0)
+						{
+							proj.currentEnergy = Mathf.Min(proj.currentEnergy + drainHeal, proj.maxEnergy);
+							
+							text = $"[b]{pName}[/b] drains {drainHeal} energy from {tEnemyPrefix}[b]{tName}[/b].";
+							battle.AppendBattleText(text, false);
+						}
+					}
 					
 					int slotL = slot - 1;
 					
@@ -2130,6 +2231,8 @@ public partial class SpellCommand : BattleCommand
 					raw = (float)(power * splash) / Mathf.Max(defenseStatRight, 1);
 					damage = dmgMult == 0f ? 0 : Mathf.Max(1, Mathf.RoundToInt((raw / defFactor) * dmgMult));
 					
+					energyBefore = famRight.currentEnergy;
+					
 					ApplyDamage(famRight, damage, battle);
 					
 					tName = string.IsNullOrEmpty(famRight.name) ? "(no name)" : famRight.name;
@@ -2172,6 +2275,20 @@ public partial class SpellCommand : BattleCommand
 					
 					text = $"Attack's splash deals {damage} damage to {tEnemyPrefix}[b]{tName}[/b].";
 					battle.AppendBattleText(text, false);
+					
+					if (drain > 0f)
+					{
+						int actual = Mathf.Min(damage, energyBefore);
+						int drainHeal = Mathf.RoundToInt(actual * drain);
+						
+						if (drainHeal > 0)
+						{
+							proj.currentEnergy = Mathf.Min(proj.currentEnergy + drainHeal, proj.maxEnergy);
+							
+							text = $"[b]{pName}[/b] drains {drainHeal} energy from {tEnemyPrefix}[b]{tName}[/b].";
+							battle.AppendBattleText(text, false);
+						}
+					}
 					
 					int slotR = slot + 1;
 					

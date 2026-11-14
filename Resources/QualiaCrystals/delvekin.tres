@@ -4,5 +4,8 @@
 
 [resource]
 script = ExtResource("1_ggmv4")
+id = "delvekin"
+name = "Delvekin"
 recipe = null
+value = 20
 metadata/_custom_type_script = "uid://drrp5ejurlp51"
