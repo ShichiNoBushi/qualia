@@ -184,6 +184,7 @@ smallEncounters = Array[Object]([ExtResource("7_utdyw"), ExtResource("8_pll4v"),
 largeEncounters = Array[Object]([ExtResource("11_ov7jo")])
 smallSparkScene = ExtResource("12_jkuiv")
 largeSparkScene = ExtResource("15_ngc2t")
+rareSparkScene = ExtResource("12_jkuiv")
 maxSparks = 5
 minInterval = 1.0
 maxInterval = 5.0
@@ -199,6 +200,7 @@ script = ExtResource("6_vi3vx")
 smallEncounters = Array[Object]([ExtResource("17_fgwjc")])
 smallSparkScene = ExtResource("12_jkuiv")
 largeSparkScene = ExtResource("15_ngc2t")
+rareSparkScene = ExtResource("12_jkuiv")
 largeChance = 0.0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="YSort/WheatsongEncounterArea" unique_id=995058178]

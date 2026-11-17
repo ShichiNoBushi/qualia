@@ -4,12 +4,15 @@ using System;
 public partial class EncounterZone : Area2D
 {
 	[Export] public Godot.Collections.Array<REncounterData> smallEncounters {get; set;}
+	[Export] public Godot.Collections.Array<REncounterData> rareEncounters {get; set;}
 	[Export] public Godot.Collections.Array<REncounterData> largeEncounters {get; set;}
 	[Export] public PackedScene smallSparkScene {get; set;}
 	[Export] public PackedScene largeSparkScene {get; set;}
+	[Export] public PackedScene rareSparkScene {get; set;}
 	[Export] public int maxSparks {get; set;} = 3;
 	[Export] public float minInterval {get; set;} = 8f;
 	[Export] public float maxInterval {get; set;} = 20f;
+	[Export] public float rareChance {get; set;} = 0.05f;
 	[Export] public float largeChance {get; set;} = 0.25f;
 	
 	public Godot.Collections.Array<WildSpark> liveSparks;
@@ -70,9 +73,11 @@ public partial class EncounterZone : Area2D
 			return;
 		}
 		
-		bool large = largeChance > 0f && largeEncounters.Count > 0 && GD.Randf() < largeChance;
+		float roll = GD.Randf();
+		bool rare = rareChance > 0f && rareEncounters.Count > 0 && roll < rareChance;
+		bool large = !rare && largeChance > 0f && largeEncounters.Count > 0 && GD.Randf() < rareChance + largeChance;
 		
-		Godot.Collections.Array<REncounterData> encList = large ? largeEncounters : smallEncounters;
+		Godot.Collections.Array<REncounterData> encList = rare ? rareEncounters : (large ? largeEncounters : smallEncounters);
 		
 		if (encList == null || encList.Count == 0)
 		{
@@ -80,7 +85,14 @@ public partial class EncounterZone : Area2D
 			return;
 		}
 		
-		PackedScene scene = large ? largeSparkScene : smallSparkScene;
+		PackedScene scene = rare ? rareSparkScene : (large ? largeSparkScene : smallSparkScene);
+		
+		if (scene == null)
+		{
+			RestartTimer();
+			return;
+		}
+		
 		WildSpark spark = scene.Instantiate<WildSpark>();
 		
 		spark.encounter = encList[(int)(GD.Randi() % encList.Count)];
