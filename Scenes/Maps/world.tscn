@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="15_qe4dn"]
 [ext_resource type="Resource" uid="uid://c4akgvwuxye5y" path="res://Resources/Encounters/strawman3.tres" id="17_fgwjc"]
 [ext_resource type="PackedScene" uid="uid://duy000bar45m2" path="res://Scenes/Objects/sign.tscn" id="17_vi3vx"]
+[ext_resource type="PackedScene" uid="uid://boavhmuvkxu68" path="res://Scenes/Interface/wild_spark_rare.tscn" id="20_jkuiv"]
 [ext_resource type="Script" uid="uid://25n366qtb4a7" path="res://Scripts/MapRegion.cs" id="22_ov7jo"]
 
 [sub_resource type="Resource" id="Resource_ov7jo"]
@@ -181,10 +182,11 @@ collision_layer = 2
 collision_mask = 2
 script = ExtResource("6_vi3vx")
 smallEncounters = Array[Object]([ExtResource("7_utdyw"), ExtResource("8_pll4v"), ExtResource("9_s0v22"), ExtResource("10_fgwjc")])
+rareEncounters = Array[Object]([ExtResource("17_fgwjc")])
 largeEncounters = Array[Object]([ExtResource("11_ov7jo")])
 smallSparkScene = ExtResource("12_jkuiv")
 largeSparkScene = ExtResource("15_ngc2t")
-rareSparkScene = ExtResource("12_jkuiv")
+rareSparkScene = ExtResource("20_jkuiv")
 maxSparks = 5
 minInterval = 1.0
 maxInterval = 5.0
@@ -198,9 +200,10 @@ one_shot = true
 [node name="WheatsongEncounterArea" type="Area2D" parent="YSort" unique_id=1275382441]
 script = ExtResource("6_vi3vx")
 smallEncounters = Array[Object]([ExtResource("17_fgwjc")])
+rareEncounters = Array[Object]([ExtResource("9_s0v22")])
 smallSparkScene = ExtResource("12_jkuiv")
 largeSparkScene = ExtResource("15_ngc2t")
-rareSparkScene = ExtResource("12_jkuiv")
+rareSparkScene = ExtResource("20_jkuiv")
 largeChance = 0.0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="YSort/WheatsongEncounterArea" unique_id=995058178]
