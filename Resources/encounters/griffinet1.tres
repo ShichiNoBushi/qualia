@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="REncounterData" format=3 uid="uid://43x8ydyk1wcl"]
+
+[ext_resource type="Script" uid="uid://dki63xii04tcd" path="res://Scripts/RFamiliarSpawn.cs" id="1_mq82d"]
+[ext_resource type="Resource" uid="uid://bbo1h3ooolem8" path="res://Resources/FamiliarData/griffinet.tres" id="2_eerst"]
+[ext_resource type="Script" uid="uid://ctnjg4mtw7rfj" path="res://Scripts/REncounterData.cs" id="2_ghxtw"]
+
+[sub_resource type="Resource" id="Resource_eerst"]
+script = ExtResource("1_mq82d")
+familiar = ExtResource("2_eerst")
+minLevel = 4
+maxLevel = 6
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[resource]
+script = ExtResource("2_ghxtw")
+id = "griffinet1"
+name = "Griffinet x1"
+familiarList = Array[ExtResource("1_mq82d")]([SubResource("Resource_eerst")])
+metadata/_custom_type_script = "uid://ctnjg4mtw7rfj"

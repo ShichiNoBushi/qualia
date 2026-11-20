@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="REncounterData" format=3 uid="uid://bdym2xdoe504y"]
+
+[ext_resource type="Script" uid="uid://dki63xii04tcd" path="res://Scripts/RFamiliarSpawn.cs" id="1_eyora"]
+[ext_resource type="Resource" uid="uid://dymr0f1knu21f" path="res://Resources/FamiliarData/strawman.tres" id="2_2ytu0"]
+[ext_resource type="Script" uid="uid://ctnjg4mtw7rfj" path="res://Scripts/REncounterData.cs" id="2_hr5jv"]
+
+[sub_resource type="Resource" id="Resource_2ytu0"]
+script = ExtResource("1_eyora")
+familiar = ExtResource("2_2ytu0")
+maxLevel = 2
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[sub_resource type="Resource" id="Resource_urnlb"]
+script = ExtResource("1_eyora")
+familiar = ExtResource("2_2ytu0")
+maxLevel = 2
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[resource]
+script = ExtResource("2_hr5jv")
+id = "strawman2"
+name = "Strawman x2"
+familiarList = Array[ExtResource("1_eyora")]([SubResource("Resource_2ytu0"), SubResource("Resource_urnlb")])
+metadata/_custom_type_script = "uid://ctnjg4mtw7rfj"

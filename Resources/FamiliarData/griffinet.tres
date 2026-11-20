@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://bbo1h3ooolem8"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_qqgqa"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_a3bjc"]
+[ext_resource type="Resource" uid="uid://cnjd2436ya4ob" path="res://Resources/Skills/gust.tres" id="3_e3hxf"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="3_n678m"]
+[ext_resource type="Resource" uid="uid://vpnfl3k7phsj" path="res://Resources/Skills/tailwind.tres" id="4_a4pyd"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="4_hyc31"]
+[ext_resource type="Resource" uid="uid://bxgnrpbhk0qwa" path="res://Resources/Skills/talon_dive.tres" id="5_l3yl2"]
+[ext_resource type="Resource" uid="uid://b4m8ihs2ppvka" path="res://Resources/Skills/cutting_wind.tres" id="6_0qedg"]
+[ext_resource type="Resource" uid="uid://b3qd1qtlid21b" path="res://Resources/Skills/heraldric_cry.tres" id="7_hulse"]
+[ext_resource type="Resource" uid="uid://3br1rmkli3ri" path="res://Resources/Skills/tempest.tres" id="8_nk03i"]
+[ext_resource type="Resource" uid="uid://bm3wn73wi50mo" path="res://Resources/TypeData/beast.tres" id="11_52qy6"]
+[ext_resource type="Resource" uid="uid://dlfm5o05ysdd7" path="res://Resources/TypeData/air.tres" id="12_biosr"]
+
+[sub_resource type="Resource" id="Resource_e8ari"]
+script = ExtResource("1_qqgqa")
+crystalId = "beast"
+amount = 2
+chance = 0.4
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_u6saq"]
+script = ExtResource("1_qqgqa")
+crystalId = "air"
+amount = 2
+chance = 0.4
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_knbh5"]
+script = ExtResource("1_qqgqa")
+crystalId = "griffinet"
+amount = 1
+chance = 0.15
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("3_n678m")
+id = "griffinet"
+name = "Griffinet"
+description = "A creature combining the features of a raptor and a large cat. Sometimes seen as a symbol of nobility."
+baseEnergy = 15
+basePAttack = 7
+basePDefense = 5
+baseSpeed = 7
+levelEnergy = 1.5
+levelPAttack = 1.0
+levelMAttack = 0.75
+levelPDefense = 0.75
+levelSpeed = 1.0
+expGrowthFactor = 1.5
+types = Array[ExtResource("4_hyc31")]([ExtResource("11_52qy6"), ExtResource("12_biosr")])
+learnableSkills = Array[ExtResource("2_a3bjc")]([ExtResource("3_e3hxf"), ExtResource("4_a4pyd"), ExtResource("5_l3yl2"), ExtResource("6_0qedg"), ExtResource("7_hulse"), ExtResource("8_nk03i")])
+levelUpSkills = Dictionary[int, ExtResource("2_a3bjc")]({
+1: ExtResource("3_e3hxf"),
+5: ExtResource("4_a4pyd"),
+10: ExtResource("5_l3yl2"),
+16: ExtResource("6_0qedg"),
+24: ExtResource("7_hulse")
+})
+fortifyRecipe = Dictionary[String, int]({
+"griffinet": 1
+})
+fortifyCost = 20
+enhanceCrystals = Array[String](["beast", "air"])
+crystals = 30
+crystalDrops = Array[ExtResource("1_qqgqa")]([SubResource("Resource_e8ari"), SubResource("Resource_u6saq"), SubResource("Resource_knbh5")])
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://cf3dwg4tcmbna"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_48eey"]
+
+[resource]
+script = ExtResource("1_48eey")
+id = "griffinet_pr"
+resultId = "griffinet"
+cost = 200
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

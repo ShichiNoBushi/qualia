@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RQualiaCrystal" format=3 uid="uid://b13g0bfcv2dba"]
+
+[ext_resource type="Script" uid="uid://drrp5ejurlp51" path="res://Scripts/RQualiaCrystal.cs" id="1_fmt6d"]
+
+[resource]
+script = ExtResource("1_fmt6d")
+id = "griffinet"
+name = "Griffinet"
+recipe = null
+value = 20
+metadata/_custom_type_script = "uid://drrp5ejurlp51"

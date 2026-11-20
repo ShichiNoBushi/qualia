@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="REncounterData" format=3 uid="uid://c58qk311fnfkj"]
+
+[ext_resource type="Script" uid="uid://dki63xii04tcd" path="res://Scripts/RFamiliarSpawn.cs" id="1_8j8b6"]
+[ext_resource type="Script" uid="uid://ctnjg4mtw7rfj" path="res://Scripts/REncounterData.cs" id="2_36jlo"]
+[ext_resource type="Resource" uid="uid://cph17bvgufjx3" path="res://Resources/FamiliarData/sylph.tres" id="2_u334t"]
+[ext_resource type="Resource" uid="uid://c53u42wlrqpx8" path="res://Resources/FamiliarData/puckling.tres" id="3_vcp80"]
+
+[sub_resource type="Resource" id="Resource_u334t"]
+script = ExtResource("1_8j8b6")
+familiar = ExtResource("2_u334t")
+maxLevel = 2
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[sub_resource type="Resource" id="Resource_vcp80"]
+script = ExtResource("1_8j8b6")
+familiar = ExtResource("3_vcp80")
+maxLevel = 2
+metadata/_custom_type_script = "uid://dki63xii04tcd"
+
+[resource]
+script = ExtResource("2_36jlo")
+id = "sylph_puckling"
+name = "Sylph Puckling"
+familiarList = Array[ExtResource("1_8j8b6")]([SubResource("Resource_u334t"), SubResource("Resource_vcp80")])
+metadata/_custom_type_script = "uid://ctnjg4mtw7rfj"

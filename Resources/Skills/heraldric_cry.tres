@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://b3qd1qtlid21b"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_7ip1d"]
+[ext_resource type="Resource" uid="uid://bm3wn73wi50mo" path="res://Resources/TypeData/beast.tres" id="2_2x40k"]
+
+[resource]
+script = ExtResource("1_7ip1d")
+id = "heraldric_cry"
+name = "Heraldric Cry"
+type = ExtResource("2_2x40k")
+targetPattern = 4
+cost = 5
+statEffect = 6
+statMod = 1
+modChance = 1.0
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

@@ -22,7 +22,13 @@
 [ext_resource type="Resource" uid="uid://c4akgvwuxye5y" path="res://Resources/Encounters/strawman3.tres" id="17_fgwjc"]
 [ext_resource type="PackedScene" uid="uid://duy000bar45m2" path="res://Scenes/Objects/sign.tscn" id="17_vi3vx"]
 [ext_resource type="PackedScene" uid="uid://boavhmuvkxu68" path="res://Scenes/Interface/wild_spark_rare.tscn" id="20_jkuiv"]
+[ext_resource type="Resource" uid="uid://43x8ydyk1wcl" path="res://Resources/Encounters/griffinet1.tres" id="22_78p4p"]
 [ext_resource type="Script" uid="uid://25n366qtb4a7" path="res://Scripts/MapRegion.cs" id="22_ov7jo"]
+[ext_resource type="Resource" uid="uid://dgqlyndddgugt" path="res://Resources/Encounters/strawman1.tres" id="22_y4rgn"]
+[ext_resource type="Resource" uid="uid://c4om0xqjldx10" path="res://Resources/Encounters/gnome1.tres" id="23_7ygog"]
+[ext_resource type="Resource" uid="uid://c4ly6kiaea8ha" path="res://Resources/Encounters/sylph1.tres" id="24_iculn"]
+[ext_resource type="Resource" uid="uid://bdym2xdoe504y" path="res://Resources/Encounters/strawman2.tres" id="26_ib4n3"]
+[ext_resource type="Resource" uid="uid://c58qk311fnfkj" path="res://Resources/Encounters/sylph_puckling.tres" id="27_tcmyr"]
 
 [sub_resource type="Resource" id="Resource_ov7jo"]
 script = ExtResource("6_utdyw")
@@ -199,8 +205,9 @@ one_shot = true
 
 [node name="WheatsongEncounterArea" type="Area2D" parent="YSort" unique_id=1275382441]
 script = ExtResource("6_vi3vx")
-smallEncounters = Array[Object]([ExtResource("17_fgwjc")])
-rareEncounters = Array[Object]([ExtResource("9_s0v22")])
+smallEncounters = Array[Object]([ExtResource("22_y4rgn"), ExtResource("23_7ygog"), ExtResource("24_iculn")])
+rareEncounters = Array[Object]([ExtResource("22_78p4p")])
+largeEncounters = Array[Object]([ExtResource("26_ib4n3"), ExtResource("27_tcmyr")])
 smallSparkScene = ExtResource("12_jkuiv")
 largeSparkScene = ExtResource("15_ngc2t")
 rareSparkScene = ExtResource("20_jkuiv")
