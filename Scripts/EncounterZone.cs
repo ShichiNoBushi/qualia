@@ -3,9 +3,9 @@ using System;
 
 public partial class EncounterZone : Area2D
 {
-	[Export] public Godot.Collections.Array<REncounterData> smallEncounters {get; set;}
-	[Export] public Godot.Collections.Array<REncounterData> rareEncounters {get; set;}
-	[Export] public Godot.Collections.Array<REncounterData> largeEncounters {get; set;}
+	[Export] public Godot.Collections.Array<REncounterData> smallEncounters {get; set;} = new();
+	[Export] public Godot.Collections.Array<REncounterData> rareEncounters {get; set;} = new();
+	[Export] public Godot.Collections.Array<REncounterData> largeEncounters {get; set;} = new();
 	[Export] public PackedScene smallSparkScene {get; set;}
 	[Export] public PackedScene largeSparkScene {get; set;}
 	[Export] public PackedScene rareSparkScene {get; set;}
@@ -74,8 +74,8 @@ public partial class EncounterZone : Area2D
 		}
 		
 		float roll = GD.Randf();
-		bool rare = rareChance > 0f && rareEncounters.Count > 0 && roll < rareChance;
-		bool large = !rare && largeChance > 0f && largeEncounters.Count > 0 && GD.Randf() < rareChance + largeChance;
+		bool rare = rareChance > 0f && rareEncounters != null && rareEncounters.Count > 0 && roll < rareChance;
+		bool large = !rare && largeChance > 0f && largeEncounters != null && largeEncounters.Count > 0 && GD.Randf() < rareChance + largeChance;
 		
 		Godot.Collections.Array<REncounterData> encList = rare ? rareEncounters : (large ? largeEncounters : smallEncounters);
 		
