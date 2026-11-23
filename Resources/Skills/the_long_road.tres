@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://bcxgy45t0ysvp"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_8kvja"]
+[ext_resource type="Resource" uid="uid://ko1ju5iliqbr" path="res://Resources/TypeData/light.tres" id="2_shtro"]
+
+[resource]
+script = ExtResource("1_8kvja")
+id = "the_long_road"
+name = "The Long Road"
+type = ExtResource("2_shtro")
+targetPattern = 4
+cost = 10
+isMagicalAttack = true
+healPower = 2
+statEffect = 10
+statMod = 1
+modChance = 1.0
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

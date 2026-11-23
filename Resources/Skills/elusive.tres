@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://bmlr3c7qjv4k3"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_o774f"]
+[ext_resource type="Resource" uid="uid://bm3wn73wi50mo" path="res://Resources/TypeData/beast.tres" id="2_orusa"]
+
+[resource]
+script = ExtResource("1_o774f")
+id = "elusive"
+name = "Elusive"
+type = ExtResource("2_orusa")
+targetPattern = 1
+cost = 5
+speedFactor = 1.25
+statEffect = 7
+statMod = 2
+modChance = 1.0
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

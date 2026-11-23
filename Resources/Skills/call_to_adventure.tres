@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RSkillData" format=3 uid="uid://bnlob0e4kan4v"]
+
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="1_lcsjw"]
+[ext_resource type="Resource" uid="uid://ko1ju5iliqbr" path="res://Resources/TypeData/light.tres" id="2_cegum"]
+
+[resource]
+script = ExtResource("1_lcsjw")
+id = "call_to_adventure"
+name = "Call to Adventure"
+type = ExtResource("2_cegum")
+targetPattern = 4
+cost = 5
+statEffect = 9
+statMod = 1
+modChance = 1.0
+metadata/_custom_type_script = "uid://b6eq1t25pw5wq"

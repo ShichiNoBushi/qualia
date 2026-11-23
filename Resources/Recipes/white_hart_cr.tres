@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="RForgeRecipe" format=3 uid="uid://bymu67p5aox87"]
+
+[ext_resource type="Script" uid="uid://bl50jm24c2jcp" path="res://Scripts/RForgeRecipe.cs" id="1_tuh6c"]
+
+[resource]
+script = ExtResource("1_tuh6c")
+id = "white_hart_cr"
+resultId = "white_hart"
+makesPrism = false
+ingredients = Dictionary[String, int]({
+"beast": 5,
+"light": 5
+})
+cost = 200
+metadata/_custom_type_script = "uid://bl50jm24c2jcp"

@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://c2j5gax48ohu7"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_ygh25"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_e3hdn"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="3_aejmq"]
+[ext_resource type="Resource" uid="uid://co5mpbpqpm3bg" path="res://Resources/Skills/beguile.tres" id="3_lujny"]
+[ext_resource type="Resource" uid="uid://cb4wgbef6wm6m" path="res://Resources/Skills/antler_charge.tres" id="4_qfdyg"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="4_sdq8s"]
+[ext_resource type="Resource" uid="uid://bnlob0e4kan4v" path="res://Resources/Skills/call_to_adventure.tres" id="5_brt5w"]
+[ext_resource type="Resource" uid="uid://bmlr3c7qjv4k3" path="res://Resources/Skills/elusive.tres" id="6_xdc71"]
+[ext_resource type="Resource" uid="uid://bcxgy45t0ysvp" path="res://Resources/Skills/the_long_road.tres" id="7_j50hf"]
+[ext_resource type="Resource" uid="uid://dwpi0ax2205ul" path="res://Resources/Skills/marshlight.tres" id="8_d5dpu"]
+[ext_resource type="Resource" uid="uid://b3qd1qtlid21b" path="res://Resources/Skills/heraldric_cry.tres" id="9_qb1my"]
+[ext_resource type="Resource" uid="uid://bm3wn73wi50mo" path="res://Resources/TypeData/beast.tres" id="12_ffdsx"]
+[ext_resource type="Resource" uid="uid://ko1ju5iliqbr" path="res://Resources/TypeData/light.tres" id="13_wt36k"]
+
+[sub_resource type="Resource" id="Resource_m5ult"]
+script = ExtResource("1_ygh25")
+crystalId = "beast"
+amount = 3
+chance = 0.4
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_ubgsy"]
+script = ExtResource("1_ygh25")
+crystalId = "light"
+amount = 3
+chance = 0.4
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_2twuq"]
+script = ExtResource("1_ygh25")
+crystalId = "white_hart"
+amount = 1
+chance = 0.05
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("3_aejmq")
+id = "white_hart"
+name = "White Hart"
+description = "A rare stag known for its brilliant fur and majestic antlers. It could either be a prized hunt or a great ally."
+baseEnergy = 17
+basePAttack = 7
+baseMAttack = 6
+basePDefense = 4
+baseMDefense = 6
+baseSpeed = 5
+levelEnergy = 1.75
+levelPAttack = 1.25
+levelMAttack = 1.0
+levelPDefense = 0.75
+levelMDefense = 1.0
+levelSpeed = 1.0
+expGrowthFactor = 2.0
+types = Array[ExtResource("4_sdq8s")]([ExtResource("12_ffdsx"), ExtResource("13_wt36k")])
+learnableSkills = Array[ExtResource("2_e3hdn")]([ExtResource("3_lujny"), ExtResource("4_qfdyg"), ExtResource("5_brt5w"), ExtResource("6_xdc71"), ExtResource("7_j50hf"), ExtResource("8_d5dpu"), ExtResource("9_qb1my")])
+levelUpSkills = Dictionary[int, ExtResource("2_e3hdn")]({
+1: ExtResource("3_lujny"),
+5: ExtResource("4_qfdyg"),
+12: ExtResource("5_brt5w"),
+20: ExtResource("6_xdc71"),
+28: ExtResource("7_j50hf")
+})
+fortifyRecipe = Dictionary[String, int]({
+"white_hart": 1
+})
+fortifyCost = 50
+enhanceCrystals = Array[String](["beast", "light"])
+crystals = 200
+crystalDrops = Array[ExtResource("1_ygh25")]([SubResource("Resource_m5ult"), SubResource("Resource_ubgsy"), SubResource("Resource_2twuq")])
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"
