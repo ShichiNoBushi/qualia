@@ -17,6 +17,7 @@
 [ext_resource type="Resource" uid="uid://dp3xd3ejwltlm" path="res://Resources/Encounters/test_encounter.tres" id="11_ov7jo"]
 [ext_resource type="PackedScene" uid="uid://h3qvqlbvbmva" path="res://Scenes/Characters/wild_spark_small.tscn" id="12_jkuiv"]
 [ext_resource type="PackedScene" uid="uid://c7ghumn7n000w" path="res://Scenes/Objects/chest.tscn" id="13_pnsqa"]
+[ext_resource type="Script" uid="uid://ctnjg4mtw7rfj" path="res://Scripts/REncounterData.cs" id="13_tbxb0"]
 [ext_resource type="PackedScene" uid="uid://baebeonng7831" path="res://Scenes/Maps/wild_spark_large.tscn" id="15_ngc2t"]
 [ext_resource type="Script" uid="uid://c2vhh7koyfe54" path="res://Scripts/MapTransition.cs" id="15_qe4dn"]
 [ext_resource type="Resource" uid="uid://c4akgvwuxye5y" path="res://Resources/Encounters/strawman3.tres" id="17_fgwjc"]
@@ -34,6 +35,7 @@
 [ext_resource type="Resource" uid="uid://crjd2t2s80lxu" path="res://Resources/Encounters/gnome1_2.tres" id="30_tbxb0"]
 [ext_resource type="Resource" uid="uid://bvycoqj5pvy35" path="res://Resources/Encounters/puckling2.tres" id="31_1bs4t"]
 [ext_resource type="Resource" uid="uid://cs5nlbtmxkmqw" path="res://Resources/Encounters/mandrake_wisp.tres" id="32_gv6sd"]
+[ext_resource type="Resource" uid="uid://dqq5fr8v8ger4" path="res://Resources/Encounters/undine1.tres" id="34_1bs4t"]
 
 [sub_resource type="Resource" id="Resource_ov7jo"]
 script = ExtResource("6_utdyw")
@@ -192,9 +194,9 @@ position = Vector2(960, 608)
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("6_vi3vx")
-smallEncounters = Array[Object]([ExtResource("7_utdyw"), ExtResource("8_pll4v"), ExtResource("9_s0v22"), ExtResource("10_fgwjc")])
-rareEncounters = Array[Object]([ExtResource("17_fgwjc")])
-largeEncounters = Array[Object]([ExtResource("11_ov7jo")])
+smallEncounters = Array[ExtResource("13_tbxb0")]([ExtResource("7_utdyw"), ExtResource("8_pll4v"), ExtResource("9_s0v22"), ExtResource("10_fgwjc")])
+rareEncounters = Array[ExtResource("13_tbxb0")]([ExtResource("17_fgwjc")])
+largeEncounters = Array[ExtResource("13_tbxb0")]([ExtResource("11_ov7jo")])
 smallSparkScene = ExtResource("12_jkuiv")
 largeSparkScene = ExtResource("15_ngc2t")
 rareSparkScene = ExtResource("20_jkuiv")
@@ -210,9 +212,9 @@ one_shot = true
 
 [node name="WheatsongEncounterArea" type="Area2D" parent="YSort" unique_id=1275382441]
 script = ExtResource("6_vi3vx")
-smallEncounters = Array[Object]([ExtResource("22_y4rgn"), ExtResource("23_7ygog"), ExtResource("24_iculn")])
-rareEncounters = Array[Object]([ExtResource("22_78p4p")])
-largeEncounters = Array[Object]([ExtResource("26_ib4n3"), ExtResource("27_tcmyr")])
+smallEncounters = Array[ExtResource("13_tbxb0")]([ExtResource("22_y4rgn"), ExtResource("23_7ygog"), ExtResource("24_iculn")])
+rareEncounters = Array[ExtResource("13_tbxb0")]([ExtResource("22_78p4p")])
+largeEncounters = Array[ExtResource("13_tbxb0")]([ExtResource("26_ib4n3"), ExtResource("27_tcmyr")])
 smallSparkScene = ExtResource("12_jkuiv")
 largeSparkScene = ExtResource("15_ngc2t")
 rareSparkScene = ExtResource("20_jkuiv")
@@ -226,8 +228,8 @@ polygon = PackedVector2Array(-928, 256, -512, 256, -512, 608, -928, 608)
 [node name="ThornwoodEncounterArea" type="Area2D" parent="YSort" unique_id=458770165]
 position = Vector2(2496, -96)
 script = ExtResource("6_vi3vx")
-smallEncounters = Array[Object]([ExtResource("28_a7j7l"), ExtResource("29_8ckny"), ExtResource("30_tbxb0")])
-rareEncounters = Array[Object]([ExtResource("31_1bs4t"), ExtResource("32_gv6sd")])
+smallEncounters = Array[ExtResource("13_tbxb0")]([ExtResource("28_a7j7l"), ExtResource("29_8ckny"), ExtResource("30_tbxb0")])
+rareEncounters = Array[ExtResource("13_tbxb0")]([ExtResource("31_1bs4t"), ExtResource("32_gv6sd")])
 smallSparkScene = ExtResource("12_jkuiv")
 largeSparkScene = ExtResource("15_ngc2t")
 rareSparkScene = ExtResource("20_jkuiv")
@@ -240,6 +242,10 @@ polygon = PackedVector2Array(0, 0, 576, 0, 576, 352, 0, 352)
 [node name="MirrormereEncounterArea" type="Area2D" parent="YSort" unique_id=392236175]
 position = Vector2(-352, 1728)
 script = ExtResource("6_vi3vx")
+smallEncounters = Array[ExtResource("13_tbxb0")]([ExtResource("34_1bs4t")])
+smallSparkScene = ExtResource("12_jkuiv")
+largeSparkScene = ExtResource("15_ngc2t")
+rareSparkScene = ExtResource("20_jkuiv")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="YSort/MirrormereEncounterArea" unique_id=1346453088]
 polygon = PackedVector2Array(0, 0, 736, 0, 736, 480, 0, 480)

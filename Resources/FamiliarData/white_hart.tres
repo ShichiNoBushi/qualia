@@ -56,8 +56,8 @@ expGrowthFactor = 2.0
 types = Array[ExtResource("4_sdq8s")]([ExtResource("12_ffdsx"), ExtResource("13_wt36k")])
 learnableSkills = Array[ExtResource("2_e3hdn")]([ExtResource("3_lujny"), ExtResource("4_qfdyg"), ExtResource("5_brt5w"), ExtResource("6_xdc71"), ExtResource("7_j50hf"), ExtResource("8_d5dpu"), ExtResource("9_qb1my")])
 levelUpSkills = Dictionary[int, ExtResource("2_e3hdn")]({
-1: ExtResource("3_lujny"),
-5: ExtResource("4_qfdyg"),
+1: ExtResource("4_qfdyg"),
+5: ExtResource("3_lujny"),
 12: ExtResource("5_brt5w"),
 20: ExtResource("6_xdc71"),
 28: ExtResource("7_j50hf")
