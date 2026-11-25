@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="RFamiliarData" format=3 uid="uid://bx7kqbxf6evkp"]
+
+[ext_resource type="Script" uid="uid://chsfsb1luf0id" path="res://Scripts/RCrystalDrop.cs" id="1_183po"]
+[ext_resource type="Script" uid="uid://b6eq1t25pw5wq" path="res://Scripts/RSkillData.cs" id="2_2yh1b"]
+[ext_resource type="Script" uid="uid://c6t16g27uf4ia" path="res://Scripts/RFamiliarData.cs" id="3_nets3"]
+[ext_resource type="Resource" uid="uid://5hnkuw8h81ak" path="res://Resources/Skills/shriek.tres" id="3_s6peu"]
+[ext_resource type="Script" uid="uid://3uin7wh74kon" path="res://Scripts/RTypeData.cs" id="4_s6peu"]
+[ext_resource type="Resource" uid="uid://dkunwqmny4hfi" path="res://Resources/TypeData/death.tres" id="6_oaaqn"]
+[ext_resource type="Resource" uid="uid://8eyicnkeabau" path="res://Resources/TypeData/sound.tres" id="7_30q73"]
+
+[sub_resource type="Resource" id="Resource_30q73"]
+script = ExtResource("1_183po")
+crystalId = "death"
+amount = 1
+chance = 0.4
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_7ktes"]
+script = ExtResource("1_183po")
+crystalId = "sound"
+amount = 1
+chance = 0.4
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[sub_resource type="Resource" id="Resource_2poau"]
+script = ExtResource("1_183po")
+crystalId = "banshee"
+amount = 1
+chance = 0.15
+metadata/_custom_type_script = "uid://chsfsb1luf0id"
+
+[resource]
+script = ExtResource("3_nets3")
+id = "banshee"
+name = "Banshee"
+description = "A wailing spirit whose mourful voice brings dispair to all who hear it."
+baseEnergy = 12
+baseMAttack = 6
+baseMDefense = 5
+baseSpeed = 5
+levelEnergy = 1.2
+levelMAttack = 1.0
+levelMDefense = 0.75
+levelSpeed = 0.75
+types = Array[ExtResource("4_s6peu")]([ExtResource("6_oaaqn"), ExtResource("7_30q73")])
+learnableSkills = Array[ExtResource("2_2yh1b")]([ExtResource("3_s6peu")])
+fortifyCost = 50
+enhanceCrystals = Array[String](["death", "sound"])
+crystals = 10
+crystalDrops = Array[ExtResource("1_183po")]([SubResource("Resource_30q73"), SubResource("Resource_7ktes"), SubResource("Resource_2poau")])
+metadata/_custom_type_script = "uid://c6t16g27uf4ia"
